@@ -1,0 +1,39 @@
+name: Solidity
+
+on:
+  push:
+    branches:
+      - main
+      - "phase/**"
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: solidity-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phase-1-gate:
+    name: Phase 1 gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      FOUNDRY_PROFILE: ci
+
+    steps:
+      - name: Check out pinned dependencies
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Install Foundry v1.7.1
+        uses: foundry-rs/foundry-toolchain@908c540300062bd5a7e473851cdb4282204cee09
+        with:
+          version: v1.7.1
+
+      - name: Verify Phase 1
+        run: ./scripts/verify-phase-1.sh

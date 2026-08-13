@@ -29,10 +29,46 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 
 - [Roadmap](ROADMAP.md)
 - [Mechanism specification](docs/MECHANISM.md)
+- [Phase 1 accounting specification](docs/ACCOUNTING.md)
+- [Phase 1 verification guide](docs/PHASE_1_VERIFICATION.md)
+- [Dependency policy](docs/DEPENDENCIES.md)
 - [Verification protocol](docs/VERIFICATION.md)
 - [Project decisions](docs/DECISIONS.md)
 
 ## Current status
 
-**Phase 0 — repository bootstrap.** Protocol code begins after the Phase 0 gate is approved.
+**Phase 1 — automated gate passed; reviewer approval pending.** The branch proves bounded provisional-surcharge custody
+across all four v4 swap modes. It is intentionally not the complete MARKOUT lifecycle yet.
 
+## Phase 1 architecture
+
+```text
+src/
+├── base/        reusable PoolManager custody and accounting
+├── hooks/       replaceable surcharge policies
+├── interfaces/  stable external errors, events, and read API
+├── libraries/   hook-data, arithmetic, and swap-delta primitives
+└── types/       shared domain types
+```
+
+`FixedBpsProvisionalSurchargeHook` is the Phase 1 proof policy. Later phases can replace its quote function without
+duplicating the v4 accounting path in `BaseProvisionalSurcharge`.
+
+## Local verification
+
+Prerequisites: Git, Foundry `v1.7.1`, and recursive submodules.
+
+```bash
+git submodule update --init --recursive
+./scripts/verify-phase-1.sh
+```
+
+The gate checks formatting, compilation and bytecode size, lint, unit tests, real PoolManager integration tests,
+stateful invariants, and the committed gas snapshot. See the
+[verification guide](docs/PHASE_1_VERIFICATION.md) for expected evidence and targeted commands.
+
+## Security status
+
+This repository is production-shaped, not production-certified. The Phase 1 surface has defensive parsing, explicit
+user limits, full-balance conservation checks, and stateful invariants, but the complete system has not yet reached
+the dedicated threat-model, static-analysis, and external-review phase. Do not deploy it with real funds.

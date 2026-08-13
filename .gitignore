@@ -2,7 +2,6 @@
 cache/
 out/
 broadcast/
-lib/
 
 # Solidity tooling
 lcov.info
@@ -29,3 +28,5 @@ dist/
 # Experiment output that is not intentionally versioned
 experiments/tmp/
 
+# Local reports
+reports/
