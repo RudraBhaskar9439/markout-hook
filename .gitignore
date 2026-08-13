@@ -1,0 +1,31 @@
+# Foundry
+cache/
+out/
+broadcast/
+lib/
+
+# Solidity tooling
+lcov.info
+coverage/
+
+# Frontend
+node_modules/
+dist/
+.next/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Editors and operating system
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Experiment output that is not intentionally versioned
+experiments/tmp/
+
