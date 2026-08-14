@@ -1,6 +1,6 @@
 # MARKOUT Mechanism Specification
 
-Status: Phase 1 accounting path validated; Phase 2 economic formula frozen for the MVP.
+Status: Phase 3 local trade lifecycle implemented; Reactive automation begins in Phase 4.
 
 ## 1. Problem
 
@@ -60,7 +60,7 @@ The curve is monotonic over its entire domain and treats equivalent buy and sell
 - Minimum adapter-normalized confidence: 9,000 out of 10,000.
 - Observations before maturity, from the future, after the grace period, stale, missing, zero, or below confidence fail.
 
-If no valid settlement completes before expiry, Phase 3 must make the complete escrow claimable as a trader rebate.
+If no valid settlement completes before expiry, the complete escrow becomes claimable as a trader rebate.
 Oracle or Reactive liveness failure cannot create LP protection value.
 
 ## 6. Reactive Network's essential role
@@ -112,5 +112,4 @@ No terminal state can transition again.
 ## 10. Remaining implementation decisions
 
 1. Which reference-market event and source-specific confidence adapter are reliable on the selected testnets?
-2. How should execution-price inputs be persisted and authenticated in the Phase 3 trade record?
-3. How and when does the LP protection reserve become pool liquidity or LP-owned value?
+2. How and when does the LP protection reserve become pool liquidity or LP-owned value?

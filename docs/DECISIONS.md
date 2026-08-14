@@ -81,3 +81,21 @@ and documented when the reference source is selected.
 If no valid observation settles a trade before the grace period ends, the trade expires and the complete provisional
 surcharge becomes claimable by the trader. Missing infrastructure must not be interpreted as adverse flow or create
 LP-owned value.
+
+## D-016 — Keep every held unit in one explicit live accounting category
+
+Every surcharge unit is pending, claimable by a beneficiary, or credited to a pool's LP protection reserve. Settlement
+and expiry only move value between these categories; they do not transfer assets. The hook checks after every balance
+transition that held currency covers the complete live accounting total.
+
+## D-017 — Make the local settlement adapter replaceable, but its binding immutable
+
+The Phase 3 adapter forwards observations through the same minimal target interface that Reactive will use. Its
+operator and once-bound hook target cannot be changed. This preserves a narrow authenticated boundary without putting
+temporary local-operator logic into the hook itself.
+
+## D-018 — Derive execution price before applying MARKOUT's own return delta
+
+The hook derives quote-per-base execution price and direction from the raw swap delta supplied by PoolManager. The
+provisional surcharge is applied afterward as a return delta and is excluded from that price. MARKOUT therefore does
+not contaminate its outcome measure with its own policy charge.

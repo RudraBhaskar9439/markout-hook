@@ -40,6 +40,14 @@ library MarkoutParameters {
         return executedAt + MATURITY_DELAY;
     }
 
+    /// @notice Computes the final settlement deadline without permitting uint64 wraparound.
+    function expiryTimestamp(uint64 maturity) internal pure returns (uint64 expiry) {
+        if (maturity > type(uint64).max - SETTLEMENT_GRACE_PERIOD) {
+            revert TimestampOverflow(maturity, SETTLEMENT_GRACE_PERIOD);
+        }
+        return maturity + SETTLEMENT_GRACE_PERIOD;
+    }
+
     /// @notice Returns the Phase 2 default validation rules for a known maturity and evaluation time.
     function defaultObservationRules(uint64 maturity, uint64 evaluation)
         internal

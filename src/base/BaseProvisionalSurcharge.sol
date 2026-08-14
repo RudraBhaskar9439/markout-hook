@@ -69,6 +69,8 @@ abstract contract BaseProvisionalSurcharge is BaseHook, IProvisionalSurchargeHoo
             zeroForOne: params.zeroForOne
         });
 
+        _validateSurchargeContext(quote, key, swapDelta);
+
         uint128 surchargeAmount = _quoteSurcharge(quote);
         if (surchargeAmount > authorization.maximumAmount) {
             revert SurchargeExceedsMaximum(surchargeAmount, authorization.maximumAmount);
@@ -87,7 +89,7 @@ abstract contract BaseProvisionalSurcharge is BaseHook, IProvisionalSurchargeHoo
         _poolAccrued[rawPoolId][currencyAddress] += surchargeAmount;
         _totalAccrued[currencyAddress] += surchargeAmount;
 
-        _afterSurchargeAccrued(quote, surchargeAmount);
+        _afterSurchargeAccrued(quote, key, swapDelta, surchargeAmount);
 
         emit ProvisionalSurchargeAccrued(
             rawPoolId,
@@ -106,9 +108,19 @@ abstract contract BaseProvisionalSurcharge is BaseHook, IProvisionalSurchargeHoo
     /// @dev Implementations must return a value no larger than `type(int128).max`.
     function _quoteSurcharge(SurchargeQuote memory quote) internal view virtual returns (uint128 amount);
 
+    /// @notice Extension point for policy-specific pool and swap-context validation before custody changes.
+    function _validateSurchargeContext(SurchargeQuote memory quote, PoolKey calldata key, BalanceDelta swapDelta)
+        internal
+        view
+        virtual { }
+
     /// @notice Extension point invoked after custody and accounting have been updated.
-    /// @dev Phase 3 will use this to create a pending MARKOUT settlement record.
-    function _afterSurchargeAccrued(SurchargeQuote memory quote, uint128 amount) internal virtual { }
+    function _afterSurchargeAccrued(
+        SurchargeQuote memory quote,
+        PoolKey calldata key,
+        BalanceDelta swapDelta,
+        uint128 amount
+    ) internal virtual { }
 
     /// @notice Accepts native currency transferred by `PoolManager.take` for native-token pools.
     receive() external payable virtual {

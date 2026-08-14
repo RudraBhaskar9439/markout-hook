@@ -33,6 +33,16 @@ contract MarkoutParametersTest is Test {
         harness.maturityTimestamp(executedAt);
     }
 
+    function test_expiryTimestamp_usesTenMinuteGracePeriod() public view {
+        assertEq(harness.expiryTimestamp(1300), 1900);
+    }
+
+    function test_expiryTimestamp_overflow_reverts() public {
+        uint64 maturity = type(uint64).max - 599;
+        vm.expectRevert(abi.encodeWithSelector(MarkoutParameters.TimestampOverflow.selector, maturity, uint64(600)));
+        harness.expiryTimestamp(maturity);
+    }
+
     function test_defaultObservationRules_areFrozen() public view {
         ObservationRules memory rules = harness.defaultObservationRules(1300, 1400);
 

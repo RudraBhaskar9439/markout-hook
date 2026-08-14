@@ -13,6 +13,10 @@ contract MarkoutParametersHarness {
         return MarkoutParameters.SETTLEMENT_GRACE_PERIOD;
     }
 
+    function expiryTimestamp(uint64 maturity) external pure returns (uint64) {
+        return MarkoutParameters.expiryTimestamp(maturity);
+    }
+
     function defaultCurve() external pure returns (MarkoutCurve memory) {
         return MarkoutParameters.defaultCurve();
     }

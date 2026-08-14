@@ -27,7 +27,7 @@ library PriceNormalization {
         returns (uint192 priceX18)
     {
         if (rawPrice == 0) revert ZeroPrice();
-        _validateDecimals(sourceDecimals);
+        validateDecimals(sourceDecimals);
 
         uint256 directPriceX18;
         if (sourceDecimals < 18) {
@@ -61,8 +61,8 @@ library PriceNormalization {
     {
         if (baseAmount == 0) revert ZeroBaseAmount();
         if (quoteAmount == 0) revert ZeroQuoteAmount();
-        _validateDecimals(baseDecimals);
-        _validateDecimals(quoteDecimals);
+        validateDecimals(baseDecimals);
+        validateDecimals(quoteDecimals);
 
         uint256 normalizedPrice;
         if (baseDecimals >= quoteDecimals) {
@@ -82,7 +82,8 @@ library PriceNormalization {
         priceX18 = uint192(normalizedPrice);
     }
 
-    function _validateDecimals(uint8 decimals) private pure {
+    /// @notice Reverts when token or feed decimals exceed the supported normalization range.
+    function validateDecimals(uint8 decimals) internal pure {
         if (decimals > MAX_SUPPORTED_DECIMALS) revert UnsupportedDecimals(decimals);
     }
 
