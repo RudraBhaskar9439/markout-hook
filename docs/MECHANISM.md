@@ -1,6 +1,6 @@
 # MARKOUT Mechanism Specification
 
-Status: Phase 3 local trade lifecycle implemented; Reactive automation begins in Phase 4.
+Status: Phase 4 local Reactive lifecycle implemented; live network evidence begins in Phase 5.
 
 ## 1. Problem
 

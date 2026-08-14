@@ -1,15 +1,18 @@
 # Dependency Policy
 
-Phase 1 uses immutable Git submodule revisions so a clean checkout compiles against the same protocol code.
+MARKOUT uses immutable Git submodule revisions so a clean checkout compiles against the same protocol code.
 
 | Dependency | Revision | Purpose |
 | --- | --- | --- |
 | `foundry-rs/forge-std` | `8bbcf6e3f8f62f419e5429a0bd89331c85c37824` | Test and script framework |
 | `OpenZeppelin/uniswap-hooks` | `e59fe72c110c3862eec9b332530dce49ca506bbb` | Audited-style hook base and v4 template dependency graph |
 | `Uniswap/v4-core` | `a7cf038cd568801a79a9b4cf92cd5b52c95c8585` | PoolManager, hook interfaces, types, math, and integration fixtures |
+| `Reactive-Network/reactive-lib` | `f6990ce3526928d039fec78855b2004ff8d65c9f` | Official Reactive interfaces and payment base |
+| `Reactive-Network/reactive-test-lib` | `2ff9b2a68ca9956306ec943c10d1c757c1dd1956` | Official local system, subscription, cron, and callback simulator |
 
-`v4-core` and `v4-periphery` are recursive submodules of `uniswap-hooks`. Their complete resolved revisions are visible
-with:
+`v4-core` and `v4-periphery` are recursive submodules of `uniswap-hooks`. `reactive-lib` pins its test copy of
+`forge-std` at `1eea5bae12ae557d589f9f0f0edae2faa47cb262`; `reactive-test-lib` pins its copy at
+`0844d7e1fc5e60d77b68e469bff60265f236c398`. Complete resolved revisions are visible with:
 
 ```bash
 git submodule status --recursive
@@ -41,7 +44,7 @@ Dependency updates require their own pull request. That change must:
 
 1. Move the submodule pointer and update `foundry.lock` and this file together.
 2. Record upstream release notes or relevant commit changes.
-3. Run the full Phase 1 verification gate.
+3. Run the latest cumulative verification gate.
 4. Regenerate and review the deterministic-test `.gas-snapshot` intentionally.
 5. Re-review hook permissions, callback signatures, return-delta semantics, and compiler constraints.
 

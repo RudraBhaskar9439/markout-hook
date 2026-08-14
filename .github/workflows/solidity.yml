@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   cumulative-gate:
-    name: Cumulative Phase 3 gate
+    name: Cumulative Phase 4 gate
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
@@ -35,5 +35,5 @@ jobs:
         with:
           version: v1.7.1
 
-      - name: Verify through Phase 3
-        run: ./scripts/verify-phase-3.sh
+      - name: Verify through Phase 4
+        run: ./scripts/verify-phase-4.sh

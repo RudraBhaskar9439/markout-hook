@@ -35,15 +35,17 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 - [Phase 2 verification guide](docs/PHASE_2_VERIFICATION.md)
 - [Phase 3 lifecycle and accounting specification](docs/LIFECYCLE.md)
 - [Phase 3 verification guide](docs/PHASE_3_VERIFICATION.md)
+- [Reactive lifecycle specification](docs/REACTIVE_LIFECYCLE.md)
+- [Phase 4 verification guide](docs/PHASE_4_VERIFICATION.md)
 - [Dependency policy](docs/DEPENDENCIES.md)
 - [Verification protocol](docs/VERIFICATION.md)
 - [Project decisions](docs/DECISIONS.md)
 
 ## Current status
 
-**Phase 3 — automated gate passed; reviewer approval pending.** The local MVP now connects v4 surcharge custody to
-persistent pending trades, authenticated settlement, permissionless expiry, pull-based rebates, and a fully backed LP
-protection reserve.
+**Phase 4 — cumulative gate passed.** MARKOUT now observes origin and reference events, schedules bounded maturity work,
+authenticates callback-proxy delivery, retries until acknowledgement, and fails open to a complete trader rebate when
+source data is unavailable. Live testnet integration is the Phase 5 boundary.
 
 ## Architecture
 
@@ -54,12 +56,13 @@ src/
 ├── hooks/       surcharge policy and complete MARKOUT lifecycle
 ├── interfaces/  stable external errors, events, and read API
 ├── libraries/   accounting, price, observation, and markout primitives
+├── reactive/    event subscriptions, maturity scheduling, callback retries
 └── types/       shared domain types
 ```
 
 `BaseProvisionalSurcharge` isolates v4 custody. `MarkoutSettlementEngine` isolates pure economic evaluation.
-`MarkoutHook` composes them into a replay-protected state machine, while `LocalMarkoutSettlementAdapter` keeps the
-temporary Phase 3 operator outside the hook.
+`MarkoutHook` composes them into a replay-protected state machine. `MarkoutReactive` independently orchestrates events
+and time, while `ReactiveMarkoutSettlementAdapter` is the narrow destination authentication boundary.
 
 ## Local verification
 
@@ -67,12 +70,13 @@ Prerequisites: Git, Foundry `v1.7.1`, and recursive submodules.
 
 ```bash
 git submodule update --init --recursive
-./scripts/verify-phase-3.sh
+./scripts/verify-phase-4.sh
 ```
 
-The cumulative gate checks formatting, compilation and bytecode size, lint, Phase 1 accounting, Phase 2 mathematics,
-the complete Phase 3 lifecycle, stateful invariants, the manual demo, and the committed gas snapshot. See the
-[Phase 3 verification guide](docs/PHASE_3_VERIFICATION.md) for expected evidence and targeted commands.
+The cumulative gate checks formatting, compilation and bytecode size, lint, all earlier accounting and lifecycle
+properties, the official Reactive simulator integration, stateful invariants, both readable demos, and the committed
+gas snapshot. See the [Phase 4 verification guide](docs/PHASE_4_VERIFICATION.md) for expected evidence and targeted
+commands.
 
 ## Security status
 

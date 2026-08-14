@@ -99,3 +99,27 @@ temporary local-operator logic into the hook itself.
 The hook derives quote-per-base execution price and direction from the raw swap delta supplied by PoolManager. The
 provisional surcharge is applied afterward as a return delta and is excluded from that price. MARKOUT therefore does
 not contaminate its outcome measure with its own policy charge.
+
+## D-019 — Use Reactive Omni's single-deployment model
+
+`MarkoutReactive` is a standard EVM contract with one state store and no `vmOnly` or dual-deployment behavior. It uses
+the current system service as the only `react` caller and retains the older `Callback` event format that Reactive has
+committed to support during the Omni transition.
+
+## D-020 — Authenticate both callback transport and Reactive identity
+
+The destination adapter requires the configured callback proxy as `msg.sender` and the configured proxy-injected
+Reactive identity as the callback's first argument. Either check alone would leave a broader trust boundary than the
+protocol provides.
+
+## D-021 — Treat callback delivery as at-least-once
+
+The scheduler retries settlement or expiry on cron until it observes a terminal event from the immutable destination
+hook. The destination adapter turns replay of an already terminal trade into a successful no-op. Economic finality is
+therefore independent from whether acknowledgement delivery races or is delayed.
+
+## D-022 — Bound cron work and preserve fair progress
+
+One cron examines at most eight trade records and advances a circular cursor. Callback bursts and execution gas stay
+bounded, while every stored position is revisited on later crons. Throughput optimization requires Phase 6 evidence
+and cannot weaken the fail-open expiry policy.

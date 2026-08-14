@@ -4,3 +4,9 @@
 [submodule "lib/uniswap-hooks"]
 	path = lib/uniswap-hooks
 	url = https://github.com/openzeppelin/uniswap-hooks
+[submodule "lib/reactive-lib"]
+	path = lib/reactive-lib
+	url = https://github.com/Reactive-Network/reactive-lib.git
+[submodule "lib/reactive-test-lib"]
+	path = lib/reactive-test-lib
+	url = https://github.com/Reactive-Network/reactive-test-lib.git
