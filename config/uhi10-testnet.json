@@ -31,7 +31,7 @@
     "chainId": 5318007,
     "rpcUrl": "https://lasna-omni-rpc.rnk.dev",
     "explorerUrl": "https://lasna-omni.reactscan.net",
-    "service": "0x0000000000000000000000000000000000fffFfF",
+    "service": "0x8888888888888888888888888888888888888888",
     "cron10Topic": "0x04463f7c1651e6b9774d7f85c85bb94654e3c46ca79b0c16fb16d4183307b687"
   },
   "sources": {
@@ -40,6 +40,7 @@
     "uniswapV4Deployments": "https://developers.uniswap.org/docs/protocols/v4/deployments",
     "circleUsdc": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
     "reactiveOmni": "https://blog.reactive.network/reactives-next-chapter-starts-testnet-launch-team-news/",
+    "reactiveOmniLibrary": "https://github.com/Reactive-Network/reactive-lib-omni",
     "reactiveCallbacks": "https://dev.reactive.network/legacy/events-%26-callbacks",
     "reactiveLibrary": "https://dev.reactive.network/legacy/reactive-library"
   }

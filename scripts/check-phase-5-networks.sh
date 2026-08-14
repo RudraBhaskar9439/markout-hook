@@ -56,7 +56,7 @@ require_code "0x00b036b58a818b1bc34d502d3fe730db729e62ac" "$origin_rpc" "Uniswap
 require_code "0x9140a78c1a137c7ff1c151ec8231272af78a99a4" "$origin_rpc" "Uniswap v4 swap router"
 require_code "0x5fa728c0a5cfd51bee4b060773f50554c0c8a7ab" "$origin_rpc" "Uniswap v4 liquidity router"
 require_code "0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4" "$origin_rpc" "Reactive callback proxy"
-require_code "0x0000000000000000000000000000000000fffFfF" "$reactive_rpc" "Reactive system service"
+require_code "0x8888888888888888888888888888888888888888" "$reactive_rpc" "Reactive Lasna Omni system service"
 
 require_pool "0xE87b0A6C6611119deCF5C4e9203E1c46F561BdAE" "100"
 require_pool "0x8F463126bBEA80A10DF9Bf6FF5455B6B0292B34e" "3000"
