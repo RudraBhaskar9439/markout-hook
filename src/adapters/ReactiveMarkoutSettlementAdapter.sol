@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
+import { AuthenticatedReactiveCallback } from "../base/AuthenticatedReactiveCallback.sol";
 import { IMarkoutHook } from "../interfaces/IMarkoutHook.sol";
 import { IMarkoutSettlementTarget } from "../interfaces/IMarkoutSettlementTarget.sol";
 import { TradeRecord, TradeStatus } from "../types/MarkoutLifecycleTypes.sol";
@@ -8,14 +9,10 @@ import { ReferenceObservation } from "../types/MarkoutTypes.sol";
 
 /// @title Reactive MARKOUT Settlement Adapter
 /// @notice Authenticates Reactive callback-proxy delivery and makes terminal callback replay idempotent.
-contract ReactiveMarkoutSettlementAdapter {
+contract ReactiveMarkoutSettlementAdapter is AuthenticatedReactiveCallback {
     error ZeroBinder();
-    error ZeroCallbackSender();
-    error ZeroReactiveIdentity();
     error ZeroTarget();
     error UnauthorizedBinder(address caller);
-    error UnauthorizedCallbackSender(address caller);
-    error UnauthorizedReactiveIdentity(address supplied, address expected);
     error TargetAlreadyBound(address target);
     error TargetNotBound();
     error UnknownTargetTrade(bytes32 tradeId);
@@ -25,17 +22,13 @@ contract ReactiveMarkoutSettlementAdapter {
     event ExpiryCallbackHandled(bytes32 indexed tradeId, bool forwarded, TradeStatus status);
 
     address public immutable binder;
-    address public immutable callbackSender;
-    address public immutable reactiveIdentity;
     IMarkoutHook public target;
 
-    constructor(address binder_, address callbackSender_, address reactiveIdentity_) {
+    constructor(address binder_, address callbackSender_, address reactiveIdentity_)
+        AuthenticatedReactiveCallback(callbackSender_, reactiveIdentity_)
+    {
         if (binder_ == address(0)) revert ZeroBinder();
-        if (callbackSender_ == address(0)) revert ZeroCallbackSender();
-        if (reactiveIdentity_ == address(0)) revert ZeroReactiveIdentity();
         binder = binder_;
-        callbackSender = callbackSender_;
-        reactiveIdentity = reactiveIdentity_;
     }
 
     /// @notice Permanently binds the adapter to its destination hook.
@@ -51,9 +44,9 @@ contract ReactiveMarkoutSettlementAdapter {
     /// @dev The first argument is overwritten by Reactive Network's callback proxy.
     function settle(address suppliedReactiveIdentity, bytes32 tradeId, ReferenceObservation calldata observation)
         external
+        onlyAuthenticatedReactiveCallback(suppliedReactiveIdentity)
         returns (bool forwarded)
     {
-        _authorize(suppliedReactiveIdentity);
         IMarkoutHook target_ = _requireTarget();
         TradeRecord memory trade = target_.getTrade(tradeId);
         if (trade.status == TradeStatus.None) revert UnknownTargetTrade(tradeId);
@@ -68,8 +61,11 @@ contract ReactiveMarkoutSettlementAdapter {
 
     /// @notice Executes the authenticated liveness fallback unless the destination trade is already terminal.
     /// @dev The first argument is overwritten by Reactive Network's callback proxy.
-    function expire(address suppliedReactiveIdentity, bytes32 tradeId) external returns (bool forwarded) {
-        _authorize(suppliedReactiveIdentity);
+    function expire(address suppliedReactiveIdentity, bytes32 tradeId)
+        external
+        onlyAuthenticatedReactiveCallback(suppliedReactiveIdentity)
+        returns (bool forwarded)
+    {
         IMarkoutHook target_ = _requireTarget();
         TradeRecord memory trade = target_.getTrade(tradeId);
         if (trade.status == TradeStatus.None) revert UnknownTargetTrade(tradeId);
@@ -80,13 +76,6 @@ contract ReactiveMarkoutSettlementAdapter {
         }
 
         emit ExpiryCallbackHandled(tradeId, false, trade.status);
-    }
-
-    function _authorize(address suppliedReactiveIdentity) private view {
-        if (msg.sender != callbackSender) revert UnauthorizedCallbackSender(msg.sender);
-        if (suppliedReactiveIdentity != reactiveIdentity) {
-            revert UnauthorizedReactiveIdentity(suppliedReactiveIdentity, reactiveIdentity);
-        }
     }
 
     function _requireTarget() private view returns (IMarkoutHook target_) {

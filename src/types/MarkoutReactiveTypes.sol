@@ -47,6 +47,7 @@ struct MarkoutReactiveConfig {
     address hook;
     address settlementAdapter;
     address referenceFeed;
+    address referenceSampler;
     bytes32 marketId;
     uint256 cronTopic;
 }

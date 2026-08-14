@@ -19,6 +19,7 @@ contract DeployMarkoutReactive is Script {
             hook: vm.envAddress("MARKOUT_HOOK"),
             settlementAdapter: vm.envAddress("MARKOUT_SETTLEMENT_ADAPTER"),
             referenceFeed: vm.envAddress("REFERENCE_FEED"),
+            referenceSampler: vm.envOr("REFERENCE_SAMPLER", address(0)),
             marketId: vm.envBytes32("MARKET_ID"),
             cronTopic: vm.envUint("REACTIVE_CRON_TOPIC")
         });

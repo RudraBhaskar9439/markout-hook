@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "deployedAt": null,
+  "deployer": null,
+  "marketId": "0x7ea41243798f304c9efd5c2e0c82a273090146c4718014ecc8570eb373df2b78",
+  "unichainSepolia": {
+    "chainId": 1301,
+    "settlementAdapter": {
+      "address": null,
+      "transactionHash": null,
+      "blockNumber": null
+    },
+    "markoutHook": {
+      "address": null,
+      "transactionHash": null,
+      "blockNumber": null
+    },
+    "referenceSampler": {
+      "address": null,
+      "transactionHash": null,
+      "blockNumber": null
+    },
+    "pool": {
+      "poolId": null,
+      "initializeTransactionHash": null,
+      "liquidityTransactionHash": null
+    }
+  },
+  "reactiveLasnaOmni": {
+    "chainId": 5318007,
+    "markoutReactive": {
+      "address": null,
+      "transactionHash": null,
+      "blockNumber": null
+    }
+  },
+  "acceptanceTrades": [
+    {
+      "classification": "benign",
+      "tradeId": null,
+      "swapTransactionHash": null,
+      "sampleCallbackTransactionHash": null,
+      "settlementCallbackTransactionHash": null,
+      "claimTransactionHash": null
+    },
+    {
+      "classification": "adverse",
+      "tradeId": null,
+      "swapTransactionHash": null,
+      "sampleCallbackTransactionHash": null,
+      "settlementCallbackTransactionHash": null,
+      "claimTransactionHash": null
+    }
+  ]
+}

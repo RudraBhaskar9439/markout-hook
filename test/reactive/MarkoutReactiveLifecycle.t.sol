@@ -23,6 +23,7 @@ import { SwapParams } from "@uniswap/v4-core/src/types/PoolOperation.sol";
 import { Deployers } from "@uniswap/v4-core/test/utils/Deployers.sol";
 
 import { ReactiveMarkoutSettlementAdapter } from "../../src/adapters/ReactiveMarkoutSettlementAdapter.sol";
+import { AuthenticatedReactiveCallback } from "../../src/base/AuthenticatedReactiveCallback.sol";
 import { MarkoutHook } from "../../src/hooks/MarkoutHook.sol";
 import { IMarkoutHook } from "../../src/interfaces/IMarkoutHook.sol";
 import { MarkoutParameters } from "../../src/libraries/MarkoutParameters.sol";
@@ -92,6 +93,7 @@ contract MarkoutReactiveLifecycleTest is ReactiveTest, Deployers {
                 hook: address(hook),
                 settlementAdapter: address(settlementAdapter),
                 referenceFeed: address(referenceFeed),
+                referenceSampler: address(0),
                 marketId: MARKET_ID,
                 cronTopic: ReactiveConstants.CRON_TOPIC_10
             })
@@ -226,7 +228,7 @@ contract MarkoutReactiveLifecycleTest is ReactiveTest, Deployers {
         ReferenceObservation memory observation = _neutralObservation(trade);
 
         vm.expectRevert(
-            abi.encodeWithSelector(ReactiveMarkoutSettlementAdapter.UnauthorizedCallbackSender.selector, address(this))
+            abi.encodeWithSelector(AuthenticatedReactiveCallback.UnauthorizedCallbackSender.selector, address(this))
         );
         settlementAdapter.settle(rvmId, tradeId, observation);
 
@@ -337,9 +339,9 @@ contract MarkoutReactiveLifecycleTest is ReactiveTest, Deployers {
     function test_adapterConstructorAndOneTimeBindingGuards() public {
         vm.expectRevert(ReactiveMarkoutSettlementAdapter.ZeroBinder.selector);
         new ReactiveMarkoutSettlementAdapter(address(0), address(proxy), rvmId);
-        vm.expectRevert(ReactiveMarkoutSettlementAdapter.ZeroCallbackSender.selector);
+        vm.expectRevert(AuthenticatedReactiveCallback.ZeroCallbackSender.selector);
         new ReactiveMarkoutSettlementAdapter(address(this), address(0), rvmId);
-        vm.expectRevert(ReactiveMarkoutSettlementAdapter.ZeroReactiveIdentity.selector);
+        vm.expectRevert(AuthenticatedReactiveCallback.ZeroReactiveIdentity.selector);
         new ReactiveMarkoutSettlementAdapter(address(this), address(proxy), address(0));
 
         ReactiveMarkoutSettlementAdapter unbound =

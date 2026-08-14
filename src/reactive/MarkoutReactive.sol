@@ -9,6 +9,7 @@ import { ISubscriptionService } from "reactive-lib/interfaces/ISubscriptionServi
 import { ReactiveMarkoutSettlementAdapter } from "../adapters/ReactiveMarkoutSettlementAdapter.sol";
 import { IMarkoutHook } from "../interfaces/IMarkoutHook.sol";
 import { INormalizedReferencePriceFeed } from "../interfaces/INormalizedReferencePriceFeed.sol";
+import { IReferencePriceSampler } from "../interfaces/IReferencePriceSampler.sol";
 import { MarkoutParameters } from "../libraries/MarkoutParameters.sol";
 import {
     MarkoutReactiveConfig,
@@ -26,6 +27,8 @@ import { ReferenceObservation } from "../types/MarkoutTypes.sol";
 contract MarkoutReactive is AbstractPayer, IReactive {
     uint256 public constant REACTIVE_IGNORE = 0xa65f96fc951c35ead38878e0f0b7a3c744a6f5ccc1476b313353ce31712313ad;
     uint64 public constant CALLBACK_GAS_LIMIT = 500_000;
+    uint64 public constant REFERENCE_SAMPLE_GAS_LIMIT = 300_000;
+    uint64 public constant REFERENCE_SAMPLE_RETRY_DELAY = 60;
     uint256 public constant MAX_TRADES_PER_CRON = 8;
 
     uint256 public constant MARKOUT_REQUESTED_TOPIC = uint256(
@@ -55,6 +58,7 @@ contract MarkoutReactive is AbstractPayer, IReactive {
     event DuplicateTradeIgnored(bytes32 indexed tradeId, ReactiveTradeStatus status);
     event ReferenceObservationAccepted(uint192 priceX18, uint64 observedAt, uint16 confidenceBps);
     event ReferenceObservationIgnored(uint192 priceX18, uint64 observedAt, uint16 confidenceBps);
+    event ReferenceSampleCallbackRequested(address indexed sampler, uint64 requestedAt);
     event SettlementCallbackRequested(bytes32 indexed tradeId, uint192 priceX18, uint64 observedAt);
     event ExpiryCallbackRequested(bytes32 indexed tradeId);
     event TradeFinalized(bytes32 indexed tradeId);
@@ -67,11 +71,13 @@ contract MarkoutReactive is AbstractPayer, IReactive {
     address public immutable hook;
     address public immutable settlementAdapter;
     address public immutable referenceFeed;
+    address public immutable referenceSampler;
     bytes32 public immutable marketId;
     uint256 public immutable cronTopic;
 
     ReactiveReferenceObservation public latestReferenceObservation;
     uint256 public scanCursor;
+    uint64 public lastReferenceSampleRequestedAt;
 
     mapping(bytes32 tradeId => ReactiveTradeRecord trade) private _trades;
     bytes32[] private _tradeIds;
@@ -99,6 +105,7 @@ contract MarkoutReactive is AbstractPayer, IReactive {
         hook = config.hook;
         settlementAdapter = config.settlementAdapter;
         referenceFeed = config.referenceFeed;
+        referenceSampler = config.referenceSampler;
         marketId = config.marketId;
         cronTopic = config.cronTopic;
 
@@ -128,6 +135,7 @@ contract MarkoutReactive is AbstractPayer, IReactive {
                 && bytes32(log.topic_1) == marketId
         ) {
             _handleReferenceObservation(log.data);
+            if (referenceSampler != address(0)) _processMatureTrades();
             return;
         }
 
@@ -237,30 +245,34 @@ contract MarkoutReactive is AbstractPayer, IReactive {
         uint256 iterations = length < MAX_TRADES_PER_CRON ? length : MAX_TRADES_PER_CRON;
         uint256 cursor = scanCursor;
         uint64 currentTimestamp = _currentTimestamp();
+        bool sampleRequired;
         for (uint256 i = 0; i < iterations; ++i) {
-            _processTrade(_tradeIds[cursor], currentTimestamp);
+            if (_processTrade(_tradeIds[cursor], currentTimestamp)) sampleRequired = true;
             unchecked {
                 ++cursor;
             }
             if (cursor == length) cursor = 0;
         }
         scanCursor = cursor;
+        if (sampleRequired) _requestReferenceSample(currentTimestamp);
     }
 
-    function _processTrade(bytes32 tradeId, uint64 currentTimestamp) private {
+    function _processTrade(bytes32 tradeId, uint64 currentTimestamp) private returns (bool sampleRequired) {
         ReactiveTradeRecord storage trade = _trades[tradeId];
-        if (trade.status == ReactiveTradeStatus.None || trade.status == ReactiveTradeStatus.Finalized) return;
+        if (trade.status == ReactiveTradeStatus.None || trade.status == ReactiveTradeStatus.Finalized) return false;
 
         if (currentTimestamp > trade.expiryTimestamp) {
             trade.status = ReactiveTradeStatus.ExpiryPendingAcknowledgement;
             bytes memory expiryPayload = abi.encodeCall(ReactiveMarkoutSettlementAdapter.expire, (address(0), tradeId));
             emit Callback(destinationChainId, settlementAdapter, CALLBACK_GAS_LIMIT, expiryPayload);
             emit ExpiryCallbackRequested(tradeId);
-            return;
+            return false;
         }
 
         ReactiveReferenceObservation memory observation = latestReferenceObservation;
-        if (!_isEligible(trade, observation, currentTimestamp)) return;
+        if (!_isEligible(trade, observation, currentTimestamp)) {
+            return currentTimestamp >= trade.maturityTimestamp && trade.status == ReactiveTradeStatus.Pending;
+        }
 
         trade.status = ReactiveTradeStatus.SettlementPendingAcknowledgement;
         bytes memory settlementPayload = abi.encodeCall(
@@ -277,6 +289,23 @@ contract MarkoutReactive is AbstractPayer, IReactive {
         );
         emit Callback(destinationChainId, settlementAdapter, CALLBACK_GAS_LIMIT, settlementPayload);
         emit SettlementCallbackRequested(tradeId, observation.priceX18, observation.observedAt);
+    }
+
+    function _requestReferenceSample(uint64 currentTimestamp) private {
+        address sampler = referenceSampler;
+        if (sampler == address(0)) return;
+
+        uint64 lastRequestedAt = lastReferenceSampleRequestedAt;
+        if (
+            lastRequestedAt != 0
+                && (currentTimestamp <= lastRequestedAt
+                    || currentTimestamp - lastRequestedAt < REFERENCE_SAMPLE_RETRY_DELAY)
+        ) return;
+
+        lastReferenceSampleRequestedAt = currentTimestamp;
+        bytes memory payload = abi.encodeCall(IReferencePriceSampler.sample, (address(0)));
+        emit Callback(referenceChainId, sampler, REFERENCE_SAMPLE_GAS_LIMIT, payload);
+        emit ReferenceSampleCallbackRequested(sampler, currentTimestamp);
     }
 
     function _isEligible(

@@ -37,15 +37,18 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 - [Phase 3 verification guide](docs/PHASE_3_VERIFICATION.md)
 - [Reactive lifecycle specification](docs/REACTIVE_LIFECYCLE.md)
 - [Phase 4 verification guide](docs/PHASE_4_VERIFICATION.md)
+- [Phase 5 verification guide](docs/PHASE_5_VERIFICATION.md)
+- [Testnet deployment runbook](docs/TESTNET_DEPLOYMENT.md)
 - [Dependency policy](docs/DEPENDENCIES.md)
 - [Verification protocol](docs/VERIFICATION.md)
 - [Project decisions](docs/DECISIONS.md)
 
 ## Current status
 
-**Phase 4 — cumulative gate passed.** MARKOUT now observes origin and reference events, schedules bounded maturity work,
-authenticates callback-proxy delivery, retries until acknowledgement, and fails open to a complete trader rebate when
-source data is unavailable. Live testnet integration is the Phase 5 boundary.
+**Phase 5 — deployment-ready, live gate open.** MARKOUT now autonomously requests a three-pool median reference sample
+at maturity and completes the sample-event-to-settlement-callback chain in the full local Reactive simulator. Current
+Unichain Sepolia and Lasna Omni dependencies pass a read-only public-network preflight. A funded testnet signer and two
+public settlement traces are still required before Phase 5 can be marked passed.
 
 ## Architecture
 
@@ -57,6 +60,7 @@ src/
 ├── interfaces/  stable external errors, events, and read API
 ├── libraries/   accounting, price, observation, and markout primitives
 ├── reactive/    event subscriptions, maturity scheduling, callback retries
+├── reference/   authenticated, source-specific price sampling
 └── types/       shared domain types
 ```
 
@@ -70,13 +74,13 @@ Prerequisites: Git, Foundry `v1.7.1`, and recursive submodules.
 
 ```bash
 git submodule update --init --recursive
-./scripts/verify-phase-4.sh
+./scripts/verify-phase-5-local.sh
 ```
 
-The cumulative gate checks formatting, compilation and bytecode size, lint, all earlier accounting and lifecycle
-properties, the official Reactive simulator integration, stateful invariants, both readable demos, and the committed
-gas snapshot. See the [Phase 4 verification guide](docs/PHASE_4_VERIFICATION.md) for expected evidence and targeted
-commands.
+The cumulative local gate checks formatting, compilation and bytecode size, lint, all earlier accounting and lifecycle
+properties, autonomous sampling through the official Reactive simulator, stateful invariants, readable demos, the
+committed gas snapshot, and current public testnet dependencies. See the
+[Phase 5 verification guide](docs/PHASE_5_VERIFICATION.md) for the local/live boundary.
 
 ## Security status
 

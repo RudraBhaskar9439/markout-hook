@@ -123,3 +123,24 @@ therefore independent from whether acknowledgement delivery races or is delayed.
 One cron examines at most eight trade records and advances a circular cursor. Callback bursts and execution gas stay
 bounded, while every stored position is revisited on later crons. Throughput optimization requires Phase 6 evidence
 and cannot weaken the fail-open expiry policy.
+
+## D-023 — Request the reference observation at maturity
+
+The Phase 5 source is pull-on-callback rather than a continuously pushed reporter. When a mature trade lacks an
+eligible observation, one Reactive callback requests a sample and a global 60-second cooldown bounds retries. The
+sampler's resulting normalized event immediately re-enters settlement processing. Reactive is therefore essential to
+both observation timing and settlement; no developer EOA publishes the price.
+
+## D-024 — Use a three-fee-tier median only as the testnet transport proof
+
+The live testnet adapter reads three WETH/USDC Uniswap v3 pools, validates the pair and minimum liquidity, sorts their
+spot prices, and publishes the median. Confidence is `10,000 - maximum adjacent dispersion in bps`; a sample above the
+immutable dispersion ceiling reverts. This makes one outlying pool insufficient, but does not claim production-oracle
+security: the venues share one chain, spot prices remain manipulable, and testnet observation histories are shallow.
+
+## D-025 — Make every callback target a funded Reactive payer
+
+Destination callback contracts inherit one shared module that accepts native gas funds, authorizes only the configured
+callback proxy to collect payment, and exposes permissionless debt coverage. This payment surface is separate from
+application authority: funding the adapter or sampler grants no settlement, sampling, withdrawal, upgrade, or target
+selection capability.

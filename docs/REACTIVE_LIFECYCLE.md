@@ -1,6 +1,6 @@
 # Reactive Lifecycle Specification
 
-Status: Phase 4 implemented and covered by local end-to-end simulation.
+Status: Phase 4 scheduler implemented; Phase 5 autonomous sampling extension covered by local end-to-end simulation.
 
 ## Scope and network model
 
@@ -40,8 +40,14 @@ Reference source
 Reactive cron
     -> scans at most eight records using a persistent circular cursor
     -> waits before maturity
-    -> requests settlement when the latest observation is eligible
+    -> requests an authenticated reference sample if no eligible observation exists
     -> requests full-rebate expiry only after the grace period
+
+Reference sampler callback
+    -> reads three configured Uniswap v3 fee-tier pools
+    -> rejects low liquidity or excessive cross-pool dispersion
+    -> emits the median as a normalized reference event
+    -> immediately re-enters mature-trade processing
 
 Reactive callback proxy
     -> injects the authorized Reactive identity into the callback payload
@@ -93,18 +99,30 @@ introduce a more advanced queue only if evidence shows it is required.
 
 ## Authentication boundary
 
-The hook authorizes only its immutable settlement adapter. The adapter in turn requires both:
+The hook authorizes only its immutable settlement adapter. The adapter and sampler each require both:
 
 - `msg.sender` equals the configured Reactive callback proxy; and
 - the proxy-injected first argument equals the configured Reactive identity.
 
-Direct calls, a real proxy carrying the wrong identity, an unbound target, and rebinding all fail. The adapter has no
-withdrawal, upgrade, arbitrary-call, or owner-settlement path.
+Direct calls, a real proxy carrying the wrong identity, an unbound target, and rebinding all fail. Neither callback
+target has a withdrawal, upgrade, arbitrary-call, or owner-settlement path. Both inherit the minimum Reactive payer
+surface so they can hold destination gas funds and let only the configured proxy collect callback debt.
 
-## Deliberate Phase 4 boundary
+## Autonomous sample retry
 
-- The reference event is represented by a stable normalized interface and a local mock. Selecting and implementing
-  the live source-specific adapter is part of Phase 5.
+When at least one scanned trade is mature but has no eligible observation, the scheduler emits one sampler callback,
+not one callback per trade. Requests have a 60-second global retry cooldown. A normalized event from the configured
+sampler immediately processes mature work, producing the settlement callback without waiting for another cron.
+
+Sampling is optional at construction, preserving compatibility with push-based normalized feeds. With a sampler
+configured, the full causal chain is cron -> sampler callback -> normalized event -> settlement callback -> terminal
+hook event -> acknowledgement.
+
+## Phase boundaries
+
+- Phase 4 represents the reference event behind a stable normalized interface.
+- Phase 5 implements one source-specific adapter: a three-pool Uniswap v3 median sampler. Its spot-pool inputs prove
+  live transport but are explicitly not represented as a production manipulation-resistant oracle.
 - Callback gas, service address, callback proxy, cron topic, chain IDs, and Reactive identity must be confirmed against
   the current testnet configuration immediately before deployment.
 - Phase 4 proves behavior locally. It does not claim that a live cross-network callback has succeeded.
