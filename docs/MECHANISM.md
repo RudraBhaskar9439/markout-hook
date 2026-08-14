@@ -1,6 +1,6 @@
 # MARKOUT Mechanism Specification
 
-Status: initial design hypothesis. Phase 1 must validate the v4 accounting path, and Phase 2 must freeze the economic formula.
+Status: Phase 1 accounting path validated; Phase 2 economic formula frozen for the MVP.
 
 ## 1. Problem
 
@@ -17,7 +17,10 @@ Most dynamic-fee hooks price a swap using information available before execution
 7. MARKOUT calculates the final retained surcharge.
 8. The trader receives a pull-based rebate credit. The retained portion is credited to the LP protection reserve.
 
-## 3. Sign convention
+## 3. Price and sign convention
+
+Every execution and reference price is normalized to quote-token units per one base token, scaled by `1e18`. For the
+ETH/USDC MVP, a $2,000 ETH price is represented as `2000e18`, regardless of the source feed's decimals or orientation.
 
 Let `q = +1` for a trader buying the base asset and `q = -1` for selling it.
 
@@ -31,25 +34,36 @@ markout = q × (referencePriceAtMaturity − executionPrice) / executionPrice
 
 This is a flow-quality proxy, not proof of malicious behavior. MARKOUT must never label an address or block access based on the score.
 
-## 4. Settlement constraints
+## 4. Settlement curve
 
-The exact curve is finalized in Phase 2, but it must always satisfy:
+The Phase 2 curve has three economic anchors:
+
+- markout at or below -5 bps: retain 0%, rebate 100%;
+- zero markout: retain 20%, rebate 80%;
+- markout at or above +25 bps: retain 100%, rebate 0%.
+
+Retention is linearly interpolated between the anchors and rounded down. The rebate receives the exact subtraction
+remainder, so:
 
 ```text
 0 <= retainedSurcharge <= escrowedSurcharge
 rebate = escrowedSurcharge - retainedSurcharge
 ```
 
-Additional requirements:
+The curve is monotonic over its entire domain and treats equivalent buy and sell price movements symmetrically.
 
-- Bounded and monotonic for positive markout
-- Deterministic integer arithmetic
-- Symmetric treatment of equivalent buys and sells
-- Explicit rounding direction
-- Maximum reference-price age
-- Defined behavior for missing, stale, zero, or invalid observations
+## 5. Observation policy
 
-## 5. Reactive Network's essential role
+- Maturity: five minutes after execution.
+- Settlement grace period: ten minutes after maturity.
+- Maximum reference-observation age at evaluation: two minutes.
+- Minimum adapter-normalized confidence: 9,000 out of 10,000.
+- Observations before maturity, from the future, after the grace period, stale, missing, zero, or below confidence fail.
+
+If no valid settlement completes before expiry, Phase 3 must make the complete escrow claimable as a trader rebate.
+Oracle or Reactive liveness failure cannot create LP protection value.
+
+## 6. Reactive Network's essential role
 
 The Reactive Contract is not a convenience keeper. It is the autonomous settlement layer that:
 
@@ -61,7 +75,7 @@ The Reactive Contract is not a convenience keeper. It is the autonomous settleme
 
 The destination contract accepts settlement only from the authorized Reactive callback identity. No ordinary EOA receives a privileged settlement role in the final design.
 
-## 6. State model
+## 7. State model
 
 Each trade has one terminal outcome:
 
@@ -71,11 +85,12 @@ PENDING -> EXPIRED
 ```
 
 - `SETTLED`: a valid reference observation produced a rebate and retained amount.
-- `EXPIRED`: the reference stream or callback failed beyond a bounded grace period. The expiry refund policy will be frozen in Phase 2.
+- `EXPIRED`: the reference stream or callback failed beyond the ten-minute grace period; the full escrow becomes a
+  trader rebate.
 
 No terminal state can transition again.
 
-## 7. Safety model
+## 8. Safety model
 
 - Rebates use pull payments to isolate transfer failures.
 - Settlement is replay-protected by trade ID and state.
@@ -85,7 +100,7 @@ No terminal state can transition again.
 - Hook recursion and PoolManager delta settlement require explicit tests.
 - Administrative actions cannot confiscate pending escrow or user rebates.
 
-## 8. MVP non-goals
+## 9. MVP non-goals
 
 - Production deployment or audit claim
 - Machine-learning toxicity classification
@@ -94,13 +109,8 @@ No terminal state can transition again.
 - Multi-asset portfolio optimization
 - Supporting every pool and oracle before the ETH/USDC path works
 
-## 9. Decisions Phase 1 and Phase 2 must resolve
+## 10. Remaining implementation decisions
 
-1. Which v4 callback and return-delta path collects the surcharge for every swap mode?
-2. In which token is the provisional surcharge held for exact-input and exact-output swaps?
-3. How is the execution price normalized without overflow or avoidable precision loss?
-4. Which reference-market event is reliable on the chosen testnets?
-5. What are the maturity horizon, grace period, and stale-price threshold?
-6. What happens on expiry: full rebate, conservative split, or another predetermined policy?
-7. How and when does the LP protection reserve become pool liquidity or LP-owned value?
-
+1. Which reference-market event and source-specific confidence adapter are reliable on the selected testnets?
+2. How should execution-price inputs be persisted and authenticated in the Phase 3 trade record?
+3. How and when does the LP protection reserve become pool liquidity or LP-owned value?

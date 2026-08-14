@@ -31,28 +31,31 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 - [Mechanism specification](docs/MECHANISM.md)
 - [Phase 1 accounting specification](docs/ACCOUNTING.md)
 - [Phase 1 verification guide](docs/PHASE_1_VERIFICATION.md)
+- [Phase 2 economic specification](docs/ECONOMICS.md)
+- [Phase 2 verification guide](docs/PHASE_2_VERIFICATION.md)
 - [Dependency policy](docs/DEPENDENCIES.md)
 - [Verification protocol](docs/VERIFICATION.md)
 - [Project decisions](docs/DECISIONS.md)
 
 ## Current status
 
-**Phase 1 — automated gate passed; reviewer approval pending.** The branch proves bounded provisional-surcharge custody
-across all four v4 swap modes. It is intentionally not the complete MARKOUT lifecycle yet.
+**Phase 2 — automated gate passed; reviewer approval pending.** Phase 1 proves bounded provisional-surcharge custody
+across all four v4 swap modes. Phase 2 freezes the deterministic markout, price-normalization,
+observation-validation, and rebate-allocation rules before they are connected to persistent hook state.
 
-## Phase 1 architecture
+## Architecture
 
 ```text
 src/
 ├── base/        reusable PoolManager custody and accounting
 ├── hooks/       replaceable surcharge policies
 ├── interfaces/  stable external errors, events, and read API
-├── libraries/   hook-data, arithmetic, and swap-delta primitives
+├── libraries/   accounting, price, observation, and markout primitives
 └── types/       shared domain types
 ```
 
-`FixedBpsProvisionalSurchargeHook` is the Phase 1 proof policy. Later phases can replace its quote function without
-duplicating the v4 accounting path in `BaseProvisionalSurcharge`.
+`BaseProvisionalSurcharge` isolates v4 custody. `MarkoutSettlementEngine` isolates pure economic evaluation. Phase 3
+will connect these boundaries with pending-trade state, authenticated settlement, and pull-based rebate claims.
 
 ## Local verification
 
@@ -60,15 +63,15 @@ Prerequisites: Git, Foundry `v1.7.1`, and recursive submodules.
 
 ```bash
 git submodule update --init --recursive
-./scripts/verify-phase-1.sh
+./scripts/verify-phase-2.sh
 ```
 
-The gate checks formatting, compilation and bytecode size, lint, unit tests, real PoolManager integration tests,
+The cumulative gate checks formatting, compilation and bytecode size, lint, Phase 1 accounting, Phase 2 mathematics,
 stateful invariants, and the committed gas snapshot. See the
-[verification guide](docs/PHASE_1_VERIFICATION.md) for expected evidence and targeted commands.
+[Phase 2 verification guide](docs/PHASE_2_VERIFICATION.md) for expected evidence and targeted commands.
 
 ## Security status
 
-This repository is production-shaped, not production-certified. The Phase 1 surface has defensive parsing, explicit
-user limits, full-balance conservation checks, and stateful invariants, but the complete system has not yet reached
-the dedicated threat-model, static-analysis, and external-review phase. Do not deploy it with real funds.
+This repository is production-shaped, not production-certified. Its implemented surfaces have defensive parsing,
+explicit bounds, conservation checks, and stateful invariants, but the complete system has not yet reached the
+dedicated threat-model, static-analysis, and external-review phase. Do not deploy it with real funds.

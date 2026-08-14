@@ -108,8 +108,7 @@ Make the economic rule deterministic, bounded, and independently testable before
 ### Automated gate
 
 ```bash
-forge test --match-path 'test/math/**' -vv
-forge test --match-path 'test/invariants/**' -vv
+./scripts/verify-phase-2.sh
 ```
 
 Required properties:
@@ -356,4 +355,3 @@ At every checkpoint, the handoff will contain:
 4. Manual demo steps
 5. Known limitations
 6. A clear **GO / NO-GO** decision for the next phase
-
