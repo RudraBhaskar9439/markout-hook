@@ -26,6 +26,15 @@ git submodule status --recursive
 The Solidity version matches the exact pragma used by the pinned v4 PoolManager. CI installs the exact Foundry release
 instead of tracking nightly.
 
+## CI action pins
+
+| Action | Revision | Release line |
+| --- | --- | --- |
+| `actions/checkout` | `3d3c42e5aac5ba805825da76410c181273ba90b1` | `v7.0.1` |
+| `foundry-rs/foundry-toolchain` | `908c540300062bd5a7e473851cdb4282204cee09` | `v1` action with Foundry `v1.7.1` input |
+
+Actions are referenced by immutable commit rather than a mutable major-version tag.
+
 ## Update procedure
 
 Dependency updates require their own pull request. That change must:
