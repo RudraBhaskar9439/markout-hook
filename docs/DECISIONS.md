@@ -187,3 +187,22 @@ PoolManager, callback transport, Reactive identity, market pair, sampler pools, 
 are constructor-fixed. The MVP supports native currency and conventional ERC-20 behavior; fee-on-transfer, rebasing,
 ERC-777-style callback, or otherwise adversarial assets are outside the deployment allowlist. The hook is not
 upgradeable, and Phase 7 does not add an administrator under the label of emergency control.
+
+## D-032 — Keep the judge path deterministic until public evidence exists
+
+The Phase 8 application reads a typed, repository-owned projection of the committed Phase 6 experiment and replays the
+already-tested local Reactive lifecycle. It has no wallet, database, secret, or mutable backend. This gives every judge
+the same understandable path while the application clearly labels its values as deterministic research evidence rather
+than a live market feed.
+
+## D-033 — Never manufacture the missing Lasna proof
+
+The dashboard presents `Live Lasna evidence pending lREACT` until a funded scheduler produces real public transaction
+traces. Only explorer-backed transactions may replace that state. A local replay may demonstrate mechanism and UI
+reliability, but it cannot satisfy Phase 5 or the live portion of Phase 8.
+
+## D-034 — Derive social metadata from the request origin
+
+The judge application constructs canonical and preview-image URLs from validated forwarded-host and protocol headers,
+with a localhost fallback. One deployable build therefore produces correct absolute sharing metadata on both local and
+hosted environments without hard-coding a temporary deployment hostname.

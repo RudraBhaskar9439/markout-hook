@@ -43,6 +43,8 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 - [Phase 7 threat model](docs/THREAT_MODEL.md)
 - [Phase 7 static-analysis report](docs/STATIC_ANALYSIS.md)
 - [Phase 7 verification guide](docs/PHASE_7_VERIFICATION.md)
+- [Phase 8 judge application](web/README.md)
+- [Phase 8 verification guide](docs/PHASE_8_VERIFICATION.md)
 - [Testnet deployment runbook](docs/TESTNET_DEPLOYMENT.md)
 - [Dependency policy](docs/DEPENDENCIES.md)
 - [Verification protocol](docs/VERIFICATION.md)
@@ -50,11 +52,10 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 
 ## Current status
 
-**Phase 7 security gate implemented; Phase 5 live gate remains open.** The repository now includes adversarial failure
-tests, unauthorized-action stateful probes, a locked Slither toolchain, a reviewed static-analysis report, and a
-system-level threat model. The Phase 6 deterministic comparison remains reproducible. Phase 5's local Reactive
-lifecycle is complete, but a funded Lasna scheduler and two public settlement traces are still required before its live
-gate passes.
+**Phase 8 token-independent judge application implemented; Phase 5's live gate remains open.** The dashboard turns the
+Phase 6 deterministic evidence and Phase 4 local Reactive lifecycle into a guided, replayable story. It visibly labels
+the missing Lasna evidence instead of inventing transactions. A funded Lasna scheduler, two public settlements, live
+explorer links, and the final recorded fallback still require lREACT before Phase 5 and the full Phase 8 gate can close.
 
 ## Architecture
 
@@ -83,6 +84,7 @@ git submodule update --init --recursive
 ./scripts/verify-phase-5-local.sh
 ./scripts/verify-phase-6.sh
 ./scripts/verify-phase-7.sh
+./scripts/verify-phase-8.sh
 ```
 
 The cumulative local gate checks formatting, compilation and bytecode size, lint, all earlier accounting and lifecycle
@@ -97,6 +99,10 @@ in a temporary directory and byte-compares them with the committed results. See 
 The Phase 7 command additionally verifies the locked Python security environment and runs Slither with a gate that
 rejects every medium- or high-severity result. See the [Phase 7 verification guide](docs/PHASE_7_VERIFICATION.md) for
 the adversarial cases, reviewed low-severity findings, and residual risks.
+
+The Phase 8 command adds the Cloudflare-compatible judge application: lint, production build, server-rendered product
+tests, exact social-card dimensions, and a production-dependency audit. Run `./scripts/run-phase-8-demo.sh` for the
+one-command local demo, then open `http://localhost:3000`.
 
 ## Security status
 

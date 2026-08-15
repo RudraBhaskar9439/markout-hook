@@ -1,0 +1,407 @@
+"use client";
+
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import {
+  aggregateMetrics,
+  experimentCaveat,
+  flowCases,
+  flowOrder,
+  policyResults,
+  timelineBase,
+  type FlowId,
+} from "../lib/demo-data";
+
+const maximumFeeBps = 80;
+
+function formatBps(value: number) {
+  return `${value.toFixed(value % 1 === 0 ? 0 : 2)} bps`;
+}
+
+function dollarsPerTenThousand(value: number) {
+  return `$${value.toFixed(2)}`;
+}
+
+function Bar({ value, tone }: { value: number; tone: "fixed" | "volatility" | "markout" }) {
+  const style = { "--bar-size": `${(value / maximumFeeBps) * 100}%` } as CSSProperties;
+  return (
+    <div className="fee-bar-track" aria-hidden="true">
+      <div className={`fee-bar fee-bar-${tone}`} style={style} />
+    </div>
+  );
+}
+
+function FlowSelector({ selected, onChange }: { selected: FlowId; onChange: (flow: FlowId) => void }) {
+  return (
+    <div className="flow-selector" role="group" aria-label="Choose an order-flow outcome">
+      {flowOrder.map((flowId) => {
+        const flow = flowCases[flowId];
+        return (
+          <button
+            className="flow-option"
+            data-active={selected === flowId}
+            key={flowId}
+            onClick={() => onChange(flowId)}
+            type="button"
+            aria-pressed={selected === flowId}
+          >
+            <span className="flow-option-dot" />
+            {flow.shortLabel}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function OutcomeComparison({ selected }: { selected: FlowId }) {
+  const flow = flowCases[selected];
+  const rows = [
+    { label: "Fixed fee", value: flow.fixedFeeBps, tone: "fixed" as const, note: "Same for every trader" },
+    {
+      label: "Volatility fee",
+      value: flow.volatilityFeeBps,
+      tone: "volatility" as const,
+      note: "Prices the market regime",
+    },
+    {
+      label: "MARKOUT",
+      value: flow.markoutFeeBps,
+      tone: "markout" as const,
+      note: "Prices the realized outcome",
+    },
+  ];
+
+  return (
+    <div className="comparison-panel">
+      <div className="comparison-heading">
+        <div>
+          <p className="kicker">Average effective fee by flow class</p>
+          <h3>{flow.label}</h3>
+        </div>
+        <div className="signal-chip">
+          <span>Directional markout</span>
+          <strong>{flow.markoutSignal}</strong>
+        </div>
+      </div>
+
+      <p className="comparison-thesis">{flow.thesis}</p>
+
+      <div className="fee-rows">
+        {rows.map((row) => (
+          <div className="fee-row" key={row.label}>
+            <div className="fee-row-label">
+              <strong>{row.label}</strong>
+              <span>{row.note}</span>
+            </div>
+            <Bar value={row.value} tone={row.tone} />
+            <span className="fee-value">{formatBps(row.value)}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="outcome-callout">
+        <span className="outcome-index">Outcome</span>
+        <p>{flow.verdict}</p>
+      </div>
+    </div>
+  );
+}
+
+function SettlementCard({ selected }: { selected: FlowId }) {
+  const flow = flowCases[selected];
+  return (
+    <aside className="settlement-card" aria-label="MARKOUT settlement receipt">
+      <div className="receipt-header">
+        <div>
+          <p className="kicker">Settlement receipt</p>
+          <h3>{flow.markoutDescription}</h3>
+        </div>
+        <span className="local-badge">Deterministic</span>
+      </div>
+
+      <div className="receipt-notional">
+        <span>Illustrative notional</span>
+        <strong>$10,000.00</strong>
+      </div>
+
+      <div className="receipt-grid">
+        <div>
+          <span>Base LP fee</span>
+          <strong>$30.00</strong>
+          <small>30 bps</small>
+        </div>
+        <div>
+          <span>Provisional</span>
+          <strong>$50.00</strong>
+          <small>50 bps escrowed</small>
+        </div>
+      </div>
+
+      <div className="allocation-rail" aria-label="Provisional fee allocation">
+        <div className="allocation-rebate" style={{ flexGrow: flow.rebateBps }} />
+        <div className="allocation-protection" style={{ flexGrow: Math.max(flow.protectionBps, 0.001) }} />
+      </div>
+
+      <div className="allocation-legend">
+        <div>
+          <span className="legend-dot legend-rebate" />
+          <span>Returned to trader</span>
+          <strong>{dollarsPerTenThousand(flow.rebateBps)}</strong>
+        </div>
+        <div>
+          <span className="legend-dot legend-protection" />
+          <span>LP protection</span>
+          <strong>{dollarsPerTenThousand(flow.protectionBps)}</strong>
+        </div>
+      </div>
+
+      <div className="receipt-total">
+        <span>Final effective fee</span>
+        <strong>{dollarsPerTenThousand(flow.markoutFeeBps)}</strong>
+        <small>{formatBps(flow.markoutFeeBps)}</small>
+      </div>
+    </aside>
+  );
+}
+
+function ReactiveTimeline({ selected }: { selected: FlowId }) {
+  const [activeStep, setActiveStep] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  const flow = flowCases[selected];
+  const steps = useMemo(
+    () => [
+      ...timelineBase,
+      {
+        label: flow.rebateBps === 50 ? "Full rebate unlocked" : "Allocation finalized",
+        detail: `${dollarsPerTenThousand(flow.rebateBps)} returns to the trader; ${dollarsPerTenThousand(flow.protectionBps)} remains as LP protection per $10,000.`,
+        tag: "Destination",
+      },
+    ],
+    [flow],
+  );
+
+  useEffect(() => {
+    if (!playing) return;
+    const timer = window.setInterval(() => {
+      setActiveStep((current) => {
+        if (current >= steps.length - 1) {
+          setPlaying(false);
+          return current;
+        }
+        return current + 1;
+      });
+    }, 850);
+    return () => window.clearInterval(timer);
+  }, [playing, steps.length]);
+
+  function replay() {
+    setActiveStep(0);
+    setPlaying(true);
+  }
+
+  return (
+    <section className="timeline-section" id="mechanism" aria-labelledby="timeline-title">
+      <div className="section-heading timeline-title-row">
+        <div>
+          <p className="kicker">Autonomous lifecycle</p>
+          <h2 id="timeline-title">Outcome → observation → settlement</h2>
+        </div>
+        <button className="replay-button" type="button" onClick={replay} disabled={playing}>
+          <span className="replay-symbol">↻</span>
+          {playing ? "Running…" : "Replay 5-step demo"}
+        </button>
+      </div>
+
+      <div className="timeline-grid">
+        {steps.map((step, index) => {
+          const reached = index <= activeStep;
+          return (
+            <button
+              type="button"
+              className="timeline-step"
+              data-reached={reached}
+              data-current={index === activeStep}
+              key={step.label}
+              onClick={() => {
+                setPlaying(false);
+                setActiveStep(index);
+              }}
+              aria-label={`Show step ${index + 1}: ${step.label}`}
+            >
+              <span className="timeline-number">0{index + 1}</span>
+              <span className="timeline-copy">
+                <span className="timeline-tag">{step.tag}</span>
+                <strong>{step.label}</strong>
+                <span>{step.detail}</span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="proof-strip">
+        <span className="proof-status"><i /> Local lifecycle proven</span>
+        <span>MarkoutRequested</span>
+        <span className="proof-arrow">→</span>
+        <span>Reference sample</span>
+        <span className="proof-arrow">→</span>
+        <span>Authenticated callback</span>
+        <span className="proof-arrow">→</span>
+        <span>Rebate claim</span>
+      </div>
+    </section>
+  );
+}
+
+function ResearchEvidence() {
+  const maxLpNet = Math.max(...policyResults.map((result) => result.lpNet));
+  return (
+    <section className="evidence-section" id="evidence" aria-labelledby="evidence-title">
+      <div className="section-heading">
+        <p className="kicker">Reproducible evidence</p>
+        <h2 id="evidence-title">Same trades. Three policies. No hidden win.</h2>
+        <p className="section-lede">
+          Each policy receives the same deterministic tape. The metric is a pool-level adverse-selection proxy, not
+          individual LP profit or exact LVR.
+        </p>
+      </div>
+
+      <div className="evidence-layout">
+        <div className="policy-chart" aria-label="LP net after adverse-selection proxy by policy">
+          <div className="chart-axis-label">LP net after proxy · USDC</div>
+          {policyResults.map((result) => (
+            <div className="policy-column" key={result.policy}>
+              <div className="policy-value">${result.lpNet.toLocaleString("en-US", { maximumFractionDigits: 0 })}</div>
+              <div className="policy-column-track">
+                <div
+                  className={`policy-column-fill policy-${result.tone}`}
+                  style={{ height: `${(result.lpNet / maxLpNet) * 100}%` }}
+                />
+              </div>
+              <strong>{result.policy}</strong>
+              <span>{formatBps(result.effectiveFee)} avg fee</span>
+            </div>
+          ))}
+        </div>
+
+        <aside className="honest-result">
+          <span className="honest-label">The honest regression</span>
+          <strong>MARKOUT is not the highest-fee policy.</strong>
+          <p>{experimentCaveat}</p>
+          <div className="honest-divider" />
+          <span className="honest-thesis">Research claim</span>
+          <p>Outcome-based fees can protect LPs while charging good flow less than a volatility-only policy.</p>
+        </aside>
+      </div>
+    </section>
+  );
+}
+
+export function MarkoutDashboard() {
+  const [selected, setSelected] = useState<FlowId>("benign");
+
+  return (
+    <main>
+      <header className="site-header">
+        <a className="brand" href="#top" aria-label="MARKOUT home">
+          <span className="brand-mark">M</span>
+          <span>MARKOUT</span>
+        </a>
+        <nav aria-label="Primary navigation">
+          <a href="#compare">Compare</a>
+          <a href="#mechanism">Mechanism</a>
+          <a href="#evidence">Evidence</a>
+        </nav>
+        <span className="testnet-status"><i /> Local proof mode</span>
+      </header>
+
+      <section className="hero" id="top">
+        <div className="hero-copy">
+          <div className="hero-eyebrow"><span>UHI10</span> Sustainable liquidity × MEV protection</div>
+          <h1>Fees should follow <em>outcomes.</em><br />Not fear.</h1>
+          <p>
+            MARKOUT is a Uniswap v4 hook that escrows a provisional charge, waits for post-trade evidence, then lets
+            Reactive Network return it to good flow—or retain it when LPs were adversely selected.
+          </p>
+          <div className="hero-actions">
+            <a className="primary-action" href="#compare">Run the comparison <span>↓</span></a>
+            <a className="secondary-action" href="#evidence">Inspect the research</a>
+          </div>
+        </div>
+
+        <div className="hero-system" aria-label="MARKOUT mechanism summary">
+          <div className="system-topline">
+            <span>TRADE_QUALITY_ENGINE</span>
+            <span className="system-live"><i /> DETERMINISTIC</span>
+          </div>
+          <div className="system-orbit">
+            <div className="orbit-ring orbit-ring-outer" />
+            <div className="orbit-ring orbit-ring-inner" />
+            <div className="orbit-node orbit-node-one">SWAP</div>
+            <div className="orbit-node orbit-node-two">PRICE</div>
+            <div className="orbit-node orbit-node-three">CALLBACK</div>
+            <div className="orbit-core"><span>POST-TRADE</span><strong>MARKOUT</strong><small>t + 5 min</small></div>
+          </div>
+          <div className="system-equation">
+            <span>EXECUTION</span><b>→</b><span>OBSERVATION</span><b>→</b><strong>FAIR FEE</strong>
+          </div>
+        </div>
+      </section>
+
+      <section className="metric-ribbon" aria-label="Research and security metrics">
+        {aggregateMetrics.map((metric) => (
+          <div className="metric" key={metric.label}>
+            <strong>{metric.value}</strong>
+            <span>{metric.label}</span>
+            <small>{metric.detail}</small>
+          </div>
+        ))}
+      </section>
+
+      <section className="comparison-section" id="compare" aria-labelledby="comparison-title">
+        <div className="section-heading comparison-section-heading">
+          <div>
+            <p className="kicker">Guided comparison</p>
+            <h2 id="comparison-title">Same market. Different information.</h2>
+          </div>
+          <FlowSelector selected={selected} onChange={setSelected} />
+        </div>
+        <div className="comparison-layout">
+          <OutcomeComparison selected={selected} />
+          <SettlementCard selected={selected} />
+        </div>
+      </section>
+
+      <ReactiveTimeline key={selected} selected={selected} />
+      <ResearchEvidence />
+
+      <section className="architecture-section" aria-labelledby="architecture-title">
+        <div>
+          <p className="kicker">System boundary</p>
+          <h2 id="architecture-title">A hook with an autonomous clock.</h2>
+        </div>
+        <div className="architecture-flow">
+          <div><span>01</span><strong>Uniswap v4</strong><small>Swap + escrow</small></div>
+          <b>→</b>
+          <div><span>02</span><strong>Reactive</strong><small>Wait + observe</small></div>
+          <b>→</b>
+          <div><span>03</span><strong>MARKOUT curve</strong><small>Bounded allocation</small></div>
+          <b>→</b>
+          <div><span>04</span><strong>Destination</strong><small>Rebate + reserve</small></div>
+        </div>
+      </section>
+
+      <footer>
+        <div>
+          <span className="brand footer-brand"><span className="brand-mark">M</span> MARKOUT</span>
+          <p>Outcome-priced liquidity for Uniswap v4.</p>
+        </div>
+        <div className="footer-status">
+          <span><i className="status-green" /> Phases 1–7 verified</span>
+          <span><i className="status-amber" /> Live Lasna evidence pending lREACT</span>
+        </div>
+        <p className="footer-note">Experimental UHI10 prototype · Not audited · No real funds</p>
+      </footer>
+    </main>
+  );
+}
