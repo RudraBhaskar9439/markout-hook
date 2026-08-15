@@ -33,3 +33,6 @@ __pycache__/
 
 # Local reports
 reports/
+
+# Presentation build scratch
+presentation/.tmp-*/

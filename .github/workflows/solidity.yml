@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   cumulative-gate:
-    name: Phase 8 local cumulative gate
+    name: Phase 9 token-independent draft gate
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -52,5 +52,5 @@ jobs:
           cache: npm
           cache-dependency-path: web/package-lock.json
 
-      - name: Verify Phase 8 without public RPC dependencies
-        run: ./scripts/verify-phase-8.sh
+      - name: Verify Phase 9 draft without public RPC dependencies
+        run: ./scripts/verify-phase-9-draft.sh
