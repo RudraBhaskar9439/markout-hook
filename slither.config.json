@@ -1,0 +1,6 @@
+{
+  "detectors_to_run": "all",
+  "exclude_dependencies": true,
+  "fail_on": "medium",
+  "filter_paths": "(^|/)(test|script|lib)/"
+}

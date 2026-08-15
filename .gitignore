@@ -29,6 +29,7 @@ dist/
 experiments/tmp/
 __pycache__/
 *.py[cod]
+.venv/
 
 # Local reports
 reports/

@@ -17,9 +17,9 @@ concurrency:
 
 jobs:
   cumulative-gate:
-    name: Phase 6 cumulative deployment-independent gate
+    name: Phase 7 cumulative security gate
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     env:
       FOUNDRY_PROFILE: ci
 
@@ -40,5 +40,10 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Verify Phase 6 without public RPC dependencies
-        run: ./scripts/verify-phase-6.sh
+      - name: Install uv 0.12.5
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d
+        with:
+          version: "0.12.5"
+
+      - name: Verify Phase 7 without public RPC dependencies
+        run: ./scripts/verify-phase-7.sh

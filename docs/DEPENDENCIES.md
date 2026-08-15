@@ -26,6 +26,8 @@ git submodule status --recursive
 - Optimizer: enabled, 10,000 runs
 - Metadata hash and CBOR metadata: disabled for deterministic bytecode
 - Python: `3.12` in CI; Phase 6 uses only the standard library
+- uv: `0.12.5`
+- Slither: `0.11.6`, with all transitive Python packages and artifact hashes frozen in `security/uv.lock`
 
 The Solidity version matches the exact pragma used by the pinned v4 PoolManager. CI installs the exact Foundry release
 instead of tracking nightly.
@@ -37,6 +39,7 @@ instead of tracking nightly.
 | `actions/checkout` | `3d3c42e5aac5ba805825da76410c181273ba90b1` | `v7.0.1` |
 | `foundry-rs/foundry-toolchain` | `908c540300062bd5a7e473851cdb4282204cee09` | `v1` action with Foundry `v1.7.1` input |
 | `actions/setup-python` | `5fda3b95a4ea91299a34e894583c3862153e4b97` | `v7.0.0` with Python `3.12` input |
+| `astral-sh/setup-uv` | `20cfd1bf945f4377ade1205e4dbc17946fc9a30d` | `v10.0.1` action with uv `0.12.5` input |
 
 Actions are referenced by immutable commit rather than a mutable major-version tag.
 

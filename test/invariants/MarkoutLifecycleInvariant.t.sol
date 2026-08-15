@@ -82,6 +82,10 @@ contract MarkoutLifecycleInvariantTest is StdInvariant, Deployers {
         assertEq(handler.conservationViolations(), 0);
     }
 
+    function invariant_adversarialCallsCannotMutateLifecycleAccounting() public view {
+        assertEq(handler.adversarialMutationViolations(), 0);
+    }
+
     function invariant_poolManagerHasNoOutstandingTransientDelta() public view {
         assertEq(manager.getNonzeroDeltaCount(), 0);
         assertEq(manager.currencyDelta(address(hook), currency0), 0);

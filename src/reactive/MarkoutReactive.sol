@@ -245,7 +245,7 @@ contract MarkoutReactive is AbstractPayer, IReactive {
         uint256 iterations = length < MAX_TRADES_PER_CRON ? length : MAX_TRADES_PER_CRON;
         uint256 cursor = scanCursor;
         uint64 currentTimestamp = _currentTimestamp();
-        bool sampleRequired;
+        bool sampleRequired = false;
         for (uint256 i = 0; i < iterations; ++i) {
             if (_processTrade(_tradeIds[cursor], currentTimestamp)) sampleRequired = true;
             unchecked {

@@ -40,6 +40,9 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 - [Phase 5 verification guide](docs/PHASE_5_VERIFICATION.md)
 - [Phase 6 research experiment](experiments/README.md)
 - [Phase 6 verification guide](docs/PHASE_6_VERIFICATION.md)
+- [Phase 7 threat model](docs/THREAT_MODEL.md)
+- [Phase 7 static-analysis report](docs/STATIC_ANALYSIS.md)
+- [Phase 7 verification guide](docs/PHASE_7_VERIFICATION.md)
 - [Testnet deployment runbook](docs/TESTNET_DEPLOYMENT.md)
 - [Dependency policy](docs/DEPENDENCIES.md)
 - [Verification protocol](docs/VERIFICATION.md)
@@ -47,10 +50,11 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 
 ## Current status
 
-**Phase 6 research gate implemented; Phase 5 live gate remains open.** The deterministic experiment evaluates 768
-seeded trades under fixed, volatility-linked, and MARKOUT policies and reproduces 2,304 per-policy outcomes, raw data,
-summaries, charts, limitations, and integrity hashes without network access. Phase 5's local Reactive lifecycle remains
-complete, but a funded Lasna scheduler and two public settlement traces are still required before its live gate passes.
+**Phase 7 security gate implemented; Phase 5 live gate remains open.** The repository now includes adversarial failure
+tests, unauthorized-action stateful probes, a locked Slither toolchain, a reviewed static-analysis report, and a
+system-level threat model. The Phase 6 deterministic comparison remains reproducible. Phase 5's local Reactive
+lifecycle is complete, but a funded Lasna scheduler and two public settlement traces are still required before its live
+gate passes.
 
 ## Architecture
 
@@ -72,12 +76,13 @@ and time, while `ReactiveMarkoutSettlementAdapter` is the narrow destination aut
 
 ## Local verification
 
-Prerequisites: Git, Foundry `v1.7.1`, Python `3.12`, and recursive submodules.
+Prerequisites: Git, Foundry `v1.7.1`, Python `3.12`, uv `0.12.5`, and recursive submodules.
 
 ```bash
 git submodule update --init --recursive
 ./scripts/verify-phase-5-local.sh
 ./scripts/verify-phase-6.sh
+./scripts/verify-phase-7.sh
 ```
 
 The cumulative local gate checks formatting, compilation and bytecode size, lint, all earlier accounting and lifecycle
@@ -89,8 +94,14 @@ The Phase 6 command repeats the deployment-independent Solidity gate, then regen
 in a temporary directory and byte-compares them with the committed results. See the
 [Phase 6 verification guide](docs/PHASE_6_VERIFICATION.md) for the metric boundary and observed regressions.
 
+The Phase 7 command additionally verifies the locked Python security environment and runs Slither with a gate that
+rejects every medium- or high-severity result. See the [Phase 7 verification guide](docs/PHASE_7_VERIFICATION.md) for
+the adversarial cases, reviewed low-severity findings, and residual risks.
+
 ## Security status
 
 This repository is production-shaped, not production-certified. Its implemented surfaces have defensive parsing,
-explicit bounds, conservation checks, and stateful invariants, but the complete system has not yet reached the
-dedicated threat-model, static-analysis, and external-review phase. Do not deploy it with real funds.
+explicit bounds, conservation checks, adversarial tests, stateful invariants, and zero medium/high Slither findings.
+Phase 7 is an internal engineering review, not an independent audit. The three-pool spot reference, immutable
+configuration, unsupported exotic tokens, and undistributed LP reserve remain explicit prototype limitations. Do not
+deploy it with real funds.

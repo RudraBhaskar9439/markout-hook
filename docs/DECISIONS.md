@@ -165,3 +165,25 @@ Stale or manipulated reference attempts use the implemented fail-open expiry rul
 surcharge rebate. Their lost LP protection is reported as a regression. Callback cost assumes isolated trades with one
 sampling attempt plus settlement or expiry and uses configured budgets; it is not represented as measured public gas
 spend. Production batching can reduce sampling calls, while retries can increase them.
+
+## D-029 — Prefer per-trade fail-open recovery over a privileged global pause
+
+MARKOUT has no administrator capable of seizing escrow, rewriting beneficiaries, settling trades, or pausing claims.
+Invalid observations leave accounting unchanged; after the immutable grace period, anyone can expire the individual
+trade into a full rebate. A global pause would create a privileged liveness dependency and could trap unrelated users.
+Configuration or authority compromise therefore requires abandoning the affected immutable deployment and deploying a
+new instance, not mutating live custody rules.
+
+## D-030 — Fail static analysis on every medium or high finding and review every lower finding
+
+Slither and its complete Python dependency graph are locked. CI rejects any medium- or high-severity result. Low and
+informational results are not silently excluded: Phase 7 records each detector family, why the pattern exists, the
+control that bounds it, and its residual risk. Inline suppression is limited to the v3 `slot0` tuple fields that are
+intentionally unused; the consumed square-root price remains checked by the pricing library.
+
+## D-031 — Treat the MVP deployment universe as immutable and asset-curated
+
+PoolManager, callback transport, Reactive identity, market pair, sampler pools, confidence bounds, and surcharge curve
+are constructor-fixed. The MVP supports native currency and conventional ERC-20 behavior; fee-on-transfer, rebasing,
+ERC-777-style callback, or otherwise adversarial assets are outside the deployment allowlist. The hook is not
+upgradeable, and Phase 7 does not add an administrator under the label of emergency control.

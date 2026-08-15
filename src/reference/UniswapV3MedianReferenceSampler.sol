@@ -96,7 +96,7 @@ contract UniswapV3MedianReferenceSampler is
         external
         onlyAuthenticatedReactiveCallback(suppliedReactiveIdentity)
     {
-        uint192[3] memory prices;
+        uint192[3] memory prices = [uint192(0), uint192(0), uint192(0)];
         for (uint256 i = 0; i < prices.length; ++i) {
             prices[i] = _readPrice(_pools[i]);
         }
@@ -126,6 +126,8 @@ contract UniswapV3MedianReferenceSampler is
         if (liquidity < minimumLiquidity) {
             revert InsufficientPoolLiquidity(pool, liquidity, minimumLiquidity);
         }
+        // The v3 interface returns seven fields, but pricing deliberately consumes only sqrtPriceX96.
+        // slither-disable-next-line unused-return
         (uint160 sqrtPriceX96,,,,,,) = pool_.slot0();
         return
             UniswapV3ReferencePricing.quotePerBaseX18(sqrtPriceX96, baseToken, baseDecimals, quoteToken, quoteDecimals);
