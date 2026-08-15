@@ -27,6 +27,8 @@ dist/
 
 # Experiment output that is not intentionally versioned
 experiments/tmp/
+__pycache__/
+*.py[cod]
 
 # Local reports
 reports/

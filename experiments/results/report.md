@@ -1,0 +1,66 @@
+# MARKOUT Phase 6 Experiment Report
+
+Experiment `markout-phase-6-v1` uses deterministic SplitMix64 seed `20260825` and 128 trades per scenario.
+
+## Metric boundary
+
+The experiment reports `notional × max(directional markout, 0)` as a pool-level post-trade adverse-selection proxy. It does **not** call that number exact LVR or an individual LP's loss. Concentrated-liquidity depth, range occupancy, LP share, price path, and rebalancing are outside this model.
+
+Fees do not change the gross proxy because every policy receives the same committed trade tape. The comparison therefore asks how much of that proxy is offset by retained fees, not whether a fee prevents the underlying price move.
+
+## Aggregate result
+
+| Policy | Volume (USDC) | Gross proxy | Retained fees | LP net after proxy | Rebates | Protection reserve | Avg effective fee (bps) |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| fixed | 1999280.000000 | 2108.846884 | 5997.840000 | 3888.993116 | 0.000000 | 0.000000 | 30.0000 |
+| volatility | 1999280.000000 | 2108.846884 | 9702.384512 | 7593.537628 | 0.000000 | 0.000000 | 48.5294 |
+| markout | 1999280.000000 | 2108.846884 | 9247.631286 | 7138.784402 | 6746.608714 | 3249.791286 | 46.2548 |
+
+## Supported observations
+
+- MARKOUT changes aggregate LP net-after-proxy by +3249.791286 USDC versus the fixed-fee baseline on this tape.
+- MARKOUT changes aggregate LP net-after-proxy by -454.753226 USDC versus the volatility baseline.
+- Benign flow pays 39.4262 bps under MARKOUT versus 49.4790 bps under the volatility policy.
+- Inventory-improving flow pays 30.0000 bps under MARKOUT versus 47.4403 bps under the volatility policy.
+- MARKOUT returns 6746.608714 USDC and credits 3249.791286 USDC to the modeled protection reserve.
+- The invalid-reference scenario produces 63 rejected observations and 63 full-surcharge expiries.
+
+## Regressions and costs
+
+- The fixed baseline remains cheaper for benign flow: 30.0000 bps versus 39.4262 bps for MARKOUT.
+- Under the isolated-trade callback assumption, MARKOUT requires 1536 modeled Reactive callbacks with a combined configured gas budget of 614,400,000 units. Fixed and volatility baselines have no Reactive callback cost in this model.
+- Invalid observations fail safely with a full provisional-surcharge rebate, but that also removes incremental LP protection for those trades.
+- All policies receive identical volume because demand elasticity, routing, and fee-sensitive order flow are deliberately excluded. This experiment cannot claim volume growth.
+
+## Scenario detail
+
+| Scenario | Policy | Gross proxy | Retained fees | LP net after proxy | Avg effective fee (bps) | Expired |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Benign random flow | fixed | 55.326541 | 1008.801000 | 953.474459 | 30.0000 | 0 |
+| Benign random flow | volatility | 55.326541 | 1260.767323 | 1205.440782 | 37.4930 | 0 |
+| Benign random flow | markout | 55.326541 | 1304.688716 | 1249.362175 | 38.7992 | 0 |
+| Informed flow | fixed | 945.343024 | 974.679000 | 29.335976 | 30.0000 | 0 |
+| Informed flow | volatility | 945.343024 | 1456.858735 | 511.515711 | 44.8412 | 0 |
+| Informed flow | markout | 945.343024 | 2495.916809 | 1550.573785 | 76.8227 | 0 |
+| Inventory-improving flow | fixed | 0.000000 | 979.668000 | 979.668000 | 30.0000 | 0 |
+| Inventory-improving flow | volatility | 0.000000 | 1332.213538 | 1332.213538 | 40.7959 | 0 |
+| Inventory-improving flow | markout | 0.000000 | 979.668000 | 979.668000 | 30.0000 | 0 |
+| Mixed, low volatility | fixed | 284.572311 | 955.047000 | 670.474689 | 30.0000 | 0 |
+| Mixed, low volatility | volatility | 284.572311 | 1193.305133 | 908.732822 | 37.4842 | 0 |
+| Mixed, low volatility | markout | 284.572311 | 1538.948831 | 1254.376520 | 48.3416 | 0 |
+| Mixed, high volatility | fixed | 481.287725 | 1079.853000 | 598.565275 | 30.0000 | 0 |
+| Mixed, high volatility | volatility | 481.287725 | 2672.411334 | 2191.123609 | 74.2438 | 0 |
+| Mixed, high volatility | markout | 481.287725 | 1722.878290 | 1241.590565 | 47.8642 | 0 |
+| Stale/manipulated reference | fixed | 342.317283 | 999.792000 | 657.474717 | 30.0000 | 0 |
+| Stale/manipulated reference | volatility | 342.317283 | 1786.828449 | 1444.511166 | 53.6160 | 0 |
+| Stale/manipulated reference | markout | 342.317283 | 1205.530640 | 863.213357 | 36.1734 | 63 |
+
+## Limitations
+
+- Synthetic seeded flow is a controlled mechanism comparison, not historical backtesting or a forecast.
+- The adverse-selection proxy approximates value transfer to informed flow; it is not exact LVR or position-level LP PnL.
+- No concentrated-liquidity ranges, depth, LP shares, inventory path, rebalancing, routing, or demand elasticity are modeled.
+- The volatility policy is a declared deterministic baseline, not a claim that its parameters are optimal.
+- Callback gas assumes isolated trades with one sample plus one terminal callback; batching can reduce sampling calls and retries can increase them.
+- Configured callback gas budgets are not measured public-chain gas spend or lREACT cost.
+- A three-pool spot median limits one outlier but is not a manipulation-resistant production oracle.

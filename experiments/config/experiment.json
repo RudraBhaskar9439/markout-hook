@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "markout-phase-6-v1",
+  "generatorVersion": "1.0.0",
+  "seed": 20260825,
+  "tradesPerScenario": 128,
+  "currency": {
+    "symbol": "USDC",
+    "decimals": 6
+  },
+  "notionalQuoteRange": [
+    100,
+    5000
+  ],
+  "executionPriceUsdRange": [
+    1800,
+    2200
+  ],
+  "policies": {
+    "fixed": {
+      "baseFeeCentibps": 3000
+    },
+    "volatility": {
+      "baseFeeCentibps": 3000,
+      "volatilityMultiplierNumerator": 3,
+      "volatilityMultiplierDenominator": 4,
+      "maximumExtraFeeCentibps": 5000
+    },
+    "markout": {
+      "baseFeeCentibps": 3000,
+      "provisionalSurchargeCentibps": 5000,
+      "curve": {
+        "favorableCutoffCentibps": 500,
+        "adverseCutoffCentibps": 2500,
+        "minimumRetentionBps": 0,
+        "neutralRetentionBps": 2000
+      },
+      "callbackGasBudget": {
+        "sample": 300000,
+        "settlement": 500000,
+        "expiry": 500000
+      }
+    }
+  },
+  "scenarios": [
+    {
+      "id": "benign_random_flow",
+      "label": "Benign random flow",
+      "volatilityCentibpsRange": [500, 1500],
+      "flows": [
+        {
+          "name": "benign",
+          "weight": 100,
+          "markoutCentibpsRange": [-800, 800]
+        }
+      ],
+      "referenceStatuses": [
+        {
+          "name": "valid",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "informed_flow",
+      "label": "Informed flow",
+      "volatilityCentibpsRange": [1000, 3000],
+      "flows": [
+        {
+          "name": "informed",
+          "weight": 100,
+          "markoutCentibpsRange": [1500, 4500]
+        }
+      ],
+      "referenceStatuses": [
+        {
+          "name": "valid",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "inventory_improving_flow",
+      "label": "Inventory-improving flow",
+      "volatilityCentibpsRange": [800, 2000],
+      "flows": [
+        {
+          "name": "inventory_improving",
+          "weight": 100,
+          "markoutCentibpsRange": [-3000, -800]
+        }
+      ],
+      "referenceStatuses": [
+        {
+          "name": "valid",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "mixed_low_volatility",
+      "label": "Mixed, low volatility",
+      "volatilityCentibpsRange": [500, 1500],
+      "flows": [
+        {
+          "name": "benign",
+          "weight": 60,
+          "markoutCentibpsRange": [-800, 800]
+        },
+        {
+          "name": "informed",
+          "weight": 20,
+          "markoutCentibpsRange": [1500, 4500]
+        },
+        {
+          "name": "inventory_improving",
+          "weight": 20,
+          "markoutCentibpsRange": [-3000, -800]
+        }
+      ],
+      "referenceStatuses": [
+        {
+          "name": "valid",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "mixed_high_volatility",
+      "label": "Mixed, high volatility",
+      "volatilityCentibpsRange": [4000, 10000],
+      "flows": [
+        {
+          "name": "benign",
+          "weight": 60,
+          "markoutCentibpsRange": [-2000, 2000]
+        },
+        {
+          "name": "informed",
+          "weight": 20,
+          "markoutCentibpsRange": [2500, 8000]
+        },
+        {
+          "name": "inventory_improving",
+          "weight": 20,
+          "markoutCentibpsRange": [-6000, -1500]
+        }
+      ],
+      "referenceStatuses": [
+        {
+          "name": "valid",
+          "weight": 100
+        }
+      ]
+    },
+    {
+      "id": "stale_manipulated_reference",
+      "label": "Stale/manipulated reference",
+      "volatilityCentibpsRange": [1500, 5000],
+      "flows": [
+        {
+          "name": "benign",
+          "weight": 50,
+          "markoutCentibpsRange": [-1000, 1000]
+        },
+        {
+          "name": "informed",
+          "weight": 30,
+          "markoutCentibpsRange": [1500, 5500]
+        },
+        {
+          "name": "inventory_improving",
+          "weight": 20,
+          "markoutCentibpsRange": [-3500, -800]
+        }
+      ],
+      "referenceStatuses": [
+        {
+          "name": "valid",
+          "weight": 50
+        },
+        {
+          "name": "stale",
+          "weight": 25
+        },
+        {
+          "name": "manipulated",
+          "weight": 25
+        }
+      ]
+    }
+  ]
+}

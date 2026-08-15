@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="620" viewBox="0 0 1080 620">
+<rect width="100%" height="100%" fill="#0f172a"/>
+<text x="100" y="42" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="25" font-weight="700">MARKOUT surcharge allocation</text>
+<text x="100" y="70" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="14">Rebates plus LP protection conserve every provisional surcharge</text>
+<line x1="100" x2="1040" y1="470.00" y2="470.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="475.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">0.00</text>
+<line x1="100" x2="1040" y1="397.00" y2="397.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="402.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">352.68</text>
+<line x1="100" x2="1040" y1="324.00" y2="324.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="329.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">705.36</text>
+<line x1="100" x2="1040" y1="251.00" y2="251.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="256.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">1058.04</text>
+<line x1="100" x2="1040" y1="178.00" y2="178.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="183.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">1410.72</text>
+<line x1="100" x2="1040" y1="105.00" y2="105.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="110.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">1763.40</text>
+<line x1="100" x2="1040" y1="470.00" y2="470.00" stroke="#e2e8f0" stroke-width="1.5"/>
+<rect x="141.83" y="183.23" width="34.00" height="286.77" rx="3" fill="#22c55e"/>
+<rect x="180.83" y="408.76" width="34.00" height="61.24" rx="3" fill="#ec4899"/>
+<text x="178.33" y="498" text-anchor="middle" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="12">Benign random flow</text>
+<rect x="298.50" y="448.63" width="34.00" height="21.37" rx="3" fill="#22c55e"/>
+<rect x="337.50" y="155.12" width="34.00" height="314.88" rx="3" fill="#ec4899"/>
+<text x="335.00" y="498" text-anchor="middle" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="12">Informed flow</text>
+<rect x="455.17" y="132.04" width="34.00" height="337.96" rx="3" fill="#22c55e"/>
+<rect x="494.17" y="470.00" width="34.00" height="1.00" rx="3" fill="#ec4899"/>
+<text x="491.67" y="498" text-anchor="middle" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="12">Inventory-improving</text>
+<text x="491.67" y="515" text-anchor="middle" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="12">flow</text>
+<rect x="611.83" y="261.39" width="34.00" height="208.61" rx="3" fill="#22c55e"/>
+<rect x="650.83" y="349.14" width="34.00" height="120.86" rx="3" fill="#ec4899"/>
+<text x="648.33" y="498" text-anchor="middle" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="12">Mixed, low volatility</text>
+<rect x="768.50" y="230.57" width="34.00" height="239.43" rx="3" fill="#22c55e"/>
+<rect x="807.50" y="336.90" width="34.00" height="133.10" rx="3" fill="#ec4899"/>
+<text x="805.00" y="498" text-anchor="middle" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="12">Mixed, high</text>
+<text x="805.00" y="515" text-anchor="middle" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="12">volatility</text>
+<rect x="925.17" y="167.68" width="34.00" height="302.32" rx="3" fill="#22c55e"/>
+<rect x="964.17" y="427.41" width="34.00" height="42.59" rx="3" fill="#ec4899"/>
+<text x="961.67" y="498" text-anchor="middle" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="12">Stale/manipulated</text>
+<text x="961.67" y="515" text-anchor="middle" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="12">reference</text>
+<rect x="100" y="574" width="14" height="14" rx="2" fill="#22c55e"/>
+<text x="121" y="586" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="13">Rebate</text>
+<rect x="255" y="574" width="14" height="14" rx="2" fill="#ec4899"/>
+<text x="276" y="586" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="13">Protection</text>
+<text transform="translate(22 287.50) rotate(-90)" text-anchor="middle" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">USDC</text>
+</svg>

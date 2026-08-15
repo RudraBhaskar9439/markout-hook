@@ -1,0 +1,29 @@
+{
+  "artifacts": {
+    "charts/effective_fee_by_flow.svg": "08c1660405eabd90da5d923c6e40348a0f29e6615c5d934e52296116807eabe3",
+    "charts/lp_net_after_proxy.svg": "546f3e35d1bb59e48f8551c339bfec3a4cd765e3b0e1fc99461b9f73cef0a8dc",
+    "charts/markout_rebate_and_protection.svg": "9a6057bfb1a8063d11ffb5fc92c0bc69e410d3d601d99f1fcf9fa520317052b0",
+    "results/flow_summary.csv": "7aced5ef62cc115cc901d74c636e39d33dc9d7790055f6d0b2d61542a57d4cb3",
+    "results/policy_outcomes.csv": "5c82700f3b84b2af62837398bef320819a85f008f63f424e87c31eb68ce241ec",
+    "results/raw_trades.csv": "767d1cf1729650b89de796d2695cb0723cc4aea512e407e0f9405ca96fdf8d28",
+    "results/report.md": "f5f30861db4f37d50c3affce6388118b46bc8972b7a625d81c8608e943e03183",
+    "results/summary.csv": "d869c9268f1a5288f507a2ecef5e2547513a798a1e09b7715fdcc168a86c698f",
+    "results/summary.json": "f9b858e53cb259a2c0ba8478a83f1682e3d14897bf1ef106ea712e76d745d043"
+  },
+  "experimentId": "markout-phase-6-v1",
+  "generatorVersion": "1.0.0",
+  "inputs": {
+    "experiment.json": "73a50e70f7f70576436c976c0e6b04331f172b1c53009fa7a3a4d3bcefddfdda",
+    "markout_experiment/__init__.py": "8175ab06ea1278e8743b2518fc7b82e2d4c356c52698b1614f97f812df2df86f",
+    "markout_experiment/aggregation.py": "6a532a56a92f51a4ada45e59a52be3f6f5e341f5c8e398074d9b5063c0fed675",
+    "markout_experiment/charts.py": "6c37aa77a7f8044e1da00e308f63f34059ba3c275104a7bc1184e9213cb6cf4b",
+    "markout_experiment/cli.py": "9855757f61337f321a9902043dbdeb1ad3fec5749746733f2f641a0ded0bcb23",
+    "markout_experiment/model.py": "b8f89189d359be0c0380d48b46fbeae9637959b549804943f184896254a35623",
+    "markout_experiment/policies.py": "c60d37bb322995354904d0a2d77c45e823b9453c006374bbc79a0b31e6b24aa5",
+    "markout_experiment/prng.py": "9a3ec00dee88f3a0cb3238ba2598803e413bbb0db1bde4c029a933e880835af2",
+    "markout_experiment/reporting.py": "1bf017968ecb131b943cf64570c205552751ee4769a3af4ae16990d04bcb2584",
+    "markout_experiment/simulation.py": "d70854ec57e71a5c88e32e08b12b9b025d804907d56718eb8399c3d0d4bf98ed"
+  },
+  "schemaVersion": 1,
+  "seed": 20260825
+}

@@ -25,6 +25,7 @@ git submodule status --recursive
 - EVM target: Cancun
 - Optimizer: enabled, 10,000 runs
 - Metadata hash and CBOR metadata: disabled for deterministic bytecode
+- Python: `3.12` in CI; Phase 6 uses only the standard library
 
 The Solidity version matches the exact pragma used by the pinned v4 PoolManager. CI installs the exact Foundry release
 instead of tracking nightly.
@@ -35,6 +36,7 @@ instead of tracking nightly.
 | --- | --- | --- |
 | `actions/checkout` | `3d3c42e5aac5ba805825da76410c181273ba90b1` | `v7.0.1` |
 | `foundry-rs/foundry-toolchain` | `908c540300062bd5a7e473851cdb4282204cee09` | `v1` action with Foundry `v1.7.1` input |
+| `actions/setup-python` | `a26af69be951a213d495a4c3e4e4022e16d87065` | `v5.6.0` with Python `3.12` input |
 
 Actions are referenced by immutable commit rather than a mutable major-version tag.
 

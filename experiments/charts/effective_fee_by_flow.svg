@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="620" viewBox="0 0 1080 620">
+<rect width="100%" height="100%" fill="#0f172a"/>
+<text x="100" y="42" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="25" font-weight="700">Effective trader fee by flow class</text>
+<text x="100" y="70" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="14">MARKOUT effective fee is measured after rebate</text>
+<line x1="100" x2="1040" y1="470.00" y2="470.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="475.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">0.00</text>
+<line x1="100" x2="1040" y1="397.00" y2="397.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="402.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">15.78</text>
+<line x1="100" x2="1040" y1="324.00" y2="324.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="329.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">31.56</text>
+<line x1="100" x2="1040" y1="251.00" y2="251.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="256.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">47.34</text>
+<line x1="100" x2="1040" y1="178.00" y2="178.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="183.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">63.12</text>
+<line x1="100" x2="1040" y1="105.00" y2="105.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="110.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">78.90</text>
+<line x1="100" x2="1040" y1="470.00" y2="470.00" stroke="#e2e8f0" stroke-width="1.5"/>
+<rect x="200.67" y="331.22" width="34.00" height="138.78" rx="3" fill="#64748b"/>
+<rect x="239.67" y="241.10" width="34.00" height="228.90" rx="3" fill="#f59e0b"/>
+<rect x="278.67" y="287.61" width="34.00" height="182.39" rx="3" fill="#6366f1"/>
+<text x="256.67" y="498" text-anchor="middle" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="12">Benign</text>
+<rect x="514.00" y="331.22" width="34.00" height="138.78" rx="3" fill="#64748b"/>
+<rect x="553.00" y="247.77" width="34.00" height="222.23" rx="3" fill="#f59e0b"/>
+<rect x="592.00" y="132.04" width="34.00" height="337.96" rx="3" fill="#6366f1"/>
+<text x="570.00" y="498" text-anchor="middle" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="12">Informed</text>
+<rect x="827.33" y="331.22" width="34.00" height="138.78" rx="3" fill="#64748b"/>
+<rect x="866.33" y="250.53" width="34.00" height="219.47" rx="3" fill="#f59e0b"/>
+<rect x="905.33" y="331.22" width="34.00" height="138.78" rx="3" fill="#6366f1"/>
+<text x="883.33" y="498" text-anchor="middle" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="12">Inventory Improving</text>
+<rect x="100" y="574" width="14" height="14" rx="2" fill="#64748b"/>
+<text x="121" y="586" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="13">Fixed</text>
+<rect x="255" y="574" width="14" height="14" rx="2" fill="#f59e0b"/>
+<text x="276" y="586" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="13">Volatility</text>
+<rect x="410" y="574" width="14" height="14" rx="2" fill="#6366f1"/>
+<text x="431" y="586" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="13">Markout</text>
+<text transform="translate(22 287.50) rotate(-90)" text-anchor="middle" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">Basis points</text>
+</svg>

@@ -144,3 +144,24 @@ Destination callback contracts inherit one shared module that accepts native gas
 callback proxy to collect payment, and exposes permissionless debt coverage. This payment surface is separate from
 application authority: funding the adapter or sampler grants no settlement, sampling, withdrawal, upgrade, or target
 selection capability.
+
+## D-026 — Compare every policy against one deterministic trade tape
+
+The Phase 6 fixed, volatility, and MARKOUT policies receive identical seeded trades. This isolates fee allocation from
+order-flow selection and makes exact artifact reproduction possible. It also means the experiment cannot claim that a
+policy increases volume, changes routing, or deters informed flow; those require an elasticity model or historical
+counterfactual that is outside the MVP.
+
+## D-027 — Call notional times positive markout an adverse-selection proxy, not exact LVR
+
+`notional × max(directional markout, 0)` approximates value captured by favorably marked flow at the pool level. Exact
+loss-versus-rebalancing compares an AMM LP with a continuously rebalanced benchmark, while position-level loss also
+depends on active range depth, LP share, path, and rebalancing. Phase 6 therefore reports a post-trade
+adverse-selection proxy and subtracts it from retained fees without presenting it as individual LP PnL.
+
+## D-028 — Treat experiment failures and callback cost as first-class results
+
+Stale or manipulated reference attempts use the implemented fail-open expiry rule and receive a full provisional-
+surcharge rebate. Their lost LP protection is reported as a regression. Callback cost assumes isolated trades with one
+sampling attempt plus settlement or expiry and uses configured budgets; it is not represented as measured public gas
+spend. Production batching can reduce sampling calls, while retries can increase them.

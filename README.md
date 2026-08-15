@@ -38,6 +38,8 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 - [Reactive lifecycle specification](docs/REACTIVE_LIFECYCLE.md)
 - [Phase 4 verification guide](docs/PHASE_4_VERIFICATION.md)
 - [Phase 5 verification guide](docs/PHASE_5_VERIFICATION.md)
+- [Phase 6 research experiment](experiments/README.md)
+- [Phase 6 verification guide](docs/PHASE_6_VERIFICATION.md)
 - [Testnet deployment runbook](docs/TESTNET_DEPLOYMENT.md)
 - [Dependency policy](docs/DEPENDENCIES.md)
 - [Verification protocol](docs/VERIFICATION.md)
@@ -45,10 +47,10 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 
 ## Current status
 
-**Phase 5 — deployment-ready, live gate open.** MARKOUT now autonomously requests a three-pool median reference sample
-at maturity and completes the sample-event-to-settlement-callback chain in the full local Reactive simulator. Current
-Unichain Sepolia and Lasna Omni dependencies pass a read-only public-network preflight. A funded testnet signer and two
-public settlement traces are still required before Phase 5 can be marked passed.
+**Phase 6 research gate implemented; Phase 5 live gate remains open.** The deterministic experiment evaluates 768
+seeded trades under fixed, volatility-linked, and MARKOUT policies and reproduces 2,304 per-policy outcomes, raw data,
+summaries, charts, limitations, and integrity hashes without network access. Phase 5's local Reactive lifecycle remains
+complete, but a funded Lasna scheduler and two public settlement traces are still required before its live gate passes.
 
 ## Architecture
 
@@ -70,17 +72,22 @@ and time, while `ReactiveMarkoutSettlementAdapter` is the narrow destination aut
 
 ## Local verification
 
-Prerequisites: Git, Foundry `v1.7.1`, and recursive submodules.
+Prerequisites: Git, Foundry `v1.7.1`, Python `3.12`, and recursive submodules.
 
 ```bash
 git submodule update --init --recursive
 ./scripts/verify-phase-5-local.sh
+./scripts/verify-phase-6.sh
 ```
 
 The cumulative local gate checks formatting, compilation and bytecode size, lint, all earlier accounting and lifecycle
 properties, autonomous sampling through the official Reactive simulator, stateful invariants, readable demos, the
 committed gas snapshot, and current public testnet dependencies. See the
 [Phase 5 verification guide](docs/PHASE_5_VERIFICATION.md) for the local/live boundary.
+
+The Phase 6 command repeats the deployment-independent Solidity gate, then regenerates the seeded research artifacts
+in a temporary directory and byte-compares them with the committed results. See the
+[Phase 6 verification guide](docs/PHASE_6_VERIFICATION.md) for the metric boundary and observed regressions.
 
 ## Security status
 
