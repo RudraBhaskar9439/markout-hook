@@ -102,6 +102,16 @@ forge script script/DeployMarkoutReactive.s.sol:DeployMarkoutReactive \
 Record the resulting address as `MARKOUT_REACTIVE`. Its constructor registers five exact subscriptions: request,
 settled, expired, normalized reference price for one market, and canonical `Cron10`.
 
+Before funding or producing a swap, export the new address and repeat the preflight. The check reads the scheduler's
+immutable service address and rejects legacy `0x0000000000000000000000000000000000fffFfF` deployments. Lasna Omni must
+use `0x8888888888888888888888888888888888888888`; a scheduler authenticated to the legacy service cannot accept Omni
+event delivery or pay Omni service debt.
+
+```bash
+export MARKOUT_REACTIVE=<new-scheduler-address>
+./scripts/check-phase-5-networks.sh
+```
+
 ### 5. Fund automation and settle any debt
 
 Choose small testnet-only balances appropriate for current gas conditions; do not copy these examples to mainnet.

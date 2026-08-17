@@ -8,6 +8,11 @@ import { MarkoutReactiveConfig } from "../src/types/MarkoutReactiveTypes.sol";
 
 /// @notice Deploys the Reactive scheduler and registers its five narrow event subscriptions.
 contract DeployMarkoutReactive is Script {
+    address private constant LASNA_OMNI_SYSTEM_SERVICE = 0x8888888888888888888888888888888888888888;
+    uint256 private constant LASNA_OMNI_CHAIN_ID = 5_318_007;
+
+    error InvalidLasnaOmniService(address configured, address expected);
+
     function run() external returns (MarkoutReactive reactive) {
         uint256 privateKey = vm.envUint("PRIVATE_KEY");
         MarkoutReactiveConfig memory config = MarkoutReactiveConfig({
@@ -23,6 +28,10 @@ contract DeployMarkoutReactive is Script {
             marketId: vm.envBytes32("MARKET_ID"),
             cronTopic: vm.envUint("REACTIVE_CRON_TOPIC")
         });
+
+        if (block.chainid == LASNA_OMNI_CHAIN_ID && config.service != LASNA_OMNI_SYSTEM_SERVICE) {
+            revert InvalidLasnaOmniService(config.service, LASNA_OMNI_SYSTEM_SERVICE);
+        }
 
         vm.startBroadcast(privateKey);
         reactive = new MarkoutReactive(config);

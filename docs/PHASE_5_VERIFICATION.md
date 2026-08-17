@@ -77,3 +77,10 @@ normalized-feed interface.
 - explorer links recorded in a copy of `deployments/phase-5.example.json`.
 
 The exact broadcast and monitoring procedure is in [TESTNET_DEPLOYMENT.md](TESTNET_DEPLOYMENT.md).
+
+## Lasna Omni service invariant
+
+The configured scheduler is accepted for live evidence only when its immutable `subscriptionService()` is
+`0x8888888888888888888888888888888888888888`. The network preflight enforces this whenever `MARKOUT_REACTIVE` is
+exported. The legacy `0x0000000000000000000000000000000000fffFfF` service remains useful in the local simulator and
+legacy environment, but is not a valid service identity for a new Lasna Omni deployment.

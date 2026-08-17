@@ -58,6 +58,17 @@ require_code "0x5fa728c0a5cfd51bee4b060773f50554c0c8a7ab" "$origin_rpc" "Uniswap
 require_code "0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4" "$origin_rpc" "Reactive callback proxy"
 require_code "0x8888888888888888888888888888888888888888" "$reactive_rpc" "Reactive Lasna Omni system service"
 
+if [[ -n "${MARKOUT_REACTIVE:-}" ]]; then
+    require_code "$MARKOUT_REACTIVE" "$reactive_rpc" "Configured MARKOUT Reactive scheduler"
+    scheduler_service="$(
+        cast call "$MARKOUT_REACTIVE" 'subscriptionService()(address)' --rpc-url "$reactive_rpc"
+    )"
+    require_equal \
+        "$scheduler_service" \
+        "0x8888888888888888888888888888888888888888" \
+        "Configured MARKOUT Reactive scheduler service"
+fi
+
 require_pool "0xE87b0A6C6611119deCF5C4e9203E1c46F561BdAE" "100"
 require_pool "0x8F463126bBEA80A10DF9Bf6FF5455B6B0292B34e" "3000"
 require_pool "0xa88bF2bF5583b386B19E73D1a26A5Ab0Fa90f12D" "10000"
