@@ -23,7 +23,14 @@ represented as a successful settlement.
 
 The failed trace also showed that Omni's ten-second `Cron10` cadence can make an unacknowledged terminal callback
 expensive. Repository head now rate-limits each trade's settlement and expiry retries to once per 60 seconds. The
-August 20 scheduler predates that hardening and must be replaced before the next acceptance attempt.
+first August 20 scheduler predates that hardening; the second probe below deployed the hardened revision.
+
+A second August 20 probe was run after the relayer was reported healthy. The retry-hardened scheduler at
+`0xA7f884a3Dd8e30dd5ad90d0599a0199C33353490` ingested the new trade and emitted four funded sampler callback
+requests at 60-second intervals. Unichain recorded neither a callback transaction nor a normalized reference-price
+event, while both callback targets had zero debt. The trade was therefore recovered through fail-open expiry and its
+full rebate was claimed. The exact evidence is preserved in
+[`deployments/phase-5-attempt-2026-08-20-relayer-recheck.json`](../deployments/phase-5-attempt-2026-08-20-relayer-recheck.json).
 
 ## One-command local and public-network preflight
 

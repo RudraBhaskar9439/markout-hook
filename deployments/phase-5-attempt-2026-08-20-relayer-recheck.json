@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "status": "blocked-external-callback-delivery",
+  "capturedAt": "2026-08-20T05:17:36Z",
+  "purpose": "Post-confirmation relayer health probe using the retry-hardened repository head.",
+  "repositoryCommit": "bf7644b",
+  "deployer": "0xd1DcAAFf9356d5a42f2eE6F90179C4509386a83f",
+  "marketId": "0x7ea41243798f304c9efd5c2e0c82a273090146c4718014ecc8570eb373df2b78",
+  "reactiveLasnaOmni": {
+    "chainId": 5318007,
+    "explorer": "https://lasna-omni.reactscan.net",
+    "subscriptionService": "0x8888888888888888888888888888888888888888",
+    "cronEmitter": "0x0000000000000000000000000000000000fffFfF",
+    "markoutReactive": {
+      "address": "0xA7f884a3Dd8e30dd5ad90d0599a0199C33353490",
+      "transactionHash": "0x7d4c354d313d99099f564c661238213b76d9886e7a30d9c54894fa215801ea21",
+      "blockNumber": 4707325,
+      "deployedAt": "2026-08-20T04:58:59Z",
+      "activeSubscriptionCount": 5,
+      "terminalCallbackRetryDelaySeconds": 60
+    },
+    "fundingTransactionHash": "0x46f6c514ff2e1c857da6bfe193007254d1624efe5e51822ac6c280e67e7c14c3",
+    "debtCoverageTransactionHash": "0x922a91ccda0d940abc429aa2cd88a003d5027d7f1af53cc516524b26b75bbca4",
+    "postProbeBalanceWei": "13021300000000000",
+    "postProbeDebtWei": "13497200000000000"
+  },
+  "unichainSepolia": {
+    "chainId": 1301,
+    "explorer": "https://sepolia.uniscan.xyz",
+    "callbackProxy": "0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4",
+    "settlementAdapter": "0x6de0b23bf3de696D22d31a522581f6EEe7f38206",
+    "markoutHook": "0xD9C233f3992C5747C6bfcFcd7C05Ea4F3a02c044",
+    "referenceSampler": "0x2154E2459e097a060896355769981e3baC1554D6"
+  },
+  "acceptanceAttempt": {
+    "classification": "transport-failure",
+    "tradeId": "0xdc69035e59e291ce6119143f0e7800f6d344e5206e942eccabccebca7c4570a7",
+    "approvalTransactionHash": "0xdb42a631472bceb45382b972f4d9e19ab9b159234d895350ef15477972ca7950",
+    "swapTransactionHash": "0x3a447fc9b6646d77b00eef041f2d04a644a9fdc7a28769f4ca92ae042e56ba12",
+    "swapBlockNumber": 60349658,
+    "executedAt": 1787202086,
+    "maturityTimestamp": 1787202386,
+    "expiryTimestamp": 1787202986,
+    "tradeObservedTransactionHash": "0xf38d06ae0a808ff69d58d1dcbefc1bd6e5b5c17d03ba317464b67dc4515a649a",
+    "sampleCallbackRequestTransactionHashes": [
+      "0xdbb1359a4af933ee9bd27dec14b9afab567849fca87a27a9108fe96a0c0400f3",
+      "0xa8d9082fec3684061e052665b10a3231b2476efafa7d6f52c086c31fea2464c9",
+      "0xe3c7860e4af54e3e7e186b1ad36145be38c4bc39625b79133fc4901bccdd762e",
+      "0x4d5e51d81c458b8cfb63f4d72e8f71e20556bc69f7a363f2c24bd788d461276b"
+    ],
+    "sampleCallbackRequestCount": 4,
+    "normalizedReferencePriceEventCount": 0,
+    "unichainCallbackTransactionHashes": [],
+    "latestAcceptedObservation": {
+      "priceX18": 0,
+      "observedAt": 0,
+      "confidenceBps": 0
+    },
+    "callbackTargetDebt": {
+      "referenceSampler": 0,
+      "settlementAdapter": 0
+    },
+    "callbackProxyLatestVisibleTransaction": {
+      "transactionHash": "0xa8aef9e67060c83036a1ff9d8833bec8d8448df65a0dff5cb5fe510f3a715ba2",
+      "occurredAt": "2026-08-19T08:40:52Z",
+      "status": "reverted"
+    },
+    "manualFailOpenRecoveryTransactionHash": "0x861c7a4067f7529d22f91bbec62ecea9959624f6ede8ac97ecc6b00fbb7d4b67",
+    "manualFailOpenRecoveryBlockNumber": 60350579,
+    "recoveredRebateBaseUnits": 477,
+    "rebateClaimTransactionHash": "0xa96b99eba60b1e7c29d62abe6063b5acfebb2a5f7266006c51d6a59c9bbfee8a",
+    "rebateClaimBlockNumber": 60350605,
+    "claimableAfterClaim": 0,
+    "terminalHookStatus": "expired",
+    "result": "The retry-hardened scheduler ingested the trade and emitted four funded sampler callback requests at 60-second intervals. No callback transaction or normalized reference-price event appeared on Unichain, so the trade was recovered through permissionless fail-open expiry and the full rebate was claimed."
+  },
+  "acceptanceGate": {
+    "passed": false,
+    "missing": [
+      "one autonomous benign-flow settlement and claim",
+      "one autonomous adverse-flow settlement with greater retained protection",
+      "destination callback and settlement transaction hashes"
+    ]
+  }
+}
