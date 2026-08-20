@@ -21,10 +21,16 @@ One scheduler registers exactly five narrow subscriptions during construction:
 2. `MarkoutSettled` from that hook for delivery acknowledgement;
 3. `MarkoutExpired` from that hook for delivery acknowledgement;
 4. `NormalizedReferencePricePublished` from one configured feed and indexed market ID; and
-5. one configured Reactive cron topic from the configured system service.
+5. one configured Reactive cron topic from the configured cron emitter.
 
 Chain IDs, contract addresses, market ID, and cron topic are immutable. A log that does not match those boundaries has
 no state effect.
+
+Lasna Omni uses distinct addresses for two system roles. The subscription/payment service is
+`0x8888888888888888888888888888888888888888`, while current cron logs are emitted from
+`0x0000000000000000000000000000000000fffFfF`. The scheduler stores both immutably: only the service may call
+`react`, but the fifth filter and cron-log check use the emitter. Conflating the two addresses produces an active-looking
+subscription that never receives a live cron event.
 
 ## End-to-end sequence
 
@@ -65,15 +71,17 @@ None -> Pending -> SettlementPendingAcknowledgement -> Finalized
                 \-> ExpiryPendingAcknowledgement ----/
 ```
 
-The callback is at-least-once, not assumed to be exactly-once. Until a trusted hook terminal event is observed, each
-eligible cron can emit the same callback again. The destination adapter reads the hook's state before forwarding:
+The callback is at-least-once, not assumed to be exactly-once. Until a trusted hook terminal event is observed, the
+scheduler may emit the same callback again, but a per-trade 60-second cooldown bounds settlement and expiry retries.
+This matters on Omni, where `Cron10` is approximately ten seconds rather than the legacy network's approximately one
+minute. The destination adapter reads the hook's state before forwarding:
 
 - a pending trade is forwarded once;
 - an already settled or expired trade returns successfully without changing accounting; and
 - an unknown trade reverts.
 
 This separates transport retry from economic finality. A delivered callback cannot settle twice, and a callback lost
-after emission is retried.
+after emission is retried without paying for one terminal callback on every cron tick.
 
 ## Price and expiry rules
 
@@ -123,8 +131,8 @@ hook event -> acknowledgement.
 - Phase 4 represents the reference event behind a stable normalized interface.
 - Phase 5 implements one source-specific adapter: a three-pool Uniswap v3 median sampler. Its spot-pool inputs prove
   live transport but are explicitly not represented as a production manipulation-resistant oracle.
-- Callback gas, service address, callback proxy, cron topic, chain IDs, and Reactive identity must be confirmed against
-  the current testnet configuration immediately before deployment.
+- Callback gas, service address, cron emitter, callback proxy, cron topic, chain IDs, and Reactive identity must be
+  confirmed against the current testnet configuration immediately before deployment.
 - Phase 4 proves behavior locally. It does not claim that a live cross-network callback has succeeded.
 - Callback funding, explorer evidence, monitoring, and deployment manifests are Phase 5 deliverables.
 

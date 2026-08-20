@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-08-14",
+  "checkedAt": "2026-08-20",
   "unichainSepolia": {
     "chainId": 1301,
     "rpcUrl": "https://sepolia.unichain.org",
@@ -32,6 +32,7 @@
     "rpcUrl": "https://lasna-omni-rpc.rnk.dev",
     "explorerUrl": "https://lasna-omni.reactscan.net",
     "service": "0x8888888888888888888888888888888888888888",
+    "cronEmitter": "0x0000000000000000000000000000000000fffFfF",
     "cron10Topic": "0x04463f7c1651e6b9774d7f85c85bb94654e3c46ca79b0c16fb16d4183307b687"
   },
   "sources": {

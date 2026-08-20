@@ -86,6 +86,7 @@ contract MarkoutReactiveLifecycleTest is ReactiveTest, Deployers {
         reactive = new MarkoutReactive(
             MarkoutReactiveConfig({
                 service: address(sys),
+                cronEmitter: address(sys),
                 reactiveChainId: reactiveChainId,
                 originChainId: ORIGIN_CHAIN_ID,
                 destinationChainId: ORIGIN_CHAIN_ID,
@@ -213,6 +214,8 @@ contract MarkoutReactiveLifecycleTest is ReactiveTest, Deployers {
         assertCallbackSuccess(first, 0);
         uint256 accountedAfterFirst = hook.accountedBalance(trade.currency);
 
+        assertNoCallbacks(triggerCron(CronType.Cron10));
+        vm.warp(block.timestamp + reactive.TERMINAL_CALLBACK_RETRY_DELAY());
         CallbackResult[] memory retry = triggerCron(CronType.Cron10);
         assertCallbackCount(retry, 1);
         assertCallbackSuccess(retry, 0);
@@ -220,6 +223,24 @@ contract MarkoutReactiveLifecycleTest is ReactiveTest, Deployers {
         assertEq(hook.accountedBalance(trade.currency), accountedAfterFirst);
 
         _deliverTerminalAcknowledgement(tradeId, false);
+        assertNoCallbacks(triggerCron(CronType.Cron10));
+    }
+
+    function test_expiryCallbackRetriesAreRateLimitedUntilAcknowledged() public {
+        (bytes32 tradeId, TradeRecord memory trade) = _triggerSwap();
+        vm.warp(uint256(trade.expiryTimestamp) + 1);
+
+        CallbackResult[] memory first = triggerCron(CronType.Cron10);
+        assertCallbackCount(first, 1);
+        assertCallbackSuccess(first, 0);
+
+        assertNoCallbacks(triggerCron(CronType.Cron10));
+        vm.warp(block.timestamp + reactive.TERMINAL_CALLBACK_RETRY_DELAY());
+        CallbackResult[] memory retry = triggerCron(CronType.Cron10);
+        assertCallbackCount(retry, 1);
+        assertCallbackSuccess(retry, 0);
+
+        _deliverTerminalAcknowledgement(tradeId, true);
         assertNoCallbacks(triggerCron(CronType.Cron10));
     }
 

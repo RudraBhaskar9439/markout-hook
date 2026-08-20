@@ -18,7 +18,8 @@ item below is real and reproducible.
 
 ## Public evidence still required
 
-- [ ] Fund the Lasna scheduler and callback destinations with lREACT
+- [x] Fund the Lasna scheduler and callback destinations
+- [ ] Confirm Reactive's Unichain callback relayer is delivering again
 - [ ] Produce one autonomous benign-flow settlement and claim
 - [ ] Produce one autonomous informed-flow settlement with greater LP protection
 - [ ] Record request, sample, callback, settlement, claim, and reserve explorer links

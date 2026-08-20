@@ -57,16 +57,24 @@ require_code "0x9140a78c1a137c7ff1c151ec8231272af78a99a4" "$origin_rpc" "Uniswap
 require_code "0x5fa728c0a5cfd51bee4b060773f50554c0c8a7ab" "$origin_rpc" "Uniswap v4 liquidity router"
 require_code "0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4" "$origin_rpc" "Reactive callback proxy"
 require_code "0x8888888888888888888888888888888888888888" "$reactive_rpc" "Reactive Lasna Omni system service"
+require_code "0x0000000000000000000000000000000000fffFfF" "$reactive_rpc" "Reactive Lasna Omni cron emitter"
 
 if [[ -n "${MARKOUT_REACTIVE:-}" ]]; then
     require_code "$MARKOUT_REACTIVE" "$reactive_rpc" "Configured MARKOUT Reactive scheduler"
     scheduler_service="$(
         cast call "$MARKOUT_REACTIVE" 'subscriptionService()(address)' --rpc-url "$reactive_rpc"
     )"
+    scheduler_cron_emitter="$(
+        cast call "$MARKOUT_REACTIVE" 'cronEmitter()(address)' --rpc-url "$reactive_rpc"
+    )"
     require_equal \
         "$scheduler_service" \
         "0x8888888888888888888888888888888888888888" \
         "Configured MARKOUT Reactive scheduler service"
+    require_equal \
+        "$scheduler_cron_emitter" \
+        "0x0000000000000000000000000000000000fffFfF" \
+        "Configured MARKOUT Reactive scheduler cron emitter"
 fi
 
 require_pool "0xE87b0A6C6611119deCF5C4e9203E1c46F561BdAE" "100"

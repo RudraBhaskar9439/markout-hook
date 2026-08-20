@@ -40,6 +40,7 @@ struct MarkoutRequestEventData {
 /// @notice Immutable deployment configuration for one MARKOUT Reactive scheduler.
 struct MarkoutReactiveConfig {
     address service;
+    address cronEmitter;
     uint256 reactiveChainId;
     uint256 originChainId;
     uint256 destinationChainId;

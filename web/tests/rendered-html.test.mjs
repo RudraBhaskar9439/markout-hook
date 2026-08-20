@@ -40,7 +40,7 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
   assert.match(html, /Same market\. Different information\./);
   assert.match(html, /Outcome → observation → settlement/);
   assert.match(html, /The honest regression/);
-  assert.match(html, /Live Lasna evidence pending lREACT/);
+  assert.match(html, /Live cron proven · callback delivery pending/);
   assert.match(html, /aria-label="MARKOUT settlement receipt"/);
   assert.match(html, /aria-label="Choose an order-flow outcome"/);
   assert.doesNotMatch(html, /Codex/);

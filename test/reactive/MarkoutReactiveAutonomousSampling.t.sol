@@ -3,7 +3,6 @@ pragma solidity ^0.8.26;
 
 import { ReactiveTest } from "reactive-test-lib/base/ReactiveTest.sol";
 import { CallbackResult } from "reactive-test-lib/interfaces/IReactiveInterfaces.sol";
-import { MockSystemContract } from "reactive-test-lib/mock/MockSystemContract.sol";
 
 import { IHooks } from "@uniswap/v4-core/src/interfaces/IHooks.sol";
 import { Hooks } from "@uniswap/v4-core/src/libraries/Hooks.sol";
@@ -29,7 +28,7 @@ import { UniswapV3MedianSamplerConfig } from "../../src/types/ReferenceSamplerTy
 import { SurchargeAuthorization } from "../../src/types/SurchargeTypes.sol";
 import { MockUniswapV3PoolReference } from "../mocks/MockUniswapV3PoolReference.sol";
 
-contract MockReactiveSystemWithCron is MockSystemContract {
+contract MockCronEmitter {
     function emitRawCron(uint256 topic) external {
         uint256 currentBlock = block.number;
         assembly {
@@ -50,12 +49,12 @@ contract MarkoutReactiveAutonomousSamplingTest is ReactiveTest, Deployers {
     ReactiveMarkoutSettlementAdapter private settlementAdapter;
     UniswapV3MedianReferenceSampler private sampler;
     MarkoutReactive private reactive;
+    MockCronEmitter private cronEmitter;
     PoolKey private poolKey;
 
     function setUp() public override {
         ReactiveTest.setUp();
-        MockReactiveSystemWithCron systemImplementation = new MockReactiveSystemWithCron();
-        vm.etch(address(sys), address(systemImplementation).code);
+        cronEmitter = new MockCronEmitter();
 
         deployFreshManagerAndRouters();
         deployMintAndApprove2Currencies();
@@ -95,6 +94,7 @@ contract MarkoutReactiveAutonomousSamplingTest is ReactiveTest, Deployers {
         reactive = new MarkoutReactive(
             MarkoutReactiveConfig({
                 service: address(sys),
+                cronEmitter: address(cronEmitter),
                 reactiveChainId: reactiveChainId,
                 originChainId: ORIGIN_CHAIN_ID,
                 destinationChainId: ORIGIN_CHAIN_ID,
@@ -107,6 +107,8 @@ contract MarkoutReactiveAutonomousSamplingTest is ReactiveTest, Deployers {
                 cronTopic: CRON_TOPIC_10
             })
         );
+
+        registerChain(address(cronEmitter), reactiveChainId);
     }
 
     function test_oneCronAutonomouslySamplesMedianSettlesAndAcknowledges() public {
@@ -114,7 +116,7 @@ contract MarkoutReactiveAutonomousSamplingTest is ReactiveTest, Deployers {
         vm.warp(trade.maturityTimestamp);
 
         CallbackResult[] memory callbacks = triggerFullCycle(
-            address(sys), abi.encodeCall(MockReactiveSystemWithCron.emitRawCron, (CRON_TOPIC_10)), reactiveChainId, 10
+            address(cronEmitter), abi.encodeCall(MockCronEmitter.emitRawCron, (CRON_TOPIC_10)), reactiveChainId, 10
         );
 
         assertCallbackCount(callbacks, 2);
@@ -128,7 +130,7 @@ contract MarkoutReactiveAutonomousSamplingTest is ReactiveTest, Deployers {
         assertEq(observation.priceX18, 1e18);
 
         CallbackResult[] memory replay = triggerFullCycle(
-            address(sys), abi.encodeCall(MockReactiveSystemWithCron.emitRawCron, (CRON_TOPIC_10)), reactiveChainId, 10
+            address(cronEmitter), abi.encodeCall(MockCronEmitter.emitRawCron, (CRON_TOPIC_10)), reactiveChainId, 10
         );
         assertNoCallbacks(replay);
     }

@@ -7,15 +7,23 @@ as a normalized observation, and that event causes Reactive to settle the pendin
 ## Current gate status
 
 The deployment-independent portion of Phase 5 is complete. The code, public-network configuration, deployment
-scripts, and complete local transport simulation pass. The live gate remains open until a funded testnet signer
-deploys the contracts and two public settlement traces are recorded in a deployment manifest.
+scripts, and complete local transport simulation pass. The destination contracts and a funded Lasna Omni scheduler
+are public. The live gate remains open until Reactive delivers two complete public settlement traces.
 
 All operator scripts were also exercised against local forks of current public state: adapter/hook deployment,
 sampler deployment and live three-pool sampling, v4 initialization and liquidity, swap/trade creation, Lasna scheduler
 deployment with five subscriptions, and rebate claiming. These fork transactions are disposable verification, not
 public deployment evidence.
 
-This distinction is deliberate: local success is not represented as a live deployment.
+The August 20 acceptance attempt proved request ingestion, the distinct live cron emitter, callback emission, debt
+payment, expiry transition, terminal acknowledgement, and fail-open recovery. Reactive did not post or deliver a
+destination callback during the maturity and grace window. The exact transactions are preserved in
+[`deployments/phase-5-attempt-2026-08-20.json`](../deployments/phase-5-attempt-2026-08-20.json); that attempt is not
+represented as a successful settlement.
+
+The failed trace also showed that Omni's ten-second `Cron10` cadence can make an unacknowledged terminal callback
+expensive. Repository head now rate-limits each trade's settlement and expiry retries to once per 60 seconds. The
+August 20 scheduler predates that hardening and must be replaced before the next acceptance attempt.
 
 ## One-command local and public-network preflight
 
@@ -69,18 +77,18 @@ normalized-feed interface.
 
 ## Live acceptance evidence still required
 
-- destination adapter, hook, sampler, pool, and Reactive scheduler addresses;
-- transaction hashes and block numbers for every deployment;
 - two swaps that both settle through Reactive without an EOA calling settlement;
 - different terminal retention outcomes and at least one claimed rebate;
-- callback and scheduler funding/debt evidence; and
-- explorer links recorded in a copy of `deployments/phase-5.example.json`.
+- successful sampler and settlement callback transactions on Unichain; and
+- a passing deployment manifest derived from `deployments/phase-5.example.json`.
 
 The exact broadcast and monitoring procedure is in [TESTNET_DEPLOYMENT.md](TESTNET_DEPLOYMENT.md).
 
-## Lasna Omni service invariant
+## Lasna Omni service and cron-emitter invariants
 
 The configured scheduler is accepted for live evidence only when its immutable `subscriptionService()` is
-`0x8888888888888888888888888888888888888888`. The network preflight enforces this whenever `MARKOUT_REACTIVE` is
-exported. The legacy `0x0000000000000000000000000000000000fffFfF` service remains useful in the local simulator and
-legacy environment, but is not a valid service identity for a new Lasna Omni deployment.
+`0x8888888888888888888888888888888888888888` and its immutable `cronEmitter()` is
+`0x0000000000000000000000000000000000fffFfF`. The network preflight enforces both whenever `MARKOUT_REACTIVE` is
+exported. Omni uses the first address for subscription, payment, and authenticated `react` delivery, while its live
+cron logs still originate from the second. The focused autonomous test keeps these roles at different addresses so a
+future refactor cannot silently conflate them.

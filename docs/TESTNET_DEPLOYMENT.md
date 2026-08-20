@@ -102,10 +102,14 @@ forge script script/DeployMarkoutReactive.s.sol:DeployMarkoutReactive \
 Record the resulting address as `MARKOUT_REACTIVE`. Its constructor registers five exact subscriptions: request,
 settled, expired, normalized reference price for one market, and canonical `Cron10`.
 
-Before funding or producing a swap, export the new address and repeat the preflight. The check reads the scheduler's
-immutable service address and rejects legacy `0x0000000000000000000000000000000000fffFfF` deployments. Lasna Omni must
-use `0x8888888888888888888888888888888888888888`; a scheduler authenticated to the legacy service cannot accept Omni
-event delivery or pay Omni service debt.
+Lasna Omni separates the subscription/payment service from the cron-log emitter. Set `REACTIVE_SERVICE` to
+`0x8888888888888888888888888888888888888888` and `REACTIVE_CRON_EMITTER` to
+`0x0000000000000000000000000000000000fffFfF`. The deploy script rejects either value if it is wrong on chain
+`5318007`.
+
+Before funding or producing a swap, export the new address and repeat the preflight. The check reads both immutable
+addresses. A scheduler authenticated to the cron emitter cannot accept Omni event delivery or pay Omni service debt;
+a scheduler subscribed to cron at the payment service will ingest trade events but never receive `Cron10`.
 
 ```bash
 export MARKOUT_REACTIVE=<new-scheduler-address>

@@ -4,8 +4,8 @@ Phase 6 turns MARKOUT's research claim into a reproducible controlled comparison
 volatility-linked fee, and MARKOUT against one common seeded tape spanning benign, informed, inventory-improving,
 mixed-volatility, stale-reference, and manipulated-reference cases.
 
-Phase 5's public settlement gate remains independently open while lREACT funding is delayed. No live evidence is
-fabricated or substituted by this experiment.
+Phase 5's public settlement gate remains independently open while Reactive destination delivery is unresolved. No
+live evidence is fabricated or substituted by this experiment.
 
 ## Focused reproducibility gate
 

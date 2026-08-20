@@ -25,7 +25,8 @@ Complete this path without a wallet or terminal interaction after the applicatio
 4. Select inventory-improving flow and confirm MARKOUT does not retain adverse-selection protection.
 5. Replay the five-step Reactive timeline from execution through acknowledgement.
 6. Review the aggregate evidence and the explicitly disclosed stale/manipulated-reference regression.
-7. Confirm that the live-evidence card says `Live Lasna evidence pending lREACT` and contains no invented hash.
+7. Confirm that the live-evidence card says `Live cron proven · callback delivery pending` and contains no invented
+   settlement hash.
 
 ## Automated gate
 
@@ -57,7 +58,7 @@ runtime, so CI gates the production graph and this development-only residual ris
 ## Exact checkpoint boundary
 
 Passing this script means the local judge application is reproducible and presentation-ready. It does **not** mean the
-complete roadmap gate has passed. These items remain blocked on a funded Lasna scheduler:
+complete roadmap gate has passed. These items remain blocked on successful Reactive destination delivery:
 
 - two real autonomous settlements;
 - explorer-backed event, observation, callback, claim, and LP-protection links;

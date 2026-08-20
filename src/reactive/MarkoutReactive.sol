@@ -29,6 +29,7 @@ contract MarkoutReactive is AbstractPayer, IReactive {
     uint64 public constant CALLBACK_GAS_LIMIT = 500_000;
     uint64 public constant REFERENCE_SAMPLE_GAS_LIMIT = 300_000;
     uint64 public constant REFERENCE_SAMPLE_RETRY_DELAY = 60;
+    uint64 public constant TERMINAL_CALLBACK_RETRY_DELAY = 60;
     uint256 public constant MAX_TRADES_PER_CRON = 8;
 
     uint256 public constant MARKOUT_REQUESTED_TOPIC = uint256(
@@ -43,6 +44,7 @@ contract MarkoutReactive is AbstractPayer, IReactive {
         uint256(keccak256("NormalizedReferencePricePublished(bytes32,uint192,uint64,uint16)"));
 
     error ZeroService();
+    error ZeroCronEmitter();
     error ZeroHook();
     error ZeroSettlementAdapter();
     error ZeroReferenceFeed();
@@ -64,6 +66,7 @@ contract MarkoutReactive is AbstractPayer, IReactive {
     event TradeFinalized(bytes32 indexed tradeId);
 
     ISubscriptionService public immutable subscriptionService;
+    address public immutable cronEmitter;
     uint256 public immutable reactiveChainId;
     uint256 public immutable originChainId;
     uint256 public immutable destinationChainId;
@@ -78,12 +81,14 @@ contract MarkoutReactive is AbstractPayer, IReactive {
     ReactiveReferenceObservation public latestReferenceObservation;
     uint256 public scanCursor;
     uint64 public lastReferenceSampleRequestedAt;
+    mapping(bytes32 tradeId => uint64 requestedAt) public lastTerminalCallbackRequestedAt;
 
     mapping(bytes32 tradeId => ReactiveTradeRecord trade) private _trades;
     bytes32[] private _tradeIds;
 
     constructor(MarkoutReactiveConfig memory config) {
         if (config.service == address(0)) revert ZeroService();
+        if (config.cronEmitter == address(0)) revert ZeroCronEmitter();
         if (config.hook == address(0)) revert ZeroHook();
         if (config.settlementAdapter == address(0)) revert ZeroSettlementAdapter();
         if (config.referenceFeed == address(0)) revert ZeroReferenceFeed();
@@ -98,6 +103,7 @@ contract MarkoutReactive is AbstractPayer, IReactive {
         }
 
         subscriptionService = ISubscriptionService(payable(config.service));
+        cronEmitter = config.cronEmitter;
         reactiveChainId = config.reactiveChainId;
         originChainId = config.originChainId;
         destinationChainId = config.destinationChainId;
@@ -139,9 +145,7 @@ contract MarkoutReactive is AbstractPayer, IReactive {
             return;
         }
 
-        if (
-            log.chain_id == reactiveChainId && log._contract == address(subscriptionService) && log.topic_0 == cronTopic
-        ) {
+        if (log.chain_id == reactiveChainId && log._contract == cronEmitter && log.topic_0 == cronTopic) {
             _processMatureTrades();
         }
     }
@@ -186,7 +190,12 @@ contract MarkoutReactive is AbstractPayer, IReactive {
             REACTIVE_IGNORE
         );
         subscriptionService.subscribe(
-            config.reactiveChainId, config.service, config.cronTopic, REACTIVE_IGNORE, REACTIVE_IGNORE, REACTIVE_IGNORE
+            config.reactiveChainId,
+            config.cronEmitter,
+            config.cronTopic,
+            REACTIVE_IGNORE,
+            REACTIVE_IGNORE,
+            REACTIVE_IGNORE
         );
     }
 
@@ -263,6 +272,7 @@ contract MarkoutReactive is AbstractPayer, IReactive {
 
         if (currentTimestamp > trade.expiryTimestamp) {
             trade.status = ReactiveTradeStatus.ExpiryPendingAcknowledgement;
+            if (!_terminalCallbackReady(tradeId, currentTimestamp)) return false;
             bytes memory expiryPayload = abi.encodeCall(ReactiveMarkoutSettlementAdapter.expire, (address(0), tradeId));
             emit Callback(destinationChainId, settlementAdapter, CALLBACK_GAS_LIMIT, expiryPayload);
             emit ExpiryCallbackRequested(tradeId);
@@ -275,6 +285,7 @@ contract MarkoutReactive is AbstractPayer, IReactive {
         }
 
         trade.status = ReactiveTradeStatus.SettlementPendingAcknowledgement;
+        if (!_terminalCallbackReady(tradeId, currentTimestamp)) return false;
         bytes memory settlementPayload = abi.encodeCall(
             ReactiveMarkoutSettlementAdapter.settle,
             (
@@ -289,6 +300,18 @@ contract MarkoutReactive is AbstractPayer, IReactive {
         );
         emit Callback(destinationChainId, settlementAdapter, CALLBACK_GAS_LIMIT, settlementPayload);
         emit SettlementCallbackRequested(tradeId, observation.priceX18, observation.observedAt);
+    }
+
+    function _terminalCallbackReady(bytes32 tradeId, uint64 currentTimestamp) private returns (bool) {
+        uint64 lastRequestedAt = lastTerminalCallbackRequestedAt[tradeId];
+        if (
+            lastRequestedAt != 0
+                && (currentTimestamp <= lastRequestedAt
+                    || currentTimestamp - lastRequestedAt < TERMINAL_CALLBACK_RETRY_DELAY)
+        ) return false;
+
+        lastTerminalCallbackRequestedAt[tradeId] = currentTimestamp;
+        return true;
     }
 
     function _requestReferenceSample(uint64 currentTimestamp) private {

@@ -398,7 +398,7 @@ export function MarkoutDashboard() {
         </div>
         <div className="footer-status">
           <span><i className="status-green" /> Phases 1–7 verified</span>
-          <span><i className="status-amber" /> Live Lasna evidence pending lREACT</span>
+          <span><i className="status-amber" /> Live cron proven · callback delivery pending</span>
         </div>
         <p className="footer-note">Experimental UHI10 prototype · Not audited · No real funds</p>
       </footer>

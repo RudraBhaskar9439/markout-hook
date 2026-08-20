@@ -197,12 +197,28 @@ than a live market feed.
 
 ## D-033 — Never manufacture the missing Lasna proof
 
-The dashboard presents `Live Lasna evidence pending lREACT` until a funded scheduler produces real public transaction
-traces. Only explorer-backed transactions may replace that state. A local replay may demonstrate mechanism and UI
-reliability, but it cannot satisfy Phase 5 or the live portion of Phase 8.
+The dashboard presents `Live cron proven · callback delivery pending` until public transactions prove complete
+destination settlement. Only explorer-backed transactions may strengthen that state. A local replay or a Lasna
+callback-request event may demonstrate mechanism and scheduler progress, but neither can satisfy Phase 5 or the live
+portion of Phase 8 without the destination transaction.
 
 ## D-034 — Derive social metadata from the request origin
 
 The judge application constructs canonical and preview-image URLs from validated forwarded-host and protocol headers,
 with a localhost fallback. One deployable build therefore produces correct absolute sharing metadata on both local and
 hosted environments without hard-coding a temporary deployment hostname.
+
+## D-035 — Separate the Omni service from the cron emitter
+
+Lasna Omni authenticates `react`, registers subscriptions, and accounts payment through
+`0x8888888888888888888888888888888888888888`, but current on-chain `Cron10` logs originate from
+`0x0000000000000000000000000000000000fffFfF`. MARKOUT configures these roles independently and validates both at
+deployment and preflight. This decision came from the first public acceptance attempt: the request subscription
+worked, but `lastReferenceSampleRequestedAt` remained zero because the cron filter targeted the service address.
+
+## D-036 — Rate-limit terminal callback retries independently of cron
+
+Omni produces `Cron10` approximately every ten seconds. Settlement and expiry retries therefore use a per-trade
+60-second cooldown instead of emitting on every eligible cron. The first callback remains immediate, acknowledgement
+still finalizes the record, and a lost callback remains retryable. This bound was added after a public relayer outage
+showed that an unacknowledged expiry could otherwise consume lREACT every ten seconds without improving delivery.

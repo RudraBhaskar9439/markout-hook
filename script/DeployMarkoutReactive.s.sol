@@ -9,14 +9,17 @@ import { MarkoutReactiveConfig } from "../src/types/MarkoutReactiveTypes.sol";
 /// @notice Deploys the Reactive scheduler and registers its five narrow event subscriptions.
 contract DeployMarkoutReactive is Script {
     address private constant LASNA_OMNI_SYSTEM_SERVICE = 0x8888888888888888888888888888888888888888;
+    address private constant LASNA_OMNI_CRON_EMITTER = 0x0000000000000000000000000000000000fffFfF;
     uint256 private constant LASNA_OMNI_CHAIN_ID = 5_318_007;
 
     error InvalidLasnaOmniService(address configured, address expected);
+    error InvalidLasnaOmniCronEmitter(address configured, address expected);
 
     function run() external returns (MarkoutReactive reactive) {
         uint256 privateKey = vm.envUint("PRIVATE_KEY");
         MarkoutReactiveConfig memory config = MarkoutReactiveConfig({
             service: vm.envAddress("REACTIVE_SERVICE"),
+            cronEmitter: vm.envAddress("REACTIVE_CRON_EMITTER"),
             reactiveChainId: vm.envUint("REACTIVE_CHAIN_ID"),
             originChainId: vm.envUint("ORIGIN_CHAIN_ID"),
             destinationChainId: vm.envUint("DESTINATION_CHAIN_ID"),
@@ -32,6 +35,9 @@ contract DeployMarkoutReactive is Script {
         if (block.chainid == LASNA_OMNI_CHAIN_ID && config.service != LASNA_OMNI_SYSTEM_SERVICE) {
             revert InvalidLasnaOmniService(config.service, LASNA_OMNI_SYSTEM_SERVICE);
         }
+        if (block.chainid == LASNA_OMNI_CHAIN_ID && config.cronEmitter != LASNA_OMNI_CRON_EMITTER) {
+            revert InvalidLasnaOmniCronEmitter(config.cronEmitter, LASNA_OMNI_CRON_EMITTER);
+        }
 
         vm.startBroadcast(privateKey);
         reactive = new MarkoutReactive(config);
@@ -39,6 +45,7 @@ contract DeployMarkoutReactive is Script {
 
         console2.log("MARKOUT Reactive scheduler", address(reactive));
         console2.log("Origin chain", config.originChainId);
+        console2.log("Cron emitter", config.cronEmitter);
         console2.log("Reference chain", config.referenceChainId);
         console2.log("Destination adapter", config.settlementAdapter);
     }

@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "status": "blocked-external-callback-delivery",
+  "capturedAt": "2026-08-20T00:40:00Z",
+  "repositoryHeadRedeploymentRequired": true,
+  "deployedSchedulerRevision": {
+    "separateCronEmitter": true,
+    "terminalCallbackRetryCooldown": false
+  },
+  "deployer": "0xd1DcAAFf9356d5a42f2eE6F90179C4509386a83f",
+  "marketId": "0x7ea41243798f304c9efd5c2e0c82a273090146c4718014ecc8570eb373df2b78",
+  "unichainSepolia": {
+    "chainId": 1301,
+    "explorer": "https://sepolia.uniscan.xyz",
+    "settlementAdapter": {
+      "address": "0x6de0b23bf3de696D22d31a522581f6EEe7f38206",
+      "transactionHash": "0x928e36d0eb540709a55bff903153b75aecc2214f69778bf3fc28921ca44cf31a",
+      "blockNumber": 59883346
+    },
+    "markoutHook": {
+      "address": "0xD9C233f3992C5747C6bfcFcd7C05Ea4F3a02c044",
+      "transactionHash": "0x61a314e17d7170febe13865abb85f98f69394fce0a7d9d6175d37c650baf1005",
+      "blockNumber": 59883346
+    },
+    "referenceSampler": {
+      "address": "0x2154E2459e097a060896355769981e3baC1554D6",
+      "transactionHash": "0x9a115abfd1c0de1e7e8b29e550f2ac0f4f152fec3ddc829ae8937b3262b0f48c",
+      "blockNumber": 59883424
+    },
+    "pool": {
+      "poolId": "0x2e72f9bcc13048bad583dcb768ec79781150ed10aa09ec6aba720a6344619736",
+      "initializeTransactionHash": "0x2559215f70ca3d07568e40d1752246353c84040fd1e9a80dd5ba7b0de7c1a827",
+      "liquidityTransactionHash": "0x68473d3d992e9253c1b4ea866369ad9e850c895a28e242c250306a868d6a70da",
+      "blockNumber": 59883513
+    },
+    "callbackProxy": "0x9299472A6399Fd1027ebF067571Eb3e3D7837FC4"
+  },
+  "reactiveLasnaOmni": {
+    "chainId": 5318007,
+    "explorer": "https://lasna-omni.reactscan.net",
+    "subscriptionService": "0x8888888888888888888888888888888888888888",
+    "cronEmitter": "0x0000000000000000000000000000000000fffFfF",
+    "markoutReactive": {
+      "address": "0xf8b9bf987A47256e06bD2950C72EDc57581243B7",
+      "transactionHash": "0x439debe7ce988dbb1d31ba27a71aa2667bb33b521bde60d1dd2f2c3165f94686",
+      "blockNumber": 4686473,
+      "deployedAt": "2026-08-20T00:19:40Z",
+      "activeSubscriptionCount": 5
+    },
+    "fundingTransactions": [
+      "0x7bbc965c191de88d0de6b774447389b322bf5e6b3781b83cd31c4daaaa8e22ad",
+      "0x673f777a9c453c432dc5cafc2cf948cf4c0345b66bccbbd4f8b13f7c8c4ca8f0",
+      "0xce1a2ad47d865629290a619188ca36d8d8643c6429f8c07c36b0f0b1275271b6"
+    ],
+    "debtCoverageTransactions": [
+      "0xe9f06eb7ea64fac32f9bea4ffd492377f60de333eed2fedc5d6bbdc4ee311a70",
+      "0x2e5857d58883611dafd9399c48cc971163930a8aa34469a7f60865976f79dba4"
+    ]
+  },
+  "acceptanceAttempt": {
+    "classification": "transport-failure",
+    "tradeId": "0xad0a94979842010a27f01a7a2d3bde80672c45be2eecc4197596ed7a1ea494ca",
+    "swapTransactionHash": "0x5f063e9be606873c787ff123d52a628716c66ccaa78de950c90f458251362f12",
+    "swapBlockNumber": 60332909,
+    "executedAt": 1787185337,
+    "maturityTimestamp": 1787185637,
+    "expiryTimestamp": 1787186237,
+    "tradeObservedTransactionHash": "0xbdd066272b27af3957a8a450927ce119863ae6f0a751068572c2cbca283345c5",
+    "firstSampleCallbackRequestTransactionHash": "0x7ffa9810c6d864a7c16195d281029fe23e3127938ac3e2a7a44bf7594f55b88e",
+    "sampleCallbackRequestCount": 8,
+    "callbackPostedCount": 0,
+    "unichainCallbackTransactionHashes": [],
+    "firstExpiryCallbackRequestTransactionHash": "0x230f5fd95521bd5336f44b68d36329b2c6b1b4b74acf39594990d31000419e71",
+    "expiryCallbackRequestCountBeforeRecovery": 11,
+    "manualFailOpenRecoveryTransactionHash": "0xe3ea3b1756a6608500911d0e5d138a69fd95cf02bcd0bbfd87a7c723b177ccbf",
+    "reactiveFinalizationTransactionHash": "0x417a1060b6f136e0fdf147541e9b2b0e8ebf70c07da91e81c9db740de5800264",
+    "terminalStatus": "expired",
+    "result": "Reactive ingested the request and emitted funded sampler and expiry callbacks, but no callback was posted or delivered to Unichain during the complete maturity and grace window."
+  },
+  "preFixAttempt": {
+    "tradeId": "0xf4f99a9ed974d6d699f6a9358876dbfb91b23703fdbb1de9b944b77d0b6c2dcb",
+    "swapTransactionHash": "0x3441691916a97686a94905b431a55ae638da0563e2315be3190ec836205ec02b",
+    "scheduler": "0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e",
+    "failure": "Cron10 subscription incorrectly targeted the Omni payment service instead of the distinct cron emitter.",
+    "manualFailOpenRecoveryTransactionHash": "0x1e12ec3060b48c50a9c0212d563911c954f14b61e6cd63ec8a69d65b85353907"
+  },
+  "recoveryClaim": {
+    "currency": "0x31d0220469e10c4E71834a79b1f276d740d3768F",
+    "amountBaseUnits": 1050,
+    "transactionHash": "0xd100b7cc7d96ddd1bfb99213e43e6616e0ea49c796a6de1530c88eef425ba23f",
+    "blockNumber": 60333963
+  },
+  "acceptanceGate": {
+    "passed": false,
+    "missing": [
+      "one autonomous benign-flow settlement and claim",
+      "one autonomous adverse-flow settlement with greater retained protection",
+      "destination callback and settlement transaction hashes"
+    ]
+  }
+}

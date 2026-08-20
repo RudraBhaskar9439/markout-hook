@@ -58,9 +58,11 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 
 **Phase 9 token-independent draft package implemented; Phase 5's live gate remains open.** The private judge dashboard,
 final architecture diagram, four-minute demo script, nine-slide deck, and submission checklist are ready for review.
-Every artifact visibly labels the missing Lasna evidence instead of inventing transactions. A funded scheduler, two
-public settlements, explorer links, final recording, owner form details, and visibility decisions still require lREACT
-or manual approval before Phase 5, Phase 8, and the final Phase 9 gate can close.
+A funded Lasna scheduler has publicly ingested a trade, consumed the correct Omni cron emitter, and requested the
+destination callback. Reactive's Unichain relayer did not deliver the callback during the acceptance window, so the
+failed trade was recovered through the documented fail-open expiry path. Two autonomous public settlements, final
+explorer links, the recording, owner form details, and visibility decisions are still required before Phase 5, Phase 8,
+and the final Phase 9 gate can close.
 
 ## Architecture
 
