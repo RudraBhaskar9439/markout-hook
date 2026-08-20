@@ -1,0 +1,68 @@
+{
+  "checkedAt": "2026-08-20T23:51:38Z",
+  "purpose": "Determine whether missing Reactive callbacks are specific to Unichain Sepolia.",
+  "deployer": "0xd1DcAAFf9356d5a42f2eE6F90179C4509386a83f",
+  "originAndDestination": {
+    "network": "Ethereum Sepolia",
+    "chainId": 11155111,
+    "rpcUrl": "https://ethereum-sepolia-rpc.publicnode.com",
+    "explorerUrl": "https://sepolia.etherscan.io",
+    "callbackProxy": "0xc9f36411C9897e7F959D99ffca2a0Ba7ee0D7bDA",
+    "canary": "0x66ff90B39846985b38dE1013108e93E6521faFCd",
+    "deploymentTransaction": "0x5694c5f08cea5b0e8bd8da1ff5088726f9c9b67f149bcce8dde3a8b257a846fb",
+    "fundingTransaction": "0x0f0cc1b894afe10c13956128af36362e66285cab9f10b401a628c48b9cf24498",
+    "fundedWei": "10000000000000000",
+    "finalBalanceWei": "10000000000000000",
+    "callbackProxyDebtWei": "0"
+  },
+  "reactive": {
+    "network": "Reactive Lasna Omni",
+    "chainId": 5318007,
+    "rpcUrl": "https://lasna-omni-rpc.rnk.dev",
+    "explorerUrl": "https://lasna-omni.reactscan.net",
+    "service": "0x8888888888888888888888888888888888888888",
+    "scheduler": "0x93fef8C724844056f63aDd6DfCD3717d4Fd29bf4",
+    "deploymentTransaction": "0x7ef0f9c878414d7529b077a9bebe9ebfb47a21c010d30e4509f456d9c9e0b605",
+    "fundingTransaction": "0x35b414031cda13251557214d4db00bf276896a224709b6b3c2025c390f6046c8",
+    "fundedWei": "500000000000000000",
+    "finalBalanceWei": "465348200000000000",
+    "serviceDebtWei": "0"
+  },
+  "requests": [
+    {
+      "requestId": 1,
+      "originBlock": 11532306,
+      "originTransaction": "0x8bbfcfb07d3147b517b10beebbeb2a0c7b5db0fbbeeca31733e0442e72d6ebf0",
+      "reactiveBlock": 4774758,
+      "reactiveTransaction": "0x75335aa8080469d961d75d81a61e5fb83217d6a82b3117a8bfd5e0ab3552c90e",
+      "destinationDelivered": false
+    },
+    {
+      "requestId": 2,
+      "originBlock": 11532307,
+      "originTransaction": "0xd51151d4581ce2d15e4cfa6c14d3aadcb68bfdf0e7dfeef542cfe557d79fcfc1",
+      "reactiveBlock": 4774770,
+      "reactiveTransaction": "0x632a58a9bee82a77b5a16f6328bca4c69be2f4dccf371ec9e02429c2c78e2880",
+      "destinationDelivered": false
+    },
+    {
+      "requestId": 3,
+      "originBlock": 11532308,
+      "originTransaction": "0xe417793d27020beec38fbc25960dc7d47cda1fd0e6369bdec59a726df54c73ef",
+      "reactiveBlock": 4774781,
+      "reactiveTransaction": "0xa5c37991a5b32baab48d5a965ec4ed467952ba72f3dd662f28967c2376f0e762",
+      "destinationDelivered": false
+    }
+  ],
+  "observation": {
+    "firstRequestAt": "2026-08-20T23:44:48Z",
+    "lastRequestAt": "2026-08-20T23:45:12Z",
+    "checkedThrough": "2026-08-20T23:51:38Z",
+    "secondsAfterLastRequest": 386,
+    "requestCount": 3,
+    "reactiveCallbackEventCount": 3,
+    "destinationCallbackCount": 0
+  },
+  "result": "no_destination_delivery_observed",
+  "conclusion": "Lasna ingested all three Ethereum Sepolia events and emitted correctly targeted callback instructions, but the supported Ethereum Sepolia callback proxy made no observable delivery attempt during the bounded observation window. This reproduces the Unichain failure on a second destination and does not support migrating MARKOUT merely to change destination chains."
+}

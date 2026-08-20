@@ -222,3 +222,12 @@ Omni produces `Cron10` approximately every ten seconds. Settlement and expiry re
 60-second cooldown instead of emitting on every eligible cron. The first callback remains immediate, acknowledgement
 still finalizes the record, and a lost callback remains retryable. This bound was added after a public relayer outage
 showed that an unacknowledged expiry could otherwise consume lREACT every ten seconds without improving delivery.
+
+## D-037 — Require a destination canary before migrating MARKOUT
+
+A minimal authenticated canary must prove event ingestion and callback delivery before MARKOUT is redeployed to a new
+destination. The Ethereum Sepolia canary emitted three independent requests; Lasna ingested all three and emitted
+three correctly targeted callbacks, but Ethereum Sepolia received none during the bounded observation window. The
+destination contract retained its full callback balance and accrued no proxy debt, so no delivery attempt was
+observable. Because the same failure now exists on two supported destinations, changing chains alone is not accepted
+as a liveness fix.
