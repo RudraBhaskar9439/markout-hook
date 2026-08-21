@@ -50,9 +50,11 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
   assert.match(html, /3<\/b> public end-to-end lifecycles/);
   assert.match(html, /2 \/ 1<\/b> full rebates \/ full retention/);
   assert.match(html, /Three public Circle lifecycles proven/);
-  assert.match(html, /When does a rational router choose MARKOUT\?/);
-  assert.match(html, /83\.56% versus fixed/);
-  assert.match(html, /9\.43 bps benign/);
+  assert.match(html, /Good flow wins without assuming deeper liquidity\./);
+  assert.match(html, /21\.87%/);
+  assert.match(html, /benign flow saves \$2\.57/);
+  assert.match(html, /18 bps base \+ refundable 50 bps surcharge/);
+  assert.match(html, /original 30 \+ 50 bps pool/);
   assert.match(html, /0xa64789b5a08ea8aae8c2b909b6a81b495334b707eaae12610bf3749902ec532f/);
   assert.match(html, /0xefeece5de9f78ae809652418e1fcd8fb592de950af64e6bbbf66df93bdc25eae/);
   assert.match(html, /0x81f7878312b81b80ba69ad8fdc0f4e06f64f8624ed610ebd5a6ea63cca0ca610/);
@@ -82,10 +84,10 @@ test("removes starter metadata and keeps deterministic evidence explicit", async
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
   assert.match(data, /fixedFeeBps:\s*30/);
   assert.match(data, /volatilityFeeBps:\s*49\.479/);
-  assert.match(data, /markoutFeeBps:\s*73\.0552/);
-  assert.match(data, /\+\$3,249\.79/);
-  assert.match(data, /better execution needed vs fixed/);
-  assert.match(data, /\+\$10\.05/);
+  assert.match(data, /markoutFeeBps:\s*61\.0552/);
+  assert.match(data, /\+21\.87%/);
+  assert.match(data, /saved vs fixed per \$10k/);
+  assert.match(data, /\+\$22\.05/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
 
   await assert.rejects(
@@ -99,4 +101,25 @@ test("ships an exact-size social preview card", async () => {
   assert.equal(image.toString("ascii", 1, 4), "PNG");
   assert.equal(image.readUInt32BE(16), 1200);
   assert.equal(image.readUInt32BE(20), 630);
+});
+
+test("keeps the judge projection synchronized with committed research artifacts", async () => {
+  const [data, summary, sweep] = await Promise.all([
+    readFile(new URL("../app/lib/demo-data.ts", import.meta.url), "utf8"),
+    readFile(new URL("../../experiments/results/summary.json", import.meta.url), "utf8").then(JSON.parse),
+    readFile(new URL("../../experiments/results/fair_flow_sweep.json", import.meta.url), "utf8").then(JSON.parse),
+  ]);
+  const markout = summary.aggregate.find((row) => row.policy === "markout");
+  const byFlow = Object.fromEntries(
+    summary.byFlowClass
+      .filter((row) => row.policy === "markout")
+      .map((row) => [row.flow_class, row]),
+  );
+
+  assert.equal(sweep.selected.base_fee_bps, 18);
+  assert.match(data, new RegExp(`lpNet:\\s*${markout.lp_net_after_proxy_quote_micro / 1e6}`));
+  assert.match(data, new RegExp(`effectiveFee:\\s*${Number(markout.average_effective_trader_fee_bps)}`));
+  assert.match(data, new RegExp(`markoutFeeBps:\\s*${Number(byFlow.benign.average_effective_trader_fee_bps)}`));
+  assert.match(data, new RegExp(`markoutFeeBps:\\s*${Number(byFlow.informed.average_effective_trader_fee_bps)}`));
+  assert.match(data, new RegExp(`markoutFeeBps:\\s*${Number(byFlow.inventory_improving.average_effective_trader_fee_bps)}`));
 });

@@ -72,6 +72,21 @@ contract MarkoutAdversarialTest is MarkoutTestFixture {
         assertEq(IERC20Minimal(trade.currency).balanceOf(ATTACKER) - attackerBalanceBefore, claimableBefore);
     }
 
+    function test_sponsoredClaimAlwaysPaysTheRecordedBeneficiary() public {
+        (bytes32 tradeId, TradeRecord memory trade) = _executeSwap(true, true, 1e15);
+        _settleNeutral(tradeId);
+        uint256 claimableBefore = hook.claimableRebate(REBATE_RECIPIENT, trade.currency);
+        uint256 beneficiaryBalanceBefore = IERC20Minimal(trade.currency).balanceOf(REBATE_RECIPIENT);
+        uint256 attackerBalanceBefore = IERC20Minimal(trade.currency).balanceOf(ATTACKER);
+
+        vm.prank(ATTACKER);
+        assertEq(hook.claimRebateFor(REBATE_RECIPIENT, trade.currency), claimableBefore);
+
+        assertEq(IERC20Minimal(trade.currency).balanceOf(REBATE_RECIPIENT) - beneficiaryBalanceBefore, claimableBefore);
+        assertEq(IERC20Minimal(trade.currency).balanceOf(ATTACKER), attackerBalanceBefore);
+        assertEq(hook.claimableRebate(REBATE_RECIPIENT, trade.currency), 0);
+    }
+
     function test_invalidObservationCannotMutateAccountingAndTradeCanStillExpire() public {
         (bytes32 tradeId, TradeRecord memory trade) = _executeSwap(false, false, 1e15);
         uint256 pendingBefore = hook.totalPendingSurcharge(trade.currency);

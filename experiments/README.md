@@ -5,7 +5,13 @@ synthetic trade tape:
 
 1. a 30 bps fixed LP fee;
 2. a volatility-linked fee with a 30 bps base, `0.75 ×` observed volatility, and a 50 bps incremental cap; and
-3. MARKOUT's 30 bps base plus a refundable 50 bps provisional surcharge governed by the on-chain retention curve.
+3. MARKOUT Fair-Flow's 18 bps base plus a refundable 50 bps provisional surcharge governed by the on-chain
+   retention curve.
+
+The 18 bps base is not hand-picked after reading one output. A committed 10–30 bps sweep selects the lowest candidate
+that keeps benign and inventory-improving effective fees at or below 30 bps while preserving at least 20% modeled LP
+net-after-proxy improvement versus the fixed baseline. The earlier public testnet pool remains 30 + 50 bps and is
+reported separately; the Fair-Flow profile is an undeployed release candidate.
 
 The volatility policy is a declared baseline, not an assertion that those parameters are universally optimal.
 Uniswap v4 supports both per-swap dynamic LP fees and hook-defined fees; its documentation also notes that an optimal
@@ -93,9 +99,10 @@ To intentionally regenerate after reviewing a configuration or model change:
 | `results/flow_summary.csv` | flow-class × policy metrics |
 | `results/summary.json` | machine-readable aggregate, boundary, and limitations |
 | `results/adoption_summary.json` | fee-only trader routing break-evens and LP comparison deltas |
+| `results/fair_flow_sweep.json` | declared constraints, all 21 base-fee candidates, and the selected profile |
 | `results/report.md` | judge-readable findings, regressions, and scenario table |
 | `results/manifest.json` | SHA-256 hashes for generator inputs and every generated artifact |
-| `charts/*.svg` | dependency-free deterministic visual comparisons |
+| `charts/*.svg` | dependency-free deterministic visual comparisons, including the fee frontier |
 
 The routing break-even artifact answers the trader-adoption objection without assuming its conclusion. It reports
 how much better MARKOUT's execution price or slippage must be to offset any fee premium against the fixed baseline,

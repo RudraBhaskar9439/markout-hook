@@ -26,7 +26,8 @@ Fixed and volatility policies classify the environment. MARKOUT classifies the r
 Keep **Benign flow** selected.
 
 “The hook collects a bounded provisional surcharge. After five minutes, the reference price remains near execution,
-so most of that surcharge becomes a trader rebate. No operator chooses the result.”
+so most of that surcharge becomes a trader rebate. Under Fair-Flow, the final average is 27.43 bps—below a normal 30
+bps pool. No operator chooses the result.”
 
 Replay the lifecycle: swap, maturity, Pyth verification, authenticated delivery, allocation.
 
@@ -42,13 +43,14 @@ and returns less. MARKOUT does not blacklist a wallet or guess intent; it settle
 Select **Inventory-improving flow**.
 
 “When the market moves against the trader and the flow helps LP inventory, MARKOUT returns the complete provisional
-surcharge. The final charge falls back to the 30 bps base fee.”
+surcharge. The final charge falls back to the 18 bps Fair-Flow base fee.”
 
 ### 2:35–3:20 — Research evidence
 
-“All three policies receive one seeded 768-trade tape. MARKOUT improves modeled LP net-after-proxy by 3,249.79 USDC
-versus the fixed fee while charging benign and inventory-improving flow less than the volatility policy. It trails the
-volatility baseline by 454.75 USDC overall because that baseline charges good flow more.”
+“All three policies receive one seeded 768-trade tape. A declared 10-to-30 bps sweep selects 18 bps as the lowest base
+that keeps good flow at or below 30 bps while preserving at least a 20% LP advantage. Benign flow saves $2.57 and
+inventory-improving flow saves $12 per $10,000 versus fixed at equal execution. MARKOUT still improves modeled LP
+net-after-proxy by 21.87%, although volatility earns more by charging good flow more.”
 
 The metric is a pool-level adverse-selection proxy, not exact LVR or individual LP profit.
 
@@ -60,7 +62,8 @@ delivery wins; duplicate delivery is harmless; and if infrastructure fails, anyo
 receives the full surcharge back. MARKOUT turns LP protection from a fear-based prediction into outcome-based
 settlement.”
 
-Finish on the three public Circle lifecycles. The first used a 46-second-old observation, settled in 38 seconds, and
+Clarify that those three public lifecycles use the original 30 + 50 bps deployment; Fair-Flow is the separately tested
+18 + 50 bps release candidate and has not been deployed. The first live proof used a 46-second-old observation, settled in 38 seconds, and
 returned 100% of the provisional surcharge. The second used a 96-second-old observation, settled in 67 seconds, and
 retained 100% of its escrow for LP protection. The wallet-console lifecycle independently reproduced the rebate branch
 with a 92-second-old observation and a 67-second relay, then claimed the refund. Open the transactions and show that

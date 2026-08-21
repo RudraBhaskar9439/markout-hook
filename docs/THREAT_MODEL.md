@@ -29,7 +29,7 @@ security of external Uniswap or Reactive deployments are not proven by this repo
 | Circle publisher caller | Fully untrusted | Supplies signed Pyth update bytes, exact fee, and trade id; cannot directly choose a price |
 | Reactive system and callback proxy | Optional log and callback transport | May mirror the publisher event; must also provide the immutable Reactive identity |
 | Settlement coordinator | Immutable multi-transport boundary | Sole hook settlement authority; first valid authorized delivery wins |
-| Any public address | Untrusted | May expire a trade only after grace and may claim only its own credit |
+| Any public address | Untrusted | May expire after grace or sponsor a claim that is forced to the recorded beneficiary |
 
 There is no upgrade administrator, pause administrator, escrow owner, or arbitrary reserve withdrawer.
 
@@ -39,7 +39,7 @@ There is no upgrade administrator, pause administrator, escrow owner, or arbitra
 2. Every terminal allocation equals the exact escrow: `retained + rebate = escrow`.
 3. A trade moves from pending to settled or expired at most once.
 4. Only the immutable settlement authority can settle; expiry alone becomes permissionless after grace.
-5. A caller can withdraw only its own claimable balance, although it may choose the receiving address.
+5. A beneficiary may redirect its own claim; a sponsor may trigger another claim only when payment is forced to that beneficiary.
 6. Invalid observation or callback attempts leave lifecycle accounting unchanged.
 7. Missing infrastructure eventually fails open to a complete trader rebate.
 8. Circle and Reactive delivery order cannot change a terminal trade allocation.
@@ -54,7 +54,7 @@ There is no upgrade administrator, pause administrator, escrow owner, or arbitra
 | Replay or duplicate logs | Circle nonce protection plus terminal hook state and coordinator no-op semantics | Cross-transport duplicates still consume delivery gas |
 | Circle fast-confirmation reorg | Threshold `1000` fits the ten-minute window; hook repeats maturity, freshness, confidence, and state checks | A confirmed Ethereum source message can be reorganized; hard-finalized deployments must widen the window |
 | Malicious publisher caller | Pyth verifies the signed update and publisher forwards only its normalized result | Liveness can be spammed at the caller's own gas cost; unknown trades fail at the coordinator |
-| Rebate theft or redirect | Claim mapping keyed by `msg.sender`; adversarial redirect tests | Beneficiary key compromise remains user risk |
+| Rebate theft or redirect | Self-claims are keyed by `msg.sender`; sponsored claims force recipient = beneficiary; adversarial redirect tests | Beneficiary key compromise remains user risk |
 | Claim reentrancy | State zeroed before transfer plus `nonReentrant`; malicious native recipient test | Non-standard ERC-20 behavior is outside the allowlist |
 | Recipient rejects native token | Failed call restores credit; beneficiary can retry to another recipient | User must perform the retry |
 | Premature expiry | Exact timestamp boundary enforced; adversarial invariant action | Validator timestamp influence can affect eligibility by ordinary consensus bounds |

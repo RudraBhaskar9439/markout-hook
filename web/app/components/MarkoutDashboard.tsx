@@ -129,8 +129,8 @@ function SettlementCard({ selected }: { selected: FlowId }) {
       <div className="receipt-grid">
         <div>
           <span>Base LP fee</span>
-          <strong>$30.00</strong>
-          <small>30 bps</small>
+          <strong>$18.00</strong>
+          <small>18 bps candidate</small>
         </div>
         <div>
           <span>Provisional</span>
@@ -275,6 +275,8 @@ function ResearchEvidence() {
           <p>
             Circle delivered Pyth observations for three real Unichain v4 swaps: two negative-markout trades returned
             and paid their complete rebates, while positive markout retained the complete escrow for LP protection.
+            These live proofs use the original 30 + 50 bps pool; the Fair-Flow evidence below is the undeployed 18 +
+            50 bps release candidate.
           </p>
         </div>
         <div className="live-proof-metrics">
@@ -326,12 +328,12 @@ function ResearchEvidence() {
       <div className="adoption-proof" aria-labelledby="adoption-proof-title">
         <div className="adoption-proof-heading">
           <div>
-            <p className="kicker">Trader adoption break-even</p>
-            <h3 id="adoption-proof-title">When does a rational router choose MARKOUT?</h3>
+            <p className="kicker">Trader adoption proof</p>
+            <h3 id="adoption-proof-title">Good flow wins without assuming deeper liquidity.</h3>
           </div>
           <p>
-            Fees are only one part of execution. These thresholds show exactly how much better price or slippage must
-            compensate for MARKOUT&apos;s fee premium. They do not assume deeper liquidity already exists.
+            Under the selected 18 bps base, benign and inventory-improving traders already beat a fixed 30 bps pool
+            at equal execution quality. Informed flow pays more only after its realized outcome is adverse.
           </p>
         </div>
         <div className="adoption-grid">
@@ -351,9 +353,9 @@ function ResearchEvidence() {
           ))}
         </div>
         <p className="adoption-verdict">
-          <b>Measured result:</b> MARKOUT improves modeled LP net-after-proxy by 83.56% versus fixed on the common
-          tape. <b>Unproven hypothesis:</b> that this protection attracts enough depth to clear the 9.43 bps benign
-          routing threshold.
+          <b>Measured result:</b> benign flow saves $2.57 and inventory-improving flow saves $12.00 per $10,000
+          versus fixed, while MARKOUT still improves modeled LP net-after-proxy by 21.87%. <b>Boundary:</b> routing,
+          demand elasticity, and additional liquidity remain unmodeled.
         </p>
       </div>
     </section>
@@ -385,7 +387,8 @@ export function MarkoutDashboard() {
           <h1>Fees should follow <em>outcomes.</em><br />Not fear.</h1>
           <p>
             MARKOUT is a Uniswap v4 hook that escrows a provisional charge, waits for post-trade evidence, then lets
-            an authenticated observation return it to good flow—or retain it when LPs were adversely selected.
+            an authenticated observation return it to good flow—or retain it when LPs were adversely selected. The
+            Fair-Flow profile starts at 18 bps, so good flow finishes below a normal 30 bps pool.
           </p>
           <div className="hero-actions">
             <a className="primary-action" href="#testnet">Run a real testnet swap <span>↓</span></a>
@@ -432,6 +435,10 @@ export function MarkoutDashboard() {
           </div>
           <FlowSelector selected={selected} onChange={setSelected} />
         </div>
+        <p className="section-lede">
+          <b>Fair-Flow release candidate:</b> 18 bps base + refundable 50 bps surcharge. The live console above stays
+          connected to the proven 30 + 50 bps deployment until a separate candidate pool is explicitly deployed.
+        </p>
         <div className="comparison-layout">
           <OutcomeComparison selected={selected} />
           <SettlementCard selected={selected} />

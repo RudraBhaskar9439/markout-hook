@@ -197,10 +197,23 @@ contract MarkoutHook is FixedBpsProvisionalSurchargeHook, ReentrancyGuard, IMark
     /// @inheritdoc IMarkoutHook
     function claimRebate(address currency, address payable recipient) external nonReentrant returns (uint256 amount) {
         if (recipient == address(0)) revert ZeroClaimRecipient();
-        amount = _claimable[msg.sender][currency];
-        if (amount == 0) revert NoClaimableRebate(msg.sender, currency);
+        amount = _claimRebate(msg.sender, currency, recipient);
+    }
 
-        _claimable[msg.sender][currency] = 0;
+    /// @inheritdoc IMarkoutHook
+    function claimRebateFor(address beneficiary, address currency) external nonReentrant returns (uint256 amount) {
+        amount = _claimRebate(beneficiary, currency, payable(beneficiary));
+    }
+
+    /// @dev Shared pull-payment path. Sponsored claims cannot choose or redirect the recipient.
+    function _claimRebate(address beneficiary, address currency, address payable recipient)
+        private
+        returns (uint256 amount)
+    {
+        amount = _claimable[beneficiary][currency];
+        if (amount == 0) revert NoClaimableRebate(beneficiary, currency);
+
+        _claimable[beneficiary][currency] = 0;
         _totalClaimable[currency] -= amount;
 
         if (currency == address(0)) {
@@ -210,7 +223,7 @@ contract MarkoutHook is FixedBpsProvisionalSurchargeHook, ReentrancyGuard, IMark
             IERC20(currency).safeTransfer(recipient, amount);
         }
 
-        emit RebateClaimed(msg.sender, currency, recipient, amount);
+        emit RebateClaimed(beneficiary, currency, recipient, amount);
         _assertSolvent(currency);
     }
 

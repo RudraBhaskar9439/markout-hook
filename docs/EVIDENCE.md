@@ -1,7 +1,7 @@
 # MARKOUT Evidence Ledger
 
 Status: three public Circle-primary lifecycles verified on August 21, 2026; one deterministic 768-trade policy
-comparison reproduced locally; liquidity and routing response remain an unproven adoption hypothesis.
+comparison and 21-point base-fee sweep reproduced locally; liquidity and routing response remain unproven.
 
 ## Evidence hierarchy
 
@@ -13,8 +13,8 @@ MARKOUT separates facts by strength so the submission never turns a model result
    committed trade tape. It proves properties of the declared model, not future market behavior.
 3. **External research** establishes that adverse selection, fees, markout, and liquidity are economically relevant.
    It motivates the hypothesis; it does not validate MARKOUT's chosen curve.
-4. **Not yet proven:** that MARKOUT attracts enough incremental liquidity or improves execution enough to beat a
-   same-liquidity fixed 30 bps pool for benign traders.
+4. **Not yet proven:** that MARKOUT attracts incremental liquidity, changes routed volume, or improves market share.
+   Fair-Flow's fee-only comparison does not require those assumptions, but real all-in execution still does.
 
 ## Public onchain evidence
 
@@ -31,34 +31,46 @@ The third lifecycle is important demo evidence: it was initiated and completed t
 an owner-side deployment script. Its observation was 92 seconds old when settlement mined, inside the hook's
 120-second freshness bound.
 
+All three public lifecycles use the original 30 bps base + 50 bps provisional profile. They prove the mechanism and
+both terminal branches. They are not evidence that the separately evaluated 18 + 50 bps Fair-Flow profile is already
+deployed.
+
 ## Controlled policy evidence
 
 The reproducible report is [experiments/results/report.md](../experiments/results/report.md), and the separate
 [adoption artifact](../experiments/results/adoption_summary.json) makes the trader objection measurable.
 
-On the frozen 768-trade, 1,999,280 USDC tape:
+On the frozen 768-trade, 1,999,280 USDC tape, the Fair-Flow candidate uses an 18 bps base:
 
-- MARKOUT improves modeled LP net-after-proxy by **3,249.791286 USDC**, or **83.5638%**, versus fixed 30 bps.
-- MARKOUT trails the volatility baseline by **454.753226 USDC**, or **5.9887%**, because volatility charges benign
+- MARKOUT improves modeled LP net-after-proxy by **850.655286 USDC**, or **21.8734%**, versus fixed 30 bps.
+- MARKOUT trails the volatility baseline by **2,853.889226 USDC**, or **37.5831%**, because volatility charges benign
   and inventory-improving flow more.
-- Benign flow pays **39.4262 bps** under MARKOUT versus **49.4790 bps** under volatility: a **10.0528 USDC** saving
-  per 10,000 USDC of notional.
-- Inventory-improving flow pays **30.0000 bps** versus **47.4403 bps** under volatility: a **17.4403 USDC** saving
-  per 10,000 USDC.
-- Informed flow pays **73.0552 bps**, establishing a **33.6290 bps** discrimination gap from benign flow.
+- Benign flow pays **27.4262 bps**: **2.5738 USDC** less than fixed and **22.0528 USDC** less than volatility per
+  10,000 USDC of notional at equal execution.
+- Inventory-improving flow pays **18.0000 bps**: **12.0000 USDC** less than fixed and **29.4403 USDC** less than
+  volatility per 10,000 USDC.
+- Informed flow pays **61.0552 bps**, establishing a **33.6290 bps** discrimination gap from benign flow.
 - MARKOUT returns **6,746.608714 USDC** in modeled rebates and credits **3,249.791286 USDC** to the modeled LP
   protection reserve.
 - Sixty-three invalid references fail open to 63 full-surcharge expiries.
 
 ### Trader routing break-even
 
-Against a fixed 30 bps pool with identical execution quality, benign MARKOUT flow carries a **9.4262 bps** fee
-premium. A rational router chooses MARKOUT only if its better price or lower slippage exceeds that premium. For
-inventory-improving flow the threshold is **0 bps**. This repository does not claim the required depth improvement has
-already happened.
+Against a fixed 30 bps pool with identical execution quality, benign Fair-Flow saves **2.5738 bps** and
+inventory-improving flow saves **12.0000 bps**. Their execution-advantage threshold is therefore **0 bps**: a rational
+fee-aware router can choose them without assuming deeper liquidity. Informed flow carries a **31.0552 bps** premium by
+design.
 
 Against the declared volatility policy at identical execution quality, benign and inventory-improving flow already
 receive the lower modeled all-in fee. Informed flow pays more by design and is not a trader-acquisition target.
+
+### Fair-Flow parameter selection
+
+The machine-readable [fee sweep](../experiments/results/fair_flow_sweep.json) evaluates every integer base fee from 10
+through 30 bps on the same tape. Before selection, the repository declares three constraints: benign effective fee no
+greater than 30 bps, inventory-improving effective fee no greater than 30 bps, and at least 20% modeled LP-net
+improvement versus fixed. Seventeen bps misses the LP constraint at 16.7325%; 18 bps is the lowest eligible candidate
+at 21.8734%. The selection is therefore reproducible and falsifiable rather than discretionary.
 
 ## External research basis
 
@@ -83,12 +95,14 @@ receive the lower modeled all-in fee. Informed flow pays more by design and is n
   retention.
 - The onchain accounting conserves the provisional surcharge and fails open on missing or invalid observations.
 - On the declared synthetic tape, MARKOUT discriminates by realized outcome, improves the modeled LP result versus
-  fixed fees, and charges good flow less than the declared volatility baseline.
+  fixed fees, and the Fair-Flow candidate charges good flow less than both fixed and volatility baselines.
+- The next hook version exposes a permissionless sponsored-claim path that can only transfer to the recorded
+  beneficiary; this is locally tested source code, not a claim about the existing deployment.
 
 ## Claims the evidence does not support
 
 - Guaranteed LP profit, exact LVR measurement, or individual-position loss estimates.
-- Guaranteed trader savings versus every fixed-fee pool.
+- Guaranteed trader savings after slippage, gas, rebate delay, or routing effects in every market.
 - Proven incremental liquidity, market share, or volume.
 - Pair-accurate ETH/USDC production markout; the testnet uses ETH/USD as a documented proxy.
 - A live Reactive destination callback. Reactive remains optional until a public callback is observed.
@@ -96,6 +110,6 @@ receive the lower modeled all-in fee. Informed flow pays more by design and is n
 ## Highest-value next experiment
 
 Replay historical pool and external reference-market data through a concentrated-liquidity simulator with endogenous
-routing. Sweep the base fee, surcharge cap, horizon, and retention curve, then report the Pareto frontier between LP
-net-after-cost, benign all-in execution, routed volume, false-positive retention, and settlement cost. Until that work
-exists, the 9.4262 bps benign break-even is the honest adoption threshold.
+routing and fee-sensitive demand. Sweep the surcharge cap, horizon, retention curve, and gas sponsorship policy, then
+report the Pareto frontier between LP net-after-cost, benign all-in execution, routed volume, false-positive retention,
+and settlement cost. The current sweep establishes fee-only economics; it does not predict live routing response.

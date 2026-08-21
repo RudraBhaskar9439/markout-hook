@@ -19,7 +19,7 @@ Run the complete release candidate from a clean tree with:
 ```
 
 The cumulative command repeats the Phase 1–13 protocol, research, security, dashboard, and presentation gates before
-running the full 186-test Solidity suite.
+running the full 188-test Solidity suite.
 
 ## Read-only public-network preflight
 

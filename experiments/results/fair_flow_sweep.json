@@ -1,0 +1,253 @@
+{
+  "candidates": [
+    {
+      "base_fee_bps": 10,
+      "benign_effective_fee_bps": "19.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "53.0552",
+      "inventory_improving_effective_fee_bps": "10.0000",
+      "lp_net_after_proxy_quote_micro": 3140224402,
+      "lp_net_improvement_vs_fixed_percent": "-19.2535",
+      "maximum_upfront_fee_bps": 60,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 11,
+      "benign_effective_fee_bps": "20.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "54.0552",
+      "inventory_improving_effective_fee_bps": "11.0000",
+      "lp_net_after_proxy_quote_micro": 3340152402,
+      "lp_net_improvement_vs_fixed_percent": "-14.1127",
+      "maximum_upfront_fee_bps": 61,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 12,
+      "benign_effective_fee_bps": "21.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "55.0552",
+      "inventory_improving_effective_fee_bps": "12.0000",
+      "lp_net_after_proxy_quote_micro": 3540080402,
+      "lp_net_improvement_vs_fixed_percent": "-8.9718",
+      "maximum_upfront_fee_bps": 62,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 13,
+      "benign_effective_fee_bps": "22.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "56.0552",
+      "inventory_improving_effective_fee_bps": "13.0000",
+      "lp_net_after_proxy_quote_micro": 3740008402,
+      "lp_net_improvement_vs_fixed_percent": "-3.8309",
+      "maximum_upfront_fee_bps": 63,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 14,
+      "benign_effective_fee_bps": "23.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "57.0552",
+      "inventory_improving_effective_fee_bps": "14.0000",
+      "lp_net_after_proxy_quote_micro": 3939936402,
+      "lp_net_improvement_vs_fixed_percent": "1.3099",
+      "maximum_upfront_fee_bps": 64,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 15,
+      "benign_effective_fee_bps": "24.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "58.0552",
+      "inventory_improving_effective_fee_bps": "15.0000",
+      "lp_net_after_proxy_quote_micro": 4139864402,
+      "lp_net_improvement_vs_fixed_percent": "6.4508",
+      "maximum_upfront_fee_bps": 65,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 16,
+      "benign_effective_fee_bps": "25.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "59.0552",
+      "inventory_improving_effective_fee_bps": "16.0000",
+      "lp_net_after_proxy_quote_micro": 4339792402,
+      "lp_net_improvement_vs_fixed_percent": "11.5917",
+      "maximum_upfront_fee_bps": 66,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 17,
+      "benign_effective_fee_bps": "26.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "60.0552",
+      "inventory_improving_effective_fee_bps": "17.0000",
+      "lp_net_after_proxy_quote_micro": 4539720402,
+      "lp_net_improvement_vs_fixed_percent": "16.7325",
+      "maximum_upfront_fee_bps": 67,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 18,
+      "benign_effective_fee_bps": "27.4262",
+      "eligible": true,
+      "informed_effective_fee_bps": "61.0552",
+      "inventory_improving_effective_fee_bps": "18.0000",
+      "lp_net_after_proxy_quote_micro": 4739648402,
+      "lp_net_improvement_vs_fixed_percent": "21.8734",
+      "maximum_upfront_fee_bps": 68,
+      "selected": true
+    },
+    {
+      "base_fee_bps": 19,
+      "benign_effective_fee_bps": "28.4262",
+      "eligible": true,
+      "informed_effective_fee_bps": "62.0552",
+      "inventory_improving_effective_fee_bps": "19.0000",
+      "lp_net_after_proxy_quote_micro": 4939576402,
+      "lp_net_improvement_vs_fixed_percent": "27.0143",
+      "maximum_upfront_fee_bps": 69,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 20,
+      "benign_effective_fee_bps": "29.4262",
+      "eligible": true,
+      "informed_effective_fee_bps": "63.0552",
+      "inventory_improving_effective_fee_bps": "20.0000",
+      "lp_net_after_proxy_quote_micro": 5139504402,
+      "lp_net_improvement_vs_fixed_percent": "32.1551",
+      "maximum_upfront_fee_bps": 70,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 21,
+      "benign_effective_fee_bps": "30.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "64.0552",
+      "inventory_improving_effective_fee_bps": "21.0000",
+      "lp_net_after_proxy_quote_micro": 5339432402,
+      "lp_net_improvement_vs_fixed_percent": "37.2960",
+      "maximum_upfront_fee_bps": 71,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 22,
+      "benign_effective_fee_bps": "31.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "65.0552",
+      "inventory_improving_effective_fee_bps": "22.0000",
+      "lp_net_after_proxy_quote_micro": 5539360402,
+      "lp_net_improvement_vs_fixed_percent": "42.4369",
+      "maximum_upfront_fee_bps": 72,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 23,
+      "benign_effective_fee_bps": "32.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "66.0552",
+      "inventory_improving_effective_fee_bps": "23.0000",
+      "lp_net_after_proxy_quote_micro": 5739288402,
+      "lp_net_improvement_vs_fixed_percent": "47.5777",
+      "maximum_upfront_fee_bps": 73,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 24,
+      "benign_effective_fee_bps": "33.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "67.0552",
+      "inventory_improving_effective_fee_bps": "24.0000",
+      "lp_net_after_proxy_quote_micro": 5939216402,
+      "lp_net_improvement_vs_fixed_percent": "52.7186",
+      "maximum_upfront_fee_bps": 74,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 25,
+      "benign_effective_fee_bps": "34.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "68.0552",
+      "inventory_improving_effective_fee_bps": "25.0000",
+      "lp_net_after_proxy_quote_micro": 6139144402,
+      "lp_net_improvement_vs_fixed_percent": "57.8595",
+      "maximum_upfront_fee_bps": 75,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 26,
+      "benign_effective_fee_bps": "35.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "69.0552",
+      "inventory_improving_effective_fee_bps": "26.0000",
+      "lp_net_after_proxy_quote_micro": 6339072402,
+      "lp_net_improvement_vs_fixed_percent": "63.0004",
+      "maximum_upfront_fee_bps": 76,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 27,
+      "benign_effective_fee_bps": "36.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "70.0552",
+      "inventory_improving_effective_fee_bps": "27.0000",
+      "lp_net_after_proxy_quote_micro": 6539000402,
+      "lp_net_improvement_vs_fixed_percent": "68.1412",
+      "maximum_upfront_fee_bps": 77,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 28,
+      "benign_effective_fee_bps": "37.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "71.0552",
+      "inventory_improving_effective_fee_bps": "28.0000",
+      "lp_net_after_proxy_quote_micro": 6738928402,
+      "lp_net_improvement_vs_fixed_percent": "73.2821",
+      "maximum_upfront_fee_bps": 78,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 29,
+      "benign_effective_fee_bps": "38.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "72.0552",
+      "inventory_improving_effective_fee_bps": "29.0000",
+      "lp_net_after_proxy_quote_micro": 6938856402,
+      "lp_net_improvement_vs_fixed_percent": "78.4230",
+      "maximum_upfront_fee_bps": 79,
+      "selected": false
+    },
+    {
+      "base_fee_bps": 30,
+      "benign_effective_fee_bps": "39.4262",
+      "eligible": false,
+      "informed_effective_fee_bps": "73.0552",
+      "inventory_improving_effective_fee_bps": "30.0000",
+      "lp_net_after_proxy_quote_micro": 7138784402,
+      "lp_net_improvement_vs_fixed_percent": "83.5638",
+      "maximum_upfront_fee_bps": 80,
+      "selected": false
+    }
+  ],
+  "constraints": {
+    "maximum_benign_effective_fee_bps": 30,
+    "maximum_inventory_improving_effective_fee_bps": 30,
+    "minimum_lp_net_improvement_vs_fixed_percent": 20
+  },
+  "schemaVersion": 1,
+  "selected": {
+    "base_fee_bps": 18,
+    "benign_effective_fee_bps": "27.4262",
+    "eligible": true,
+    "informed_effective_fee_bps": "61.0552",
+    "inventory_improving_effective_fee_bps": "18.0000",
+    "lp_net_after_proxy_quote_micro": 4739648402,
+    "lp_net_improvement_vs_fixed_percent": "21.8734",
+    "maximum_upfront_fee_bps": 68,
+    "selected": true
+  },
+  "selectionRule": "choose the lowest base fee whose benign and inventory-improving effective fees remain at or below their declared caps while modeled LP net-after-proxy improves by at least the declared percentage versus fixed 30 bps"
+}

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "experimentId": "markout-phase-6-v1",
-  "generatorVersion": "1.1.0",
+  "generatorVersion": "1.2.0",
   "seed": 20260825,
   "tradesPerScenario": 128,
   "currency": {
@@ -27,7 +27,7 @@
       "maximumExtraFeeCentibps": 5000
     },
     "markout": {
-      "baseFeeCentibps": 3000,
+      "baseFeeCentibps": 1800,
       "provisionalSurchargeCentibps": 5000,
       "curve": {
         "favorableCutoffCentibps": 500,
@@ -41,6 +41,13 @@
         "expiry": 500000
       }
     }
+  },
+  "fairFlowSweep": {
+    "candidateBaseFeeBps": [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+    "selectedBaseFeeBps": 18,
+    "maximumBenignEffectiveFeeBps": 30,
+    "maximumInventoryImprovingEffectiveFeeBps": 30,
+    "minimumLpNetImprovementVsFixedPercent": 20
   },
   "scenarios": [
     {

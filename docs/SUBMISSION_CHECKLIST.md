@@ -8,12 +8,15 @@ on public testnets. The final release remains blocked only on the owner-controll
 - [x] Uniswap v4 surcharge accounting across every swap quadrant
 - [x] Deterministic markout mathematics and bounded settlement curve
 - [x] Reproducible 768-trade comparison against fixed and volatility baselines
+- [x] Reproducible 21-point fee sweep selecting the trader-friendly 18 bps Fair-Flow base
+- [x] Gas-sponsored rebate claim path that cannot redirect beneficiary funds
 - [x] Threat model, adversarial tests, 12 invariants, and zero medium/high Slither findings
 - [x] Immutable two-transport settlement coordinator with first-valid-delivery semantics
 - [x] Pyth-verified Circle CCTP V2 publisher and authenticated Unichain receiver
 - [x] Stateless legacy Reactive pulse and authenticated Unichain receiver
 - [x] Chain-locked deployment, binding, publication, attestation-relay, and preflight tools
 - [x] Judge dashboard updated to the honest hybrid architecture
+- [x] Dashboard clearly separates original live deployment evidence from the undeployed Fair-Flow candidate
 
 ## Required Circle public evidence
 

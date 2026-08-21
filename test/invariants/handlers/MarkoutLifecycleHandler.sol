@@ -120,6 +120,17 @@ contract MarkoutLifecycleHandler {
         claimed[currency] += received;
     }
 
+    /// @notice Exercises gas sponsorship while ensuring the handler remains the only payment recipient.
+    function sponsoredClaim(uint8 currencySeed) external {
+        address currency = currencySeed % 2 == 0 ? currency0 : currency1;
+        uint256 amount = hook.claimableRebate(address(this), currency);
+        if (amount == 0) return;
+
+        VM.prank(address(0x5F0A50));
+        uint256 received = hook.claimRebateFor(address(this), currency);
+        claimed[currency] += received;
+    }
+
     /// @notice Probes the settlement authorization boundary without allowing expected reverts to stop invariant runs.
     function unauthorizedSettle(uint256 tradeSeed) external {
         if (_tradeIds.length == 0) return;

@@ -88,14 +88,16 @@ lifetime accrued = current accounted balance + cumulative claimed rebate
 
 ## Claims and transfer isolation
 
-Rebates are pull payments. The recorded beneficiary chooses a nonzero recipient when claiming. State is cleared before
-the external transfer, and the function is reentrancy-guarded.
+Rebates are pull payments. The recorded beneficiary chooses a nonzero recipient when self-claiming. A sponsor may pay
+claim gas for another beneficiary, but that path forces the transfer to the beneficiary and exposes no recipient
+choice. Both paths clear state before the external transfer and are reentrancy-guarded.
 
 - ERC-20 claims use `SafeERC20`.
 - Native claims use a checked low-level transfer.
 - A failed transfer reverts only that claim and restores its credit.
 - A contract that rejects native currency can redirect its claim to another address.
 - Failed claims cannot block new swaps, settlements, expiries, or another beneficiary's claim.
+- Sponsored claims cannot redirect value to the sponsor or any third party.
 
 ## Deliberate Phase 3 boundary
 

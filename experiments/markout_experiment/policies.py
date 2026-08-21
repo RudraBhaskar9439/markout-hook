@@ -52,6 +52,12 @@ def evaluate_trade(trade: Trade, config: Mapping[str, Any]) -> tuple[PolicyOutco
     return fixed, volatility, markout
 
 
+def evaluate_markout_policy(trade: Trade, policy: Mapping[str, Any]) -> PolicyOutcome:
+    """Evaluate one MARKOUT policy variant without changing the common trade tape."""
+
+    return _markout_outcome(trade, policy, adverse_selection_proxy(trade))
+
+
 def _fixed_outcome(trade: Trade, policy: Mapping[str, Any], proxy: int) -> PolicyOutcome:
     retained = quote_fee(trade.notional_quote_micro, policy["baseFeeCentibps"])
     return _outcome(trade, Policy.FIXED, retained, retained, 0, 0, proxy, "not_required")

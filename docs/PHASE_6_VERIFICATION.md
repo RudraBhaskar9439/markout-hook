@@ -16,7 +16,7 @@ live evidence is fabricated or substituted by this experiment.
 Expected result:
 
 ```text
-Ran 10 tests ... OK
+Ran 13 tests ... OK
 Generated 768 trades and 2304 policy outcomes for 6 scenarios.
 Phase 6 experiment is reproducible: committed artifacts match a fresh seeded run.
 ```
@@ -40,12 +40,13 @@ column -s, -t experiments/results/flow_summary.csv
 sed -n '1,240p' experiments/results/report.md
 ```
 
-Review the three SVG files in `experiments/charts/` and confirm that the report says all of the following:
+Review the five SVG files in `experiments/charts/` and confirm that the report says all of the following:
 
 - MARKOUT improves aggregate LP net-after-proxy versus the fixed fee on this tape.
 - MARKOUT underperforms the volatility baseline in aggregate retained value.
 - MARKOUT charges benign and inventory-improving flow less than the volatility baseline.
-- The fixed fee remains cheapest for benign flow.
+- The 18 bps Fair-Flow candidate makes benign and inventory-improving flow cheaper than fixed at equal execution.
+- The fee sweep selects 18 bps as the lowest candidate preserving at least 20% LP-net improvement versus fixed.
 - Invalid references expire with a full provisional-surcharge rebate and reduced LP protection.
 - Reactive callback overhead, isolated-trade assumptions, and all model limitations are explicit.
 
@@ -57,11 +58,12 @@ Across 768 trades and 1,999,280 USDC of identical modeled volume per policy:
 | --- | ---: | ---: | ---: | ---: |
 | Fixed | 3,888.993116 | 30.0000 bps | 0 | 0 |
 | Volatility | 7,593.537628 | 48.5294 bps | 0 | 0 |
-| MARKOUT | 7,138.784402 | 46.2548 bps | 6,746.608714 | 3,249.791286 |
+| MARKOUT Fair-Flow | 4,739.648402 | 34.2548 bps | 6,746.608714 | 3,249.791286 |
 
-The result supports outcome-based flow discrimination and an improvement over the fixed baseline. It does not support
-a claim that MARKOUT maximizes aggregate LP fee protection: the configured volatility baseline retains 454.753226 USDC
-more on this tape by charging benign and inventory-improving flow more heavily.
+The result supports outcome-based flow discrimination, fee-only savings for good flow, and a 21.8734% modeled LP-net
+improvement over fixed. It does not support a claim that MARKOUT maximizes aggregate LP fee protection: the configured
+volatility baseline retains 2,853.889226 USDC more on this tape by charging benign and inventory-improving flow more
+heavily.
 
 ## Integrity evidence
 

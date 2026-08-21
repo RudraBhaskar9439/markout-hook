@@ -51,6 +51,11 @@ A positive-markout trade settled through Circle in 67 seconds with a 96-second-o
 bps markout through a second 67-second Circle relay and claimed its full 2,041,420,186,161-unit test-WETH rebate.
 Onchain balances match the accounting state.
 
+The public lifecycle proofs use the original 30 bps base + 50 bps provisional pool. A separately tested Fair-Flow
+release candidate lowers the base to 18 bps. A committed 10–30 bps sweep selects 18 as the lowest candidate that keeps
+good-flow fees at or below 30 bps while retaining at least 20% modeled LP-net improvement versus fixed. It remains
+undeployed and is never presented as public-chain evidence.
+
 ## Partner integration answer
 
 Select **Reactive Network**, **Circle**, and **Pyth** if those names are present in the form's partner picker.
@@ -76,12 +81,12 @@ directional markout as an adverse-selection proxy to determine how much becomes 
 MARKOUT turns protection from an ex-ante prediction into an ex-post, conserved settlement. It neither blacklists
 wallets nor claims to measure exact LVR or individual LP profit. Every provisional unit ends in a named bucket;
 invalid or missing observations fail open to a full rebate after expiry; and two authenticated transports can race
-without changing the first terminal outcome. On one reproducible 768-trade tape, MARKOUT improves modeled LP
-net-after-proxy by 3,249.79 USDC versus a fixed fee while charging benign and inventory-improving flow less than a
-volatility-only policy. The documented regression is that volatility earns 454.75 USDC more overall by charging good
-flow more. The trader break-even is explicit: benign MARKOUT routes need at least 9.4262 bps better execution to beat
-an otherwise identical fixed 30 bps pool, while they save 10.0528 USDC per 10,000 USDC versus the declared volatility
-policy at equal execution quality. Incremental liquidity is a hypothesis, not a claimed result.
+without changing the first terminal outcome. On one reproducible 768-trade tape, the 18 bps Fair-Flow profile improves
+modeled LP net-after-proxy by 850.66 USDC, or 21.87%, versus a fixed 30 bps fee. At identical execution quality, benign
+flow saves 2.5738 USDC and inventory-improving flow saves 12 USDC per 10,000 USDC versus fixed; those savings rise to
+22.0528 and 29.4403 USDC versus the declared volatility policy. The documented regression is that volatility earns
+2,853.89 USDC more overall by charging good flow more. Incremental liquidity and routing response remain hypotheses,
+not claimed results.
 
 ### Challenges
 
@@ -96,6 +101,7 @@ of being hidden.
 ## Why it is different
 
 - Prices realized directional outcomes instead of charging the entire market for volatility.
+- Makes benign and inventory-improving flow cheaper than a fixed 30 bps pool in the declared Fair-Flow profile.
 - Keeps custody, maturity validation, settlement mathematics, and fail-open expiry inside the hook boundary.
 - Uses Circle as the reliable primary transport while preserving Reactive as an optional accelerator.
 - Makes at-least-once delivery safe through immutable authentication and idempotent terminal settlement.
@@ -103,15 +109,16 @@ of being hidden.
 
 ## Reproducible evidence
 
-- 186 deterministic Solidity tests with zero failures or skips.
+- 188 deterministic Solidity tests with zero failures or skips.
 - 12 stateful invariants.
 - Zero medium/high Slither findings.
 - One seeded 768-trade experiment shared by fixed, volatility, and MARKOUT policies.
-- MARKOUT improves modeled LP net-after-proxy by 3,249.79 USDC versus the fixed policy.
-- MARKOUT trails the volatility policy by 454.75 USDC overall because volatility charges good flow more.
-- The LP net-after-proxy improvement versus fixed is 83.5638% on the declared tape.
-- Benign flow saves 10.0528 USDC per 10,000 USDC versus volatility but needs 9.4262 bps better execution to beat the
-  fixed 30 bps pool.
+- Fair-Flow improves modeled LP net-after-proxy by 850.66 USDC versus the fixed policy.
+- Fair-Flow trails the volatility policy by 2,853.89 USDC overall because volatility charges good flow more.
+- The LP net-after-proxy improvement versus fixed is 21.8734% on the declared tape.
+- Benign flow saves 2.5738 USDC per 10,000 USDC versus fixed and 22.0528 USDC versus volatility at equal execution.
+- Inventory-improving flow saves 12 USDC per 10,000 USDC versus fixed and 29.4403 USDC versus volatility.
+- A 21-point parameter sweep selects 18 bps as the lowest base satisfying the declared good-flow and LP constraints.
 - Three public Circle settlements demonstrate both terminal economic branches and reproduce the wallet-console rebate
   flow: two 100% rebates and one 100% LP retention.
 
@@ -150,7 +157,7 @@ The final form requires the GitHub repository to be public before its confirmati
 
 1. Explain why volatility cannot identify which realized trades were harmful.
 2. Replay benign, informed, and inventory-improving outcomes in the dashboard.
-3. Show the seeded comparison and accounting-conservation evidence.
+3. Show the seeded comparison, the 18 bps selection rule, and accounting-conservation evidence.
 4. Explain Circle-primary, Reactive-optional delivery and fail-open expiry.
 5. Open the three Pyth/Circle lifecycle records, including the wallet-console rebate claim.
 6. Close with the measured 38/67/67-second public lifecycles and both demonstrated allocation extremes: 100% rebated
@@ -163,6 +170,8 @@ The final form requires the GitHub repository to be public before its confirmati
 - Circle uses fast-confirmed finality to fit the bounded settlement window.
 - The optional Reactive pulse is deployed and subscribed, but no successful public Unichain callback is claimed.
 - The LP protection reserve distribution mechanism is intentionally outside this prototype.
+- The 18 + 50 bps Fair-Flow profile and sponsored-claim function are locally verified release-candidate code, not the
+  already deployed 30 + 50 bps hook.
 
 ## Final owner-controlled sequence
 

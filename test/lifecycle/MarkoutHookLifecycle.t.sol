@@ -212,6 +212,25 @@ contract MarkoutHookLifecycleTest is MarkoutTestFixture {
         assertEq(hook.claimableRebate(REBATE_RECIPIENT, trade.currency), claimable);
     }
 
+    function test_claimRebateFor_allowsSponsoredGasButCannotRedirectPayment() public {
+        (bytes32 tradeId, TradeRecord memory trade) = _executeSwap(true, true, 1e15);
+        _settleNeutral(tradeId);
+        uint256 claimable = hook.claimableRebate(REBATE_RECIPIENT, trade.currency);
+        uint256 beneficiaryBalanceBefore = IERC20(trade.currency).balanceOf(REBATE_RECIPIENT);
+
+        vm.prank(address(0x5F0A50));
+        assertEq(hook.claimRebateFor(REBATE_RECIPIENT, trade.currency), claimable);
+
+        assertEq(IERC20(trade.currency).balanceOf(REBATE_RECIPIENT) - beneficiaryBalanceBefore, claimable);
+        assertEq(hook.claimableRebate(REBATE_RECIPIENT, trade.currency), 0);
+        assertEq(hook.totalClaimableRebate(trade.currency), 0);
+
+        vm.expectRevert(
+            abi.encodeWithSelector(IMarkoutHook.NoClaimableRebate.selector, REBATE_RECIPIENT, trade.currency)
+        );
+        hook.claimRebateFor(REBATE_RECIPIENT, trade.currency);
+    }
+
     function test_neutralTradeReceivesLargerRebateThanToxicTrade() public {
         (bytes32 neutralId, TradeRecord memory neutralTrade) = _executeSwap(false, true, 1e15);
         (bytes32 toxicId, TradeRecord memory toxicTrade) = _executeSwap(false, true, 1e15);
@@ -335,6 +354,12 @@ contract MarkoutHookLifecycleTest is MarkoutTestFixture {
         );
         rejecting.claim(nativeHook, address(0), payable(address(rejecting)));
         assertGt(rejectingClaimable, 0);
+
+        vm.expectRevert(
+            abi.encodeWithSelector(IMarkoutHook.NativeTransferFailed.selector, address(rejecting), rejectingClaimable)
+        );
+        nativeHook.claimRebateFor(address(rejecting), address(0));
+        assertEq(nativeHook.claimableRebate(address(rejecting), address(0)), rejectingClaimable);
 
         bytes32 healthyTradeId = _nativeOutputSwap(nativeHook, nativePoolKey, REBATE_RECIPIENT);
         TradeRecord memory healthyTrade = nativeHook.getTrade(healthyTradeId);

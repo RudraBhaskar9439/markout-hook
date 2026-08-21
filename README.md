@@ -24,8 +24,9 @@ Can delayed, outcome-based fee settlement reduce LP adverse selection while char
 - One deterministic markout horizon and one reference-market stream
 - Pyth-verified observations transported primarily through fast-confirmed Circle CCTP V2 messages
 - An optional stateless Reactive delivery path racing the same observation safely
-- Pull-based trader rebates and an LP protection reserve
+- Pull-based rebates, an optional gas-sponsored claim that can only pay the beneficiary, and an LP protection reserve
 - A reproducible experiment comparing fixed fee, volatility fee, and MARKOUT
+- An undeployed Fair-Flow profile with an 18 bps base selected by a committed 10–30 bps parameter sweep
 
 MARKOUT is an experimental hackathon prototype, not audited production software.
 
@@ -56,6 +57,7 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 - [Phase 9 draft verification guide](docs/PHASE_9_DRAFT_VERIFICATION.md)
 - [Hybrid settlement architecture](docs/HYBRID_SETTLEMENT.md)
 - [Evidence ledger and trader break-even](docs/EVIDENCE.md)
+- [Fair-Flow trader-economics profile](docs/FAIR_FLOW.md)
 - [Phase 11 coordinator verification](docs/PHASE_11_VERIFICATION.md)
 - [Phase 12 Circle verification](docs/PHASE_12_VERIFICATION.md)
 - [Phase 13 Reactive pulse verification](docs/PHASE_13_VERIFICATION.md)
@@ -78,6 +80,9 @@ both allocation extremes and two public rebate claims; the dated deployment mani
 measured latency. The
 judge application can now repeat the same wallet-signed swap, observation, relay, allocation, and claim lifecycle while
 keeping private keys out of the browser bundle. Reactive receives live credit only if its callback is independently visible.
+
+The public pool uses the original 30 + 50 bps profile. The Fair-Flow release candidate uses an 18 bps base plus the
+same refundable 50 bps surcharge; it is validated locally and deliberately remains undeployed until approved.
 
 ## Architecture
 

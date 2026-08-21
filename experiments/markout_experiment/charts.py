@@ -17,6 +17,112 @@ POLICY_COLORS = {
 }
 
 
+def fair_flow_frontier_chart(destination: Path, sweep: Mapping[str, object]) -> None:
+    """Render the two declared Fair-Flow constraints without mixing their units."""
+
+    candidates = sweep["candidates"]
+    constraints = sweep["constraints"]
+    if not isinstance(candidates, list) or not candidates:
+        raise ValueError("fair-flow sweep requires candidates")
+    if not isinstance(constraints, Mapping):
+        raise ValueError("fair-flow sweep requires constraints")
+
+    width, height = 1080, 720
+    left, right = 95, 42
+    panel_width = width - left - right
+    panel_height = 205
+    top_a, top_b = 122, 420
+    base_fees = [int(row["base_fee_bps"]) for row in candidates]
+    benign = [float(row["benign_effective_fee_bps"]) for row in candidates]
+    lp_improvement = [float(row["lp_net_improvement_vs_fixed_percent"]) for row in candidates]
+    selected_index = next(index for index, row in enumerate(candidates) if row["selected"])
+    x_step = panel_width / (len(candidates) - 1)
+
+    def x_position(index: int) -> float:
+        return left + x_step * index
+
+    def panel_y(value: float, minimum: float, maximum: float, top: int) -> float:
+        return top + (maximum - value) * panel_height / (maximum - minimum)
+
+    def points(values: Sequence[float], minimum: float, maximum: float, top: int) -> str:
+        return " ".join(
+            f"{x_position(index):.2f},{panel_y(value, minimum, maximum, top):.2f}"
+            for index, value in enumerate(values)
+        )
+
+    top_maximum = max(42.0, max(benign) + 2)
+    bottom_minimum = min(-25.0, min(lp_improvement) - 4)
+    bottom_maximum = max(90.0, max(lp_improvement) + 4)
+    benign_cap = float(constraints["maximum_benign_effective_fee_bps"])
+    lp_floor = float(constraints["minimum_lp_net_improvement_vs_fixed_percent"])
+    selected_x = x_position(selected_index)
+    elements = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
+        '<rect width="100%" height="100%" fill="#0f172a"/>',
+        '<text x="95" y="44" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="25" font-weight="700">Fair-Flow base-fee frontier</text>',
+        '<text x="95" y="72" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="14">Lowest base satisfying both declared constraints is selected; same 768-trade tape</text>',
+        f'<rect x="{selected_x - 15:.2f}" y="100" width="30" height="540" rx="8" fill="#22c55e" opacity="0.10"/>',
+    ]
+
+    panels = [
+        (top_a, "Benign effective fee", "Basis points", benign, 0.0, top_maximum, benign_cap, "30 bps cap"),
+        (
+            top_b,
+            "LP net improvement versus fixed 30 bps",
+            "Percent",
+            lp_improvement,
+            bottom_minimum,
+            bottom_maximum,
+            lp_floor,
+            "20% floor",
+        ),
+    ]
+    for top, title, unit, values, minimum, maximum, threshold, threshold_label in panels:
+        elements.extend(
+            [
+                f'<text x="{left}" y="{top - 24}" fill="#e2e8f0" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="600">{escape(title)}</text>',
+                f'<text x="{width - right}" y="{top - 24}" text-anchor="end" fill="#64748b" font-family="Inter,Arial,sans-serif" font-size="12">{escape(unit)}</text>',
+                f'<rect x="{left}" y="{top}" width="{panel_width}" height="{panel_height}" fill="#111c2d" stroke="#334155"/>',
+            ]
+        )
+        for tick in range(5):
+            value = minimum + (maximum - minimum) * tick / 4
+            y = panel_y(value, minimum, maximum, top)
+            elements.extend(
+                [
+                    f'<line x1="{left}" x2="{width - right}" y1="{y:.2f}" y2="{y:.2f}" stroke="#27364b"/>',
+                    f'<text x="{left - 12}" y="{y + 4:.2f}" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11">{value:.1f}</text>',
+                ]
+            )
+        threshold_y = panel_y(threshold, minimum, maximum, top)
+        elements.extend(
+            [
+                f'<line x1="{left}" x2="{width - right}" y1="{threshold_y:.2f}" y2="{threshold_y:.2f}" stroke="#f59e0b" stroke-width="2" stroke-dasharray="7 6"/>',
+                f'<text x="{width - right - 8}" y="{threshold_y - 7:.2f}" text-anchor="end" fill="#fbbf24" font-family="Inter,Arial,sans-serif" font-size="11">{escape(threshold_label)}</text>',
+                f'<polyline points="{points(values, minimum, maximum, top)}" fill="none" stroke="#82b9ff" stroke-width="3" stroke-linejoin="round"/>',
+            ]
+        )
+        for index, value in enumerate(values):
+            selected = index == selected_index
+            elements.append(
+                f'<circle cx="{x_position(index):.2f}" cy="{panel_y(value, minimum, maximum, top):.2f}" r="{6 if selected else 3.5}" fill="{"#22c55e" if selected else "#82b9ff"}"/>'
+            )
+
+    for index, base_fee in enumerate(base_fees):
+        if base_fee % 2 == 0 or index == selected_index:
+            elements.append(
+                f'<text x="{x_position(index):.2f}" y="662" text-anchor="middle" fill="{"#86efac" if index == selected_index else "#94a3b8"}" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="{"700" if index == selected_index else "400"}">{base_fee}</text>'
+            )
+    elements.extend(
+        [
+            '<text x="536" y="692" text-anchor="middle" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">Base LP fee (bps)</text>',
+            f'<text x="{selected_x + 12:.2f}" y="105" fill="#86efac" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="700">SELECTED 18 BPS</text>',
+            '</svg>',
+        ]
+    )
+    destination.write_text("\n".join(elements) + "\n", encoding="utf-8")
+
+
 def grouped_bar_chart(
     destination: Path,
     *,

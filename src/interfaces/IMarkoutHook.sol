@@ -70,6 +70,9 @@ interface IMarkoutHook is IMarkoutSettlementTarget {
 
     function claimRebate(address currency, address payable recipient) external returns (uint256 amount);
 
+    /// @notice Lets any sponsor pay claim gas while forcing delivery to the rebate beneficiary.
+    function claimRebateFor(address beneficiary, address currency) external returns (uint256 amount);
+
     function claimableRebate(address beneficiary, address currency) external view returns (uint256);
 
     function totalClaimableRebate(address currency) external view returns (uint256);

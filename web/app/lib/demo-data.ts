@@ -26,11 +26,11 @@ export const flowCases: Record<FlowId, FlowCase> = {
     markoutDescription: "Neutral outcome",
     fixedFeeBps: 30,
     volatilityFeeBps: 49.479,
-    markoutFeeBps: 39.4262,
+    markoutFeeBps: 27.4262,
     rebateBps: 40.5738,
     protectionBps: 9.4262,
     markoutSignal: "≈ 0 bps",
-    verdict: "MARKOUT returns most of the provisional charge instead of pricing fear into every swap.",
+    verdict: "Fair-Flow returns most of the provisional charge and finishes below the ordinary 30 bps pool.",
   },
   informed: {
     id: "informed",
@@ -41,7 +41,7 @@ export const flowCases: Record<FlowId, FlowCase> = {
     markoutDescription: "Adverse outcome",
     fixedFeeBps: 30,
     volatilityFeeBps: 48.0374,
-    markoutFeeBps: 73.0552,
+    markoutFeeBps: 61.0552,
     rebateBps: 6.9448,
     protectionBps: 43.0552,
     markoutSignal: "+22 bps",
@@ -56,7 +56,7 @@ export const flowCases: Record<FlowId, FlowCase> = {
     markoutDescription: "Favorable LP outcome",
     fixedFeeBps: 30,
     volatilityFeeBps: 47.4403,
-    markoutFeeBps: 30,
+    markoutFeeBps: 18,
     rebateBps: 50,
     protectionBps: 0,
     markoutSignal: "−18 bps",
@@ -69,38 +69,38 @@ export const flowOrder: FlowId[] = ["benign", "informed", "inventory"];
 export const aggregateMetrics = [
   { value: "768", label: "seeded trades", detail: "six market regimes" },
   { value: "$1.999M", label: "volume per policy", detail: "identical trade tape" },
-  { value: "+$3,249.79", label: "vs fixed fee", detail: "LP net after proxy" },
+  { value: "+21.87%", label: "vs fixed fee", detail: "LP net after proxy" },
   { value: "0", label: "medium / high", detail: "Slither findings" },
 ];
 
 export const policyResults = [
   { policy: "Fixed fee", lpNet: 3888.993116, effectiveFee: 30, tone: "muted" },
   { policy: "Volatility", lpNet: 7593.537628, effectiveFee: 48.5294, tone: "amber" },
-  { policy: "MARKOUT", lpNet: 7138.784402, effectiveFee: 46.2548, tone: "green" },
+  { policy: "MARKOUT", lpNet: 4739.648402, effectiveFee: 34.2548, tone: "green" },
 ] as const;
 
 export const adoptionBreakEvens = [
   {
     flow: "Benign",
-    vsFixed: "9.43 bps",
-    vsFixedLabel: "better execution needed vs fixed",
-    vsVolatility: "+$10.05",
+    vsFixed: "+$2.57",
+    vsFixedLabel: "saved vs fixed per $10k",
+    vsVolatility: "+$22.05",
     vsVolatilityLabel: "saved vs volatility per $10k",
-    conclusion: "Competitive when LP depth improves the route by at least 9.43 bps.",
+    conclusion: "Wins the fee-only route at equal execution quality.",
   },
   {
     flow: "Inventory-improving",
-    vsFixed: "0.00 bps",
-    vsFixedLabel: "better execution needed vs fixed",
-    vsVolatility: "+$17.44",
+    vsFixed: "+$12.00",
+    vsFixedLabel: "saved vs fixed per $10k",
+    vsVolatility: "+$29.44",
     vsVolatilityLabel: "saved vs volatility per $10k",
-    conclusion: "Matches fixed at equal execution and beats the volatility baseline.",
+    conclusion: "Receives the full surcharge rebate and pays only the 18 bps base.",
   },
   {
     flow: "Informed",
-    vsFixed: "43.06 bps",
-    vsFixedLabel: "fee premium vs fixed",
-    vsVolatility: "−$25.02",
+    vsFixed: "−$31.06",
+    vsFixedLabel: "trader saving vs fixed per $10k",
+    vsVolatility: "−$13.02",
     vsVolatilityLabel: "trader saving vs volatility per $10k",
     conclusion: "Intentionally expensive: adverse flow funds LP protection.",
   },
@@ -130,4 +130,4 @@ export const timelineBase = [
 ] as const;
 
 export const experimentCaveat =
-  "The volatility baseline earned $454.75 more overall on this tape by charging benign and inventory-improving flow more. MARKOUT wins on discrimination—not by pretending every trader is toxic.";
+  "The volatility baseline earned $2,853.89 more overall on this tape by charging benign and inventory-improving flow more. Fair-Flow accepts that trade-off to win good routes at equal execution.";

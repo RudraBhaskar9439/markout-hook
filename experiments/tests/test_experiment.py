@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import sys
 import unittest
 from pathlib import Path
@@ -10,6 +11,7 @@ if str(EXPERIMENT_ROOT) not in sys.path:
 
 from markout_experiment.aggregation import build_adoption_evidence, summarize_all, summarize_by_flow
 from markout_experiment.model import FlowClass, Policy, ReferenceStatus, Trade
+from markout_experiment.optimization import build_fair_flow_sweep
 from markout_experiment.policies import evaluate_trade, markout_retention_bps, quote_fee
 from markout_experiment.prng import SplitMix64
 from markout_experiment.simulation import evaluate_trade_tape, generate_trade_tape, load_config
@@ -49,8 +51,8 @@ class PolicyTest(unittest.TestCase):
     def test_invalid_reference_expires_with_full_surcharge_rebate(self) -> None:
         outcomes = evaluate_trade(self._trade(ReferenceStatus.STALE, markout_centibps=3000), self.config)
         markout = next(outcome for outcome in outcomes if outcome.policy is Policy.MARKOUT)
-        self.assertEqual(markout.upfront_fee_quote_micro, 8_000_000)
-        self.assertEqual(markout.retained_fee_quote_micro, 3_000_000)
+        self.assertEqual(markout.upfront_fee_quote_micro, 6_800_000)
+        self.assertEqual(markout.retained_fee_quote_micro, 1_800_000)
         self.assertEqual(markout.rebate_quote_micro, 5_000_000)
         self.assertEqual(markout.lp_protection_quote_micro, 0)
         self.assertEqual(markout.expired_settlements, 1)
@@ -60,7 +62,7 @@ class PolicyTest(unittest.TestCase):
     def test_adverse_valid_trade_retains_complete_surcharge(self) -> None:
         outcomes = evaluate_trade(self._trade(ReferenceStatus.VALID, markout_centibps=3000), self.config)
         markout = next(outcome for outcome in outcomes if outcome.policy is Policy.MARKOUT)
-        self.assertEqual(markout.retained_fee_quote_micro, 8_000_000)
+        self.assertEqual(markout.retained_fee_quote_micro, 6_800_000)
         self.assertEqual(markout.rebate_quote_micro, 0)
         self.assertEqual(markout.lp_protection_quote_micro, 5_000_000)
 
@@ -141,11 +143,11 @@ class ExperimentPipelineTest(unittest.TestCase):
 
         self.assertEqual(
             format(by_flow["benign"]["execution_advantage_needed_vs_fixed_bps"], ".4f"),
-            "9.4262",
+            "0.0000",
         )
         self.assertEqual(
             format(by_flow["benign"]["fee_saving_vs_volatility_bps"], ".4f"),
-            "10.0528",
+            "22.0528",
         )
         self.assertEqual(
             format(by_flow["inventory_improving"]["execution_advantage_needed_vs_fixed_bps"], ".4f"),
@@ -154,8 +156,35 @@ class ExperimentPipelineTest(unittest.TestCase):
         self.assertLess(by_flow["informed"]["fee_saving_vs_volatility_bps"], 0)
         self.assertEqual(
             format(evidence["aggregate"]["lp_net_improvement_vs_fixed_percent"], ".4f"),
-            "83.5638",
+            "21.8734",
         )
+
+    def test_fair_flow_sweep_selects_lowest_candidate_meeting_declared_constraints(self) -> None:
+        sweep = build_fair_flow_sweep(self.trades, self.outcomes, self.config)
+        by_base = {row["base_fee_bps"]: row for row in sweep["candidates"]}
+
+        self.assertEqual(sweep["selected"]["base_fee_bps"], 18)
+        self.assertFalse(by_base[17]["eligible"])
+        self.assertTrue(by_base[18]["eligible"])
+        self.assertEqual(format(by_base[18]["benign_effective_fee_bps"], ".4f"), "27.4262")
+        self.assertEqual(format(by_base[18]["inventory_improving_effective_fee_bps"], ".4f"), "18.0000")
+        self.assertEqual(format(by_base[18]["lp_net_improvement_vs_fixed_percent"], ".4f"), "21.8734")
+
+    def test_fair_flow_sweep_rejects_noncanonical_configuration(self) -> None:
+        broken = copy.deepcopy(self.config)
+        broken["fairFlowSweep"]["candidateBaseFeeBps"] = [18, 17]
+        with self.assertRaisesRegex(ValueError, "unique, and ascending"):
+            build_fair_flow_sweep(self.trades, self.outcomes, broken)
+
+        broken = copy.deepcopy(self.config)
+        broken["fairFlowSweep"]["selectedBaseFeeBps"] = 31
+        with self.assertRaisesRegex(ValueError, "declared candidates"):
+            build_fair_flow_sweep(self.trades, self.outcomes, broken)
+
+        broken = copy.deepcopy(self.config)
+        broken["policies"]["markout"]["provisionalSurchargeCentibps"] = 5001
+        with self.assertRaisesRegex(ValueError, "whole number of basis points"):
+            build_fair_flow_sweep(self.trades, self.outcomes, broken)
 
 
 if __name__ == "__main__":

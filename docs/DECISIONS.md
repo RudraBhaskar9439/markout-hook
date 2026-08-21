@@ -277,3 +277,18 @@ Reactive's legacy system contract delegates subscription registration to a chain
 fork reproduces the system bytecode but not that precompile, so constructor subscription calls revert there even when
 the contract is funded. Unit tests prove filter and callback semantics; only a live legacy Lasna deployment receipt
 can prove registration. Circle settlement remains independent of this optional proof.
+
+## D-044 — Select the Fair-Flow base fee through declared constraints
+
+The release candidate uses an 18 bps base plus the existing refundable 50 bps surcharge. A deterministic sweep of
+every integer base from 10 through 30 bps chooses the lowest candidate that keeps benign and inventory-improving
+effective fees at or below 30 bps while preserving at least 20% modeled LP net-after-proxy improvement versus the
+fixed 30 bps baseline. The public 30 + 50 bps pool remains historical deployment evidence and is never relabeled as
+the candidate.
+
+## D-045 — Allow sponsored claims without sponsor-controlled recipients
+
+Any address may pay gas to claim a rebate for a named beneficiary, but the hook always transfers that sponsored claim
+to the beneficiary itself. Only the beneficiary-controlled pull path may select a different recipient. Both paths
+share the same checks-effects-interactions accounting and reentrancy guard, so a relayer can improve trader experience
+without acquiring redirect authority.

@@ -18,8 +18,9 @@ from .aggregation import (
     summarize_by_flow,
     summarize_by_scenario,
 )
-from .charts import grouped_bar_chart
+from .charts import fair_flow_frontier_chart, grouped_bar_chart
 from .model import Policy, PolicyOutcome, Trade
+from .optimization import build_fair_flow_sweep
 
 
 def write_artifacts(
@@ -40,6 +41,7 @@ def write_artifacts(
     flow_summary = summarize_by_flow(outcomes)
     aggregate_summary = summarize_all(outcomes)
     adoption_evidence = build_adoption_evidence(flow_summary, aggregate_summary)
+    fair_flow_sweep = build_fair_flow_sweep(trades, outcomes, config)
     _write_raw_trades(results_dir / "raw_trades.csv", trades)
     _write_policy_outcomes(results_dir / "policy_outcomes.csv", outcomes)
     _write_summary_csv(results_dir / "summary.csv", scenario_summary)
@@ -48,6 +50,7 @@ def write_artifacts(
         results_dir / "summary.json", config, trades, scenario_summary, flow_summary, aggregate_summary
     )
     _write_adoption_json(results_dir / "adoption_summary.json", adoption_evidence)
+    _write_fair_flow_json(results_dir / "fair_flow_sweep.json", fair_flow_sweep)
     _write_report(
         results_dir / "report.md",
         config,
@@ -55,8 +58,9 @@ def write_artifacts(
         flow_summary,
         aggregate_summary,
         adoption_evidence,
+        fair_flow_sweep,
     )
-    _write_charts(charts_dir, config, scenario_summary, flow_summary, adoption_evidence)
+    _write_charts(charts_dir, config, scenario_summary, flow_summary, adoption_evidence, fair_flow_sweep)
     _write_manifest(results_dir / "manifest.json", output_root, config_path, source_root, config)
 
 
@@ -186,6 +190,12 @@ def _write_adoption_json(destination: Path, evidence: Mapping[str, Any]) -> None
     )
 
 
+def _write_fair_flow_json(destination: Path, sweep: Mapping[str, Any]) -> None:
+    destination.write_text(
+        json.dumps(_json_ready_nested(sweep), indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+
+
 def _write_report(
     destination: Path,
     config: Mapping[str, Any],
@@ -193,6 +203,7 @@ def _write_report(
     flow_summary: Sequence[Mapping[str, Any]],
     aggregate_summary: Sequence[Mapping[str, Any]],
     adoption_evidence: Mapping[str, Any],
+    fair_flow_sweep: Mapping[str, Any],
 ) -> None:
     aggregate = {row["policy"]: row for row in aggregate_summary}
     flow = {(row["policy"], row["flow_class"]): row for row in flow_summary}
@@ -214,11 +225,19 @@ def _write_report(
     volatility_delta = _signed_quote(
         markout["lp_net_after_proxy_quote_micro"] - volatility["lp_net_after_proxy_quote_micro"]
     )
+    selected = fair_flow_sweep["selected"]
     lines = [
         "# MARKOUT Phase 6 Experiment Report",
         "",
         f"Experiment `{config['experimentId']}` uses deterministic SplitMix64 seed `{config['seed']}` and "
         f"{config['tradesPerScenario']} trades per scenario.",
+        "",
+        (
+            f"The evaluated MARKOUT profile is the Fair-Flow release candidate: {selected['base_fee_bps']} bps "
+            f"base plus a refundable 50 bps surcharge, for a maximum upfront fee of "
+            f"{selected['maximum_upfront_fee_bps']} bps. The existing public testnet evidence remains the earlier "
+            "30 + 50 bps deployment and is not relabeled as this candidate."
+        ),
         "",
         "## Metric boundary",
         "",
@@ -273,8 +292,8 @@ def _write_report(
             "## Regressions and costs",
             "",
             (
-                f"- The fixed baseline remains cheaper for benign flow: {fixed_benign:.4f} bps versus "
-                f"{markout_benign:.4f} bps for MARKOUT."
+                f"- The Fair-Flow candidate is cheaper for benign flow at identical execution: "
+                f"{markout_benign:.4f} bps versus {fixed_benign:.4f} bps for the fixed baseline."
             ),
             (
                 f"- Under the isolated-trade callback assumption, MARKOUT requires "
@@ -295,7 +314,7 @@ def _write_report(
             "",
             (
                 "A trader chooses the best all-in quote, not a fee mechanism in isolation. The table below states "
-                "the exact execution-price or slippage advantage MARKOUT would need to offset its fee premium "
+                "the exact execution-price or slippage advantage MARKOUT would need to offset any fee premium "
                 "against a same-liquidity 30 bps pool. It also reports the fee-only saving against the declared "
                 "volatility baseline. This is a break-even condition, not a claim that MARKOUT already creates "
                 "deeper liquidity."
@@ -316,21 +335,43 @@ def _write_report(
             f"{row['execution_advantage_needed_vs_fixed_bps']:.4f} bps | {saving:+.4f} USDC |"
         )
     adoption_aggregate = adoption_evidence["aggregate"]
+    adoption_by_flow = {row["flow_class"]: row for row in adoption_evidence["byFlowClass"]}
+    benign_adoption = adoption_by_flow["benign"]
+    inventory_adoption = adoption_by_flow["inventory_improving"]
     lines.extend(
         [
             "",
             (
                 "- On this tape, MARKOUT improves LP net-after-proxy versus fixed by "
-                f"{adoption_aggregate['lp_net_improvement_vs_fixed_percent']:.4f}% while requiring benign routes "
-                "to recover a 9.4262 bps fee premium through better execution to beat the fixed pool."
+                f"{adoption_aggregate['lp_net_improvement_vs_fixed_percent']:.4f}% while benign routes save "
+                f"{-benign_adoption['fee_premium_vs_fixed_bps']:.4f} bps versus the fixed pool at equal execution."
             ),
             (
-                "- Against volatility pricing at equal execution quality, benign flow saves 10.0528 USDC and "
-                "inventory-improving flow saves 17.4403 USDC per 10,000 USDC of notional."
+                "- Against volatility pricing at equal execution quality, benign flow saves "
+                f"{benign_adoption['fee_saving_vs_volatility_per_10000_quote']:.4f} USDC and "
+                f"inventory-improving flow saves {inventory_adoption['fee_saving_vs_volatility_per_10000_quote']:.4f} "
+                "USDC per 10,000 USDC of notional."
             ),
             (
                 "- Informed flow pays more by design. Its negative saving is the mechanism's discrimination result, "
                 "not a trader-acquisition claim."
+            ),
+            "",
+            "## Fair-Flow parameter selection",
+            "",
+            (
+                f"The committed sweep evaluates {len(fair_flow_sweep['candidates'])} integer base fees from "
+                f"{fair_flow_sweep['candidates'][0]['base_fee_bps']} to "
+                f"{fair_flow_sweep['candidates'][-1]['base_fee_bps']} bps. The declared rule chooses the lowest "
+                "candidate that keeps benign and inventory-improving effective fees at or below 30 bps while "
+                "preserving at least 20% modeled LP-net improvement versus fixed."
+            ),
+            "",
+            (
+                f"That candidate is **{selected['base_fee_bps']} bps**: benign flow pays "
+                f"{selected['benign_effective_fee_bps']:.4f} bps, inventory-improving flow pays "
+                f"{selected['inventory_improving_effective_fee_bps']:.4f} bps, and LP net-after-proxy improves "
+                f"{selected['lp_net_improvement_vs_fixed_percent']:.4f}% versus fixed."
             ),
             "",
             "## Scenario detail",
@@ -360,6 +401,7 @@ def _write_charts(
     scenario_summary: Sequence[Mapping[str, Any]],
     flow_summary: Sequence[Mapping[str, Any]],
     adoption_evidence: Mapping[str, Any],
+    fair_flow_sweep: Mapping[str, Any],
 ) -> None:
     labels = [scenario["label"] for scenario in config["scenarios"]]
     scenario_lookup = {(row["scenario_id"], row["policy"]): row for row in scenario_summary}
@@ -393,6 +435,7 @@ def _write_charts(
         },
         y_axis_label="Basis points",
     )
+    fair_flow_frontier_chart(charts_dir / "fair_flow_fee_frontier.svg", fair_flow_sweep)
     markout_rows = [row for row in scenario_summary if row["policy"] == Policy.MARKOUT.value]
     grouped_bar_chart(
         charts_dir / "markout_rebate_and_protection.svg",

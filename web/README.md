@@ -6,10 +6,13 @@ Cloudflare Worker-compatible React application built with vinext and the Sites V
 
 ## Product boundary
 
-- The comparison values come from the committed Phase 6 deterministic experiment.
+- The comparison values come from the committed Phase 6 Fair-Flow experiment: an undeployed 18 bps base selected by
+  declared constraints across a 10–30 bps sweep.
 - The research timeline demonstrates the tested outcome-to-settlement lifecycle without simulating live network state.
 - The separate testnet console reads balances and trades from the deployed hook, executes real v4 swaps, publishes a
   signed Pyth observation on Ethereum Sepolia, relays its Circle attestation, and reads the resulting fee allocation.
+- The console intentionally remains connected to the original public 30 + 50 bps pool; it never labels that pool as
+  the 18 + 50 bps Fair-Flow candidate.
 - The interface links three public Pyth/Circle lifecycles and two claimed rebates from the dated manifest.
 - The public evidence contrasts both allocation extremes: two 100% rebates after negative markout and 100% retained
   for LP protection after positive markout.

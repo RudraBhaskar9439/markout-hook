@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="720" viewBox="0 0 1080 720">
+<rect width="100%" height="100%" fill="#0f172a"/>
+<text x="95" y="44" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="25" font-weight="700">Fair-Flow base-fee frontier</text>
+<text x="95" y="72" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="14">Lowest base satisfying both declared constraints is selected; same 768-trade tape</text>
+<rect x="457.20" y="100" width="30" height="540" rx="8" fill="#22c55e" opacity="0.10"/>
+<text x="95" y="98" fill="#e2e8f0" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="600">Benign effective fee</text>
+<text x="1038" y="98" text-anchor="end" fill="#64748b" font-family="Inter,Arial,sans-serif" font-size="12">Basis points</text>
+<rect x="95" y="122" width="943" height="205" fill="#111c2d" stroke="#334155"/>
+<line x1="95" x2="1038" y1="327.00" y2="327.00" stroke="#27364b"/>
+<text x="83" y="331.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11">0.0</text>
+<line x1="95" x2="1038" y1="275.75" y2="275.75" stroke="#27364b"/>
+<text x="83" y="279.75" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11">10.5</text>
+<line x1="95" x2="1038" y1="224.50" y2="224.50" stroke="#27364b"/>
+<text x="83" y="228.50" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11">21.0</text>
+<line x1="95" x2="1038" y1="173.25" y2="173.25" stroke="#27364b"/>
+<text x="83" y="177.25" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11">31.5</text>
+<line x1="95" x2="1038" y1="122.00" y2="122.00" stroke="#27364b"/>
+<text x="83" y="126.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11">42.0</text>
+<line x1="95" x2="1038" y1="180.57" y2="180.57" stroke="#f59e0b" stroke-width="2" stroke-dasharray="7 6"/>
+<text x="1030" y="173.57" text-anchor="end" fill="#fbbf24" font-family="Inter,Arial,sans-serif" font-size="11">30 bps cap</text>
+<polyline points="95.00,232.18 142.15,227.30 189.30,222.42 236.45,217.54 283.60,212.66 330.75,207.78 377.90,202.90 425.05,198.01 472.20,193.13 519.35,188.25 566.50,183.37 613.65,178.49 660.80,173.61 707.95,168.73 755.10,163.85 802.25,158.97 849.40,154.09 896.55,149.21 943.70,144.32 990.85,139.44 1038.00,134.56" fill="none" stroke="#82b9ff" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="95.00" cy="232.18" r="3.5" fill="#82b9ff"/>
+<circle cx="142.15" cy="227.30" r="3.5" fill="#82b9ff"/>
+<circle cx="189.30" cy="222.42" r="3.5" fill="#82b9ff"/>
+<circle cx="236.45" cy="217.54" r="3.5" fill="#82b9ff"/>
+<circle cx="283.60" cy="212.66" r="3.5" fill="#82b9ff"/>
+<circle cx="330.75" cy="207.78" r="3.5" fill="#82b9ff"/>
+<circle cx="377.90" cy="202.90" r="3.5" fill="#82b9ff"/>
+<circle cx="425.05" cy="198.01" r="3.5" fill="#82b9ff"/>
+<circle cx="472.20" cy="193.13" r="6" fill="#22c55e"/>
+<circle cx="519.35" cy="188.25" r="3.5" fill="#82b9ff"/>
+<circle cx="566.50" cy="183.37" r="3.5" fill="#82b9ff"/>
+<circle cx="613.65" cy="178.49" r="3.5" fill="#82b9ff"/>
+<circle cx="660.80" cy="173.61" r="3.5" fill="#82b9ff"/>
+<circle cx="707.95" cy="168.73" r="3.5" fill="#82b9ff"/>
+<circle cx="755.10" cy="163.85" r="3.5" fill="#82b9ff"/>
+<circle cx="802.25" cy="158.97" r="3.5" fill="#82b9ff"/>
+<circle cx="849.40" cy="154.09" r="3.5" fill="#82b9ff"/>
+<circle cx="896.55" cy="149.21" r="3.5" fill="#82b9ff"/>
+<circle cx="943.70" cy="144.32" r="3.5" fill="#82b9ff"/>
+<circle cx="990.85" cy="139.44" r="3.5" fill="#82b9ff"/>
+<circle cx="1038.00" cy="134.56" r="3.5" fill="#82b9ff"/>
+<text x="95" y="396" fill="#e2e8f0" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="600">LP net improvement versus fixed 30 bps</text>
+<text x="1038" y="396" text-anchor="end" fill="#64748b" font-family="Inter,Arial,sans-serif" font-size="12">Percent</text>
+<rect x="95" y="420" width="943" height="205" fill="#111c2d" stroke="#334155"/>
+<line x1="95" x2="1038" y1="625.00" y2="625.00" stroke="#27364b"/>
+<text x="83" y="629.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11">-25.0</text>
+<line x1="95" x2="1038" y1="573.75" y2="573.75" stroke="#27364b"/>
+<text x="83" y="577.75" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11">3.8</text>
+<line x1="95" x2="1038" y1="522.50" y2="522.50" stroke="#27364b"/>
+<text x="83" y="526.50" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11">32.5</text>
+<line x1="95" x2="1038" y1="471.25" y2="471.25" stroke="#27364b"/>
+<text x="83" y="475.25" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11">61.2</text>
+<line x1="95" x2="1038" y1="420.00" y2="420.00" stroke="#27364b"/>
+<text x="83" y="424.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11">90.0</text>
+<line x1="95" x2="1038" y1="544.78" y2="544.78" stroke="#f59e0b" stroke-width="2" stroke-dasharray="7 6"/>
+<text x="1030" y="537.78" text-anchor="end" fill="#fbbf24" font-family="Inter,Arial,sans-serif" font-size="11">20% floor</text>
+<polyline points="95.00,614.76 142.15,605.59 189.30,596.43 236.45,587.26 283.60,578.10 330.75,568.94 377.90,559.77 425.05,550.61 472.20,541.44 519.35,532.28 566.50,523.11 613.65,513.95 660.80,504.79 707.95,495.62 755.10,486.46 802.25,477.29 849.40,468.13 896.55,458.97 943.70,449.80 990.85,440.64 1038.00,431.47" fill="none" stroke="#82b9ff" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="95.00" cy="614.76" r="3.5" fill="#82b9ff"/>
+<circle cx="142.15" cy="605.59" r="3.5" fill="#82b9ff"/>
+<circle cx="189.30" cy="596.43" r="3.5" fill="#82b9ff"/>
+<circle cx="236.45" cy="587.26" r="3.5" fill="#82b9ff"/>
+<circle cx="283.60" cy="578.10" r="3.5" fill="#82b9ff"/>
+<circle cx="330.75" cy="568.94" r="3.5" fill="#82b9ff"/>
+<circle cx="377.90" cy="559.77" r="3.5" fill="#82b9ff"/>
+<circle cx="425.05" cy="550.61" r="3.5" fill="#82b9ff"/>
+<circle cx="472.20" cy="541.44" r="6" fill="#22c55e"/>
+<circle cx="519.35" cy="532.28" r="3.5" fill="#82b9ff"/>
+<circle cx="566.50" cy="523.11" r="3.5" fill="#82b9ff"/>
+<circle cx="613.65" cy="513.95" r="3.5" fill="#82b9ff"/>
+<circle cx="660.80" cy="504.79" r="3.5" fill="#82b9ff"/>
+<circle cx="707.95" cy="495.62" r="3.5" fill="#82b9ff"/>
+<circle cx="755.10" cy="486.46" r="3.5" fill="#82b9ff"/>
+<circle cx="802.25" cy="477.29" r="3.5" fill="#82b9ff"/>
+<circle cx="849.40" cy="468.13" r="3.5" fill="#82b9ff"/>
+<circle cx="896.55" cy="458.97" r="3.5" fill="#82b9ff"/>
+<circle cx="943.70" cy="449.80" r="3.5" fill="#82b9ff"/>
+<circle cx="990.85" cy="440.64" r="3.5" fill="#82b9ff"/>
+<circle cx="1038.00" cy="431.47" r="3.5" fill="#82b9ff"/>
+<text x="95.00" y="662" text-anchor="middle" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="400">10</text>
+<text x="189.30" y="662" text-anchor="middle" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="400">12</text>
+<text x="283.60" y="662" text-anchor="middle" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="400">14</text>
+<text x="377.90" y="662" text-anchor="middle" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="400">16</text>
+<text x="472.20" y="662" text-anchor="middle" fill="#86efac" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="700">18</text>
+<text x="566.50" y="662" text-anchor="middle" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="400">20</text>
+<text x="660.80" y="662" text-anchor="middle" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="400">22</text>
+<text x="755.10" y="662" text-anchor="middle" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="400">24</text>
+<text x="849.40" y="662" text-anchor="middle" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="400">26</text>
+<text x="943.70" y="662" text-anchor="middle" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="400">28</text>
+<text x="1038.00" y="662" text-anchor="middle" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="400">30</text>
+<text x="536" y="692" text-anchor="middle" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">Base LP fee (bps)</text>
+<text x="484.20" y="105" fill="#86efac" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="700">SELECTED 18 BPS</text>
+</svg>

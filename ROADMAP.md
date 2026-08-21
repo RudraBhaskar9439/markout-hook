@@ -494,9 +494,9 @@ Produce explorer-backed Circle evidence first, then add Reactive evidence only i
 - Judge dashboard, demo script, submission checklist, and rendered deck revised around the hybrid boundary
 
 Local automation and the required public Circle path are complete. The dated evidence manifest records the deployed
-topology and two real swaps whose Pyth/Circle settlements prove both allocation extremes: a complete trader rebate
-and complete LP-protection retention. Final submission assets and repository/site visibility remain owner-controlled
-gates.
+topology and three real swaps whose Pyth/Circle settlements prove both allocation extremes: two complete trader
+rebates and complete LP-protection retention. Final submission assets and repository/site visibility remain
+owner-controlled gates.
 
 ### Verification gate
 
@@ -507,6 +507,37 @@ gates.
 5. Attempt the optional Reactive pulse with a bounded acceptance window.
 6. Label Reactive as live only if its destination callback transaction exists publicly.
 7. Regenerate the demo and submission package around the verified hybrid path.
+
+## Phase 15 — Fair-Flow trader economics
+
+### Goal
+
+Make MARKOUT preferable for good traders at equal execution quality without giving up the modeled LP advantage over a
+fixed 30 bps pool.
+
+### Deliverables
+
+- Deterministic 10–30 bps base-fee sweep with declared selection constraints
+- An 18 bps base + refundable 50 bps Fair-Flow release candidate
+- Fee-only savings and routing thresholds by flow class
+- Permissionless gas sponsorship that can only pay the recorded rebate beneficiary
+- Dashboard, evidence ledger, threat model, and submission draft synchronized to the generated artifacts
+
+### Verification gate
+
+```bash
+./experiments/run.sh
+forge test -q
+cd web && npm run verify
+```
+
+Required results:
+
+- Eighteen bps is the lowest tested base producing at least 20% modeled LP-net improvement versus fixed while keeping
+  benign and inventory-improving effective fees at or below 30 bps.
+- At equal execution, benign flow pays 27.4262 bps and inventory-improving flow pays 18 bps.
+- A sponsor cannot redirect a rebate, replay a claim, break solvency, or bypass reentrancy protection.
+- The dashboard clearly separates the live 30 + 50 bps deployment from the undeployed 18 + 50 bps candidate.
 
 ## Phase-gate handoff format
 
