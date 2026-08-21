@@ -18,6 +18,31 @@ The project uses gated phases. At the end of every phase, work stops for a verif
 | 7 | Aug 28–29 | Security and hardening | Invariants, static analysis, and failure tests pass |
 | 8 | Aug 30–31 | Demo application | Complete judge flow runs without manual intervention |
 | 9 | Sep 1–3 | Submission package | Final links, video, deck, and form are complete |
+| 10 | Aug 21 | Resilience architecture pivot | Circle-primary and Reactive-optional boundaries are frozen |
+| 11 | Aug 21–22 | Shared settlement coordinator | Multiple authenticated transports race safely without changing hook accounting |
+| 12 | Aug 22–24 | Circle CCTP primary path | A finalized Circle message settles a MARKOUT trade on Unichain |
+| 13 | Aug 24–25 | Minimal Reactive pulse | A stateless Maestro-style RSC can settle through the same coordinator |
+| 14 | Aug 25–Sep 3 | Hybrid testnet and final package | Public Circle evidence, optional Reactive evidence, and final judge materials |
+
+## Current status and resilience pivot
+
+Phases 1–4 and 6–9 passed their local gates. Phase 5 proved origin-event ingestion and callback scheduling on Reactive
+Lasna, but two bounded public canaries also proved that destination callbacks were not delivered to either Unichain
+Sepolia or Ethereum Sepolia during the acceptance windows. Phase 5 therefore remains **NO-GO** for claims of a live
+Reactive settlement.
+
+The forward plan does not discard that work or weaken MARKOUT's accounting. It removes Reactive Network from the
+protocol's critical path:
+
+- Circle CCTP V2 becomes the primary authenticated cross-chain observation transport.
+- A small legacy-compatible Reactive Contract observes the same source event and may deliver the same observation as
+  an optional accelerator.
+- Both transports terminate at one immutable settlement coordinator and the first valid delivery wins.
+- Duplicate delivery is a successful no-op, and permissionless expiry continues to return the complete provisional
+  surcharge when no valid observation arrives.
+- The existing Omni scheduler remains reproducible research and outage evidence, not the active deployment path.
+
+This pivot is specified in [Hybrid Settlement Architecture](docs/HYBRID_SETTLEMENT.md).
 
 ## Phase 0 — Repository bootstrap
 
@@ -344,6 +369,124 @@ Submit a reproducible project and a concise research story.
 - Repository visibility is changed only if required for final judging and only with explicit approval.
 - The presentation is rehearsed under the official time limit.
 - Final form is submitted before September 3, 2026 at 11:59 PM Pacific Time.
+
+## Phase 10 — Hybrid settlement architecture pivot
+
+### Goal
+
+Freeze a smaller production path in which MARKOUT is safe and demonstrable without Reactive callback delivery.
+
+### Deliverables
+
+- Circle-primary, Reactive-optional architecture specification
+- Explicit trust boundaries for Circle, Pyth, Reactive, relayers, and the hook
+- First-valid-delivery and duplicate-delivery policy
+- Migration plan that preserves all earlier phase evidence
+
+### Verification gate
+
+- No transport can bypass the hook's existing maturity, freshness, confidence, or solvency checks.
+- Failure of Circle or Reactive cannot trap a provisional surcharge beyond the existing expiry window.
+- The active architecture has exactly one settlement authority contract and no mutable production operator.
+
+## Phase 11 — Shared settlement coordinator
+
+### Goal
+
+Put one immutable, replay-safe boundary between every observation transport and `MarkoutHook`.
+
+### Deliverables
+
+- One-time-bound `SettlementCoordinator`
+- Immutable source authorization after topology freeze
+- Idempotent first-valid-delivery behavior
+- Unit, fuzz, and adversarial tests
+- Hybrid deployment topology script
+
+### Verification gate
+
+```bash
+./scripts/verify-phase-11.sh
+```
+
+Required results:
+
+- An unauthorized source cannot settle.
+- An authorized source can settle exactly once.
+- A second authorized delivery for a terminal trade is a successful no-op.
+- Invalid observations still revert inside the unchanged hook validation engine.
+- Permissionless expiry remains available without the coordinator.
+
+## Phase 12 — Circle CCTP V2 primary transport
+
+### Goal
+
+Carry a Pyth-verified delayed observation from Ethereum Sepolia to Unichain Sepolia through Circle's finalized generic
+message path.
+
+### Deliverables
+
+- Source-side Pyth observation publisher
+- Circle `MessageTransmitterV2` sender interface
+- Destination `CircleObservationReceiver`
+- Strict source domain, source sender, market, finality, and message-version validation
+- Attestation relay and deployment scripts
+- Local end-to-end tests with a Circle transmitter simulator
+
+### Verification gate
+
+```bash
+./scripts/verify-phase-12.sh
+```
+
+Required results:
+
+- Only the configured Circle transmitter can enter the receiver.
+- Only finalized messages from the configured Sepolia publisher and market are accepted.
+- A valid Circle message settles one mature trade through the shared coordinator.
+- Replays, malformed messages, wrong domains, wrong senders, and unfinalized messages fail safely.
+
+## Phase 13 — Optional Reactive pulse
+
+### Goal
+
+Add a minimal Maestro-style Reactive path without reintroducing Reactive-owned scheduling or protocol state.
+
+### Deliverables
+
+- Legacy-compatible RSC subscribed to the Circle publisher's observation event
+- Authenticated Unichain destination receiver
+- Stateless observation forwarding only
+- Race tests proving Circle-first and Reactive-first delivery produce the same terminal result
+
+### Verification gate
+
+```bash
+./scripts/verify-phase-13.sh
+```
+
+Required results:
+
+- The RSC contains no trade registry, cron scheduler, sampler callback, or retry database.
+- Its callback can only submit the same normalized observation emitted by the source publisher.
+- Circle and Reactive delivery order cannot change accounting.
+- Reactive failure has no effect on Circle settlement or permissionless expiry.
+
+## Phase 14 — Hybrid live deployment and final submission
+
+### Goal
+
+Produce explorer-backed Circle evidence first, then add Reactive evidence only if the public callback network delivers.
+
+### Verification gate
+
+1. Execute a MARKOUT trade on Unichain Sepolia.
+2. Publish its matured Pyth observation on Ethereum Sepolia.
+3. Relay the finalized Circle attestation and settle the trade on Unichain.
+4. Claim the resulting rebate and link every transaction.
+5. Attempt the optional Reactive pulse with a bounded acceptance window.
+6. Label Reactive as live only if its destination callback transaction exists publicly.
+7. Regenerate the demo and submission package around the verified hybrid path.
 
 ## Phase-gate handoff format
 

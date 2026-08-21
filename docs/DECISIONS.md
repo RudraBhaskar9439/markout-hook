@@ -231,3 +231,29 @@ three correctly targeted callbacks, but Ethereum Sepolia received none during th
 destination contract retained its full callback balance and accrued no proxy debt, so no delivery attempt was
 observable. Because the same failure now exists on two supported destinations, changing chains alone is not accepted
 as a liveness fix.
+
+## D-038 — Remove Reactive from the critical settlement path
+
+Two bounded public canaries produced correctly targeted callback instructions on Lasna but no destination delivery on
+either Unichain Sepolia or Ethereum Sepolia. The active topology therefore cannot make custody or settlement depend on
+Reactive liveness. Reactive remains an optional observation accelerator; the existing Omni scheduler remains research
+and outage evidence.
+
+## D-039 — Use Circle CCTP V2 as the primary authenticated message transport
+
+A permissionless Ethereum Sepolia publisher validates a configured Pyth feed and sends the normalized observation as a
+generic finalized Circle message to Unichain Sepolia. The destination receiver pins Circle's transmitter, source
+domain, publisher, market, message version, and minimum finality. Any account may relay the attested message, but no
+relayer may alter it.
+
+## D-040 — Make transport delivery at-least-once across protocols
+
+One immutable coordinator authorizes the Circle receiver and optional Reactive receiver. The first valid delivery for
+a pending trade is forwarded to the hook. Later authorized deliveries are successful no-ops. The hook's terminal state
+is the cross-transport replay boundary, so delivery order cannot change economics.
+
+## D-041 — Keep the Reactive pulse stateless
+
+The forward Reactive Contract observes the canonical Circle-publisher event and forwards its normalized payload. It
+does not own maturity scheduling, trade discovery, price sampling, retries, custody, or economic state. This narrow
+role mirrors Maestro's proven architecture while ensuring Reactive failure cannot block MARKOUT.
