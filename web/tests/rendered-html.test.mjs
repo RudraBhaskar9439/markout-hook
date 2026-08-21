@@ -46,10 +46,10 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
   assert.match(html, /Same market\. Different information\./);
   assert.match(html, /Outcome → observation → settlement/);
   assert.match(html, /The honest regression/);
-  assert.match(html, /Three lifecycles\. Both settlement extremes\./);
-  assert.match(html, /3<\/b> public end-to-end lifecycles/);
-  assert.match(html, /2 \/ 1<\/b> full rebates \/ full retention/);
-  assert.match(html, /Three public Circle lifecycles proven/);
+  assert.match(html, /Four lifecycles\. Both settlement extremes\./);
+  assert.match(html, /4<\/b> public end-to-end lifecycles/);
+  assert.match(html, /3 \/ 1<\/b> full rebates \/ full retention/);
+  assert.match(html, /Four public Circle lifecycles proven/);
   assert.match(html, /Good flow wins without assuming deeper liquidity\./);
   assert.match(html, /21\.87%/);
   assert.match(html, /benign flow saves \$2\.57/);
@@ -59,6 +59,8 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
   assert.match(html, /0xefeece5de9f78ae809652418e1fcd8fb592de950af64e6bbbf66df93bdc25eae/);
   assert.match(html, /0x81f7878312b81b80ba69ad8fdc0f4e06f64f8624ed610ebd5a6ea63cca0ca610/);
   assert.match(html, /0xd78f8533519c4468ac345f0caad52a8eb5c57ee904fc5882eb9066ee16b1b9d8/);
+  assert.match(html, /0xb1bd16c88d71fbb737cbaa20ed9002dd7bd7098d1c17ac11ab3c7f9ed01c0c4d/);
+  assert.match(html, /0x996ae7697b54ea67df0fbd3eb9ded1163d3a3df1d272bdcc7260ee18597b5f70/);
   assert.match(html, /One outcome\. Two transport paths\./);
   assert.match(html, /aria-label="MARKOUT settlement receipt"/);
   assert.match(html, /aria-label="Choose an order-flow outcome"/);
@@ -68,11 +70,12 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
 });
 
 test("removes starter metadata and keeps deterministic evidence explicit", async () => {
-  const [page, layout, packageJson, data, css] = await Promise.all([
+  const [page, layout, packageJson, data, testnet, css] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
     readFile(new URL("../app/lib/demo-data.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/lib/testnet/markout.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
   ]);
 
@@ -88,6 +91,10 @@ test("removes starter metadata and keeps deterministic evidence explicit", async
   assert.match(data, /\+21\.87%/);
   assert.match(data, /saved vs fixed per \$10k/);
   assert.match(data, /\+\$22\.05/);
+  assert.match(testnet, /0x3A17354331C21B246A9eC9BF979Af77e64f30044/);
+  assert.match(testnet, /0xee2fba8ece79cbbf20bb44f861fae605b7caf5fa12883daa34811f54e753580d/);
+  assert.match(testnet, /MARKOUT_BASE_FEE_BPS = 18/);
+  assert.match(testnet, /MARKOUT_POOL_FEE = 1800/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
 
   await assert.rejects(

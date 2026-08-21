@@ -268,21 +268,20 @@ function ResearchEvidence() {
         </p>
       </div>
 
-      <div className="live-proof-card" aria-label="Three public Circle settlement lifecycles">
+      <div className="live-proof-card" aria-label="Four public Circle settlement lifecycles">
         <div>
           <p className="kicker">Public testnet proof</p>
-          <strong>Three lifecycles. Both settlement extremes.</strong>
+          <strong>Four lifecycles. Both settlement extremes.</strong>
           <p>
-            Circle delivered Pyth observations for three real Unichain v4 swaps: two negative-markout trades returned
-            and paid their complete rebates, while positive markout retained the complete escrow for LP protection.
-            These live proofs use the original 30 + 50 bps pool; the Fair-Flow evidence below is the undeployed 18 +
-            50 bps release candidate.
+            Circle delivered Pyth observations for four real Unichain v4 swaps. The original 30 + 50 bps pool proves
+            both terminal extremes; the separate Fair-Flow pool completed its own rebate lifecycle at an 18 bps final
+            fee and executed the sponsored-claim entrypoint.
           </p>
         </div>
         <div className="live-proof-metrics">
-          <span><b>3</b> public end-to-end lifecycles</span>
-          <span><b>2 / 1</b> full rebates / full retention</span>
-          <span><b>38/67/67s</b> measured relays</span>
+          <span><b>4</b> public end-to-end lifecycles</span>
+          <span><b>3 / 1</b> full rebates / full retention</span>
+          <span><b>38/67/67/55s</b> measured relays</span>
         </div>
         <div className="live-proof-links">
           <a href="https://sepolia.etherscan.io/tx/0xed6af5c42e554c221078110d6db03fba8fd74bf24a88cf52494d4e605a31f6ca" target="_blank" rel="noreferrer">Rebate observation ↗</a>
@@ -294,6 +293,10 @@ function ResearchEvidence() {
           <a href="https://sepolia.uniscan.xyz/tx/0x889ea958d19574572890a5ae5a5890c7a8d31f94ebfbe9d065b58d884c1f739a" target="_blank" rel="noreferrer">Wallet-console swap ↗</a>
           <a href="https://sepolia.uniscan.xyz/tx/0x81f7878312b81b80ba69ad8fdc0f4e06f64f8624ed610ebd5a6ea63cca0ca610" target="_blank" rel="noreferrer">Wallet-console settlement ↗</a>
           <a href="https://sepolia.uniscan.xyz/tx/0xd78f8533519c4468ac345f0caad52a8eb5c57ee904fc5882eb9066ee16b1b9d8" target="_blank" rel="noreferrer">Wallet-console claim ↗</a>
+          <a href="https://sepolia.uniscan.xyz/tx/0xf4873749b39300d5d19d28e3b0b0f43511ac907595b85d14e76c725f86f9c70f" target="_blank" rel="noreferrer">Fair-Flow swap ↗</a>
+          <a href="https://sepolia.etherscan.io/tx/0xccd8cc932276ce3233665c230d8107854b2201bca15a173b7986245c9d517221" target="_blank" rel="noreferrer">Fair-Flow observation ↗</a>
+          <a href="https://sepolia.uniscan.xyz/tx/0xb1bd16c88d71fbb737cbaa20ed9002dd7bd7098d1c17ac11ab3c7f9ed01c0c4d" target="_blank" rel="noreferrer">Fair-Flow settlement ↗</a>
+          <a href="https://sepolia.uniscan.xyz/tx/0x996ae7697b54ea67df0fbd3eb9ded1163d3a3df1d272bdcc7260ee18597b5f70" target="_blank" rel="noreferrer">Fair-Flow claim ↗</a>
         </div>
       </div>
 
@@ -470,7 +473,7 @@ export function MarkoutDashboard() {
           <p>Outcome-priced liquidity for Uniswap v4.</p>
         </div>
         <div className="footer-status">
-          <span><i className="status-green" /> Three public Circle lifecycles proven</span>
+          <span><i className="status-green" /> Four public Circle lifecycles proven</span>
           <span><i className="status-amber" /> Reactive callback not yet observed</span>
         </div>
         <p className="footer-note">Experimental UHI10 prototype · Not audited · No real funds</p>

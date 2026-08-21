@@ -43,25 +43,25 @@ Sepolia to Unichain Sepolia. An optional stateless Reactive contract can mirror 
 immutable coordinator ensures the first valid delivery wins and later duplicates are harmless. If no valid observation
 arrives, permissionless expiry returns the full surcharge.
 
-Three public trades now prove both allocation extremes and independently reproduce the rebate branch through the
+Four public trades now prove both allocation extremes and independently reproduce the rebate branch through the
 browser wallet console. A negative-markout trade settled through Circle in 38 seconds
 with a 46-second-old Pyth observation, returned all 622 test-USDC base units to the trader, and was claimed publicly.
 A positive-markout trade settled through Circle in 67 seconds with a 96-second-old observation and retained all
 3,214,110,616,342 test-WETH base units in the LP-protection reserve. The wallet-console trade then settled −266.96
-bps markout through a second 67-second Circle relay and claimed its full 2,041,420,186,161-unit test-WETH rebate.
-Onchain balances match the accounting state.
+bps markout through a second 67-second Circle relay and claimed its full 2,041,420,186,161-unit test-WETH rebate. A
+separate Fair-Flow pool then settled in 55 seconds, returned its full provisional surcharge, finalized at 18 bps, and
+executed the deployed sponsored-claim entrypoint. Onchain balances match the accounting state.
 
-The public lifecycle proofs use the original 30 bps base + 50 bps provisional pool. A separately tested Fair-Flow
-release candidate lowers the base to 18 bps. A committed 10–30 bps sweep selects 18 as the lowest candidate that keeps
-good-flow fees at or below 30 bps while retaining at least 20% modeled LP-net improvement versus fixed. It remains
-undeployed and is never presented as public-chain evidence.
+The first three public lifecycle proofs use the original 30 bps base + 50 bps provisional pool. The separately
+deployed Fair-Flow pool lowers the base to 18 bps. A committed 10–30 bps sweep selects 18 as the lowest candidate that
+keeps good-flow fees at or below 30 bps while retaining at least 20% modeled LP-net improvement versus fixed.
 
 ## Partner integration answer
 
 Select **Reactive Network**, **Circle**, and **Pyth** if those names are present in the form's partner picker.
 
 MARKOUT uses Pyth to verify and normalize a signed delayed reference observation on Ethereum Sepolia. Circle CCTP V2
-generic messaging is the primary authenticated transport to Unichain Sepolia and has completed three public swap →
+generic messaging is the primary authenticated transport to Unichain Sepolia and has completed four public swap →
 observation → attestation → settlement lifecycles. A funded legacy Reactive Network pulse is deployed and exactly
 subscribed to the same publisher event as an optional second transport; because no public destination callback has
 been observed, MARKOUT does not claim that Reactive delivery is live.
@@ -119,8 +119,8 @@ of being hidden.
 - Benign flow saves 2.5738 USDC per 10,000 USDC versus fixed and 22.0528 USDC versus volatility at equal execution.
 - Inventory-improving flow saves 12 USDC per 10,000 USDC versus fixed and 29.4403 USDC versus volatility.
 - A 21-point parameter sweep selects 18 bps as the lowest base satisfying the declared good-flow and LP constraints.
-- Three public Circle settlements demonstrate both terminal economic branches and reproduce the wallet-console rebate
-  flow: two 100% rebates and one 100% LP retention.
+- Four public Circle settlements demonstrate both terminal economic branches and the deployed Fair-Flow profile:
+  three 100% rebates and one 100% LP retention.
 
 ## Public deployment
 
@@ -137,6 +137,11 @@ of being hidden.
 | Wallet-console Pyth publication | https://sepolia.etherscan.io/tx/0x2465cd2f4e2299a1898f45d0634fc2fd87ae2412de615504fc0125d9ed204e42 |
 | Wallet-console Circle settlement | https://sepolia.uniscan.xyz/tx/0x81f7878312b81b80ba69ad8fdc0f4e06f64f8624ed610ebd5a6ea63cca0ca610 |
 | Wallet-console rebate claim | https://sepolia.uniscan.xyz/tx/0xd78f8533519c4468ac345f0caad52a8eb5c57ee904fc5882eb9066ee16b1b9d8 |
+| Fair-Flow 18 bps pool initialization | https://sepolia.uniscan.xyz/tx/0xf96119129f7bb91fe9331725a5ba2c4aabaa8ebeec17042d1c3ef15f95a4cba9 |
+| Fair-Flow v4 swap | https://sepolia.uniscan.xyz/tx/0xf4873749b39300d5d19d28e3b0b0f43511ac907595b85d14e76c725f86f9c70f |
+| Fair-Flow Pyth publication | https://sepolia.etherscan.io/tx/0xccd8cc932276ce3233665c230d8107854b2201bca15a173b7986245c9d517221 |
+| Fair-Flow Circle settlement | https://sepolia.uniscan.xyz/tx/0xb1bd16c88d71fbb737cbaa20ed9002dd7bd7098d1c17ac11ab3c7f9ed01c0c4d |
+| Fair-Flow sponsored-claim entrypoint | https://sepolia.uniscan.xyz/tx/0x996ae7697b54ea67df0fbd3eb9ded1163d3a3df1d272bdcc7260ee18597b5f70 |
 | Hosted judge dashboard | https://markout-uhi10.rbrudra9439.chatgpt.site |
 | GitHub repository | https://github.com/RudraBhaskar9439/markout-hook |
 
@@ -151,6 +156,10 @@ The final form requires the GitHub repository to be public before its confirmati
 | Unichain Sepolia | Settlement coordinator | `0x282a2ed0eaf48e52e7844de40a1faf6f13445dc0` |
 | Unichain Sepolia | Circle receiver | `0x88d2384a2bddffb26936d4b05b55d530709e534b` |
 | Unichain Sepolia | MARKOUT hook | `0x2981693161ebbeaf10e91d6ddfc2ed810e80c044` |
+| Ethereum Sepolia | Fair-Flow Pyth/Circle publisher | `0xeeb18d96AABcec142D95Ba2b9E7E3221832Cf139` |
+| Unichain Sepolia | Fair-Flow settlement coordinator | `0x7BC38f019D5F3000c15C9E5309dFB1e7f361cb6e` |
+| Unichain Sepolia | Fair-Flow Circle receiver | `0x24858E73A18f1A4537897DD2d04417a7a24b8f68` |
+| Unichain Sepolia | Fair-Flow MARKOUT hook | `0x3A17354331C21B246A9eC9BF979Af77e64f30044` |
 | Legacy Lasna | Optional Reactive pulse | `0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e` |
 
 ## Suggested four-minute demo
@@ -159,9 +168,9 @@ The final form requires the GitHub repository to be public before its confirmati
 2. Replay benign, informed, and inventory-improving outcomes in the dashboard.
 3. Show the seeded comparison, the 18 bps selection rule, and accounting-conservation evidence.
 4. Explain Circle-primary, Reactive-optional delivery and fail-open expiry.
-5. Open the three Pyth/Circle lifecycle records, including the wallet-console rebate claim.
-6. Close with the measured 38/67/67-second public lifecycles and both demonstrated allocation extremes: 100% rebated
-   and 100% retained for LP protection.
+5. Open the four Pyth/Circle lifecycle records, including the Fair-Flow 18 bps settlement and claim.
+6. Close with the measured 38/67/67/55-second public lifecycles and both demonstrated allocation extremes: 100%
+   rebated and 100% retained for LP protection.
 
 ## Honest limitations
 
@@ -170,8 +179,8 @@ The final form requires the GitHub repository to be public before its confirmati
 - Circle uses fast-confirmed finality to fit the bounded settlement window.
 - The optional Reactive pulse is deployed and subscribed, but no successful public Unichain callback is claimed.
 - The LP protection reserve distribution mechanism is intentionally outside this prototype.
-- The 18 + 50 bps Fair-Flow profile and sponsored-claim function are locally verified release-candidate code, not the
-  already deployed 30 + 50 bps hook.
+- The Fair-Flow pool has one public complete-rebate lifecycle; the original pool remains the public proof for the
+  full-retention branch.
 
 ## Final owner-controlled sequence
 

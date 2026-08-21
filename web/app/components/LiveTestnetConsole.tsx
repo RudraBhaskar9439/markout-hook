@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { getAddress, isAddress, isHex, type Address, type Hash, type Hex } from "viem";
 import {
   MARKOUT_CONTRACTS,
+  MARKOUT_BASE_FEE_BPS,
   claimTestnetRebate,
   connectInjectedWallet,
   executeTestnetSwap,
@@ -25,8 +26,8 @@ import {
   type WalletSnapshot,
 } from "../lib/testnet/markout";
 
-const ACTIVE_TRADE_KEY = "markout.activeTradeId";
-const PUBLISH_HASH_KEY = "markout.publishHash";
+const ACTIVE_TRADE_KEY = "markout.fairFlow.activeTradeId";
+const PUBLISH_HASH_KEY = "markout.fairFlow.publishHash";
 const EMPTY_BALANCES: WalletSnapshot = {
   eth: 0n,
   usdc: 0n,
@@ -150,7 +151,7 @@ export function LiveTestnetConsole() {
   const maturityReached = Boolean(trade && now >= trade.maturityTimestamp);
   const expiryReached = Boolean(trade && now > trade.expiryTimestamp);
   const feeBps = trade?.status === 2 || trade?.status === 3
-    ? 30 + (50 * trade.settlement.retentionBps) / 10_000
+    ? MARKOUT_BASE_FEE_BPS + (50 * trade.settlement.retentionBps) / 10_000
     : null;
   const escrowCurrency = trade?.currency ?? MARKOUT_CONTRACTS.usdc;
   const displayedPending = escrowCurrency.toLowerCase() === MARKOUT_CONTRACTS.usdc.toLowerCase()
@@ -400,7 +401,7 @@ export function LiveTestnetConsole() {
             <span>{direction === "USDC_TO_WETH" ? "USDC" : "WETH"}</span>
           </div>
           <div className="fee-preview">
-            <span><b>30 bps</b> pool fee</span>
+            <span><b>18 bps</b> pool fee</span>
             <span>+</span>
             <span><b>50 bps</b> provisional</span>
           </div>

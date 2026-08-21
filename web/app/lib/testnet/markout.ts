@@ -36,17 +36,19 @@ export const unichainSepolia = defineChain({
 });
 
 export const MARKOUT_CONTRACTS = {
-  hook: getAddress("0x2981693161ebbeaf10e91d6ddfc2ed810e80c044"),
+  hook: getAddress("0x3A17354331C21B246A9eC9BF979Af77e64f30044"),
   poolSwapRouter: getAddress("0x9140a78c1a137c7ff1c151ec8231272af78a99a4"),
   usdc: getAddress("0x31d0220469e10c4E71834a79b1f276d740d3768F"),
   weth: getAddress("0x4200000000000000000000000000000000000006"),
-  circlePublisher: getAddress("0xb3d2403a028849292326668ab41ed25f0f049976"),
+  circlePublisher: getAddress("0xeeb18d96AABcec142D95Ba2b9E7E3221832Cf139"),
   pyth: getAddress("0xDd24F84d36BF92C65F92307595335bdFab5Bbd21"),
   circleMessageTransmitter: getAddress("0xE737e5cEBEEBa77EFE34D4aa090756590b1CE275"),
 } as const;
 
 export const MARKOUT_POOL_ID =
-  "0x9e5a4fc0cc370e9a999c34828a0331fb548fd75897fb0a3de9db9a4902160348" as const;
+  "0xee2fba8ece79cbbf20bb44f861fae605b7caf5fa12883daa34811f54e753580d" as const;
+export const MARKOUT_BASE_FEE_BPS = 18;
+const MARKOUT_POOL_FEE = 1800;
 export const PYTH_ETH_USD_PRICE_ID =
   "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace" as const;
 
@@ -360,7 +362,7 @@ export async function executeTestnetSwap(
       {
         currency0: MARKOUT_CONTRACTS.usdc,
         currency1: MARKOUT_CONTRACTS.weth,
-        fee: 3000,
+        fee: MARKOUT_POOL_FEE,
         tickSpacing: 60,
         hooks: MARKOUT_CONTRACTS.hook,
       },

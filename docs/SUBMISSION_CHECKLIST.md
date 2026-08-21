@@ -16,7 +16,9 @@ on public testnets. The final release remains blocked only on the owner-controll
 - [x] Stateless legacy Reactive pulse and authenticated Unichain receiver
 - [x] Chain-locked deployment, binding, publication, attestation-relay, and preflight tools
 - [x] Judge dashboard updated to the honest hybrid architecture
-- [x] Dashboard clearly separates original live deployment evidence from the undeployed Fair-Flow candidate
+- [x] Deploy a separate 18 + 50 bps Fair-Flow pool and complete one public Circle lifecycle
+- [x] Execute the Fair-Flow sponsored-claim entrypoint and reconcile its final liabilities to zero
+- [x] Dashboard clearly separates original 30 + 50 bps evidence from the Fair-Flow deployment
 
 ## Required Circle public evidence
 

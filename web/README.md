@@ -6,15 +6,15 @@ Cloudflare Worker-compatible React application built with vinext and the Sites V
 
 ## Product boundary
 
-- The comparison values come from the committed Phase 6 Fair-Flow experiment: an undeployed 18 bps base selected by
+- The comparison values come from the committed Phase 6 Fair-Flow experiment: an 18 bps base selected by
   declared constraints across a 10–30 bps sweep.
 - The research timeline demonstrates the tested outcome-to-settlement lifecycle without simulating live network state.
 - The separate testnet console reads balances and trades from the deployed hook, executes real v4 swaps, publishes a
   signed Pyth observation on Ethereum Sepolia, relays its Circle attestation, and reads the resulting fee allocation.
-- The console intentionally remains connected to the original public 30 + 50 bps pool; it never labels that pool as
-  the 18 + 50 bps Fair-Flow candidate.
-- The interface links three public Pyth/Circle lifecycles and two claimed rebates from the dated manifest.
-- The public evidence contrasts both allocation extremes: two 100% rebates after negative markout and 100% retained
+- The console is connected to the separately deployed 18 + 50 bps Fair-Flow pool and uses versioned browser storage
+  so trade identifiers from the original hook cannot be loaded accidentally.
+- The interface links four public Pyth/Circle lifecycles and three claimed rebates from the dated manifests.
+- The public evidence contrasts both allocation extremes: three 100% rebates after negative markout and 100% retained
   for LP protection after positive markout.
 - Reactive remains visibly optional and is not labeled live without a public destination callback.
 - Wallet signing uses the injected EIP-1193 provider. Private keys and Pyth credentials are never collected or bundled.
@@ -40,8 +40,9 @@ For the complete live path:
    Unichain relay when the wallet switches back.
 5. Inspect the finalized effective fee, rebate, LP reserve, and explorer links. Claim a rebate when one is available.
 
-The currently funded deployment wallet and public testnet addresses are recorded in
-`../deployments/hybrid-2026-08-21.json`. Never use real funds: these contracts are experimental and unaudited.
+The active console addresses are recorded in `../deployments/fair-flow-2026-08-22.json`; original opposite-branch
+evidence remains in `../deployments/hybrid-2026-08-21.json`. Never use real funds: these contracts are experimental
+and unaudited.
 
 ### MetaMask RPC recovery
 

@@ -4,7 +4,7 @@ set -euo pipefail
 repo_root="$(git rev-parse --show-toplevel)"
 rpc_url="${MARKOUT_FRONTEND_RPC_URL:-https://unichain-sepolia-rpc.publicnode.com}"
 simulation_account="${TESTNET_SIMULATION_ACCOUNT:-0xd1DcAAFf9356d5a42f2eE6F90179C4509386a83f}"
-hook="0x2981693161ebbeaf10e91d6ddfc2ed810e80c044"
+hook="0x3A17354331C21B246A9eC9BF979Af77e64f30044"
 router="0x9140a78c1a137c7ff1c151ec8231272af78a99a4"
 usdc="0x31d0220469e10c4E71834a79b1f276d740d3768F"
 weth="0x4200000000000000000000000000000000000006"
@@ -40,7 +40,7 @@ fi
 
 cast call "$router" \
   'swap((address,address,uint24,int24,address),(bool,int256,uint160),(bool,bool),bytes)(int256)' \
-  "($usdc,$weth,3000,60,$hook)" \
+  "($usdc,$weth,1800,60,$hook)" \
   '(true,-1000000,4295128740)' \
   '(false,false)' \
   "$hook_data" \

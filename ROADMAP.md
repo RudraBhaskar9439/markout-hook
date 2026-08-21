@@ -523,6 +523,10 @@ fixed 30 bps pool.
 - Permissionless gas sponsorship that can only pay the recorded rebate beneficiary
 - Dashboard, evidence ledger, threat model, and submission draft synchronized to the generated artifacts
 
+The release candidate is now deployed as a separate Unichain Sepolia pool. Its dated manifest records an 18 bps pool
+initialization, real swap, 55-second Circle settlement, complete provisional-surcharge rebate, sponsored-claim
+entrypoint execution, and zero residual liabilities. The original 30 + 50 bps deployment remains unchanged.
+
 ### Verification gate
 
 ```bash
@@ -537,7 +541,7 @@ Required results:
   benign and inventory-improving effective fees at or below 30 bps.
 - At equal execution, benign flow pays 27.4262 bps and inventory-improving flow pays 18 bps.
 - A sponsor cannot redirect a rebate, replay a claim, break solvency, or bypass reentrancy protection.
-- The dashboard clearly separates the live 30 + 50 bps deployment from the undeployed 18 + 50 bps candidate.
+- The dashboard clearly separates the original 30 + 50 bps evidence from the separately deployed 18 + 50 bps pool.
 
 ## Phase-gate handoff format
 

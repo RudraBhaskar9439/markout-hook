@@ -1,0 +1,92 @@
+{
+  "profile": "fair-flow-18-plus-50",
+  "status": "circle-e2e-complete",
+  "deployer": "0xd1DcAAFf9356d5a42f2eE6F90179C4509386a83f",
+  "marketId": "0x7ea41243798f304c9efd5c2e0c82a273090146c4718014ecc8570eb373df2b78",
+  "economics": {
+    "poolBaseFeeBps": 18,
+    "poolFeeRaw": 1800,
+    "provisionalSurchargeBps": 50,
+    "maximumUpfrontFeeBps": 68
+  },
+  "ethereumSepolia": {
+    "chainId": 11155111,
+    "publisher": "0xeeb18d96AABcec142D95Ba2b9E7E3221832Cf139",
+    "publisherDeploymentTx": "0x2aecf4a45f5d0474717753b474313afef14f1e62c85d6eb746dd4bfd95f64e71",
+    "publisherBindingTx": "0xdc4ee05dc0372f418f4803ca3800797462e22db790c3d1156fc1b8d78120fa7f",
+    "observationPublishTx": "0xccd8cc932276ce3233665c230d8107854b2201bca15a173b7986245c9d517221",
+    "settlingObservation": {
+      "priceX18": "2417068358470000000000",
+      "observedAt": 1787341520,
+      "confidenceBps": 9997
+    },
+    "explorer": "https://sepolia.etherscan.io/address/0xeeb18d96AABcec142D95Ba2b9E7E3221832Cf139"
+  },
+  "unichainSepolia": {
+    "chainId": 1301,
+    "settlementCoordinator": "0x7BC38f019D5F3000c15C9E5309dFB1e7f361cb6e",
+    "circleReceiver": "0x24858E73A18f1A4537897DD2d04417a7a24b8f68",
+    "reactiveReceiver": "0x35e006fc141E1798e15E4BCec4e58DE439eC9cED",
+    "markoutHook": "0x3A17354331C21B246A9eC9BF979Af77e64f30044",
+    "hookSalt": "0x0000000000000000000000000000000000000000000000000000000000000c3b",
+    "destinationDeploymentTxs": [
+      "0x5c21df785d64de370b6c317d8e789fb6f9f678f649cb8c5064a9bc87a756abde",
+      "0x60111e293c66631fcfd39604fafc083a6c68c5fe517d21a73cb4d91c4cf270fc",
+      "0xbc5a5f971f35855a3a33a0fbfeb79634a8867abd6c099319d92f14ca8154766c",
+      "0xfae8b73c2d750516352cbf6867fa701d255f91982eef0868b53f9ad1b8ab47c4",
+      "0x0684e72a1a1a4821355c1ddb34f7135c6181309cf88bff9cfdc21483cd0b923b"
+    ],
+    "poolId": "0xee2fba8ece79cbbf20bb44f861fae605b7caf5fa12883daa34811f54e753580d",
+    "poolInitializationTx": "0xf96119129f7bb91fe9331725a5ba2c4aabaa8ebeec17042d1c3ef15f95a4cba9",
+    "poolBootstrapTxs": [
+      "0x2edcfdbf3e383dc05abbdf0584cb87948542adf541d23fe211199dfdffcd6927",
+      "0x8c10862802180f37c93447093c849c6c9c5cef2c2a4db1cc1a981a3432be0fca",
+      "0xa04cdb63fdece094549bd0790db754a3a4df2e7388eabb509736623de9776a80"
+    ],
+    "verificationSwap": {
+      "approvalTx": "0xafdd9b65da6118e6490636c98926dd404eed287ca8c5a208a6857e022ae2eef4",
+      "swapTx": "0xf4873749b39300d5d19d28e3b0b0f43511ac907595b85d14e76c725f86f9c70f",
+      "tradeId": "0x0a7e4ba34d430d4a3a8e839ddd652f40d5a7a716d7dd3e959dc33ca49acb262d",
+      "poolId": "0xee2fba8ece79cbbf20bb44f861fae605b7caf5fa12883daa34811f54e753580d",
+      "executionPriceX18": "1245790000000000000000",
+      "escrowCurrency": "0x31d0220469e10c4E71834a79b1f276d740d3768F",
+      "escrowedSurcharge": "622",
+      "executedAt": 1787341209,
+      "maturityTimestamp": 1787341509,
+      "expiryTimestamp": 1787342109,
+      "circleRelayTx": "0xb1bd16c88d71fbb737cbaa20ed9002dd7bd7098d1c17ac11ab3c7f9ed01c0c4d",
+      "relayBlockNumber": 60489147,
+      "relayBlockTimestamp": 1787341575,
+      "sourceToDestinationLatencySeconds": 55,
+      "observationAgeAtSettlementSeconds": 55,
+      "sponsoredClaimEntrypointTx": "0x996ae7697b54ea67df0fbd3eb9ded1163d3a3df1d272bdcc7260ee18597b5f70",
+      "status": "settled-and-claimed",
+      "settlement": {
+        "markoutWad": "-940189244150298204",
+        "referencePriceX18": "2417068358470000000000",
+        "retainedSurcharge": "0",
+        "rebate": "622",
+        "retentionBps": 0,
+        "effectiveFeeBps": 18,
+        "rebateClaimed": true
+      }
+    },
+    "explorer": "https://sepolia.uniscan.xyz/address/0x3A17354331C21B246A9eC9BF979Af77e64f30044"
+  },
+  "verification": {
+    "publisherBoundToCircleReceiver": true,
+    "coordinatorBoundToHook": true,
+    "hookSettlementAuthorityMatchesCoordinator": true,
+    "hookSurchargeBps": 50,
+    "poolInitializeEventFeeRaw": 1800,
+    "poolInitializedAndLiquid": true,
+    "realSwapCreatedPendingTrade": true,
+    "circleLifecycleComplete": true,
+    "sponsoredClaimEntrypointExecuted": true,
+    "finalClaimableRebate": "0",
+    "finalPoolPendingSurcharge": "0",
+    "finalLpProtectionReserve": "0",
+    "finalHookTokenBalance": "0"
+  },
+  "notes": "This is a separate Fair-Flow deployment. The original 30 + 50 bps pool and its evidence remain unchanged. Reactive delivery is optional and is not claimed live for this topology."
+}

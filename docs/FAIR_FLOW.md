@@ -8,8 +8,9 @@ maximum upfront charge = 18 bps base + 50 bps provisional = 68 bps
 final effective fee     = 18 bps base + retained portion of the provisional charge
 ```
 
-The existing public pool remains 30 + 50 bps. Fair-Flow is verified source code and research evidence, not a relabeling
-of that deployment.
+The existing public pool remains 30 + 50 bps. Fair-Flow is a separate deployment, not a relabeling of that evidence.
+Its dated [public manifest](../deployments/fair-flow-2026-08-22.json) records the 18 bps pool, new hook, new Circle
+topology, a real swap, 55-second settlement, complete surcharge rebate, and executed sponsored-claim entrypoint.
 
 ## Why a trader routes here
 
@@ -41,7 +42,7 @@ candidate. The complete frontier is in
 
 ## Rebate experience
 
-The next hook version retains beneficiary-controlled claims and adds `claimRebateFor(beneficiary, currency)`. Any
+The deployed Fair-Flow hook retains beneficiary-controlled claims and adds `claimRebateFor(beneficiary, currency)`. Any
 relayer may sponsor the gas, but the function always transfers to the beneficiary. The sponsor cannot select a
 recipient, redirect funds, or replay a completed claim. This permits a pool operator or solver to hide claim gas from
 the trader without receiving custody authority.
@@ -53,7 +54,8 @@ the trader without receiving custody authority.
 - The candidate does not yet model concentrated-liquidity depth, endogenous routing, fee-sensitive demand, or claim
   gas in the trader's all-in quote.
 - The LP protection reserve is fully accounted but is not automatically reinvested as liquidity in this prototype.
-- Deploying a separate 18 bps pool and producing a new public lifecycle require explicit owner approval.
+- One Fair-Flow public lifecycle proves the complete-rebate branch at an 18 bps final fee; it does not replace the
+  original deployment's opposite-branch evidence.
 
 ## Verification
 
@@ -61,4 +63,7 @@ the trader without receiving custody authority.
 ./experiments/run.sh
 forge test -q
 cd web && npm run verify
+
+# With public RPC variables loaded:
+./scripts/verify-public-fair-flow-evidence.sh
 ```

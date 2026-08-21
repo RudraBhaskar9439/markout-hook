@@ -1,7 +1,8 @@
 # MARKOUT Evidence Ledger
 
-Status: three public Circle-primary lifecycles verified on August 21, 2026; one deterministic 768-trade policy
-comparison and 21-point base-fee sweep reproduced locally; liquidity and routing response remain unproven.
+Status: four public Circle-primary lifecycles verified across August 21–22, 2026, including the separate Fair-Flow
+deployment; one deterministic 768-trade policy comparison and 21-point base-fee sweep reproduced locally; liquidity
+and routing response remain unproven.
 
 ## Evidence hierarchy
 
@@ -26,14 +27,16 @@ The dated [deployment manifest](../deployments/hybrid-2026-08-21.json) is machin
 | Rebate branch A | [swap](https://sepolia.uniscan.xyz/tx/0x41127cb3dc8c86b115cc0547c646bee192907f9d75fdc4af6f052c5110b7b90c) | [observation](https://sepolia.etherscan.io/tx/0xed6af5c42e554c221078110d6db03fba8fd74bf24a88cf52494d4e605a31f6ca) | [38-second relay](https://sepolia.uniscan.xyz/tx/0xa64789b5a08ea8aae8c2b909b6a81b495334b707eaae12610bf3749902ec532f) | 100% surcharge rebated and [claimed](https://sepolia.uniscan.xyz/tx/0xa6ded637a8c9651f252e302f7cedec2969d637f733777f7f2ad71ac700d64630) |
 | Protection branch | [swap](https://sepolia.uniscan.xyz/tx/0xb6179eab5dcf9ff2f3563442dbf826fe5fcb86524e9d71aa913c9ba9e90a2376) | [observation](https://sepolia.etherscan.io/tx/0x9d20a2a8bfc5c7dd654608a9214472ff3ed37cbdff4614064aff28805f9f8861) | [67-second relay](https://sepolia.uniscan.xyz/tx/0xefeece5de9f78ae809652418e1fcd8fb592de950af64e6bbbf66df93bdc25eae) | 100% surcharge retained; reserve equals actual hook balance |
 | Browser-wallet rebate | [swap](https://sepolia.uniscan.xyz/tx/0x889ea958d19574572890a5ae5a5890c7a8d31f94ebfbe9d065b58d884c1f739a) | [observation](https://sepolia.etherscan.io/tx/0x2465cd2f4e2299a1898f45d0634fc2fd87ae2412de615504fc0125d9ed204e42) | [67-second relay](https://sepolia.uniscan.xyz/tx/0x81f7878312b81b80ba69ad8fdc0f4e06f64f8624ed610ebd5a6ea63cca0ca610) | −266.96 bps markout; 100% of 2,041,420,186,161 test-WETH units [claimed](https://sepolia.uniscan.xyz/tx/0xd78f8533519c4468ac345f0caad52a8eb5c57ee904fc5882eb9066ee16b1b9d8) |
+| Fair-Flow 18 bps | [swap](https://sepolia.uniscan.xyz/tx/0xf4873749b39300d5d19d28e3b0b0f43511ac907595b85d14e76c725f86f9c70f) | [observation](https://sepolia.etherscan.io/tx/0xccd8cc932276ce3233665c230d8107854b2201bca15a173b7986245c9d517221) | [55-second relay](https://sepolia.uniscan.xyz/tx/0xb1bd16c88d71fbb737cbaa20ed9002dd7bd7098d1c17ac11ab3c7f9ed01c0c4d) | 100% surcharge rebated; 18 bps final fee and [sponsored-claim entrypoint](https://sepolia.uniscan.xyz/tx/0x996ae7697b54ea67df0fbd3eb9ded1163d3a3df1d272bdcc7260ee18597b5f70) executed |
 
 The third lifecycle is important demo evidence: it was initiated and completed through the wallet console rather than
 an owner-side deployment script. Its observation was 92 seconds old when settlement mined, inside the hook's
 120-second freshness bound.
 
-All three public lifecycles use the original 30 bps base + 50 bps provisional profile. They prove the mechanism and
-both terminal branches. They are not evidence that the separately evaluated 18 + 50 bps Fair-Flow profile is already
-deployed.
+The first three lifecycles use the original 30 + 50 bps profile and prove both terminal branches. The separate
+[Fair-Flow manifest](../deployments/fair-flow-2026-08-22.json) proves that the selected 18 + 50 bps profile is deployed,
+liquid, and can complete the same Circle lifecycle at an 18 bps final fee. The original protection-branch evidence
+remains the public proof for full retention.
 
 ## Controlled policy evidence
 
