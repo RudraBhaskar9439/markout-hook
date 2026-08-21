@@ -164,6 +164,19 @@ function walletClient(provider: EthereumProvider, chain: Chain, account: Address
   return createWalletClient({ account, chain, transport: custom(provider) });
 }
 
+async function safeWalletNonce(
+  client: typeof unichainClient | typeof sepoliaClient,
+  account: Address,
+) {
+  const [confirmedNonce, pendingNonce] = await Promise.all([
+    client.getTransactionCount({ address: account, blockTag: "latest" }),
+    client.getTransactionCount({ address: account, blockTag: "pending" }),
+  ]);
+  // Some testnet RPCs can expose a stale pending nonce. Never sign below confirmed state,
+  // while still respecting a legitimate pending transaction when it is ahead.
+  return Math.max(confirmedNonce, pendingNonce);
+}
+
 function ensureHexBytes(value: unknown, field: string): Hex {
   if (typeof value !== "string" || !/^0x(?:[0-9a-fA-F]{2})+$/.test(value)) {
     throw new Error(`${field} was not valid hexadecimal bytes.`);
@@ -290,12 +303,14 @@ export async function executeTestnetSwap(
   const wallet = walletClient(provider, unichainSepolia, account);
   let approvalHash: Hash | undefined;
   if (allowance < amountSpecified) {
+    const nonce = await safeWalletNonce(unichainClient, account);
     approvalHash = await wallet.writeContract({
       address: input.address,
       abi: erc20Abi,
       functionName: "approve",
       args: [MARKOUT_CONTRACTS.poolSwapRouter, amountSpecified],
       gas: APPROVAL_GAS_LIMIT,
+      nonce,
     });
     const approvalReceipt = await unichainClient.waitForTransactionReceipt({ hash: approvalHash });
     if (approvalReceipt.status !== "success") throw new Error("Token approval reverted.");
@@ -303,6 +318,7 @@ export async function executeTestnetSwap(
 
   const zeroForOne = direction === "USDC_TO_WETH";
   const hookData = (`0x${account.slice(2).padStart(64, "0")}${maxUint128.toString(16).padStart(64, "0")}`) as Hex;
+  const nonce = await safeWalletNonce(unichainClient, account);
   const hash = await wallet.writeContract({
     address: MARKOUT_CONTRACTS.poolSwapRouter,
     abi: swapRouterAbi,
@@ -324,6 +340,7 @@ export async function executeTestnetSwap(
       hookData,
     ],
     gas: SWAP_GAS_LIMIT,
+    nonce,
   });
   const receipt = await unichainClient.waitForTransactionReceipt({ hash });
   if (receipt.status !== "success") throw new Error("The Uniswap v4 swap reverted.");
@@ -374,6 +391,7 @@ export async function publishTestnetObservation(
     args: [[updateData]],
   });
   const wallet = walletClient(provider, sepolia, account);
+  const nonce = await safeWalletNonce(sepoliaClient, account);
   const hash = await wallet.writeContract({
     address: MARKOUT_CONTRACTS.circlePublisher,
     abi: publisherAbi,
@@ -381,6 +399,7 @@ export async function publishTestnetObservation(
     args: [tradeId, [updateData]],
     value: updateFee,
     gas: PYTH_PUBLICATION_GAS_LIMIT,
+    nonce,
   });
   const receipt = await sepoliaClient.waitForTransactionReceipt({ hash });
   if (receipt.status !== "success") throw new Error("The Pyth observation publication reverted.");
@@ -423,12 +442,14 @@ export async function relayCircleAttestation(
 ): Promise<TransactionResult> {
   await switchWalletNetwork(provider, unichainSepolia);
   const wallet = walletClient(provider, unichainSepolia, account);
+  const nonce = await safeWalletNonce(unichainClient, account);
   const hash = await wallet.writeContract({
     address: MARKOUT_CONTRACTS.circleMessageTransmitter,
     abi: circleTransmitterAbi,
     functionName: "receiveMessage",
     args: [attestation.message, attestation.attestation],
     gas: CIRCLE_RELAY_GAS_LIMIT,
+    nonce,
   });
   const receipt = await unichainClient.waitForTransactionReceipt({ hash });
   if (receipt.status !== "success") throw new Error("The Circle relay reverted on Unichain.");
@@ -442,12 +463,14 @@ export async function claimTestnetRebate(
 ): Promise<TransactionResult> {
   await switchWalletNetwork(provider, unichainSepolia);
   const wallet = walletClient(provider, unichainSepolia, account);
+  const nonce = await safeWalletNonce(unichainClient, account);
   const hash = await wallet.writeContract({
     address: MARKOUT_CONTRACTS.hook,
     abi: markoutAbi,
     functionName: "claimRebate",
     args: [currency, account],
     gas: CLAIM_GAS_LIMIT,
+    nonce,
   });
   const receipt = await unichainClient.waitForTransactionReceipt({ hash });
   if (receipt.status !== "success") throw new Error("The rebate claim reverted.");
@@ -461,12 +484,14 @@ export async function expireTestnetTrade(
 ): Promise<TransactionResult> {
   await switchWalletNetwork(provider, unichainSepolia);
   const wallet = walletClient(provider, unichainSepolia, account);
+  const nonce = await safeWalletNonce(unichainClient, account);
   const hash = await wallet.writeContract({
     address: MARKOUT_CONTRACTS.hook,
     abi: markoutAbi,
     functionName: "expireTrade",
     args: [tradeId],
     gas: EXPIRY_GAS_LIMIT,
+    nonce,
   });
   const receipt = await unichainClient.waitForTransactionReceipt({ hash });
   if (receipt.status !== "success") throw new Error("The expiry transaction reverted.");
