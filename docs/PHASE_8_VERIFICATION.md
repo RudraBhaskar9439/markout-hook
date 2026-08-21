@@ -25,8 +25,8 @@ Complete this path without a wallet or terminal interaction after the applicatio
 4. Select inventory-improving flow and confirm MARKOUT does not retain adverse-selection protection.
 5. Replay the five-step hybrid timeline from execution through acknowledgement.
 6. Review the aggregate evidence and the explicitly disclosed stale/manipulated-reference regression.
-7. Confirm that the live-evidence card says `Public Circle settlement pending` and contains no invented
-   settlement hash.
+7. Confirm that the live-evidence card shows the measured 38-second Circle settlement, the 46-second observation age,
+   the 100% good-flow rebate, and links to the recorded public transactions.
 
 ## Automated gate
 
@@ -57,18 +57,11 @@ runtime, so CI gates the production graph and this development-only residual ris
 
 ## Exact checkpoint boundary
 
-Passing this script means the local judge application is reproducible and presentation-ready. It does **not** mean the
-complete roadmap gate has passed. These items remain blocked on successful public Circle destination delivery:
-
-- at least one real Circle-attested settlement;
-- explorer-backed event, observation, attestation relay, claim, and LP-protection links;
-- replacement of the pending-evidence card with those verified links; and
-- a fallback recording of the final live-integrated application.
-
-Use the checkpoint tag `phase-8-local-pass`, not `phase-8-pass`, until all four items exist.
+Passing this script means the judge application is reproducible and presentation-ready. The public Circle evidence is
+recorded in `deployments/hybrid-2026-08-21.json`; Reactive remains explicitly optional and receives no live-delivery
+claim until a destination callback is public.
 
 ## GO / NO-GO
 
-**GO** for hosted/local judge review, Phase 9 writing, diagram, deck, and rehearsal work that uses the honest local
-boundary. **NO-GO** for claiming a public Circle or Reactive settlement, or publishing the final submission package,
-until the corresponding public evidence is added and reverified.
+**GO** for hosted/local judge review and for claiming the linked public Circle settlement. **NO-GO** for claiming a
+public Reactive callback until the corresponding Unichain transaction is observed and recorded.

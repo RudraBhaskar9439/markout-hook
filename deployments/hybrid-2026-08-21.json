@@ -1,0 +1,84 @@
+{
+  "status": "circle-e2e-complete-reactive-pending",
+  "deployer": "0xd1DcAAFf9356d5a42f2eE6F90179C4509386a83f",
+  "marketId": "0x7ea41243798f304c9efd5c2e0c82a273090146c4718014ecc8570eb373df2b78",
+  "ethereumSepolia": {
+    "publisher": "0xb3d2403a028849292326668ab41ed25f0f049976",
+    "publisherDeploymentTx": "0xa1c08b6eaa9e13e5f6ce50bf876b12977b5ce50562806cb4e78fd2c8cb16ab7c",
+    "publisherBindingTx": "0xe36401d10fe362677462d4d9d15b47f78ae828dfe193f6e1c3726c11030b8142",
+    "observationPublishTx": "0xed6af5c42e554c221078110d6db03fba8fd74bf24a88cf52494d4e605a31f6ca",
+    "observationPublishTxs": [
+      "0x124b7dcfefe5c7765c7cd6319f6900b9e72ff1eab9a8040b0cdb79facd6b5dd2",
+      "0xed6af5c42e554c221078110d6db03fba8fd74bf24a88cf52494d4e605a31f6ca"
+    ],
+    "settlingObservation": {
+      "priceX18": "2407416877690000000000",
+      "observedAt": 1787307424,
+      "confidenceBps": 9997,
+      "sourceBlockTimestamp": 1787307432
+    }
+  },
+  "unichainSepolia": {
+    "settlementCoordinator": "0x282a2ed0eaf48e52e7844de40a1faf6f13445dc0",
+    "circleReceiver": "0x88d2384a2bddffb26936d4b05b55d530709e534b",
+    "reactiveReceiver": "0xf721b39bac0ad8b0bc3db93aa6164aca88a691ee",
+    "markoutHook": "0x2981693161ebbeaf10e91d6ddfc2ed810e80c044",
+    "destinationDeploymentTxs": [
+      "0x7386cbc1cc5d0ead8c98bffc9cb079771a4d127b5159f735825565076f091039",
+      "0xd044dd8c6a692c9a3e40408607e9836b2096d28bcc4ee68f90ead6bf4d7fa678",
+      "0x9eef5ed550a40005b47219c2a423dece97382f1b32e89e631899036c63cc3d85",
+      "0x4963f6dd602800e13837cf551e07001e40a455cb63fdb2b2076a3c50d9341424",
+      "0x591884c06d633243d8837c413b2427f804ea59d9271446f63e65c32311fa3ae3"
+    ],
+    "poolId": "0x9e5a4fc0cc370e9a999c34828a0331fb548fd75897fb0a3de9db9a4902160348",
+    "poolInitializationTx": "0xb1eacb58d87d550eec457e75ea9689089a378f935f30e59e962966d3f1396567",
+    "poolBootstrapTxs": [
+      "0x61c08fe3e3c3221856615fa12271eb0b349a227d3c32e3b6db6f3ceb0737741c",
+      "0x0da1412999ba08b632ccc50f8e68b3044c4c22329ffbe9409d56a34d4e3ef631",
+      "0xfcb6589199d46556b4617045025bae3e6509c8935046bb8d2e782cf03dad434d"
+    ],
+    "swapApprovalTx": "0x0fce46686e006cfe9a6aed749d922311f794948ee3dacecc8eeefa6c53bd88fb",
+    "swapTx": "0x41127cb3dc8c86b115cc0547c646bee192907f9d75fdc4af6f052c5110b7b90c",
+    "tradeId": "0x7b8b801d60140d7588b8245541e551b099c92b1035d1e531ea08b2e2f6c4ea0c",
+    "tradeMaturityTimestamp": 1787307178,
+    "tradeExpiryTimestamp": 1787307778,
+    "circleRelayTx": "0xa64789b5a08ea8aae8c2b909b6a81b495334b707eaae12610bf3749902ec532f",
+    "duplicateCircleRelayTx": "0x06ef5334210274dd451b5465f34d108d1714cf5536ee9ae1998193450114fa76",
+    "reactiveCallbackTx": "",
+    "rebateClaimTx": "0xa6ded637a8c9651f252e302f7cedec2969d637f733777f7f2ad71ac700d64630",
+    "settlement": {
+      "status": "settled",
+      "markoutWad": "-934693795658742787",
+      "escrowedSurcharge": "622",
+      "retainedSurcharge": "0",
+      "rebate": "622",
+      "retentionBps": 0,
+      "rebateClaimed": true
+    },
+    "relayBlockTimestamp": 1787307470,
+    "sourceToDestinationLatencySeconds": 38,
+    "observationAgeAtSettlementSeconds": 46
+  },
+  "reactiveLasnaLegacy": {
+    "pulse": "0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e",
+    "pulseDeploymentTx": "0xdd2af7d35c3f73aa4d667631ff6062053636e6c098e16cfb620205e3481164c6",
+    "subscriptionUid": "5444e2305ab34132586786190bf17072",
+    "observationReactionTx": ""
+  },
+  "explorerLinks": {
+    "publisher": "https://sepolia.etherscan.io/address/0xb3d2403a028849292326668ab41ed25f0f049976",
+    "settlingObservation": "https://sepolia.etherscan.io/tx/0xed6af5c42e554c221078110d6db03fba8fd74bf24a88cf52494d4e605a31f6ca",
+    "markoutHook": "https://sepolia.uniscan.xyz/address/0x2981693161ebbeaf10e91d6ddfc2ed810e80c044",
+    "swap": "https://sepolia.uniscan.xyz/tx/0x41127cb3dc8c86b115cc0547c646bee192907f9d75fdc4af6f052c5110b7b90c",
+    "circleRelay": "https://sepolia.uniscan.xyz/tx/0xa64789b5a08ea8aae8c2b909b6a81b495334b707eaae12610bf3749902ec532f",
+    "duplicateCircleRelay": "https://sepolia.uniscan.xyz/tx/0x06ef5334210274dd451b5465f34d108d1714cf5536ee9ae1998193450114fa76",
+    "rebateClaim": "https://sepolia.uniscan.xyz/tx/0xa6ded637a8c9651f252e302f7cedec2969d637f733777f7f2ad71ac700d64630",
+    "reactivePulse": "https://lasna.reactscan.net/address/0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e",
+    "reactivePulseDeployment": "https://lasna.reactscan.net/tx/0xdd2af7d35c3f73aa4d667631ff6062053636e6c098e16cfb620205e3481164c6"
+  },
+  "evidence": {
+    "circleLive": true,
+    "reactiveLive": false,
+    "notes": "Circle completed a public Pyth-to-CCTP-to-Unichain settlement and rebate claim. The first published observation became 18 seconds too old during relay simulation and was safely rejected; the second was relayed directly within the 120-second freshness bound. Relaying the other valid Circle message after settlement succeeded as an idempotent coordinator no-op. The optional legacy Reactive pulse is deployed, funded, debt-free, and exactly subscribed; reactiveLive remains false until a public Unichain callback succeeds."
+  }
+}

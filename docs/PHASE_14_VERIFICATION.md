@@ -1,8 +1,7 @@
 # Phase 14 Verification — Hybrid Deployment and Release Candidate
 
-Phase 14 packages the Circle-primary, Reactive-optional topology for public testnet deployment. Local automation is
-complete; public broadcasts remain an owner-controlled gate because they require a private key, testnet balances,
-irreversible address confirmation, and a Pyth API credential.
+Phase 14 packages and proves the Circle-primary, Reactive-optional topology on public testnets. The required Circle
+path is complete; repository/site visibility and final submission remain owner-controlled decisions.
 
 ## Local automated gate
 
@@ -20,7 +19,7 @@ Run the complete release candidate from a clean tree with:
 ```
 
 The cumulative command repeats the Phase 1–13 protocol, research, security, dashboard, and presentation gates before
-running the full 212-test Solidity suite.
+running the full 186-test Solidity suite.
 
 ## Read-only public-network preflight
 
@@ -50,8 +49,13 @@ The optional Reactive pulse passes its separate live gate only with a successful
 subscription evidence, and a public Unichain callback. A generic Anvil fork cannot emulate Reactive's chain-specific
 subscription precompile and is not accepted as registration evidence.
 
+The required gate passed on August 21, 2026. The
+[dated deployment manifest](../deployments/hybrid-2026-08-21.json) records the public addresses and transactions,
+including a claimed `622`-unit test-USDC rebate, 38-second source-to-destination latency, and a later valid Circle
+delivery handled as an idempotent no-op.
+
 ## GO / NO-GO
 
-**GO** for owner-controlled deployment using the runbook and for judge rehearsal using deterministic local evidence.
-**NO-GO** for the `uhi10-final` tag, public live-settlement claims, or final form submission until the required Circle
-transactions and claim are recorded and reverified.
+**GO** for the public Circle-settlement claim: the dated manifest records the swap, observation, 38-second relay,
+settlement, rebate claim, and idempotent duplicate delivery. **NO-GO** for a public Reactive-delivery claim until a
+callback is visible on Unichain, and for final form submission until the project owner supplies the remaining details.

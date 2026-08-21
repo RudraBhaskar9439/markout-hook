@@ -3,7 +3,7 @@ set -euo pipefail
 
 price_id="${PYTH_PRICE_ID:?Set PYTH_PRICE_ID}"
 api_key="${PYTH_API_KEY:?Set PYTH_API_KEY without committing it}"
-endpoint="${PYTH_HERMES_URL:-https://pyth.dourolabs.app/hermes/v2/updates/price/latest}"
+endpoint="${PYTH_HERMES_URL:-https://hermes.pyth.network/v2/updates/price/latest}"
 
 response="$(
   curl --fail --silent --show-error --get \

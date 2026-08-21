@@ -1,6 +1,6 @@
 # MARKOUT Mechanism Specification
 
-Status: Phase 13 hybrid lifecycle implemented locally; Phase 14 public Circle evidence is pending.
+Status: Phase 14 Circle-primary lifecycle verified publicly; optional Reactive destination delivery is not live.
 
 ## 1. Problem
 
@@ -119,6 +119,6 @@ No terminal state can transition again.
 
 ## 10. Remaining release decisions
 
-1. Measure public Circle attestation and settlement latency against the ten-minute grace window.
-2. Prove the optional Reactive callback publicly before describing it as live.
-3. Decide how the LP protection reserve becomes pool liquidity or LP-owned value.
+1. Keep the optional Reactive callback labeled not-live unless a public destination transaction appears.
+2. Decide how the LP protection reserve becomes pool liquidity or LP-owned value.
+3. Replace the ETH/USD-as-ETH/USDC testnet proxy before any production use.

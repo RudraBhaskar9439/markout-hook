@@ -66,11 +66,12 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 
 ## Current status
 
-**Phase 14 local release candidate complete; the public testnet gate remains open.** The previous Omni
+**Phase 14 public Circle gate complete; optional Reactive delivery remains under observation.** The previous Omni
 scheduler remains committed as reproducible research and outage evidence. The active topology now uses a one-time-bound
 settlement coordinator, a Pyth-backed Ethereum Sepolia publisher, an authenticated Circle receiver, and an optional
-stateless Reactive pulse. Public Circle attestation and destination settlement transactions are still required before
-the hybrid live gate can close; Reactive receives live credit only if its callback is independently visible.
+stateless Reactive pulse. After a real Uniswap v4 swap matured, its Pyth observation was attested through Circle,
+settled on Unichain, and claimed; the dated deployment manifest records the public evidence and measured latency. Reactive
+receives live credit only if its callback is independently visible.
 
 ## Architecture
 

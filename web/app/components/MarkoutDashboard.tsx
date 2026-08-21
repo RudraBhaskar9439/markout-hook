@@ -240,12 +240,12 @@ function SettlementTimeline({ selected }: { selected: FlowId }) {
       </div>
 
       <div className="proof-strip">
-        <span className="proof-status"><i /> Local lifecycle proven</span>
+        <span className="proof-status"><i /> Public Circle lifecycle proven</span>
         <span>MarkoutRequested</span>
         <span className="proof-arrow">→</span>
         <span>Reference sample</span>
         <span className="proof-arrow">→</span>
-        <span>Authenticated callback</span>
+        <span>Authenticated delivery</span>
         <span className="proof-arrow">→</span>
         <span>Rebate claim</span>
       </div>
@@ -264,6 +264,27 @@ function ResearchEvidence() {
           Each policy receives the same deterministic tape. The metric is a pool-level adverse-selection proxy, not
           individual LP profit or exact LVR.
         </p>
+      </div>
+
+      <div className="live-proof-card" aria-label="Public Circle settlement evidence">
+        <div>
+          <p className="kicker">Public testnet proof</p>
+          <strong>Circle settled MARKOUT in 38 seconds.</strong>
+          <p>
+            A real Unichain v4 swap matured, received a Pyth-verified observation, settled through Circle CCTP V2,
+            and returned the complete provisional surcharge for negative markout.
+          </p>
+        </div>
+        <div className="live-proof-metrics">
+          <span><b>46s</b> observation age</span>
+          <span><b>100%</b> surcharge rebated</span>
+          <span><b>0</b> retained from good flow</span>
+        </div>
+        <div className="live-proof-links">
+          <a href="https://sepolia.etherscan.io/tx/0xed6af5c42e554c221078110d6db03fba8fd74bf24a88cf52494d4e605a31f6ca" target="_blank" rel="noreferrer">Pyth observation ↗</a>
+          <a href="https://sepolia.uniscan.xyz/tx/0xa64789b5a08ea8aae8c2b909b6a81b495334b707eaae12610bf3749902ec532f" target="_blank" rel="noreferrer">Circle settlement ↗</a>
+          <a href="https://sepolia.uniscan.xyz/tx/0xa6ded637a8c9651f252e302f7cedec2969d637f733777f7f2ad71ac700d64630" target="_blank" rel="noreferrer">Rebate claim ↗</a>
+        </div>
       </div>
 
       <div className="evidence-layout">
@@ -312,7 +333,7 @@ export function MarkoutDashboard() {
           <a href="#mechanism">Mechanism</a>
           <a href="#evidence">Evidence</a>
         </nav>
-        <span className="testnet-status"><i /> Local proof mode</span>
+        <span className="testnet-status"><i /> Circle live · Reactive optional</span>
       </header>
 
       <section className="hero" id="top">
@@ -397,8 +418,8 @@ export function MarkoutDashboard() {
           <p>Outcome-priced liquidity for Uniswap v4.</p>
         </div>
         <div className="footer-status">
-          <span><i className="status-green" /> Hybrid lifecycle verified locally</span>
-          <span><i className="status-amber" /> Public Circle settlement pending</span>
+          <span><i className="status-green" /> Public Circle settlement proven</span>
+          <span><i className="status-amber" /> Reactive callback not yet observed</span>
         </div>
         <p className="footer-note">Experimental UHI10 prototype · Not audited · No real funds</p>
       </footer>

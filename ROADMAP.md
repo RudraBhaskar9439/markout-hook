@@ -31,7 +31,7 @@ Lasna, but two bounded public canaries also proved that destination callbacks we
 Sepolia or Ethereum Sepolia during the acceptance windows. Phase 5 therefore remains **NO-GO** for claims of a live
 Reactive settlement.
 
-The forward plan does not discard that work or weaken MARKOUT's accounting. Phases 10–13 implement the local hybrid
+The forward plan does not discard that work or weaken MARKOUT's accounting. Phases 10–13 implement the hybrid
 topology and remove Reactive Network from the protocol's critical path:
 
 - Circle CCTP V2 becomes the primary authenticated cross-chain observation transport.
@@ -43,6 +43,11 @@ topology and remove Reactive Network from the protocol's critical path:
 - The existing Omni scheduler remains reproducible research and outage evidence, not the active deployment path.
 
 This pivot is specified in [Hybrid Settlement Architecture](docs/HYBRID_SETTLEMENT.md).
+
+Phase 14's required Circle gate is complete. The dated
+[public deployment manifest](deployments/hybrid-2026-08-21.json) records the Sepolia publication, Circle attestation,
+Unichain settlement, rebate claim, and 38-second source-to-destination latency. Reactive remains optional and is not
+described as live because no public destination callback exists.
 
 ## Phase 0 — Repository bootstrap
 
@@ -487,8 +492,9 @@ Produce explorer-backed Circle evidence first, then add Reactive evidence only i
 - Secret-safe environment template and evidence-manifest template
 - Judge dashboard, demo script, submission checklist, and rendered deck revised around the hybrid boundary
 
-Local automation is complete. Broadcasts remain a manual gate because they require the project owner's private key,
-testnet balances, irreversible address confirmation, and Pyth API credential.
+Local automation and the required public Circle path are complete. The dated evidence manifest records the deployed
+topology, real swap, Pyth publication, Circle relay, terminal settlement, and claimed rebate. Final submission assets
+and repository/site visibility remain owner-controlled gates.
 
 ### Verification gate
 

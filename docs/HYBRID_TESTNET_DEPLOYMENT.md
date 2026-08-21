@@ -47,8 +47,9 @@ Provide a reliable Ethereum Sepolia RPC, then verify all three networks and exte
 ./scripts/check-hybrid-networks.sh
 ```
 
-The checked Pyth address must be revisited at broadcast time. Pyth documents a Sepolia upgrade scheduled for August
-26, 2026; change `PYTH_CONTRACT` to the then-active address instead of relying on the example forever.
+The example deliberately pairs Pyth's stable Sepolia contract with the stable Hermes endpoint. Pyth documents a
+Sepolia upgrade scheduled for August 26, 2026. If upgrading early, change the contract and Hermes endpoint together;
+mixing the upgraded endpoint with the stable contract causes `InvalidWormholeVaa()`.
 
 ## Deployment order
 
@@ -135,20 +136,12 @@ the destination correctly rejects an observation before maturity.
 ### 2. Fetch and publish the signed Pyth update
 
 ```bash
-./scripts/fetch-pyth-update.sh
+./scripts/publish-circle-observation.sh
 ```
 
-Copy the printed `export PYTH_UPDATE_DATA=...` line into the current shell, then publish:
-
-```bash
-forge script script/PublishCircleObservation.s.sol:PublishCircleObservation \
-  --rpc-url "$ETHEREUM_SEPOLIA_RPC_URL" \
-  --broadcast \
-  -vv
-```
-
-Record the publication transaction as `PUBLISH_TX_HASH`. The same event is now available to the optional Reactive
-pulse; no separate Reactive trigger exists.
+Copy the printed `export PUBLISH_TX_HASH=...` line into the current shell. The helper fetches a fresh signed update,
+quotes Pyth's exact fee, and broadcasts directly to minimize oracle age. The same event is now available to the
+optional Reactive pulse; no separate Reactive trigger exists.
 
 ### 3. Fetch and relay the Circle attestation
 
@@ -157,18 +150,17 @@ pulse; no separate Reactive trigger exists.
 ```
 
 Circle may initially return `404` or a pending status while it confirms the source transaction. That is expected; rerun
-the command. Once complete, copy its two `export` lines and relay:
+the command. Once complete, relay immediately:
 
 ```bash
-forge script script/RelayCircleMessage.s.sol:RelayCircleMessage \
-  --rpc-url "$ORIGIN_RPC_URL" \
-  --broadcast \
-  -vv
+./scripts/relay-circle-attestation.sh
 ```
 
 The publisher requests threshold `1000` so an Ethereum observation can arrive inside MARKOUT's ten-minute settlement
-window. This fast-confirmed path has bounded source-reorganization risk. A hard-finalized `2000` deployment requires a
-longer hook window because Circle documents materially longer Ethereum finality.
+window. Relay as soon as Circle reports `complete`: the destination also enforces the publisher's 120-second maximum
+oracle age. The direct helper avoids slow historical-fork simulation while the on-chain receiver still validates every
+message. This fast-confirmed path has bounded source-reorganization risk. A hard-finalized `2000` deployment requires
+a longer hook window because Circle documents materially longer Ethereum finality.
 
 ### 4. Verify and claim
 

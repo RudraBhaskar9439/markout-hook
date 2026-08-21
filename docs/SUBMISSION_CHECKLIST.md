@@ -1,7 +1,7 @@
 # UHI10 Final Submission Checklist
 
-The Circle-primary, Reactive-optional implementation is complete locally. The final release remains blocked until the
-public transactions below exist and every submitted claim links to real evidence.
+The Circle-primary, Reactive-optional implementation is complete locally, and the required Circle lifecycle is proven
+on public testnets. The final release remains blocked only on the owner-controlled submission details below.
 
 ## Complete and verified locally
 
@@ -17,19 +17,19 @@ public transactions below exist and every submitted claim links to real evidence
 
 ## Required Circle public evidence
 
-- [ ] Deploy and verify the Ethereum Sepolia publisher
-- [ ] Deploy and freeze the Unichain coordinator, receivers, permission-mined hook, and pool
-- [ ] Permanently bind the publisher only after confirming the destination receiver
-- [ ] Execute a real testnet swap and record its trade id
-- [ ] After maturity, publish a signed Pyth observation
-- [ ] Fetch and relay Circle's completed attestation on Unichain
-- [ ] Confirm the trade settled and claim the rebate
-- [ ] Record publication, Circle relay, settlement, and claim explorer links in a dated manifest
-- [ ] Measure end-to-end attestation latency against the ten-minute settlement window
+- [x] Deploy and verify the Ethereum Sepolia publisher
+- [x] Deploy and freeze the Unichain coordinator, receivers, permission-mined hook, and pool
+- [x] Permanently bind the publisher only after confirming the destination receiver
+- [x] Execute a real testnet swap and record its trade id
+- [x] After maturity, publish a signed Pyth observation
+- [x] Fetch and relay Circle's completed attestation on Unichain
+- [x] Confirm the trade settled and claim the rebate
+- [x] Record publication, Circle relay, settlement, claim, and explorer links in a dated manifest
+- [x] Measure end-to-end attestation latency against the ten-minute settlement window (38 seconds)
 
 ## Optional Reactive sponsor evidence
 
-- [ ] Deploy the funded pulse on legacy Lasna and verify its exact subscription publicly
+- [x] Deploy the funded pulse on legacy Lasna and verify its exact subscription publicly
 - [ ] Observe the publisher event being processed on Reactive
 - [ ] Record a successful Unichain callback transaction if the relayer delivers
 - [ ] Set `reactiveLive` to `true` only when that destination transaction is public
