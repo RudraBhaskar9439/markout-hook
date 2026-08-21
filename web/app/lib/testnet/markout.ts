@@ -52,6 +52,12 @@ const HERMES_PRICE_URL = "https://hermes.pyth.network/v2/updates/price/latest";
 const CIRCLE_MESSAGES_URL = "https://iris-api-sandbox.circle.com/v2/messages/0";
 const MIN_SQRT_PRICE_PLUS_ONE = 4_295_128_740n;
 const MAX_SQRT_PRICE_MINUS_ONE = 1_461_446_703_485_210_103_287_273_052_203_988_822_378_723_970_341n;
+const APPROVAL_GAS_LIMIT = 100_000n;
+const SWAP_GAS_LIMIT = 700_000n;
+const PYTH_PUBLICATION_GAS_LIMIT = 500_000n;
+const CIRCLE_RELAY_GAS_LIMIT = 1_200_000n;
+const CLAIM_GAS_LIMIT = 250_000n;
+const EXPIRY_GAS_LIMIT = 300_000n;
 
 const erc20Abi = parseAbi([
   "function balanceOf(address account) view returns (uint256)",
@@ -289,6 +295,7 @@ export async function executeTestnetSwap(
       abi: erc20Abi,
       functionName: "approve",
       args: [MARKOUT_CONTRACTS.poolSwapRouter, amountSpecified],
+      gas: APPROVAL_GAS_LIMIT,
     });
     const approvalReceipt = await unichainClient.waitForTransactionReceipt({ hash: approvalHash });
     if (approvalReceipt.status !== "success") throw new Error("Token approval reverted.");
@@ -316,6 +323,7 @@ export async function executeTestnetSwap(
       { takeClaims: false, settleUsingBurn: false },
       hookData,
     ],
+    gas: SWAP_GAS_LIMIT,
   });
   const receipt = await unichainClient.waitForTransactionReceipt({ hash });
   if (receipt.status !== "success") throw new Error("The Uniswap v4 swap reverted.");
@@ -372,6 +380,7 @@ export async function publishTestnetObservation(
     functionName: "publish",
     args: [tradeId, [updateData]],
     value: updateFee,
+    gas: PYTH_PUBLICATION_GAS_LIMIT,
   });
   const receipt = await sepoliaClient.waitForTransactionReceipt({ hash });
   if (receipt.status !== "success") throw new Error("The Pyth observation publication reverted.");
@@ -419,6 +428,7 @@ export async function relayCircleAttestation(
     abi: circleTransmitterAbi,
     functionName: "receiveMessage",
     args: [attestation.message, attestation.attestation],
+    gas: CIRCLE_RELAY_GAS_LIMIT,
   });
   const receipt = await unichainClient.waitForTransactionReceipt({ hash });
   if (receipt.status !== "success") throw new Error("The Circle relay reverted on Unichain.");
@@ -437,6 +447,7 @@ export async function claimTestnetRebate(
     abi: markoutAbi,
     functionName: "claimRebate",
     args: [currency, account],
+    gas: CLAIM_GAS_LIMIT,
   });
   const receipt = await unichainClient.waitForTransactionReceipt({ hash });
   if (receipt.status !== "success") throw new Error("The rebate claim reverted.");
@@ -455,6 +466,7 @@ export async function expireTestnetTrade(
     abi: markoutAbi,
     functionName: "expireTrade",
     args: [tradeId],
+    gas: EXPIRY_GAS_LIMIT,
   });
   const receipt = await unichainClient.waitForTransactionReceipt({ hash });
   if (receipt.status !== "success") throw new Error("The expiry transaction reverted.");
@@ -477,4 +489,3 @@ export function readableError(error: unknown) {
   if (error instanceof Error) return error.message;
   return "The wallet operation failed.";
 }
-
