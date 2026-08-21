@@ -10,6 +10,7 @@ import {
   timelineBase,
   type FlowId,
 } from "../lib/demo-data";
+import { LiveTestnetConsole } from "./LiveTestnetConsole";
 
 const maximumFeeBps = 80;
 
@@ -332,6 +333,7 @@ export function MarkoutDashboard() {
           <span>MARKOUT</span>
         </a>
         <nav aria-label="Primary navigation">
+          <a href="#testnet">Live testnet</a>
           <a href="#compare">Compare</a>
           <a href="#mechanism">Mechanism</a>
           <a href="#evidence">Evidence</a>
@@ -348,7 +350,7 @@ export function MarkoutDashboard() {
             an authenticated observation return it to good flow—or retain it when LPs were adversely selected.
           </p>
           <div className="hero-actions">
-            <a className="primary-action" href="#compare">Run the comparison <span>↓</span></a>
+            <a className="primary-action" href="#testnet">Run a real testnet swap <span>↓</span></a>
             <a className="secondary-action" href="#evidence">Inspect the research</a>
           </div>
         </div>
@@ -381,6 +383,8 @@ export function MarkoutDashboard() {
           </div>
         ))}
       </section>
+
+      <LiveTestnetConsole />
 
       <section className="comparison-section" id="compare" aria-labelledby="comparison-title">
         <div className="section-heading comparison-section-heading">

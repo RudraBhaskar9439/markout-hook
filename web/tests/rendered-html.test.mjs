@@ -37,6 +37,12 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
   assert.match(html, /<title>MARKOUT — Outcome-priced liquidity<\/title>/i);
   assert.match(html, /Fees should follow/);
   assert.match(html, /Not fear\./);
+  assert.match(html, /Make the swap\. Watch the fee change\./);
+  assert.match(html, /Real v4 swap/);
+  assert.match(html, /Onchain lifecycle/);
+  assert.match(html, /Fee allocation/);
+  assert.match(html, /Connect wallet/);
+  assert.match(html, /Testnet only/);
   assert.match(html, /Same market\. Different information\./);
   assert.match(html, /Outcome → observation → settlement/);
   assert.match(html, /The honest regression/);
@@ -49,6 +55,7 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
   assert.match(html, /One outcome\. Two transport paths\./);
   assert.match(html, /aria-label="MARKOUT settlement receipt"/);
   assert.match(html, /aria-label="Choose an order-flow outcome"/);
+  assert.match(html, /aria-labelledby="testnet-title"/);
   assert.doesNotMatch(html, /Codex/);
   assert.doesNotMatch(html, /react-loading-skeleton/);
 });

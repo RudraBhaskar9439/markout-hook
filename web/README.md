@@ -1,17 +1,22 @@
 # MARKOUT Judge Application
 
-The judge application turns MARKOUT's mechanism and reproducible experiment into one guided browser story. It is a
+The judge application turns MARKOUT's mechanism and reproducible experiment into one guided browser story. It also
+contains a wallet-safe console for running the deployed USDC/WETH pool end to end on Unichain Sepolia. It is a
 Cloudflare Worker-compatible React application built with vinext and the Sites Vite plugin.
 
 ## Product boundary
 
 - The comparison values come from the committed Phase 6 deterministic experiment.
-- The event timeline demonstrates the tested outcome-to-settlement lifecycle without simulating live network state.
+- The research timeline demonstrates the tested outcome-to-settlement lifecycle without simulating live network state.
+- The separate testnet console reads balances and trades from the deployed hook, executes real v4 swaps, publishes a
+  signed Pyth observation on Ethereum Sepolia, relays its Circle attestation, and reads the resulting fee allocation.
 - The interface links the public Pyth publication, Circle settlement, and claimed rebate from the dated manifest.
 - The public evidence contrasts both allocation extremes: 100% rebated after negative markout and 100% retained for LP
   protection after positive markout.
 - Reactive remains visibly optional and is not labeled live without a public destination callback.
-- There is no wallet, persistent database, authentication surface, upload surface, or secret in this application.
+- Wallet signing uses the injected EIP-1193 provider. Private keys and Pyth credentials are never collected or bundled.
+- Active trade and public transaction hashes are stored only in browser local storage so an interrupted relay can resume.
+- There is no database, upload surface, server-side signer, or privileged protocol operation in this application.
 
 ## Local use
 
@@ -20,16 +25,35 @@ npm ci
 npm run dev
 ```
 
-Open `http://localhost:3000`, select each flow class, and replay the five-step autonomous lifecycle.
+Open `http://localhost:3000/#testnet` in Chrome with MetaMask or another injected wallet. The Codex in-app browser can
+display the console but does not inject MetaMask.
+
+For the complete live path:
+
+1. Connect the funded deployment wallet and keep test ETH available on both Unichain Sepolia and Ethereum Sepolia.
+2. Execute a small USDC → WETH or WETH → USDC swap. An ERC-20 approval appears only when required.
+3. Wait for the immutable five-minute maturity countdown.
+4. Choose **Settle with Pyth + Circle**, approve the Sepolia publication, wait for the attestation, and approve the
+   Unichain relay when the wallet switches back.
+5. Inspect the finalized effective fee, rebate, LP reserve, and explorer links. Claim a rebate when one is available.
+
+The currently funded deployment wallet and public testnet addresses are recorded in
+`../deployments/hybrid-2026-08-21.json`. Never use real funds: these contracts are experimental and unaudited.
 
 ## Verification
 
 ```bash
 npm run verify
+cd ..
+./scripts/verify-live-testnet-console.sh
 ```
 
 The gate lints the TypeScript application, builds the Cloudflare-compatible output, verifies server-rendered product
 content and starter removal, and rejects high-severity production dependency advisories.
+
+The repository-level live-console gate additionally confirms the deployed Unichain chain and bytecode, performs a
+read-only simulation of the exact v4 swap call from the funded test account, and validates the current Pyth response.
+It never broadcasts a transaction and does not require a private key.
 
 The development-only vinext tool currently inherits two `image-size` parser advisories. MARKOUT has no image upload or
 untrusted image-processing path; the package is excluded from the deployed dependency audit and is used only to compile

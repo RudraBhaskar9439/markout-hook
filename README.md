@@ -48,6 +48,7 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 - [Phase 7 static-analysis report](docs/STATIC_ANALYSIS.md)
 - [Phase 7 verification guide](docs/PHASE_7_VERIFICATION.md)
 - [Phase 8 judge application](web/README.md)
+- [Live testnet console instructions](web/README.md#local-use)
 - [Phase 8 verification guide](docs/PHASE_8_VERIFICATION.md)
 - [Judge demo script](docs/DEMO_SCRIPT.md)
 - [Copy-ready final submission](docs/FINAL_SUBMISSION.md)
@@ -67,12 +68,14 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 
 ## Current status
 
-**Phase 14 public Circle gate complete; optional Reactive delivery remains under observation.** The previous Omni
+**Phase 14 public Circle gate complete; live wallet console implemented; optional Reactive delivery remains under
+observation.** The previous Omni
 scheduler remains committed as reproducible research and outage evidence. The active topology now uses a one-time-bound
 settlement coordinator, a Pyth-backed Ethereum Sepolia publisher, an authenticated Circle receiver, and an optional
 stateless Reactive pulse. After a real Uniswap v4 swap matured, its Pyth observation was attested through Circle,
-settled on Unichain, and claimed; the dated deployment manifest records the public evidence and measured latency. Reactive
-receives live credit only if its callback is independently visible.
+settled on Unichain, and claimed; the dated deployment manifest records the public evidence and measured latency. The
+judge application can now repeat the same wallet-signed swap, observation, relay, allocation, and claim lifecycle while
+keeping private keys out of the browser bundle. Reactive receives live credit only if its callback is independently visible.
 
 ## Architecture
 
@@ -143,6 +146,7 @@ git submodule update --init --recursive
 ./scripts/verify-phase-13.sh
 ./scripts/verify-phase-14-local.sh
 ./scripts/verify-hybrid-release-candidate.sh
+./scripts/verify-live-testnet-console.sh
 ```
 
 The cumulative local gate checks formatting, compilation and bytecode size, lint, all earlier accounting and lifecycle
