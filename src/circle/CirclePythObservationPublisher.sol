@@ -30,6 +30,7 @@ contract CirclePythObservationPublisher {
     error ZeroTradeId();
     error EmptyUpdateData();
     error IncorrectUpdateFee(uint256 supplied, uint256 required);
+    error ConfidenceBelowMinimum(uint16 confidenceBps, uint16 minimumConfidenceBps);
 
     event DestinationBound(address indexed destinationReceiver);
     event ObservationPublished(
@@ -95,8 +96,13 @@ contract CirclePythObservationPublisher {
         if (msg.value != updateFee) revert IncorrectUpdateFee(msg.value, updateFee);
         pyth.updatePriceFeeds{ value: updateFee }(updateData);
 
+        // normalize() consumes Pyth's confidence interval and converts it into comparable confidence bps.
+        // slither-disable-next-line pyth-unchecked-confidence
         PythPrice memory pythPrice = pyth.getPriceNoOlderThan(priceId, maximumPriceAge);
         observation = PythObservation.normalize(pythPrice);
+        if (observation.confidenceBps < MarkoutParameters.MINIMUM_CONFIDENCE_BPS) {
+            revert ConfidenceBelowMinimum(observation.confidenceBps, MarkoutParameters.MINIMUM_CONFIDENCE_BPS);
+        }
         bytes memory messageBody = ObservationMessageCodec.encode(marketId, tradeId, observation);
 
         messageTransmitter.sendMessage(

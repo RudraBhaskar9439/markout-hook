@@ -56,15 +56,17 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 - [Phase 11 coordinator verification](docs/PHASE_11_VERIFICATION.md)
 - [Phase 12 Circle verification](docs/PHASE_12_VERIFICATION.md)
 - [Phase 13 Reactive pulse verification](docs/PHASE_13_VERIFICATION.md)
+- [Phase 14 hybrid deployment verification](docs/PHASE_14_VERIFICATION.md)
 - [UHI10 presentation deck](presentation/MARKOUT-UHI10.pptx)
-- [Testnet deployment runbook](docs/TESTNET_DEPLOYMENT.md)
+- [Active hybrid testnet deployment runbook](docs/HYBRID_TESTNET_DEPLOYMENT.md)
+- [Archived Omni deployment runbook](docs/TESTNET_DEPLOYMENT.md)
 - [Dependency policy](docs/DEPENDENCIES.md)
 - [Verification protocol](docs/VERIFICATION.md)
 - [Project decisions](docs/DECISIONS.md)
 
 ## Current status
 
-**Phase 13 hybrid path implemented locally; the public testnet gate remains open.** The previous Omni
+**Phase 14 local release candidate complete; the public testnet gate remains open.** The previous Omni
 scheduler remains committed as reproducible research and outage evidence. The active topology now uses a one-time-bound
 settlement coordinator, a Pyth-backed Ethereum Sepolia publisher, an authenticated Circle receiver, and an optional
 stateless Reactive pulse. Public Circle attestation and destination settlement transactions are still required before
@@ -137,11 +139,13 @@ git submodule update --init --recursive
 ./scripts/verify-phase-11.sh
 ./scripts/verify-phase-12.sh
 ./scripts/verify-phase-13.sh
+./scripts/verify-phase-14-local.sh
+./scripts/verify-hybrid-release-candidate.sh
 ```
 
 The cumulative local gate checks formatting, compilation and bytecode size, lint, all earlier accounting and lifecycle
 properties, autonomous sampling through the official Reactive simulator, stateful invariants, readable demos, the
-committed gas snapshot, and current public testnet dependencies. See the
+committed gas snapshot, hybrid transport races, and deployment-tool syntax. See the
 [Phase 5 verification guide](docs/PHASE_5_VERIFICATION.md) for the local/live boundary.
 
 The Phase 6 command repeats the deployment-independent Solidity gate, then regenerates the seeded research artifacts
@@ -157,12 +161,12 @@ tests, exact social-card dimensions, and a production-dependency audit. Run `./s
 one-command local demo, then open `http://localhost:3000`.
 
 The Phase 9 draft command validates the token-independent submission package and the nine-slide PowerPoint archive.
-It intentionally does not create the final release tag or claim that public Reactive evidence exists.
+It intentionally does not create the final release tag or claim that public Circle or Reactive evidence exists.
 
 ## Security status
 
 This repository is production-shaped, not production-certified. Its implemented surfaces have defensive parsing,
 explicit bounds, conservation checks, adversarial tests, stateful invariants, and zero medium/high Slither findings.
-Phase 7 is an internal engineering review, not an independent audit. The three-pool spot reference, immutable
-configuration, unsupported exotic tokens, and undistributed LP reserve remain explicit prototype limitations. Do not
-deploy it with real funds.
+Phase 7 is an internal engineering review, not an independent audit. The ETH/USD-as-ETH/USDC testnet proxy, fast
+Circle confirmation, immutable configuration, unsupported exotic tokens, and undistributed LP reserve remain explicit
+prototype limitations. Do not deploy it with real funds.

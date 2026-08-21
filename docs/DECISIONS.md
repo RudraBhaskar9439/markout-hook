@@ -126,6 +126,8 @@ and cannot weaken the fail-open expiry policy.
 
 ## D-023 — Request the reference observation at maturity
 
+Historical Phase 5 decision; superseded for the active topology by D-038 through D-041.
+
 The Phase 5 source is pull-on-callback rather than a continuously pushed reporter. When a mature trade lacks an
 eligible observation, one Reactive callback requests a sample and a global 60-second cooldown bounds retries. The
 sampler's resulting normalized event immediately re-enters settlement processing. Reactive is therefore essential to
@@ -197,6 +199,8 @@ than a live market feed.
 
 ## D-033 — Never manufacture the missing Lasna proof
 
+Historical Phase 8 disclosure; the current dashboard applies the same evidence policy to the Circle-primary path.
+
 The dashboard presents `Live cron proven · callback delivery pending` until public transactions prove complete
 destination settlement. Only explorer-backed transactions may strengthen that state. A local replay or a Lasna
 callback-request event may demonstrate mechanism and scheduler progress, but neither can satisfy Phase 5 or the live
@@ -259,3 +263,17 @@ is the cross-transport replay boundary, so delivery order cannot change economic
 The forward Reactive Contract observes the canonical Circle-publisher event and forwards its normalized payload. It
 does not own maturity scheduling, trade discovery, price sampling, retries, custody, or economic state. This narrow
 role mirrors Maestro's proven architecture while ensuring Reactive failure cannot block MARKOUT.
+
+## D-042 — Treat ETH/USD as an explicit testnet proxy, not a direct ETH/USDC oracle
+
+The hybrid testnet publisher uses Pyth's ETH/USD feed while the destination market is ETH/USDC. This assumes USDC is
+approximately one dollar and leaves quote-basis risk outside the MVP. Every judge-facing document labels that
+assumption. A production deployment must use a direct ETH/USDC source or validate and combine an independent USDC/USD
+feed before it may claim pair-accurate markout.
+
+## D-043 — Do not treat an Anvil legacy fork as subscription evidence
+
+Reactive's legacy system contract delegates subscription registration to a chain-specific precompile. A generic Anvil
+fork reproduces the system bytecode but not that precompile, so constructor subscription calls revert there even when
+the contract is funded. Unit tests prove filter and callback semantics; only a live legacy Lasna deployment receipt
+can prove registration. Circle settlement remains independent of this optional proof.

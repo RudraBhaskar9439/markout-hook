@@ -21,8 +21,8 @@ contract ReactiveCallbackCanary is AuthenticatedReactiveCallback {
     mapping(uint256 requestId => bool received) public callbackReceived;
     mapping(uint256 requestId => uint256 blockNumber) public callbackOriginBlock;
 
-    constructor(address callbackSender, address reactiveIdentity)
-        AuthenticatedReactiveCallback(callbackSender, reactiveIdentity)
+    constructor(address callbackSender_, address reactiveIdentity_)
+        AuthenticatedReactiveCallback(callbackSender_, reactiveIdentity_)
     { }
 
     /// @notice Emits one uniquely numbered event for the Reactive scheduler to observe.

@@ -1,0 +1,33 @@
+{
+  "status": "example-only",
+  "deployer": "",
+  "marketId": "",
+  "ethereumSepolia": {
+    "publisher": "",
+    "publisherDeploymentTx": "",
+    "publisherBindingTx": "",
+    "observationPublishTx": ""
+  },
+  "unichainSepolia": {
+    "settlementCoordinator": "",
+    "circleReceiver": "",
+    "reactiveReceiver": "",
+    "markoutHook": "",
+    "destinationDeploymentTxs": [],
+    "poolInitializationTx": "",
+    "swapTx": "",
+    "circleRelayTx": "",
+    "reactiveCallbackTx": "",
+    "rebateClaimTx": ""
+  },
+  "reactiveLasnaLegacy": {
+    "pulse": "",
+    "pulseDeploymentTx": "",
+    "observationReactionTx": ""
+  },
+  "evidence": {
+    "circleLive": false,
+    "reactiveLive": false,
+    "notes": "Copy this file to a dated manifest. Never enter guessed hashes or addresses."
+  }
+}

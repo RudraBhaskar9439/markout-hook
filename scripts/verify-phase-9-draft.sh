@@ -17,6 +17,11 @@ test "$slide_count" -eq 9
 source_block_count="$(unzip -p "$pptx" 'ppt/notesSlides/notesSlide*.xml' | grep -o '\[Sources\]' | wc -l | tr -d ' ')"
 test "$source_block_count" -eq 9
 
+slide_xml="$(unzip -p "$pptx" 'ppt/slides/slide*.xml' | tr -d '\n')"
+grep -q 'Two transport paths; one immutable settlement boundary.' <<<"$slide_xml"
+grep -q 'Final gate: public Circle settlement + claim' <<<"$slide_xml"
+grep -q '>212<' <<<"$slide_xml"
+
 grep -q '^```mermaid$' README.md
 grep -q '^# MARKOUT Judge Demo Script$' docs/DEMO_SCRIPT.md
 grep -q '^# UHI10 Final Submission Checklist$' docs/SUBMISSION_CHECKLIST.md

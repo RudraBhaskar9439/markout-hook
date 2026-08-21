@@ -60,6 +60,7 @@ There is no upgrade administrator, pause administrator, escrow owner, or arbitra
 | Premature expiry | Exact timestamp boundary enforced; adversarial invariant action | Validator timestamp influence can affect eligibility by ordinary consensus bounds |
 | Missing/stale/invalid reference | Settlement reverts without mutation; permissionless full-rebate expiry | LP protection is reduced during oracle outages by design |
 | Oracle manipulation | Pyth signature verification, bounded age, and mechanical confidence normalization | Pyth compromise, stale upstream markets, or incorrect feed selection remain external risks |
+| ETH/USD quote basis | Testnet configuration documents ETH/USD as an ETH/USDC proxy | USDC depeg or basis movement can distort markout; production needs a direct pair or quote-asset validation |
 | Transport denial of service | Circle is primary, Reactive is optional, and public expiry returns the full surcharge | A dual outage reduces LP protection and delays settlement until expiry |
 | Callback gas griefing | Stateless one-event/one-callback pulse with a fixed callback budget | Public-network gas adequacy remains unproven until explorer-backed delivery |
 | Forced token donation | Accounting ignores surplus and adversarial test proves it is not claimable | Surplus has no recovery path in the immutable MVP |
@@ -86,6 +87,6 @@ Phase 14/production operations task.
 ## Release boundary
 
 The repository establishes internal tests and static-analysis evidence only. Before any real-fund deployment, the
-Pyth/Circle trust and finality policy must receive independent review, supported tokens must be explicitly allowlisted,
+Pyth/Circle trust, quote-basis, and finality policy must receive independent review, supported tokens must be explicitly allowlisted,
 LP reserve disposition must be designed, live transport gas and latency must be measured, and an independent audit
 must review the final deployed bytecode.

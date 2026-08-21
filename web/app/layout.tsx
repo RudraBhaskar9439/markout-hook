@@ -43,13 +43,13 @@ export async function generateMetadata(): Promise<Metadata> {
     metadataBase: new URL(origin),
     title: "MARKOUT — Outcome-priced liquidity",
     description:
-      "A Uniswap v4 hook that uses post-trade markout and Reactive Network to rebate good flow and protect LPs from adverse selection.",
+      "A Uniswap v4 hook that uses post-trade markout to rebate good flow and protect LPs from adverse selection.",
     applicationName: "MARKOUT",
     keywords: ["Uniswap v4", "Reactive Network", "MEV protection", "dynamic fees", "markout"],
     alternates: { canonical: origin },
     openGraph: {
       title: "MARKOUT — Fees should follow outcomes, not fear.",
-      description: "Outcome-priced liquidity for Uniswap v4, settled autonomously with Reactive Network.",
+      description: "Outcome-priced liquidity for Uniswap v4 with Circle-primary, Reactive-optional settlement.",
       type: "website",
       url: origin,
       images: [{ url: imageUrl, width: 1200, height: 630, alt: "MARKOUT outcome-priced liquidity" }],

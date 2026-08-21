@@ -1,6 +1,6 @@
 # Phase 9 Draft Verification Guide
 
-The draft gate verifies every final-submission artifact that can be completed without autonomous settlement evidence,
+The draft gate verifies every final-submission artifact that can be completed without public settlement evidence,
 owner identity fields, visibility changes, or final-form submission.
 
 ## Automated gate
@@ -22,8 +22,9 @@ overflow checker must report zero out-of-bounds elements before the deck is comm
 ## Exact boundary
 
 Passing this checkpoint supports narrative review and rehearsal. It does not satisfy the final roadmap phase. The
-following still require external or owner state: successful Reactive destination delivery, two live settlements, final
-explorer links, the final video, owner form details, repository/site visibility decisions, and form submission.
+following still require external or owner state: one complete Circle-attested settlement and claim, final explorer
+links, optional Reactive callback proof, the final video, owner form details, repository/site visibility decisions,
+and form submission.
 
 ## GO / NO-GO
 

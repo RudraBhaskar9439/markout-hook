@@ -87,18 +87,18 @@ export const timelineBase = [
   },
   {
     label: "Outcome window",
-    detail: "Reactive Network waits five minutes. No privileged keeper decides when to settle.",
-    tag: "Reactive",
+    detail: "The immutable trade matures after five minutes. Publishing early cannot bypass hook validation.",
+    tag: "Hook",
   },
   {
-    label: "Reference sampled",
-    detail: "A callback samples three configured markets and publishes a normalized median observation.",
-    tag: "Reference",
+    label: "Reference attested",
+    detail: "Pyth verifies the price update and Circle attests the normalized observation for Unichain.",
+    tag: "Pyth + Circle",
   },
   {
     label: "MARKOUT settles",
-    detail: "The bounded curve converts directional markout into retained protection and trader rebate.",
-    tag: "Callback",
+    detail: "The coordinator accepts the first valid Circle or optional Reactive delivery, then the hook applies its bounded curve.",
+    tag: "Coordinator",
   },
 ] as const;
 

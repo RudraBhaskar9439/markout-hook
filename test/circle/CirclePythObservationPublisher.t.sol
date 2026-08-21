@@ -173,6 +173,16 @@ contract CirclePythObservationPublisherTest is Test {
         );
         publisher.publish{ value: UPDATE_FEE }(TRADE_ID, _updateData());
         assertEq(transmitter.sendCalls(), 0);
+
+        vm.warp(1234);
+        pyth.setPrice(PythPrice({ price: 2000e8, conf: 400e8, expo: -8, publishTime: 1234 }));
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                CirclePythObservationPublisher.ConfidenceBelowMinimum.selector, uint16(8000), uint16(9000)
+            )
+        );
+        publisher.publish{ value: UPDATE_FEE }(TRADE_ID, _updateData());
+        assertEq(transmitter.sendCalls(), 0);
     }
 
     function _config() private view returns (CirclePublisherConfig memory config) {

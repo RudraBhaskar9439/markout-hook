@@ -32,7 +32,8 @@ A small scenario makes the phase understandable without reading Solidity. For ex
 
 ### Level 5 — Live evidence
 
-Explorer transactions prove the real event, Reactive callback, settlement, and claim lifecycle.
+Explorer transactions prove the real publication, Circle attestation relay, settlement, and claim lifecycle. Reactive
+receives separate live credit only when its destination callback transaction exists publicly.
 
 ## Gate discipline
 
@@ -51,4 +52,3 @@ Before the final phase, all documented verification commands must be repeated fr
 - Private keys, RPC credentials, API keys, and `.env` files are never committed.
 - `.env.example` contains names and descriptions only.
 - Testnet deployer addresses may be public; their keys may not.
-

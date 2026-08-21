@@ -164,7 +164,7 @@ function SettlementCard({ selected }: { selected: FlowId }) {
   );
 }
 
-function ReactiveTimeline({ selected }: { selected: FlowId }) {
+function SettlementTimeline({ selected }: { selected: FlowId }) {
   const [activeStep, setActiveStep] = useState(0);
   const [playing, setPlaying] = useState(false);
   const flow = flowCases[selected];
@@ -321,7 +321,7 @@ export function MarkoutDashboard() {
           <h1>Fees should follow <em>outcomes.</em><br />Not fear.</h1>
           <p>
             MARKOUT is a Uniswap v4 hook that escrows a provisional charge, waits for post-trade evidence, then lets
-            Reactive Network return it to good flow—or retain it when LPs were adversely selected.
+            an authenticated observation return it to good flow—or retain it when LPs were adversely selected.
           </p>
           <div className="hero-actions">
             <a className="primary-action" href="#compare">Run the comparison <span>↓</span></a>
@@ -372,22 +372,22 @@ export function MarkoutDashboard() {
         </div>
       </section>
 
-      <ReactiveTimeline key={selected} selected={selected} />
+      <SettlementTimeline key={selected} selected={selected} />
       <ResearchEvidence />
 
       <section className="architecture-section" aria-labelledby="architecture-title">
         <div>
           <p className="kicker">System boundary</p>
-          <h2 id="architecture-title">A hook with an autonomous clock.</h2>
+          <h2 id="architecture-title">One outcome. Two transport paths.</h2>
         </div>
         <div className="architecture-flow">
           <div><span>01</span><strong>Uniswap v4</strong><small>Swap + escrow</small></div>
           <b>→</b>
-          <div><span>02</span><strong>Reactive</strong><small>Wait + observe</small></div>
+          <div><span>02</span><strong>Pyth + Circle</strong><small>Verify + attest</small></div>
           <b>→</b>
           <div><span>03</span><strong>MARKOUT curve</strong><small>Bounded allocation</small></div>
           <b>→</b>
-          <div><span>04</span><strong>Destination</strong><small>Rebate + reserve</small></div>
+          <div><span>04</span><strong>Coordinator</strong><small>First valid delivery</small></div>
         </div>
       </section>
 
@@ -397,8 +397,8 @@ export function MarkoutDashboard() {
           <p>Outcome-priced liquidity for Uniswap v4.</p>
         </div>
         <div className="footer-status">
-          <span><i className="status-green" /> Phases 1–7 verified</span>
-          <span><i className="status-amber" /> Live cron proven · callback delivery pending</span>
+          <span><i className="status-green" /> Hybrid lifecycle verified locally</span>
+          <span><i className="status-amber" /> Public Circle settlement pending</span>
         </div>
         <p className="footer-note">Experimental UHI10 prototype · Not audited · No real funds</p>
       </footer>

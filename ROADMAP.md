@@ -478,6 +478,18 @@ Required results:
 
 Produce explorer-backed Circle evidence first, then add Reactive evidence only if the public callback network delivers.
 
+### Local deliverables
+
+- Chain-locked deployment scripts for the Sepolia publisher, Unichain hybrid destination, publisher binding, and
+  optional legacy Reactive pulse
+- Signed Pyth update, Circle attestation, and Circle relay helpers
+- Read-only three-network dependency and immutable-wiring preflight
+- Secret-safe environment template and evidence-manifest template
+- Judge dashboard, demo script, submission checklist, and rendered deck revised around the hybrid boundary
+
+Local automation is complete. Broadcasts remain a manual gate because they require the project owner's private key,
+testnet balances, irreversible address confirmation, and Pyth API credential.
+
 ### Verification gate
 
 1. Execute a MARKOUT trade on Unichain Sepolia.

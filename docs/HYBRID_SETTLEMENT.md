@@ -61,6 +61,8 @@ funds, or settle a terminal trade twice.
 
 - The source publisher accepts no trusted reporter price; it obtains a fresh price from a configured Pyth contract and
   feed id.
+- The testnet ETH/USDC configuration uses Pyth ETH/USD as a proxy and assumes USDC remains close to one dollar. This
+  basis risk is explicit; production must use a direct pair source or separately validate the quote asset.
 - Circle authenticates the application message between its Sepolia and Unichain transmitters.
 - Destination delivery is permissionless. A relayer has no application authority because it cannot forge Circle's
   attestation or alter the attested body.
@@ -102,3 +104,9 @@ trader's escrow indefinitely.
 The hybrid contracts become the active testnet topology. The existing `MarkoutReactive` Omni scheduler, callback
 canaries, and deployment manifests remain in the repository as reproducible research and outage evidence. They must
 not be described as the live settlement authority unless a public destination callback proves that claim.
+
+## 7. Public-proof boundary
+
+The complete contract and deployment logic can be verified locally. A generic EVM fork cannot reproduce Reactive's
+chain-specific subscription precompile, so the optional pulse's constructor subscription must be proven by a live
+legacy Lasna receipt. That limitation does not affect the Circle path, coordinator, hook, or full-rebate expiry.

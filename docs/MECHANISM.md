@@ -1,6 +1,6 @@
 # MARKOUT Mechanism Specification
 
-Status: Phase 4 local Reactive lifecycle implemented; live network evidence begins in Phase 5.
+Status: Phase 13 hybrid lifecycle implemented locally; Phase 14 public Circle evidence is pending.
 
 ## 1. Problem
 
@@ -12,10 +12,12 @@ Most dynamic-fee hooks price a swap using information available before execution
 2. MARKOUT collects a separately disclosed provisional hook surcharge.
 3. The hook records the execution price, trade direction, surcharge, and maturity configuration.
 4. The hook emits `MarkoutRequested` with a unique trade ID.
-5. Reactive Network observes the request and reference-market events.
-6. At maturity, Reactive sends an authenticated callback containing the selected reference observation.
-7. MARKOUT calculates the final retained surcharge.
-8. The trader receives a pull-based rebate credit. The retained portion is credited to the LP protection reserve.
+5. After maturity, any publisher submits a signed Pyth update for the configured ETH/USD feed on Ethereum Sepolia.
+6. The publisher normalizes the observation and sends it to Unichain through Circle CCTP V2.
+7. An optional stateless Reactive Contract may mirror the exact same publisher event.
+8. The first authenticated delivery reaches MARKOUT through the immutable settlement coordinator.
+9. MARKOUT calculates the final retained surcharge.
+10. The trader receives a pull-based rebate credit. The retained portion is credited to the LP protection reserve.
 
 ## 3. Price and sign convention
 
@@ -61,19 +63,25 @@ The curve is monotonic over its entire domain and treats equivalent buy and sell
 - Observations before maturity, from the future, after the grace period, stale, missing, zero, or below confidence fail.
 
 If no valid settlement completes before expiry, the complete escrow becomes claimable as a trader rebate.
-Oracle or Reactive liveness failure cannot create LP protection value.
+Oracle, Circle, or Reactive liveness failure cannot create LP protection value.
 
-## 6. Reactive Network's essential role
+## 6. Hybrid transport boundary
 
-The Reactive Contract is not a convenience keeper. It is the autonomous settlement layer that:
+Circle CCTP V2 is the primary authenticated observation transport. Its source publisher:
 
-- subscribes to `MarkoutRequested` events;
-- consumes reference-market price events from the selected EVM source;
-- waits for the maturity horizon using Reactive cron events;
-- selects the eligible reference observation; and
-- sends the authenticated settlement callback.
+- verifies a fresh update against the configured Pyth contract and feed;
+- emits one canonical normalized observation;
+- requests a fast-confirmed generic Circle message to the configured Unichain receiver; and
+- leaves destination relay permissionless because the attestation, not the relayer, authenticates the payload.
 
-The destination contract accepts settlement only from the authorized Reactive callback identity. No ordinary EOA receives a privileged settlement role in the final design.
+Reactive Network is an optional Maestro-style pulse: it subscribes only to that canonical publisher event and may
+forward the same observation through an authenticated callback. It owns no clock, oracle, trade registry, retry state,
+or custody. The coordinator authorizes both transport receivers, and the first valid delivery wins. No ordinary EOA
+receives settlement authority.
+
+For the ETH/USDC testnet MVP, the configured Pyth ETH/USD price is used as an ETH/USDC proxy and therefore assumes
+USDC remains close to one US dollar. A production design must use a direct ETH/USDC source or explicitly model USDC
+basis risk.
 
 ## 7. State model
 
@@ -109,7 +117,8 @@ No terminal state can transition again.
 - Multi-asset portfolio optimization
 - Supporting every pool and oracle before the ETH/USDC path works
 
-## 10. Remaining implementation decisions
+## 10. Remaining release decisions
 
-1. Which reference-market event and source-specific confidence adapter are reliable on the selected testnets?
-2. How and when does the LP protection reserve become pool liquidity or LP-owned value?
+1. Measure public Circle attestation and settlement latency against the ten-minute grace window.
+2. Prove the optional Reactive callback publicly before describing it as live.
+3. Decide how the LP protection reserve becomes pool liquidity or LP-owned value.

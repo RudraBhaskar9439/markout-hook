@@ -22,11 +22,11 @@ contract ReactiveObservationReceiver is AuthenticatedReactiveCallback {
     IMarkoutSettlementTarget public immutable settlementCoordinator;
 
     constructor(
-        address callbackSender,
-        address reactiveIdentity,
+        address callbackSender_,
+        address reactiveIdentity_,
         bytes32 marketId_,
         IMarkoutSettlementTarget settlementCoordinator_
-    ) AuthenticatedReactiveCallback(callbackSender, reactiveIdentity) {
+    ) AuthenticatedReactiveCallback(callbackSender_, reactiveIdentity_) {
         if (marketId_ == bytes32(0)) revert ZeroMarketId();
         if (address(settlementCoordinator_) == address(0)) revert ZeroSettlementCoordinator();
         if (address(settlementCoordinator_).code.length == 0) {
