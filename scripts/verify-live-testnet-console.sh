@@ -2,7 +2,7 @@
 set -euo pipefail
 
 repo_root="$(git rev-parse --show-toplevel)"
-rpc_url="${ORIGIN_RPC_URL:-https://sepolia.unichain.org}"
+rpc_url="${MARKOUT_FRONTEND_RPC_URL:-https://unichain-sepolia-rpc.publicnode.com}"
 simulation_account="${TESTNET_SIMULATION_ACCOUNT:-0xd1DcAAFf9356d5a42f2eE6F90179C4509386a83f}"
 hook="0x2981693161ebbeaf10e91d6ddfc2ed810e80c044"
 router="0x9140a78c1a137c7ff1c151ec8231272af78a99a4"

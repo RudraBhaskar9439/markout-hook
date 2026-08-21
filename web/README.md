@@ -40,6 +40,13 @@ For the complete live path:
 The currently funded deployment wallet and public testnet addresses are recorded in
 `../deployments/hybrid-2026-08-21.json`. Never use real funds: these contracts are experimental and unaudited.
 
+### MetaMask RPC recovery
+
+If MetaMask reports `replacement transaction underpriced` before a transaction reaches the explorer, edit the
+Unichain Sepolia network in MetaMask and use `https://unichain-sepolia-rpc.publicnode.com` as its RPC URL. The official
+rate-limited testnet endpoint has intermittently returned a pending nonce older than confirmed state. The console checks
+for that impossible condition before signing and will display both nonce values instead of submitting a doomed retry.
+
 ## Verification
 
 ```bash

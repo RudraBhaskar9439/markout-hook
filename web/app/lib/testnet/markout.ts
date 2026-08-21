@@ -25,7 +25,9 @@ export const unichainSepolia = defineChain({
   name: "Unichain Sepolia",
   nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
   rpcUrls: {
-    default: { http: ["https://sepolia.unichain.org"] },
+    default: {
+      http: ["https://unichain-sepolia-rpc.publicnode.com", "https://sepolia.unichain.org"],
+    },
   },
   blockExplorers: {
     default: { name: "Uniscan", url: "https://sepolia.uniscan.xyz" },
@@ -177,6 +179,24 @@ async function safeWalletNonce(
   return Math.max(confirmedNonce, pendingNonce);
 }
 
+async function assertUnichainWalletRpcHealthy(provider: EthereumProvider, account: Address) {
+  const [confirmedHex, pendingHex] = await Promise.all([
+    provider.request({ method: "eth_getTransactionCount", params: [account, "latest"] }),
+    provider.request({ method: "eth_getTransactionCount", params: [account, "pending"] }),
+  ]);
+  if (typeof confirmedHex !== "string" || typeof pendingHex !== "string") {
+    throw new Error("The wallet RPC returned an invalid transaction count.");
+  }
+  const confirmedNonce = Number(BigInt(confirmedHex));
+  const pendingNonce = Number(BigInt(pendingHex));
+  if (pendingNonce < confirmedNonce) {
+    throw new Error(
+      `MetaMask is using a stale Unichain RPC (pending nonce ${pendingNonce}, confirmed ${confirmedNonce}). `
+      + "Edit the Unichain Sepolia network RPC URL to https://unichain-sepolia-rpc.publicnode.com, then reconnect.",
+    );
+  }
+}
+
 function ensureHexBytes(value: unknown, field: string): Hex {
   if (typeof value !== "string" || !/^0x(?:[0-9a-fA-F]{2})+$/.test(value)) {
     throw new Error(`${field} was not valid hexadecimal bytes.`);
@@ -288,6 +308,7 @@ export async function executeTestnetSwap(
   amount: string,
 ): Promise<SwapResult> {
   await switchWalletNetwork(provider, unichainSepolia);
+  await assertUnichainWalletRpcHealthy(provider, account);
   const input = direction === "USDC_TO_WETH"
     ? { address: MARKOUT_CONTRACTS.usdc, decimals: 6 }
     : { address: MARKOUT_CONTRACTS.weth, decimals: 18 };
@@ -441,6 +462,7 @@ export async function relayCircleAttestation(
   attestation: CircleAttestation,
 ): Promise<TransactionResult> {
   await switchWalletNetwork(provider, unichainSepolia);
+  await assertUnichainWalletRpcHealthy(provider, account);
   const wallet = walletClient(provider, unichainSepolia, account);
   const nonce = await safeWalletNonce(unichainClient, account);
   const hash = await wallet.writeContract({
@@ -462,6 +484,7 @@ export async function claimTestnetRebate(
   currency: Address,
 ): Promise<TransactionResult> {
   await switchWalletNetwork(provider, unichainSepolia);
+  await assertUnichainWalletRpcHealthy(provider, account);
   const wallet = walletClient(provider, unichainSepolia, account);
   const nonce = await safeWalletNonce(unichainClient, account);
   const hash = await wallet.writeContract({
@@ -483,6 +506,7 @@ export async function expireTestnetTrade(
   tradeId: Hex,
 ): Promise<TransactionResult> {
   await switchWalletNetwork(provider, unichainSepolia);
+  await assertUnichainWalletRpcHealthy(provider, account);
   const wallet = walletClient(provider, unichainSepolia, account);
   const nonce = await safeWalletNonce(unichainClient, account);
   const hash = await wallet.writeContract({
