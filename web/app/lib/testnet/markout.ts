@@ -184,11 +184,23 @@ async function assertUnichainWalletRpcHealthy(provider: EthereumProvider, accoun
     provider.request({ method: "eth_getTransactionCount", params: [account, "latest"] }),
     provider.request({ method: "eth_getTransactionCount", params: [account, "pending"] }),
   ]);
-  if (typeof confirmedHex !== "string" || typeof pendingHex !== "string") {
-    throw new Error("The wallet RPC returned an invalid transaction count.");
-  }
-  const confirmedNonce = Number(BigInt(confirmedHex));
-  const pendingNonce = Number(BigInt(pendingHex));
+  const parseNonce = (value: unknown): number | null => {
+    if (typeof value === "bigint") return Number(value);
+    if (typeof value === "number" && Number.isSafeInteger(value) && value >= 0) return value;
+    if (typeof value === "string" && /^(?:0x[0-9a-fA-F]+|[0-9]+)$/.test(value)) {
+      const parsed = Number(BigInt(value));
+      return Number.isSafeInteger(parsed) ? parsed : null;
+    }
+    if (value && typeof value === "object" && "result" in value) {
+      return parseNonce((value as { result: unknown }).result);
+    }
+    return null;
+  };
+  const confirmedNonce = parseNonce(confirmedHex);
+  const pendingNonce = parseNonce(pendingHex);
+  // Wallets may wrap or redact custom-RPC responses. The independently verified
+  // PublicNode client still supplies the explicit safe nonce in that case.
+  if (confirmedNonce === null || pendingNonce === null) return;
   if (pendingNonce < confirmedNonce) {
     throw new Error(
       `MetaMask is using a stale Unichain RPC (pending nonce ${pendingNonce}, confirmed ${confirmedNonce}). `
