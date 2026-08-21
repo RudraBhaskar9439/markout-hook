@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-08-20",
+  "checkedAt": "2026-08-21",
   "unichainSepolia": {
     "chainId": 1301,
     "rpcUrl": "https://sepolia.unichain.org",
@@ -27,6 +27,24 @@
       }
     ]
   },
+  "ethereumSepolia": {
+    "chainId": 11155111,
+    "circleDomain": 0,
+    "circleMessageTransmitterV2": "0xE737e5cEBEEBa77EFE34D4aa090756590b1CE275",
+    "pyth": {
+      "current": "0xDd24F84d36BF92C65F92307595335bdFab5Bbd21",
+      "upgraded": "0xBb86bCc951A62DF86826219d9251Ee05F2c1e286",
+      "upgradeScheduledAt": "2026-08-26T16:00:00Z",
+      "ethUsdPriceId": "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace"
+    }
+  },
+  "circleCctpV2": {
+    "unichainDomain": 10,
+    "unichainSepoliaMessageTransmitterV2": "0xE737e5cEBEEBa77EFE34D4aa090756590b1CE275",
+    "minimumFinalityThreshold": 1000,
+    "attestationApi": "https://iris-api-sandbox.circle.com/v2/messages/0",
+    "messageMode": "generic-fast-confirmed"
+  },
   "reactiveLasnaOmni": {
     "chainId": 5318007,
     "rpcUrl": "https://lasna-omni-rpc.rnk.dev",
@@ -40,6 +58,10 @@
     "unichainContracts": "https://developers.uniswap.org/docs/unichain/technical-information/contract-addresses",
     "uniswapV4Deployments": "https://developers.uniswap.org/docs/protocols/v4/deployments",
     "circleUsdc": "https://developers.circle.com/stablecoins/usdc-contract-addresses",
+    "circleCctpChains": "https://developers.circle.com/cctp/concepts/supported-chains-and-domains",
+    "circleCctpInterfaces": "https://developers.circle.com/cctp/references/contract-interfaces",
+    "circleCctpFinality": "https://developers.circle.com/cctp/concepts/finality-and-block-confirmations",
+    "pythEvmContracts": "https://docs.pyth.network/price-feeds/core/contract-addresses/evm",
     "reactiveOmni": "https://blog.reactive.network/reactives-next-chapter-starts-testnet-launch-team-news/",
     "reactiveOmniLibrary": "https://github.com/Reactive-Network/reactive-lib-omni",
     "reactiveCallbacks": "https://dev.reactive.network/legacy/events-%26-callbacks",

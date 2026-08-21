@@ -24,7 +24,7 @@ Permissionless publisher on Ethereum Sepolia
 Primary path: Circle
     -> Circle attests the generic message
     -> any relayer submits message + attestation on Unichain
-    -> CircleObservationReceiver authenticates transmitter, source domain, source publisher, finality, version, market
+    -> CircleObservationReceiver authenticates transmitter, source domain, source publisher, threshold, version, market
     -> SettlementCoordinator forwards the observation to MarkoutHook
 
 Optional path: Reactive
@@ -64,8 +64,12 @@ funds, or settle a terminal trade twice.
 - Circle authenticates the application message between its Sepolia and Unichain transmitters.
 - Destination delivery is permissionless. A relayer has no application authority because it cannot forge Circle's
   attestation or alter the attested body.
-- The receiver accepts finalized messages only and permanently pins the source domain, publisher, market, and
-  settlement coordinator.
+- The publisher requests Circle threshold `1000`, whose confirmed Ethereum path fits the ten-minute MARKOUT window.
+- The receiver accepts threshold `1000–1999` only through Circle's unfinalized handler and threshold `2000+` only
+  through its finalized handler. It permanently pins the source domain, publisher, market, and coordinator.
+- Fast confirmation introduces bounded source-reorganization risk. The hook still enforces maturity, freshness,
+  confidence, and its immutable settlement outcome; deployments requiring hard finality must widen the settlement
+  window rather than pretending a 15–19 minute Ethereum message fits the current ten-minute grace period.
 
 ### Reactive path
 

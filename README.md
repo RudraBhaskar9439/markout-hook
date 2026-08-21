@@ -2,7 +2,10 @@
 
 MARKOUT is a research-oriented Uniswap v4 hook that settles a provisional hook surcharge after observing a trade's post-execution markout.
 
-Ordinary or inventory-improving flow receives a rebate. Flow that is followed by a favorable market move for the trader retains more of the surcharge for LP protection. Reactive Network is the autonomous observation and settlement layer: it watches hook and reference-market events, waits for the selected maturity horizon, and sends an authenticated callback to settle each trade.
+Ordinary or inventory-improving flow receives a rebate. Flow that is followed by a favorable market move for the
+trader retains more of the surcharge for LP protection. Circle CCTP V2 is the primary authenticated cross-chain
+observation transport. A minimal Reactive Contract may deliver the same observation as an optional accelerator, while
+permissionless expiry prevents either transport from becoming a custody dependency.
 
 ## UHI10 alignment
 
@@ -19,7 +22,8 @@ Can delayed, outcome-based fee settlement reduce LP adverse selection while char
 - One ETH/USDC-style Uniswap v4 pool on Unichain Sepolia
 - A fixed base LP fee plus a bounded provisional hook surcharge
 - One deterministic markout horizon and one reference-market stream
-- Reactive Network event subscriptions, maturity scheduling, and authenticated callbacks
+- Pyth-verified observations transported primarily through fast-confirmed Circle CCTP V2 messages
+- An optional stateless Reactive delivery path racing the same observation safely
 - Pull-based trader rebates and an LP protection reserve
 - A reproducible experiment comparing fixed fee, volatility fee, and MARKOUT
 
@@ -48,6 +52,9 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 - [Judge demo script](docs/DEMO_SCRIPT.md)
 - [Final submission checklist](docs/SUBMISSION_CHECKLIST.md)
 - [Phase 9 draft verification guide](docs/PHASE_9_DRAFT_VERIFICATION.md)
+- [Hybrid settlement architecture](docs/HYBRID_SETTLEMENT.md)
+- [Phase 11 coordinator verification](docs/PHASE_11_VERIFICATION.md)
+- [Phase 12 Circle verification](docs/PHASE_12_VERIFICATION.md)
 - [UHI10 presentation deck](presentation/MARKOUT-UHI10.pptx)
 - [Testnet deployment runbook](docs/TESTNET_DEPLOYMENT.md)
 - [Dependency policy](docs/DEPENDENCIES.md)
@@ -56,56 +63,64 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 
 ## Current status
 
-**Phase 9 token-independent draft package implemented; Phase 5's live gate remains open.** The private judge dashboard,
-final architecture diagram, four-minute demo script, nine-slide deck, and submission checklist are ready for review.
-A funded Lasna scheduler has publicly ingested a trade, consumed the correct Omni cron emitter, and requested the
-destination callback. Reactive's Unichain relayer did not deliver the callback during the acceptance window, so the
-failed trade was recovered through the documented fail-open expiry path. Two autonomous public settlements, final
-explorer links, the recording, owner form details, and visibility decisions are still required before Phase 5, Phase 8,
-and the final Phase 9 gate can close.
+**Phase 12 Circle-primary path implemented locally; the hybrid public testnet gate remains open.** The previous Omni
+scheduler remains committed as reproducible research and outage evidence. The active topology now uses a one-time-bound
+settlement coordinator, a Pyth-backed Ethereum Sepolia publisher, and an authenticated Circle receiver on Unichain. The
+optional stateless Reactive pulse is Phase 13. Public Circle attestation and destination settlement transactions are
+still required before the hybrid live gate can close.
 
 ## Architecture
 
 ```mermaid
 flowchart LR
+    subgraph S[Ethereum Sepolia]
+        P[Pyth update] --> PUB[Circle observation publisher]
+    end
+
+    subgraph C[Circle CCTP V2]
+        PUB -->|fast-confirmed generic message| TX[Circle attestation]
+    end
+
+    subgraph RN[Reactive Network optional]
+        PUB -. same observation event .-> RP[Stateless Reactive pulse]
+    end
+
     subgraph U[Unichain Sepolia]
         T[Trader] --> PM[Uniswap v4 PoolManager]
         PM --> H[MARKOUT Hook]
-        H -->|escrow + request| Q[Pending trade]
-        S[Median reference sampler] -->|normalized observation| E[Reference event]
-        A[Authenticated settlement adapter] -->|settle or expire| H
+        H -->|escrow| Q[Pending trade]
+        TX --> CR[Circle receiver]
+        RP -. authenticated callback .-> RR[Reactive receiver]
+        CR --> SC[Settlement coordinator]
+        RR --> SC
+        SC -->|first valid delivery| H
         H --> R[Trader rebate]
         H --> L[LP protection reserve]
     end
-
-    subgraph RN[Reactive Network]
-        O[Event subscriptions] --> C[Five-minute maturity scheduler]
-        C -->|sample callback| S
-        E --> O
-        C -->|settlement callback| A
-    end
-
-    H -->|MarkoutRequested| O
 ```
 
-Reactive Network is not a notification layer in this design. It owns maturity timing, requests the reference sample,
-retries delivery, and routes the authenticated terminal callback. The hook alone owns custody and final accounting.
+The hook alone owns custody and economic validation. Circle and Reactive cannot select beneficiaries or bypass
+maturity, freshness, confidence, solvency, or terminal-state checks. Circle is the primary transport. Reactive is
+useful when available but cannot block Circle delivery or the full-rebate expiry path.
 
 ```text
 src/
 ├── adapters/    authenticated settlement boundary
 ├── base/        reusable PoolManager custody and accounting
+├── circle/      Pyth publisher and authenticated CCTP V2 receiver
 ├── hooks/       surcharge policy and complete MARKOUT lifecycle
 ├── interfaces/  stable external errors, events, and read API
 ├── libraries/   accounting, price, observation, and markout primitives
-├── reactive/    event subscriptions, maturity scheduling, callback retries
+├── reactive/    research scheduler and optional stateless pulse
 ├── reference/   authenticated, source-specific price sampling
+├── settlement/  immutable multi-transport coordinator
 └── types/       shared domain types
 ```
 
 `BaseProvisionalSurcharge` isolates v4 custody. `MarkoutSettlementEngine` isolates pure economic evaluation.
-`MarkoutHook` composes them into a replay-protected state machine. `MarkoutReactive` independently orchestrates events
-and time, while `ReactiveMarkoutSettlementAdapter` is the narrow destination authentication boundary.
+`MarkoutHook` composes them into a replay-protected state machine. `SettlementCoordinator` makes Circle and Reactive
+delivery at-least-once across transports. `CirclePythObservationPublisher` verifies and normalizes Pyth data before
+requesting a fast-confirmed Circle message; `CircleObservationReceiver` authenticates its destination envelope.
 
 ## Local verification
 
@@ -118,6 +133,8 @@ git submodule update --init --recursive
 ./scripts/verify-phase-7.sh
 ./scripts/verify-phase-8.sh
 ./scripts/verify-phase-9-draft.sh
+./scripts/verify-phase-11.sh
+./scripts/verify-phase-12.sh
 ```
 
 The cumulative local gate checks formatting, compilation and bytecode size, lint, all earlier accounting and lifecycle

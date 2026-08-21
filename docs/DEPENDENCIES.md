@@ -54,3 +54,18 @@ Dependency updates require their own pull request. That change must:
 5. Re-review hook permissions, callback signatures, return-delta semantics, and compiler constraints.
 
 Floating branches, unpinned package installs, and automatic dependency upgrades are not accepted on protocol branches.
+
+## External protocol ABIs
+
+The hybrid path uses deliberately narrow local interfaces instead of importing complete external deployment trees:
+
+| Interface | Upstream contract | Used surface |
+| --- | --- | --- |
+| `ICircleMessageTransmitterV2` | Circle CCTP V2 `MessageTransmitterV2` | `sendMessage` |
+| `ICircleMessageHandlerV2` | Circle CCTP V2 `IMessageHandlerV2` | finalized and unfinalized receive handlers |
+| `IPyth` | Pyth Core EVM | update fee, price update, and bounded-age price read |
+
+The signatures are tested against protocol-shaped mocks and must be rechecked against the official Circle and Pyth
+interfaces before every public deployment. Contract addresses and source links live in `config/uhi10-testnet.json`.
+Pyth announced an Ethereum Sepolia contract upgrade for August 26, 2026, so the deployment preflight must select the
+active address at broadcast time rather than assuming the repository's last checked address remains current.

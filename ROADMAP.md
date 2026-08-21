@@ -20,7 +20,7 @@ The project uses gated phases. At the end of every phase, work stops for a verif
 | 9 | Sep 1–3 | Submission package | Final links, video, deck, and form are complete |
 | 10 | Aug 21 | Resilience architecture pivot | Circle-primary and Reactive-optional boundaries are frozen |
 | 11 | Aug 21–22 | Shared settlement coordinator | Multiple authenticated transports race safely without changing hook accounting |
-| 12 | Aug 22–24 | Circle CCTP primary path | A finalized Circle message settles a MARKOUT trade on Unichain |
+| 12 | Aug 22–24 | Circle CCTP primary path | A Circle-attested observation settles a MARKOUT trade on Unichain |
 | 13 | Aug 24–25 | Minimal Reactive pulse | A stateless Maestro-style RSC can settle through the same coordinator |
 | 14 | Aug 25–Sep 3 | Hybrid testnet and final package | Public Circle evidence, optional Reactive evidence, and final judge materials |
 
@@ -420,8 +420,9 @@ Required results:
 
 ### Goal
 
-Carry a Pyth-verified delayed observation from Ethereum Sepolia to Unichain Sepolia through Circle's finalized generic
-message path.
+Carry a Pyth-verified delayed observation from Ethereum Sepolia to Unichain Sepolia through Circle's generic message
+path. Request threshold `1000` so delivery fits MARKOUT's ten-minute settlement window; retain a disjoint handler for
+later hard-finalized messages at threshold `2000` or greater.
 
 ### Deliverables
 
@@ -441,9 +442,9 @@ message path.
 Required results:
 
 - Only the configured Circle transmitter can enter the receiver.
-- Only finalized messages from the configured Sepolia publisher and market are accepted.
+- Only confirmed or finalized messages from the configured Sepolia publisher and market are accepted.
 - A valid Circle message settles one mature trade through the shared coordinator.
-- Replays, malformed messages, wrong domains, wrong senders, and unfinalized messages fail safely.
+- Replays, malformed messages, wrong domains, wrong senders, and messages below threshold `1000` fail safely.
 
 ## Phase 13 — Optional Reactive pulse
 
@@ -481,7 +482,7 @@ Produce explorer-backed Circle evidence first, then add Reactive evidence only i
 
 1. Execute a MARKOUT trade on Unichain Sepolia.
 2. Publish its matured Pyth observation on Ethereum Sepolia.
-3. Relay the finalized Circle attestation and settle the trade on Unichain.
+3. Relay the Circle attestation and settle the trade on Unichain.
 4. Claim the resulting rebate and link every transaction.
 5. Attempt the optional Reactive pulse with a bounded acceptance window.
 6. Label Reactive as live only if its destination callback transaction exists publicly.

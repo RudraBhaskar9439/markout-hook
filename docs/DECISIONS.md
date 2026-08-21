@@ -242,9 +242,11 @@ and outage evidence.
 ## D-039 — Use Circle CCTP V2 as the primary authenticated message transport
 
 A permissionless Ethereum Sepolia publisher validates a configured Pyth feed and sends the normalized observation as a
-generic finalized Circle message to Unichain Sepolia. The destination receiver pins Circle's transmitter, source
-domain, publisher, market, message version, and minimum finality. Any account may relay the attested message, but no
-relayer may alter it.
+generic Circle message to Unichain Sepolia. It requests threshold `1000` because Circle documents roughly 20-second
+Ethereum confirmation at that threshold, while hard finality at `2000` averages 15–19 minutes and cannot fit the
+current ten-minute settlement window. The destination receiver uses disjoint confirmed and finalized handlers and
+pins Circle's transmitter, source domain, publisher, market, and message version. Any account may relay the attested
+message, but no relayer may alter it. The documented tradeoff is bounded source-reorganization risk on the fast path.
 
 ## D-040 — Make transport delivery at-least-once across protocols
 
