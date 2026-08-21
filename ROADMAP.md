@@ -401,7 +401,6 @@ Put one immutable, replay-safe boundary between every observation transport and 
 - Immutable source authorization after topology freeze
 - Idempotent first-valid-delivery behavior
 - Unit, fuzz, and adversarial tests
-- Hybrid deployment topology script
 
 ### Verification gate
 
