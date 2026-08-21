@@ -79,6 +79,33 @@ export const policyResults = [
   { policy: "MARKOUT", lpNet: 7138.784402, effectiveFee: 46.2548, tone: "green" },
 ] as const;
 
+export const adoptionBreakEvens = [
+  {
+    flow: "Benign",
+    vsFixed: "9.43 bps",
+    vsFixedLabel: "better execution needed vs fixed",
+    vsVolatility: "+$10.05",
+    vsVolatilityLabel: "saved vs volatility per $10k",
+    conclusion: "Competitive when LP depth improves the route by at least 9.43 bps.",
+  },
+  {
+    flow: "Inventory-improving",
+    vsFixed: "0.00 bps",
+    vsFixedLabel: "better execution needed vs fixed",
+    vsVolatility: "+$17.44",
+    vsVolatilityLabel: "saved vs volatility per $10k",
+    conclusion: "Matches fixed at equal execution and beats the volatility baseline.",
+  },
+  {
+    flow: "Informed",
+    vsFixed: "43.06 bps",
+    vsFixedLabel: "fee premium vs fixed",
+    vsVolatility: "−$25.02",
+    vsVolatilityLabel: "trader saving vs volatility per $10k",
+    conclusion: "Intentionally expensive: adverse flow funds LP protection.",
+  },
+] as const;
+
 export const timelineBase = [
   {
     label: "Swap executes",

@@ -63,5 +63,5 @@ claim until a destination callback is public.
 
 ## GO / NO-GO
 
-**GO** for hosted/local judge review and for claiming the two linked public Circle settlements. **NO-GO** for claiming
+**GO** for hosted/local judge review and for claiming the three linked public Circle settlements. **NO-GO** for claiming
 a public Reactive callback until the corresponding Unichain transaction is observed and recorded.

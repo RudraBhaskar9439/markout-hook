@@ -92,9 +92,15 @@ To intentionally regenerate after reviewing a configuration or model change:
 | `results/summary.csv` | scenario × policy metrics |
 | `results/flow_summary.csv` | flow-class × policy metrics |
 | `results/summary.json` | machine-readable aggregate, boundary, and limitations |
+| `results/adoption_summary.json` | fee-only trader routing break-evens and LP comparison deltas |
 | `results/report.md` | judge-readable findings, regressions, and scenario table |
 | `results/manifest.json` | SHA-256 hashes for generator inputs and every generated artifact |
 | `charts/*.svg` | dependency-free deterministic visual comparisons |
+
+The routing break-even artifact answers the trader-adoption objection without assuming its conclusion. It reports
+how much better MARKOUT's execution price or slippage must be to offset any fee premium against the fixed baseline,
+and the fee-only saving available against the volatility baseline. It does not claim that the hook itself has already
+created more liquidity or volume.
 
 ## What this experiment cannot establish
 

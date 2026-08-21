@@ -14,12 +14,15 @@ test "$(cast chain-id --rpc-url "$destination_rpc")" = "1301"
 jq -e '
   .status == "circle-e2e-complete-reactive-pending"
   and .evidence.circleLive == true
-  and .evidence.publicOutcomeCount == 2
+  and .evidence.publicOutcomeCount == 3
   and .unichainSepolia.settlement.status == "settled"
   and .unichainSepolia.settlement.rebateClaimed == true
   and .unichainSepolia.adverseTrade.settlement.status == "settled"
   and .unichainSepolia.adverseTrade.settlement.retentionBps == 10000
   and .unichainSepolia.adverseTrade.settlement.rebate == "0"
+  and .unichainSepolia.walletDemoTrade.settlement.status == "settled"
+  and .unichainSepolia.walletDemoTrade.settlement.retentionBps == 0
+  and .unichainSepolia.walletDemoTrade.settlement.rebateClaimed == true
 ' "$manifest" >/dev/null
 
 verify_receipt() {
@@ -42,7 +45,8 @@ done < <(jq -r '
   ["publisher deployment", .ethereumSepolia.publisherDeploymentTx],
   ["publisher binding", .ethereumSepolia.publisherBindingTx],
   (.ethereumSepolia.observationPublishTxs[] | ["observation publication", .]),
-  ["adverse observation publication", .ethereumSepolia.adverseObservationPublishTx]
+  ["adverse observation publication", .ethereumSepolia.adverseObservationPublishTx],
+  ["wallet-demo observation publication", .unichainSepolia.walletDemoTrade.observationPublishTx]
   | @tsv
 ' "$manifest")
 
@@ -59,7 +63,10 @@ done < <(jq -r '
   ["rebate claim", .unichainSepolia.rebateClaimTx],
   ["adverse swap approval", .unichainSepolia.adverseTrade.swapApprovalTx],
   ["adverse MARKOUT swap", .unichainSepolia.adverseTrade.swapTx],
-  ["adverse Circle settlement relay", .unichainSepolia.adverseTrade.circleRelayTx]
+  ["adverse Circle settlement relay", .unichainSepolia.adverseTrade.circleRelayTx],
+  ["wallet-demo MARKOUT swap", .unichainSepolia.walletDemoTrade.swapTx],
+  ["wallet-demo Circle settlement relay", .unichainSepolia.walletDemoTrade.circleRelayTx],
+  ["wallet-demo rebate claim", .unichainSepolia.walletDemoTrade.rebateClaimTx]
   | @tsv
 ' "$manifest")
 
@@ -69,6 +76,7 @@ circle_receiver="$(jq -er '.unichainSepolia.circleReceiver' "$manifest")"
 hook="$(jq -er '.unichainSepolia.markoutHook' "$manifest")"
 trade_id="$(jq -er '.unichainSepolia.tradeId' "$manifest")"
 adverse_trade_id="$(jq -er '.unichainSepolia.adverseTrade.tradeId' "$manifest")"
+wallet_demo_trade_id="$(jq -er '.unichainSepolia.walletDemoTrade.tradeId' "$manifest")"
 
 for contract_address in "$publisher"; do
   test "$(cast code "$contract_address" --rpc-url "$source_rpc")" != "0x"
@@ -155,4 +163,39 @@ for reserve_call in \
   jq -e --arg expected "$adverse_retained" '(.[0] | tostring) == $expected' <<<"$reserve_value" >/dev/null
 done
 
-printf 'Public Circle evidence proves both full rebate and full LP retention with internally consistent accounting.\n'
+wallet_demo_trade_json="$(
+  cast call "$hook" \
+    'getTrade(bytes32)((bytes32,address,address,uint192,uint128,uint64,uint64,uint64,uint8,uint8))' \
+    "$wallet_demo_trade_id" \
+    --rpc-url "$destination_rpc" \
+    --json
+)"
+jq -e '.[0][9] == 2' <<<"$wallet_demo_trade_json" >/dev/null
+
+wallet_demo_settlement_json="$(
+  cast call "$hook" \
+    'getTradeSettlement(bytes32)((int256,uint192,uint128,uint128,uint64,uint16,uint16))' \
+    "$wallet_demo_trade_id" \
+    --rpc-url "$destination_rpc" \
+    --json
+)"
+jq -e \
+  --arg markout "$(jq -er '.unichainSepolia.walletDemoTrade.settlement.markoutWad' "$manifest")" \
+  --arg rebate "$(jq -er '.unichainSepolia.walletDemoTrade.settlement.rebate' "$manifest")" '
+    (.[0][0] | tostring) == $markout
+    and (.[0][2] | tonumber) == 0
+    and (.[0][3] | tostring) == $rebate
+    and .[0][6] == 0
+  ' <<<"$wallet_demo_settlement_json" >/dev/null
+
+wallet_demo_beneficiary="$(jq -er '.[0][1]' <<<"$wallet_demo_trade_json")"
+wallet_demo_currency="$(jq -er '.[0][2]' <<<"$wallet_demo_trade_json")"
+wallet_demo_claimable="$(
+  cast call "$hook" 'claimableRebate(address,address)(uint256)' \
+    "$wallet_demo_beneficiary" "$wallet_demo_currency" \
+    --rpc-url "$destination_rpc" \
+    --json
+)"
+jq -e '(.[0] | tonumber) == 0' <<<"$wallet_demo_claimable" >/dev/null
+
+printf 'Public Circle evidence proves three complete lifecycles, both allocation extremes, and consistent accounting.\n'

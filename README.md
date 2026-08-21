@@ -55,6 +55,7 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 - [Final submission checklist](docs/SUBMISSION_CHECKLIST.md)
 - [Phase 9 draft verification guide](docs/PHASE_9_DRAFT_VERIFICATION.md)
 - [Hybrid settlement architecture](docs/HYBRID_SETTLEMENT.md)
+- [Evidence ledger and trader break-even](docs/EVIDENCE.md)
 - [Phase 11 coordinator verification](docs/PHASE_11_VERIFICATION.md)
 - [Phase 12 Circle verification](docs/PHASE_12_VERIFICATION.md)
 - [Phase 13 Reactive pulse verification](docs/PHASE_13_VERIFICATION.md)
@@ -72,8 +73,9 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 observation.** The previous Omni
 scheduler remains committed as reproducible research and outage evidence. The active topology now uses a one-time-bound
 settlement coordinator, a Pyth-backed Ethereum Sepolia publisher, an authenticated Circle receiver, and an optional
-stateless Reactive pulse. After a real Uniswap v4 swap matured, its Pyth observation was attested through Circle,
-settled on Unichain, and claimed; the dated deployment manifest records the public evidence and measured latency. The
+stateless Reactive pulse. Three real Uniswap v4 swaps have now matured and settled through Pyth plus Circle, covering
+both allocation extremes and two public rebate claims; the dated deployment manifest records every transaction and
+measured latency. The
 judge application can now repeat the same wallet-signed swap, observation, relay, allocation, and claim lifecycle while
 keeping private keys out of the browser bundle. Reactive receives live credit only if its callback is independently visible.
 

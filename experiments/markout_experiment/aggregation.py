@@ -62,6 +62,82 @@ def summarize_all(outcomes: Sequence[PolicyOutcome]) -> list[dict[str, Any]]:
     ]
 
 
+def build_adoption_evidence(
+    flow_summary: Sequence[Mapping[str, Any]], aggregate_summary: Sequence[Mapping[str, Any]]
+) -> dict[str, Any]:
+    """Derive routing break-evens without assuming that fees create liquidity or volume."""
+
+    aggregate = {row["policy"]: row for row in aggregate_summary}
+    by_flow = {(row["policy"], row["flow_class"]): row for row in flow_summary}
+    fixed = aggregate[Policy.FIXED.value]
+    volatility = aggregate[Policy.VOLATILITY.value]
+    markout = aggregate[Policy.MARKOUT.value]
+
+    flow_rows: list[dict[str, Any]] = []
+    for flow_class in FlowClass:
+        fixed_fee = by_flow[(Policy.FIXED.value, flow_class.value)]["average_effective_trader_fee_bps"]
+        volatility_fee = by_flow[(Policy.VOLATILITY.value, flow_class.value)][
+            "average_effective_trader_fee_bps"
+        ]
+        markout_fee = by_flow[(Policy.MARKOUT.value, flow_class.value)][
+            "average_effective_trader_fee_bps"
+        ]
+        premium_vs_fixed = markout_fee - fixed_fee
+        saving_vs_volatility = volatility_fee - markout_fee
+        flow_rows.append(
+            {
+                "flow_class": flow_class.value,
+                "fixed_fee_bps": fixed_fee,
+                "volatility_fee_bps": volatility_fee,
+                "markout_fee_bps": markout_fee,
+                "fee_premium_vs_fixed_bps": premium_vs_fixed,
+                "execution_advantage_needed_vs_fixed_bps": max(premium_vs_fixed, Decimal(0)),
+                "fee_saving_vs_volatility_bps": saving_vs_volatility,
+                "fee_saving_vs_volatility_percent": _percent(saving_vs_volatility, volatility_fee),
+                "fee_saving_vs_volatility_per_10000_quote": saving_vs_volatility,
+            }
+        )
+
+    return {
+        "metricBoundary": (
+            "fee-only route break-even: MARKOUT beats a comparator when its execution-price and slippage advantage "
+            "exceeds any effective-fee premium; this does not assume or prove additional liquidity"
+        ),
+        "aggregate": {
+            "lp_net_improvement_vs_fixed_quote_micro": (
+                markout["lp_net_after_proxy_quote_micro"] - fixed["lp_net_after_proxy_quote_micro"]
+            ),
+            "lp_net_improvement_vs_fixed_percent": _percent(
+                markout["lp_net_after_proxy_quote_micro"] - fixed["lp_net_after_proxy_quote_micro"],
+                fixed["lp_net_after_proxy_quote_micro"],
+            ),
+            "lp_net_gap_vs_volatility_quote_micro": (
+                markout["lp_net_after_proxy_quote_micro"] - volatility["lp_net_after_proxy_quote_micro"]
+            ),
+            "lp_net_gap_vs_volatility_percent": _percent(
+                markout["lp_net_after_proxy_quote_micro"]
+                - volatility["lp_net_after_proxy_quote_micro"],
+                volatility["lp_net_after_proxy_quote_micro"],
+            ),
+            "average_fee_saving_vs_volatility_bps": (
+                volatility["average_effective_trader_fee_bps"]
+                - markout["average_effective_trader_fee_bps"]
+            ),
+            "total_trader_rebates_quote_micro": markout["rebate_quote_micro"],
+            "total_lp_protection_quote_micro": markout["lp_protection_quote_micro"],
+        },
+        "byFlowClass": flow_rows,
+    }
+
+
+def _percent(numerator: int | Decimal, denominator: int | Decimal) -> Decimal:
+    if denominator == 0:
+        raise ValueError("percentage denominator must be non-zero")
+    return (Decimal(numerator) * Decimal(100) / Decimal(denominator)).quantize(
+        Decimal("0.0001"), rounding=ROUND_HALF_UP
+    )
+
+
 def csv_ready(summary: Mapping[str, Any]) -> dict[str, Any]:
     rendered = dict(summary)
     for key in (

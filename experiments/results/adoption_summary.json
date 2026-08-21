@@ -1,0 +1,47 @@
+{
+  "aggregate": {
+    "average_fee_saving_vs_volatility_bps": "2.2746",
+    "lp_net_gap_vs_volatility_percent": "-5.9887",
+    "lp_net_gap_vs_volatility_quote_micro": -454753226,
+    "lp_net_improvement_vs_fixed_percent": "83.5638",
+    "lp_net_improvement_vs_fixed_quote_micro": 3249791286,
+    "total_lp_protection_quote_micro": 3249791286,
+    "total_trader_rebates_quote_micro": 6746608714
+  },
+  "byFlowClass": [
+    {
+      "execution_advantage_needed_vs_fixed_bps": "9.4262",
+      "fee_premium_vs_fixed_bps": "9.4262",
+      "fee_saving_vs_volatility_bps": "10.0528",
+      "fee_saving_vs_volatility_per_10000_quote": "10.0528",
+      "fee_saving_vs_volatility_percent": "20.3173",
+      "fixed_fee_bps": "30.0000",
+      "flow_class": "benign",
+      "markout_fee_bps": "39.4262",
+      "volatility_fee_bps": "49.4790"
+    },
+    {
+      "execution_advantage_needed_vs_fixed_bps": "43.0552",
+      "fee_premium_vs_fixed_bps": "43.0552",
+      "fee_saving_vs_volatility_bps": "-25.0178",
+      "fee_saving_vs_volatility_per_10000_quote": "-25.0178",
+      "fee_saving_vs_volatility_percent": "-52.0798",
+      "fixed_fee_bps": "30.0000",
+      "flow_class": "informed",
+      "markout_fee_bps": "73.0552",
+      "volatility_fee_bps": "48.0374"
+    },
+    {
+      "execution_advantage_needed_vs_fixed_bps": "0.0000",
+      "fee_premium_vs_fixed_bps": "0.0000",
+      "fee_saving_vs_volatility_bps": "17.4403",
+      "fee_saving_vs_volatility_per_10000_quote": "17.4403",
+      "fee_saving_vs_volatility_percent": "36.7626",
+      "fixed_fee_bps": "30.0000",
+      "flow_class": "inventory_improving",
+      "markout_fee_bps": "30.0000",
+      "volatility_fee_bps": "47.4403"
+    }
+  ],
+  "metricBoundary": "fee-only route break-even: MARKOUT beats a comparator when its execution-price and slippage advantage exceeds any effective-fee premium; this does not assume or prove additional liquidity"
+}

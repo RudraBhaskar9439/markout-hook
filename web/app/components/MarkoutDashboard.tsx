@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import {
+  adoptionBreakEvens,
   aggregateMetrics,
   experimentCaveat,
   flowCases,
@@ -267,19 +268,19 @@ function ResearchEvidence() {
         </p>
       </div>
 
-      <div className="live-proof-card" aria-label="Two public Circle settlement outcomes">
+      <div className="live-proof-card" aria-label="Three public Circle settlement lifecycles">
         <div>
           <p className="kicker">Public testnet proof</p>
-          <strong>Two trades. Two opposite settlements.</strong>
+          <strong>Three lifecycles. Both settlement extremes.</strong>
           <p>
-            Circle delivered Pyth observations for two real Unichain v4 swaps: negative markout returned the complete
-            provisional surcharge, while positive markout retained the complete escrow for LP protection.
+            Circle delivered Pyth observations for three real Unichain v4 swaps: two negative-markout trades returned
+            and paid their complete rebates, while positive markout retained the complete escrow for LP protection.
           </p>
         </div>
         <div className="live-proof-metrics">
-          <span><b>100%</b> rebated · 38s relay</span>
-          <span><b>100%</b> retained · 67s relay</span>
-          <span><b>46/96s</b> observation ages</span>
+          <span><b>3</b> public end-to-end lifecycles</span>
+          <span><b>2 / 1</b> full rebates / full retention</span>
+          <span><b>38/67/67s</b> measured relays</span>
         </div>
         <div className="live-proof-links">
           <a href="https://sepolia.etherscan.io/tx/0xed6af5c42e554c221078110d6db03fba8fd74bf24a88cf52494d4e605a31f6ca" target="_blank" rel="noreferrer">Rebate observation ↗</a>
@@ -288,6 +289,9 @@ function ResearchEvidence() {
           <a href="https://sepolia.uniscan.xyz/tx/0xb6179eab5dcf9ff2f3563442dbf826fe5fcb86524e9d71aa913c9ba9e90a2376" target="_blank" rel="noreferrer">Protection swap ↗</a>
           <a href="https://sepolia.etherscan.io/tx/0x9d20a2a8bfc5c7dd654608a9214472ff3ed37cbdff4614064aff28805f9f8861" target="_blank" rel="noreferrer">Protection observation ↗</a>
           <a href="https://sepolia.uniscan.xyz/tx/0xefeece5de9f78ae809652418e1fcd8fb592de950af64e6bbbf66df93bdc25eae" target="_blank" rel="noreferrer">Protection settlement ↗</a>
+          <a href="https://sepolia.uniscan.xyz/tx/0x889ea958d19574572890a5ae5a5890c7a8d31f94ebfbe9d065b58d884c1f739a" target="_blank" rel="noreferrer">Wallet-console swap ↗</a>
+          <a href="https://sepolia.uniscan.xyz/tx/0x81f7878312b81b80ba69ad8fdc0f4e06f64f8624ed610ebd5a6ea63cca0ca610" target="_blank" rel="noreferrer">Wallet-console settlement ↗</a>
+          <a href="https://sepolia.uniscan.xyz/tx/0xd78f8533519c4468ac345f0caad52a8eb5c57ee904fc5882eb9066ee16b1b9d8" target="_blank" rel="noreferrer">Wallet-console claim ↗</a>
         </div>
       </div>
 
@@ -317,6 +321,40 @@ function ResearchEvidence() {
           <span className="honest-thesis">Research claim</span>
           <p>Outcome-based fees can protect LPs while charging good flow less than a volatility-only policy.</p>
         </aside>
+      </div>
+
+      <div className="adoption-proof" aria-labelledby="adoption-proof-title">
+        <div className="adoption-proof-heading">
+          <div>
+            <p className="kicker">Trader adoption break-even</p>
+            <h3 id="adoption-proof-title">When does a rational router choose MARKOUT?</h3>
+          </div>
+          <p>
+            Fees are only one part of execution. These thresholds show exactly how much better price or slippage must
+            compensate for MARKOUT&apos;s fee premium. They do not assume deeper liquidity already exists.
+          </p>
+        </div>
+        <div className="adoption-grid">
+          {adoptionBreakEvens.map((item) => (
+            <article key={item.flow}>
+              <span>{item.flow}</span>
+              <div>
+                <strong>{item.vsFixed}</strong>
+                <small>{item.vsFixedLabel}</small>
+              </div>
+              <div>
+                <strong>{item.vsVolatility}</strong>
+                <small>{item.vsVolatilityLabel}</small>
+              </div>
+              <p>{item.conclusion}</p>
+            </article>
+          ))}
+        </div>
+        <p className="adoption-verdict">
+          <b>Measured result:</b> MARKOUT improves modeled LP net-after-proxy by 83.56% versus fixed on the common
+          tape. <b>Unproven hypothesis:</b> that this protection attracts enough depth to clear the 9.43 bps benign
+          routing threshold.
+        </p>
       </div>
     </section>
   );
@@ -425,7 +463,7 @@ export function MarkoutDashboard() {
           <p>Outcome-priced liquidity for Uniswap v4.</p>
         </div>
         <div className="footer-status">
-          <span><i className="status-green" /> Two public Circle outcomes proven</span>
+          <span><i className="status-green" /> Three public Circle lifecycles proven</span>
           <span><i className="status-amber" /> Reactive callback not yet observed</span>
         </div>
         <p className="footer-note">Experimental UHI10 prototype · Not audited · No real funds</p>

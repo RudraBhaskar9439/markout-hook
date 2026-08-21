@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="620" viewBox="0 0 1080 620">
+<rect width="100%" height="100%" fill="#0f172a"/>
+<text x="100" y="42" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="25" font-weight="700">Trader routing break-even by flow class</text>
+<text x="100" y="70" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="14">Fee-only threshold; positive savings favor MARKOUT versus volatility</text>
+<line x1="100" x2="1040" y1="470.00" y2="470.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="475.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">-30.46</text>
+<line x1="100" x2="1040" y1="397.00" y2="397.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="402.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">-14.67</text>
+<line x1="100" x2="1040" y1="324.00" y2="324.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="329.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">1.12</text>
+<line x1="100" x2="1040" y1="251.00" y2="251.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="256.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">16.92</text>
+<line x1="100" x2="1040" y1="178.00" y2="178.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="183.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">32.71</text>
+<line x1="100" x2="1040" y1="105.00" y2="105.00" stroke="#334155" stroke-width="1"/>
+<text x="88" y="110.00" text-anchor="end" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">48.50</text>
+<line x1="100" x2="1040" y1="329.19" y2="329.19" stroke="#e2e8f0" stroke-width="1.5"/>
+<rect x="220.17" y="285.62" width="34.00" height="43.57" rx="3" fill="#ff8e74"/>
+<rect x="259.17" y="282.72" width="34.00" height="46.47" rx="3" fill="#82b9ff"/>
+<text x="256.67" y="498" text-anchor="middle" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="12">Benign</text>
+<rect x="533.50" y="130.17" width="34.00" height="199.01" rx="3" fill="#ff8e74"/>
+<rect x="572.50" y="329.19" width="34.00" height="115.64" rx="3" fill="#82b9ff"/>
+<text x="570.00" y="498" text-anchor="middle" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="12">Informed</text>
+<rect x="846.83" y="329.19" width="34.00" height="1.00" rx="3" fill="#ff8e74"/>
+<rect x="885.83" y="248.57" width="34.00" height="80.61" rx="3" fill="#82b9ff"/>
+<text x="883.33" y="498" text-anchor="middle" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="12">Inventory Improving</text>
+<rect x="100" y="574" width="14" height="14" rx="2" fill="#ff8e74"/>
+<text x="121" y="586" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="13">Needed Vs Fixed</text>
+<rect x="255" y="574" width="14" height="14" rx="2" fill="#82b9ff"/>
+<text x="276" y="586" fill="#cbd5e1" font-family="Inter,Arial,sans-serif" font-size="13">Saved Vs Volatility</text>
+<text transform="translate(22 287.50) rotate(-90)" text-anchor="middle" fill="#94a3b8" font-family="Inter,Arial,sans-serif" font-size="12">Basis points</text>
+</svg>

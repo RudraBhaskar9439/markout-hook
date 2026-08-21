@@ -27,7 +27,7 @@ on public testnets. The final release remains blocked only on the owner-controll
 - [x] Record publication, Circle relay, settlement, claim, and explorer links in a dated manifest
 - [x] Measure end-to-end attestation latency against the ten-minute settlement window (38 seconds)
 - [x] Execute and settle a second trade proving the opposite branch: 100% retained for LP protection in 67 seconds
-- [x] Reconcile claimable rebate, LP reserve, accounted balance, and actual token balance for both public outcomes
+- [x] Reconcile claimable rebate, LP reserve, accounted balance, and actual token balance across all public lifecycles
 
 ## Optional Reactive sponsor evidence
 
@@ -49,7 +49,7 @@ the primary path, and permissionless expiry returns the complete provisional sur
 - [ ] Record and upload the required final hybrid demo
 - [x] Update the deck and dashboard with verified links only
 - [x] Prepare a copy-ready final submission draft with public evidence and honest limitations
-- [x] Prepare the required 1200 × 630 project thumbnail at `web/public/og.png`
+- [x] Prepare the required 1200 × 630 project thumbnail at `web/public/og-evidence-v2.png`
 - [x] Verify the required explorer URLs return successfully without authentication
 - [ ] Verify the repository, dashboard, deck, and video links from a logged-out browser after access is configured
 - [ ] Submit the final form before September 3, 2026 at 11:59 PM Pacific Time

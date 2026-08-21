@@ -10,9 +10,9 @@ Cloudflare Worker-compatible React application built with vinext and the Sites V
 - The research timeline demonstrates the tested outcome-to-settlement lifecycle without simulating live network state.
 - The separate testnet console reads balances and trades from the deployed hook, executes real v4 swaps, publishes a
   signed Pyth observation on Ethereum Sepolia, relays its Circle attestation, and reads the resulting fee allocation.
-- The interface links the public Pyth publication, Circle settlement, and claimed rebate from the dated manifest.
-- The public evidence contrasts both allocation extremes: 100% rebated after negative markout and 100% retained for LP
-  protection after positive markout.
+- The interface links three public Pyth/Circle lifecycles and two claimed rebates from the dated manifest.
+- The public evidence contrasts both allocation extremes: two 100% rebates after negative markout and 100% retained
+  for LP protection after positive markout.
 - Reactive remains visibly optional and is not labeled live without a public destination callback.
 - Wallet signing uses the injected EIP-1193 provider. Private keys and Pyth credentials are never collected or bundled.
 - Active trade and public transaction hashes are stored only in browser local storage so an interrupted relay can resume.

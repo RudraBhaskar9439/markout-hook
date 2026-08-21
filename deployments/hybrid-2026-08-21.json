@@ -24,7 +24,8 @@
       "confidenceBps": 9996,
       "sourceBlockNumber": 11535815,
       "sourceBlockTimestamp": 1787312832
-    }
+    },
+    "walletDemoObservationPublishTx": "0x2465cd2f4e2299a1898f45d0634fc2fd87ae2412de615504fc0125d9ed204e42"
   },
   "unichainSepolia": {
     "settlementCoordinator": "0x282a2ed0eaf48e52e7844de40a1faf6f13445dc0",
@@ -92,6 +93,38 @@
         "currencyAccountedBalance": "3214110616342",
         "currencyActualBalance": "3214110616342"
       }
+    },
+    "walletDemoTrade": {
+      "swapTx": "0x889ea958d19574572890a5ae5a5890c7a8d31f94ebfbe9d065b58d884c1f739a",
+      "tradeId": "0x93def2b839d8b5faf27269a1fe1719f13d2b108935004a6575d9409e83855503",
+      "executionPriceX18": "2449275280950924187493",
+      "escrowCurrency": "0x4200000000000000000000000000000000000006",
+      "escrowedSurcharge": "2041420186161",
+      "executedAt": 1787328542,
+      "maturityTimestamp": 1787328842,
+      "expiryTimestamp": 1787329442,
+      "observationPublishTx": "0x2465cd2f4e2299a1898f45d0634fc2fd87ae2412de615504fc0125d9ed204e42",
+      "observationSourceBlockNumber": 11537123,
+      "observationSourceBlockTimestamp": 1787328924,
+      "circleRelayTx": "0x81f7878312b81b80ba69ad8fdc0f4e06f64f8624ed610ebd5a6ea63cca0ca610",
+      "relayBlockNumber": 60476563,
+      "relayBlockTimestamp": 1787328991,
+      "sourceToDestinationLatencySeconds": 67,
+      "observationAgeAtSettlementSeconds": 92,
+      "rebateClaimTx": "0xd78f8533519c4468ac345f0caad52a8eb5c57ee904fc5882eb9066ee16b1b9d8",
+      "claimBlockNumber": 60476654,
+      "claimBlockTimestamp": 1787329082,
+      "settlement": {
+        "status": "settled",
+        "markoutWad": "-26696136183409398",
+        "referencePriceX18": "2383889094500000000000",
+        "observedAt": 1787328899,
+        "confidenceBps": 9996,
+        "retainedSurcharge": "0",
+        "rebate": "2041420186161",
+        "retentionBps": 0,
+        "rebateClaimed": true
+      }
     }
   },
   "reactiveLasnaLegacy": {
@@ -111,13 +144,17 @@
     "adverseSwap": "https://sepolia.uniscan.xyz/tx/0xb6179eab5dcf9ff2f3563442dbf826fe5fcb86524e9d71aa913c9ba9e90a2376",
     "adverseObservation": "https://sepolia.etherscan.io/tx/0x9d20a2a8bfc5c7dd654608a9214472ff3ed37cbdff4614064aff28805f9f8861",
     "adverseCircleRelay": "https://sepolia.uniscan.xyz/tx/0xefeece5de9f78ae809652418e1fcd8fb592de950af64e6bbbf66df93bdc25eae",
+    "walletDemoSwap": "https://sepolia.uniscan.xyz/tx/0x889ea958d19574572890a5ae5a5890c7a8d31f94ebfbe9d065b58d884c1f739a",
+    "walletDemoObservation": "https://sepolia.etherscan.io/tx/0x2465cd2f4e2299a1898f45d0634fc2fd87ae2412de615504fc0125d9ed204e42",
+    "walletDemoCircleRelay": "https://sepolia.uniscan.xyz/tx/0x81f7878312b81b80ba69ad8fdc0f4e06f64f8624ed610ebd5a6ea63cca0ca610",
+    "walletDemoRebateClaim": "https://sepolia.uniscan.xyz/tx/0xd78f8533519c4468ac345f0caad52a8eb5c57ee904fc5882eb9066ee16b1b9d8",
     "reactivePulse": "https://lasna.reactscan.net/address/0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e",
     "reactivePulseDeployment": "https://lasna.reactscan.net/tx/0xdd2af7d35c3f73aa4d667631ff6062053636e6c098e16cfb620205e3481164c6"
   },
   "evidence": {
     "circleLive": true,
     "reactiveLive": false,
-    "publicOutcomeCount": 2,
-    "notes": "Circle completed two public Pyth-to-CCTP-to-Unichain settlements covering both economic extremes: a negative-markout trade returned 100% of its provisional surcharge and was claimed, while a positive-markout trade retained 100% for LP protection with exact reserve solvency. The first published observation became 18 seconds too old during relay simulation and was safely rejected; later direct relays landed within the 120-second freshness bound. Relaying the other valid Circle message after the first settlement succeeded as an idempotent coordinator no-op. The optional legacy Reactive pulse is deployed, funded, debt-free, and exactly subscribed; reactiveLive remains false until a public Unichain callback succeeds."
+    "publicOutcomeCount": 3,
+    "notes": "Circle completed three public Pyth-to-CCTP-to-Unichain settlements. Two negative-markout trades returned 100% of their provisional surcharges and were claimed, including one complete browser-wallet lifecycle. A positive-markout trade retained 100% for LP protection with exact reserve solvency. The first published observation became 18 seconds too old during relay simulation and was safely rejected; later direct relays landed within the 120-second freshness bound. Relaying the other valid Circle message after the first settlement succeeded as an idempotent coordinator no-op. The optional legacy Reactive pulse is deployed, funded, debt-free, and exactly subscribed; reactiveLive remains false until a public Unichain callback succeeds."
   }
 }

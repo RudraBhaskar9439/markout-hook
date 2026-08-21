@@ -32,6 +32,20 @@ Fees do not change the gross proxy because every policy receives the same commit
 - Invalid observations fail safely with a full provisional-surcharge rebate, but that also removes incremental LP protection for those trades.
 - All policies receive identical volume because demand elasticity, routing, and fee-sensitive order flow are deliberately excluded. This experiment cannot claim volume growth.
 
+## Trader routing break-even
+
+A trader chooses the best all-in quote, not a fee mechanism in isolation. The table below states the exact execution-price or slippage advantage MARKOUT would need to offset its fee premium against a same-liquidity 30 bps pool. It also reports the fee-only saving against the declared volatility baseline. This is a break-even condition, not a claim that MARKOUT already creates deeper liquidity.
+
+| Flow class | Fixed fee | Volatility fee | MARKOUT fee | Execution advantage needed vs fixed | MARKOUT saving vs volatility per $10k |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Benign | 30.0000 bps | 49.4790 bps | 39.4262 bps | 9.4262 bps | +10.0528 USDC |
+| Informed | 30.0000 bps | 48.0374 bps | 73.0552 bps | 43.0552 bps | -25.0178 USDC |
+| Inventory Improving | 30.0000 bps | 47.4403 bps | 30.0000 bps | 0.0000 bps | +17.4403 USDC |
+
+- On this tape, MARKOUT improves LP net-after-proxy versus fixed by 83.5638% while requiring benign routes to recover a 9.4262 bps fee premium through better execution to beat the fixed pool.
+- Against volatility pricing at equal execution quality, benign flow saves 10.0528 USDC and inventory-improving flow saves 17.4403 USDC per 10,000 USDC of notional.
+- Informed flow pays more by design. Its negative saving is the mechanism's discrimination result, not a trader-acquisition claim.
+
 ## Scenario detail
 
 | Scenario | Policy | Gross proxy | Retained fees | LP net after proxy | Avg effective fee (bps) | Expired |

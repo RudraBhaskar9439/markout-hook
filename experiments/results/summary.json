@@ -531,7 +531,7 @@
     }
   ],
   "experimentId": "markout-phase-6-v1",
-  "generatorVersion": "1.0.0",
+  "generatorVersion": "1.1.0",
   "limitations": [
     "Synthetic seeded flow is a controlled mechanism comparison, not historical backtesting or a forecast.",
     "The adverse-selection proxy approximates value transfer to informed flow; it is not exact LVR or position-level LP PnL.",

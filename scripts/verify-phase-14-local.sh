@@ -22,7 +22,7 @@ jq -e '
   .status == "circle-e2e-complete-reactive-pending"
   and .evidence.circleLive == true
   and .evidence.reactiveLive == false
-  and .evidence.publicOutcomeCount == 2
+  and .evidence.publicOutcomeCount == 3
   and (.ethereumSepolia.observationPublishTx | length == 66)
   and (.ethereumSepolia.adverseObservationPublishTx | length == 66)
   and (.unichainSepolia.circleRelayTx | length == 66)
@@ -34,8 +34,16 @@ jq -e '
   and .unichainSepolia.adverseTrade.settlement.status == "settled"
   and .unichainSepolia.adverseTrade.settlement.retentionBps == 10000
   and .unichainSepolia.adverseTrade.settlement.rebate == "0"
+  and (.unichainSepolia.walletDemoTrade.swapTx | length == 66)
+  and (.unichainSepolia.walletDemoTrade.observationPublishTx | length == 66)
+  and (.unichainSepolia.walletDemoTrade.circleRelayTx | length == 66)
+  and (.unichainSepolia.walletDemoTrade.rebateClaimTx | length == 66)
+  and .unichainSepolia.walletDemoTrade.settlement.status == "settled"
+  and .unichainSepolia.walletDemoTrade.settlement.retentionBps == 0
+  and .unichainSepolia.walletDemoTrade.settlement.rebateClaimed == true
   and .unichainSepolia.sourceToDestinationLatencySeconds < 600
   and .unichainSepolia.adverseTrade.sourceToDestinationLatencySeconds < 600
+  and .unichainSepolia.walletDemoTrade.sourceToDestinationLatencySeconds < 600
 ' deployments/hybrid-2026-08-21.json >/dev/null
 test -x scripts/check-hybrid-networks.sh
 test -x scripts/fetch-pyth-update.sh

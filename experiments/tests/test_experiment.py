@@ -8,7 +8,7 @@ EXPERIMENT_ROOT = Path(__file__).resolve().parents[1]
 if str(EXPERIMENT_ROOT) not in sys.path:
     sys.path.insert(0, str(EXPERIMENT_ROOT))
 
-from markout_experiment.aggregation import summarize_by_flow
+from markout_experiment.aggregation import build_adoption_evidence, summarize_all, summarize_by_flow
 from markout_experiment.model import FlowClass, Policy, ReferenceStatus, Trade
 from markout_experiment.policies import evaluate_trade, markout_retention_bps, quote_fee
 from markout_experiment.prng import SplitMix64
@@ -134,6 +134,28 @@ class ExperimentPipelineTest(unittest.TestCase):
             else:
                 self.assertEqual(outcome.rebate_quote_micro, quote_fee(outcome.trade.notional_quote_micro, 5000))
                 self.assertEqual(outcome.expired_settlements, 1)
+
+    def test_adoption_evidence_quantifies_fee_only_route_break_even(self) -> None:
+        evidence = build_adoption_evidence(summarize_by_flow(self.outcomes), summarize_all(self.outcomes))
+        by_flow = {row["flow_class"]: row for row in evidence["byFlowClass"]}
+
+        self.assertEqual(
+            format(by_flow["benign"]["execution_advantage_needed_vs_fixed_bps"], ".4f"),
+            "9.4262",
+        )
+        self.assertEqual(
+            format(by_flow["benign"]["fee_saving_vs_volatility_bps"], ".4f"),
+            "10.0528",
+        )
+        self.assertEqual(
+            format(by_flow["inventory_improving"]["execution_advantage_needed_vs_fixed_bps"], ".4f"),
+            "0.0000",
+        )
+        self.assertLess(by_flow["informed"]["fee_saving_vs_volatility_bps"], 0)
+        self.assertEqual(
+            format(evidence["aggregate"]["lp_net_improvement_vs_fixed_percent"], ".4f"),
+            "83.5638",
+        )
 
 
 if __name__ == "__main__":

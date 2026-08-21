@@ -12,6 +12,8 @@ POLICY_COLORS = {
     "markout": "#6366f1",
     "rebate": "#22c55e",
     "protection": "#ec4899",
+    "needed_vs_fixed": "#ff8e74",
+    "saved_vs_volatility": "#82b9ff",
 }
 
 

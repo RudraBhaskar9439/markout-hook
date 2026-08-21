@@ -56,6 +56,11 @@ delivery handled as an idempotent no-op. A second public trade proves the opposi
 Circle relay settled positive markout and retained all `3,214,110,616,342` test-WETH base units for LP protection,
 with the hook's reserve, accounted balance, and actual balance equal.
 
+A third browser-wallet lifecycle independently reproduced the rebate branch: the real v4 swap, Pyth publication,
+67-second Circle relay, −266.96 bps settlement, and rebate claim all mined publicly. The observation was 92 seconds
+old at settlement, inside the 120-second freshness bound. This raises the recorded public lifecycle count to three
+without changing the two demonstrated economic extremes.
+
 With reliable Ethereum Sepolia and Unichain Sepolia endpoints configured, revalidate every recorded transaction,
 deployed contract, settled trade value, and zero post-claim balance directly from both chains:
 
@@ -65,7 +70,8 @@ deployed contract, settled trade value, and zero post-claim balance directly fro
 
 ## GO / NO-GO
 
-**GO** for the public Circle-settlement claim: the dated manifest records both swaps, observations, 38/67-second
-relays, opposite settlement branches, rebate claim, LP reserve reconciliation, and idempotent duplicate delivery.
+**GO** for the public Circle-settlement claim: the dated manifest records three swaps and complete observation paths,
+38/67/67-second relays, opposite settlement branches, two rebate claims, LP reserve reconciliation, and idempotent
+duplicate delivery.
 **NO-GO** for a public Reactive-delivery claim until a callback is visible on Unichain, and for final form submission
 until the project owner supplies the remaining details.

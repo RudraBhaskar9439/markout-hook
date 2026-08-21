@@ -27,7 +27,7 @@ repository fills or submits the form.
 **Tags:** `MEV Protection`, `Sustainable Liquidity`, `Fee Rebates`, `Dynamic Fees`, `LP Protection`,
 `Adverse Selection`, `Cross-chain Messaging`, `Oracle`, `Uniswap v4`
 
-**Thumbnail:** Upload `web/public/og.png` (1200 × 630).
+**Thumbnail:** Upload `web/public/og-evidence-v2.png` (1200 × 630).
 
 **One sentence:** MARKOUT is a Uniswap v4 hook that collects a bounded provisional surcharge and allocates it only
 after a delayed, authenticated price observation reveals whether the trade was adverse or beneficial to liquidity
@@ -43,18 +43,20 @@ Sepolia to Unichain Sepolia. An optional stateless Reactive contract can mirror 
 immutable coordinator ensures the first valid delivery wins and later duplicates are harmless. If no valid observation
 arrives, permissionless expiry returns the full surcharge.
 
-Two public trades now prove both allocation extremes. A negative-markout trade settled through Circle in 38 seconds
+Three public trades now prove both allocation extremes and independently reproduce the rebate branch through the
+browser wallet console. A negative-markout trade settled through Circle in 38 seconds
 with a 46-second-old Pyth observation, returned all 622 test-USDC base units to the trader, and was claimed publicly.
 A positive-markout trade settled through Circle in 67 seconds with a 96-second-old observation and retained all
-3,214,110,616,342 test-WETH base units in the LP-protection reserve. In both cases, onchain balances exactly match the
-accounting state.
+3,214,110,616,342 test-WETH base units in the LP-protection reserve. The wallet-console trade then settled −266.96
+bps markout through a second 67-second Circle relay and claimed its full 2,041,420,186,161-unit test-WETH rebate.
+Onchain balances match the accounting state.
 
 ## Partner integration answer
 
 Select **Reactive Network**, **Circle**, and **Pyth** if those names are present in the form's partner picker.
 
 MARKOUT uses Pyth to verify and normalize a signed delayed reference observation on Ethereum Sepolia. Circle CCTP V2
-generic messaging is the primary authenticated transport to Unichain Sepolia and has completed two public swap →
+generic messaging is the primary authenticated transport to Unichain Sepolia and has completed three public swap →
 observation → attestation → settlement lifecycles. A funded legacy Reactive Network pulse is deployed and exactly
 subscribed to the same publisher event as an optional second transport; because no public destination callback has
 been observed, MARKOUT does not claim that Reactive delivery is live.
@@ -77,7 +79,9 @@ invalid or missing observations fail open to a full rebate after expiry; and two
 without changing the first terminal outcome. On one reproducible 768-trade tape, MARKOUT improves modeled LP
 net-after-proxy by 3,249.79 USDC versus a fixed fee while charging benign and inventory-improving flow less than a
 volatility-only policy. The documented regression is that volatility earns 454.75 USDC more overall by charging good
-flow more.
+flow more. The trader break-even is explicit: benign MARKOUT routes need at least 9.4262 bps better execution to beat
+an otherwise identical fixed 30 bps pool, while they save 10.0528 USDC per 10,000 USDC versus the declared volatility
+policy at equal execution quality. Incremental liquidity is a hypothesis, not a claimed result.
 
 ### Challenges
 
@@ -105,7 +109,11 @@ of being hidden.
 - One seeded 768-trade experiment shared by fixed, volatility, and MARKOUT policies.
 - MARKOUT improves modeled LP net-after-proxy by 3,249.79 USDC versus the fixed policy.
 - MARKOUT trails the volatility policy by 454.75 USDC overall because volatility charges good flow more.
-- Two public Circle settlements demonstrate both terminal economic branches: 100% rebate and 100% LP retention.
+- The LP net-after-proxy improvement versus fixed is 83.5638% on the declared tape.
+- Benign flow saves 10.0528 USDC per 10,000 USDC versus volatility but needs 9.4262 bps better execution to beat the
+  fixed 30 bps pool.
+- Three public Circle settlements demonstrate both terminal economic branches and reproduce the wallet-console rebate
+  flow: two 100% rebates and one 100% LP retention.
 
 ## Public deployment
 
@@ -118,6 +126,10 @@ of being hidden.
 | Protection-branch Uniswap v4 swap | https://sepolia.uniscan.xyz/tx/0xb6179eab5dcf9ff2f3563442dbf826fe5fcb86524e9d71aa913c9ba9e90a2376 |
 | Protection-branch Pyth publication | https://sepolia.etherscan.io/tx/0x9d20a2a8bfc5c7dd654608a9214472ff3ed37cbdff4614064aff28805f9f8861 |
 | Protection-branch Circle settlement | https://sepolia.uniscan.xyz/tx/0xefeece5de9f78ae809652418e1fcd8fb592de950af64e6bbbf66df93bdc25eae |
+| Wallet-console v4 swap | https://sepolia.uniscan.xyz/tx/0x889ea958d19574572890a5ae5a5890c7a8d31f94ebfbe9d065b58d884c1f739a |
+| Wallet-console Pyth publication | https://sepolia.etherscan.io/tx/0x2465cd2f4e2299a1898f45d0634fc2fd87ae2412de615504fc0125d9ed204e42 |
+| Wallet-console Circle settlement | https://sepolia.uniscan.xyz/tx/0x81f7878312b81b80ba69ad8fdc0f4e06f64f8624ed610ebd5a6ea63cca0ca610 |
+| Wallet-console rebate claim | https://sepolia.uniscan.xyz/tx/0xd78f8533519c4468ac345f0caad52a8eb5c57ee904fc5882eb9066ee16b1b9d8 |
 | Hosted judge dashboard | https://markout-uhi10.rbrudra9439.chatgpt.site |
 | GitHub repository | https://github.com/RudraBhaskar9439/markout-hook |
 
@@ -140,8 +152,8 @@ The final form requires the GitHub repository to be public before its confirmati
 2. Replay benign, informed, and inventory-improving outcomes in the dashboard.
 3. Show the seeded comparison and accounting-conservation evidence.
 4. Explain Circle-primary, Reactive-optional delivery and fail-open expiry.
-5. Open the two Pyth publications and two Circle settlements, then show the rebate claim.
-6. Close with the measured 38/67-second public lifecycles and both demonstrated allocation extremes: 100% rebated
+5. Open the three Pyth/Circle lifecycle records, including the wallet-console rebate claim.
+6. Close with the measured 38/67/67-second public lifecycles and both demonstrated allocation extremes: 100% rebated
    and 100% retained for LP protection.
 
 ## Honest limitations

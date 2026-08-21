@@ -60,10 +60,12 @@ delivery wins; duplicate delivery is harmless; and if infrastructure fails, anyo
 receives the full surcharge back. MARKOUT turns LP protection from a fear-based prediction into outcome-based
 settlement.”
 
-Finish on the two public Circle outcomes. The first used a 46-second-old observation, settled in 38 seconds, and
+Finish on the three public Circle lifecycles. The first used a 46-second-old observation, settled in 38 seconds, and
 returned 100% of the provisional surcharge. The second used a 96-second-old observation, settled in 67 seconds, and
-retained 100% of its escrow for LP protection. Open both settlement transactions and show that onchain balances match
-the named accounting buckets. Show Reactive separately only if a public destination callback exists.
+retained 100% of its escrow for LP protection. The wallet-console lifecycle independently reproduced the rebate branch
+with a 92-second-old observation and a 67-second relay, then claimed the refund. Open the transactions and show that
+onchain balances match the named accounting buckets. Show Reactive separately only if a public destination callback
+exists.
 
 ## Failure-safe fallback
 
