@@ -16,6 +16,14 @@
       "observedAt": 1787307424,
       "confidenceBps": 9997,
       "sourceBlockTimestamp": 1787307432
+    },
+    "adverseObservationPublishTx": "0x9d20a2a8bfc5c7dd654608a9214472ff3ed37cbdff4614064aff28805f9f8861",
+    "adverseSettlingObservation": {
+      "priceX18": "2371249281850000000000",
+      "observedAt": 1787312803,
+      "confidenceBps": 9996,
+      "sourceBlockNumber": 11535815,
+      "sourceBlockTimestamp": 1787312832
     }
   },
   "unichainSepolia": {
@@ -57,7 +65,34 @@
     },
     "relayBlockTimestamp": 1787307470,
     "sourceToDestinationLatencySeconds": 38,
-    "observationAgeAtSettlementSeconds": 46
+    "observationAgeAtSettlementSeconds": 46,
+    "adverseTrade": {
+      "swapApprovalTx": "0x3461b2be2d366a49437957c2b010e3dbcf2591907621faaa1668a12708f80e13",
+      "swapTx": "0xb6179eab5dcf9ff2f3563442dbf826fe5fcb86524e9d71aa913c9ba9e90a2376",
+      "tradeId": "0x7503f50f91b7077fb0d1932959dee73d880e870998a005b43051ecbdf1c0c8c2",
+      "executionPriceX18": "1555640298929475595033",
+      "escrowCurrency": "0x4200000000000000000000000000000000000006",
+      "escrowedSurcharge": "3214110616342",
+      "executedAt": 1787312494,
+      "maturityTimestamp": 1787312794,
+      "expiryTimestamp": 1787313394,
+      "circleRelayTx": "0xefeece5de9f78ae809652418e1fcd8fb592de950af64e6bbbf66df93bdc25eae",
+      "relayBlockNumber": 60460471,
+      "relayBlockTimestamp": 1787312899,
+      "sourceToDestinationLatencySeconds": 67,
+      "observationAgeAtSettlementSeconds": 96,
+      "settlement": {
+        "status": "settled",
+        "markoutWad": "524291498157891158",
+        "referencePriceX18": "2371249281850000000000",
+        "retainedSurcharge": "3214110616342",
+        "rebate": "0",
+        "retentionBps": 10000,
+        "lpProtectionReserve": "3214110616342",
+        "currencyAccountedBalance": "3214110616342",
+        "currencyActualBalance": "3214110616342"
+      }
+    }
   },
   "reactiveLasnaLegacy": {
     "pulse": "0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e",
@@ -73,12 +108,16 @@
     "circleRelay": "https://sepolia.uniscan.xyz/tx/0xa64789b5a08ea8aae8c2b909b6a81b495334b707eaae12610bf3749902ec532f",
     "duplicateCircleRelay": "https://sepolia.uniscan.xyz/tx/0x06ef5334210274dd451b5465f34d108d1714cf5536ee9ae1998193450114fa76",
     "rebateClaim": "https://sepolia.uniscan.xyz/tx/0xa6ded637a8c9651f252e302f7cedec2969d637f733777f7f2ad71ac700d64630",
+    "adverseSwap": "https://sepolia.uniscan.xyz/tx/0xb6179eab5dcf9ff2f3563442dbf826fe5fcb86524e9d71aa913c9ba9e90a2376",
+    "adverseObservation": "https://sepolia.etherscan.io/tx/0x9d20a2a8bfc5c7dd654608a9214472ff3ed37cbdff4614064aff28805f9f8861",
+    "adverseCircleRelay": "https://sepolia.uniscan.xyz/tx/0xefeece5de9f78ae809652418e1fcd8fb592de950af64e6bbbf66df93bdc25eae",
     "reactivePulse": "https://lasna.reactscan.net/address/0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e",
     "reactivePulseDeployment": "https://lasna.reactscan.net/tx/0xdd2af7d35c3f73aa4d667631ff6062053636e6c098e16cfb620205e3481164c6"
   },
   "evidence": {
     "circleLive": true,
     "reactiveLive": false,
-    "notes": "Circle completed a public Pyth-to-CCTP-to-Unichain settlement and rebate claim. The first published observation became 18 seconds too old during relay simulation and was safely rejected; the second was relayed directly within the 120-second freshness bound. Relaying the other valid Circle message after settlement succeeded as an idempotent coordinator no-op. The optional legacy Reactive pulse is deployed, funded, debt-free, and exactly subscribed; reactiveLive remains false until a public Unichain callback succeeds."
+    "publicOutcomeCount": 2,
+    "notes": "Circle completed two public Pyth-to-CCTP-to-Unichain settlements covering both economic extremes: a negative-markout trade returned 100% of its provisional surcharge and was claimed, while a positive-markout trade retained 100% for LP protection with exact reserve solvency. The first published observation became 18 seconds too old during relay simulation and was safely rejected; later direct relays landed within the 120-second freshness bound. Relaying the other valid Circle message after the first settlement succeeded as an idempotent coordinator no-op. The optional legacy Reactive pulse is deployed, funded, debt-free, and exactly subscribed; reactiveLive remains false until a public Unichain callback succeeds."
   }
 }

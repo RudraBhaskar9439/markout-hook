@@ -1,7 +1,8 @@
 # Phase 9 Draft Verification Guide
 
-The draft gate verifies every final-submission artifact that can be completed without public settlement evidence,
-owner identity fields, visibility changes, or final-form submission.
+The draft gate verifies the final-submission package, including the explorer-backed Circle settlement now recorded in
+the dated deployment manifest. Owner identity fields, visibility changes, the uploaded video, and final-form
+submission remain outside this local gate.
 
 ## Automated gate
 
@@ -21,12 +22,12 @@ overflow checker must report zero out-of-bounds elements before the deck is comm
 
 ## Exact boundary
 
-Passing this checkpoint supports narrative review and rehearsal. It does not satisfy the final roadmap phase. The
-following still require external or owner state: one complete Circle-attested settlement and claim, final explorer
-links, optional Reactive callback proof, the final video, owner form details, repository/site visibility decisions,
-and form submission.
+Passing this checkpoint supports narrative review, rehearsal, and the public Circle-settlement claim. The required
+Circle settlement, claim, duplicate-delivery proof, and explorer links are complete. The following still require
+external or owner state: optional Reactive callback proof, the final uploaded video, owner form details,
+repository/site visibility decisions, logged-out link checks, and form submission.
 
 ## GO / NO-GO
 
-**GO** for teammate review, private judge-app review, rehearsal, and live-evidence integration. **NO-GO** for the
-`uhi10-final` tag, final form submission, public settlement claims, or access changes.
+**GO** for teammate review, private judge-app review, rehearsal, and public Circle-settlement claims. **NO-GO** for
+the `uhi10-final` tag, final form submission, public Reactive-delivery claims, or access changes.

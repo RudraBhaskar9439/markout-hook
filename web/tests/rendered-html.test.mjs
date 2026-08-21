@@ -40,10 +40,12 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
   assert.match(html, /Same market\. Different information\./);
   assert.match(html, /Outcome → observation → settlement/);
   assert.match(html, /The honest regression/);
-  assert.match(html, /Circle settled MARKOUT in 38 seconds/);
-  assert.match(html, /surcharge rebated/);
-  assert.match(html, /Public Circle settlement proven/);
+  assert.match(html, /Two trades\. Two opposite settlements\./);
+  assert.match(html, /100%<\/b> rebated · 38s relay/);
+  assert.match(html, /100%<\/b> retained · 67s relay/);
+  assert.match(html, /Two public Circle outcomes proven/);
   assert.match(html, /0xa64789b5a08ea8aae8c2b909b6a81b495334b707eaae12610bf3749902ec532f/);
+  assert.match(html, /0xefeece5de9f78ae809652418e1fcd8fb592de950af64e6bbbf66df93bdc25eae/);
   assert.match(html, /One outcome\. Two transport paths\./);
   assert.match(html, /aria-label="MARKOUT settlement receipt"/);
   assert.match(html, /aria-label="Choose an order-flow outcome"/);

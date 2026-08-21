@@ -9,8 +9,8 @@ engineering proof, and the completed public Circle lifecycle.
 - Every quantitative value comes from the committed Phase 6 trade tape and generated reports.
 - The deck calls the loss metric a post-trade adverse-selection proxy, not exact LVR or individual LP PnL.
 - The volatility-policy regression is visible rather than hidden.
-- The final slide records the public Circle settlement and rebate claim: 38-second source-to-destination latency,
-  46-second observation age, and a 100% rebate for the demonstrated negative-markout trade.
+- The final slide records the negative-markout Circle outcome: 38-second source-to-destination latency, 46-second
+  observation age, and a 100% rebate. The supporting submission package records the later positive-markout outcome.
 - Reactive is presented as optional and receives live credit only when a public destination callback exists.
 - Speaker notes contain a `[Sources]` block on every slide.
 

@@ -22,10 +22,11 @@ grep -q 'Two transport paths; one immutable settlement boundary.' <<<"$slide_xml
 grep -q 'Public v4 trade settled through Circle in 38 seconds.' <<<"$slide_xml"
 grep -q 'CIRCLE SETTLED · 38 SEC' <<<"$slide_xml"
 grep -q '100% REBATED' <<<"$slide_xml"
-grep -q '>212<' <<<"$slide_xml"
+grep -q '>186<' <<<"$slide_xml"
 
 grep -q '^```mermaid$' README.md
 grep -q '^# MARKOUT Judge Demo Script$' docs/DEMO_SCRIPT.md
+grep -q '^# MARKOUT Final Submission Draft$' docs/FINAL_SUBMISSION.md
 grep -q '^# UHI10 Final Submission Checklist$' docs/SUBMISSION_CHECKLIST.md
 grep -q '^# MARKOUT UHI10 Presentation$' presentation/README.md
 git diff --check

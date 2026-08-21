@@ -6,8 +6,11 @@ Cloudflare Worker-compatible React application built with vinext and the Sites V
 ## Product boundary
 
 - The comparison values come from the committed Phase 6 deterministic experiment.
-- The event timeline demonstrates the already-tested local Reactive lifecycle.
-- The interface explicitly labels the missing public Lasna proof instead of manufacturing explorer links.
+- The event timeline demonstrates the tested outcome-to-settlement lifecycle without simulating live network state.
+- The interface links the public Pyth publication, Circle settlement, and claimed rebate from the dated manifest.
+- The public evidence contrasts both allocation extremes: 100% rebated after negative markout and 100% retained for LP
+  protection after positive markout.
+- Reactive remains visibly optional and is not labeled live without a public destination callback.
 - There is no wallet, persistent database, authentication surface, upload surface, or secret in this application.
 
 ## Local use

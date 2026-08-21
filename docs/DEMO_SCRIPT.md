@@ -60,8 +60,10 @@ delivery wins; duplicate delivery is harmless; and if infrastructure fails, anyo
 receives the full surcharge back. MARKOUT turns LP protection from a fear-based prediction into outcome-based
 settlement.”
 
-Finish on the public Circle publication, 38-second attestation lifecycle, 46-second observation age, settlement, and
-100% surcharge rebate claim. Show Reactive separately only if a public destination callback exists.
+Finish on the two public Circle outcomes. The first used a 46-second-old observation, settled in 38 seconds, and
+returned 100% of the provisional surcharge. The second used a 96-second-old observation, settled in 67 seconds, and
+retained 100% of its escrow for LP protection. Open both settlement transactions and show that onchain balances match
+the named accounting buckets. Show Reactive separately only if a public destination callback exists.
 
 ## Failure-safe fallback
 

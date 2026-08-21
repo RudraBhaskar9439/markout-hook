@@ -493,8 +493,9 @@ Produce explorer-backed Circle evidence first, then add Reactive evidence only i
 - Judge dashboard, demo script, submission checklist, and rendered deck revised around the hybrid boundary
 
 Local automation and the required public Circle path are complete. The dated evidence manifest records the deployed
-topology, real swap, Pyth publication, Circle relay, terminal settlement, and claimed rebate. Final submission assets
-and repository/site visibility remain owner-controlled gates.
+topology and two real swaps whose Pyth/Circle settlements prove both allocation extremes: a complete trader rebate
+and complete LP-protection retention. Final submission assets and repository/site visibility remain owner-controlled
+gates.
 
 ### Verification gate
 

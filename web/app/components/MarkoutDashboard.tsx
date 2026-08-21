@@ -247,7 +247,7 @@ function SettlementTimeline({ selected }: { selected: FlowId }) {
         <span className="proof-arrow">→</span>
         <span>Authenticated delivery</span>
         <span className="proof-arrow">→</span>
-        <span>Rebate claim</span>
+        <span>Allocation finalized</span>
       </div>
     </section>
   );
@@ -266,24 +266,27 @@ function ResearchEvidence() {
         </p>
       </div>
 
-      <div className="live-proof-card" aria-label="Public Circle settlement evidence">
+      <div className="live-proof-card" aria-label="Two public Circle settlement outcomes">
         <div>
           <p className="kicker">Public testnet proof</p>
-          <strong>Circle settled MARKOUT in 38 seconds.</strong>
+          <strong>Two trades. Two opposite settlements.</strong>
           <p>
-            A real Unichain v4 swap matured, received a Pyth-verified observation, settled through Circle CCTP V2,
-            and returned the complete provisional surcharge for negative markout.
+            Circle delivered Pyth observations for two real Unichain v4 swaps: negative markout returned the complete
+            provisional surcharge, while positive markout retained the complete escrow for LP protection.
           </p>
         </div>
         <div className="live-proof-metrics">
-          <span><b>46s</b> observation age</span>
-          <span><b>100%</b> surcharge rebated</span>
-          <span><b>0</b> retained from good flow</span>
+          <span><b>100%</b> rebated · 38s relay</span>
+          <span><b>100%</b> retained · 67s relay</span>
+          <span><b>46/96s</b> observation ages</span>
         </div>
         <div className="live-proof-links">
-          <a href="https://sepolia.etherscan.io/tx/0xed6af5c42e554c221078110d6db03fba8fd74bf24a88cf52494d4e605a31f6ca" target="_blank" rel="noreferrer">Pyth observation ↗</a>
-          <a href="https://sepolia.uniscan.xyz/tx/0xa64789b5a08ea8aae8c2b909b6a81b495334b707eaae12610bf3749902ec532f" target="_blank" rel="noreferrer">Circle settlement ↗</a>
+          <a href="https://sepolia.etherscan.io/tx/0xed6af5c42e554c221078110d6db03fba8fd74bf24a88cf52494d4e605a31f6ca" target="_blank" rel="noreferrer">Rebate observation ↗</a>
+          <a href="https://sepolia.uniscan.xyz/tx/0xa64789b5a08ea8aae8c2b909b6a81b495334b707eaae12610bf3749902ec532f" target="_blank" rel="noreferrer">Rebate settlement ↗</a>
           <a href="https://sepolia.uniscan.xyz/tx/0xa6ded637a8c9651f252e302f7cedec2969d637f733777f7f2ad71ac700d64630" target="_blank" rel="noreferrer">Rebate claim ↗</a>
+          <a href="https://sepolia.uniscan.xyz/tx/0xb6179eab5dcf9ff2f3563442dbf826fe5fcb86524e9d71aa913c9ba9e90a2376" target="_blank" rel="noreferrer">Protection swap ↗</a>
+          <a href="https://sepolia.etherscan.io/tx/0x9d20a2a8bfc5c7dd654608a9214472ff3ed37cbdff4614064aff28805f9f8861" target="_blank" rel="noreferrer">Protection observation ↗</a>
+          <a href="https://sepolia.uniscan.xyz/tx/0xefeece5de9f78ae809652418e1fcd8fb592de950af64e6bbbf66df93bdc25eae" target="_blank" rel="noreferrer">Protection settlement ↗</a>
         </div>
       </div>
 
@@ -418,7 +421,7 @@ export function MarkoutDashboard() {
           <p>Outcome-priced liquidity for Uniswap v4.</p>
         </div>
         <div className="footer-status">
-          <span><i className="status-green" /> Public Circle settlement proven</span>
+          <span><i className="status-green" /> Two public Circle outcomes proven</span>
           <span><i className="status-amber" /> Reactive callback not yet observed</span>
         </div>
         <p className="footer-note">Experimental UHI10 prototype · Not audited · No real funds</p>

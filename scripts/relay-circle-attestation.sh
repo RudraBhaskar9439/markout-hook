@@ -34,7 +34,7 @@ if [[ "$destination" != "10" ]]; then
   exit 1
 fi
 
-version="$(jq -er '.messages[0].version' <<<"$response")"
+version="$(jq -er '.messages[0].cctpVersion // .messages[0].version' <<<"$response")"
 if [[ "$version" != "2" ]]; then
   printf 'Unexpected Circle message version: expected 2, received %s.\n' "$version" >&2
   exit 1

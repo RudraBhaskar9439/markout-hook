@@ -26,6 +26,8 @@ on public testnets. The final release remains blocked only on the owner-controll
 - [x] Confirm the trade settled and claim the rebate
 - [x] Record publication, Circle relay, settlement, claim, and explorer links in a dated manifest
 - [x] Measure end-to-end attestation latency against the ten-minute settlement window (38 seconds)
+- [x] Execute and settle a second trade proving the opposite branch: 100% retained for LP protection in 67 seconds
+- [x] Reconcile claimable rebate, LP reserve, accounted balance, and actual token balance for both public outcomes
 
 ## Optional Reactive sponsor evidence
 
@@ -40,12 +42,16 @@ the primary path, and permissionless expiry returns the complete provisional sur
 ## Submission details requiring the project owner
 
 - [ ] Confirm the MARKOUT Project ID from the UHI idea-submission email
-- [ ] Confirm preferred name, UHI email, Discord handle, and final team list
-- [ ] Confirm the official presentation time limit
-- [ ] Decide whether the private GitHub repository must become public for judging
+- [ ] Confirm UHI email, every team member's X handle, original cohort, and final team list
+- [ ] Confirm the official presentation time limit through UHI email or Discord; it is not stated on the public form
+- [ ] Explicitly authorize making the private GitHub repository public; the final form requires a public repository
 - [ ] Decide whether the hosted dashboard may become public or needs a judge allowlist
-- [ ] Record and upload the final hybrid demo after public evidence exists
-- [ ] Update the deck and dashboard with verified links only
+- [ ] Record and upload the required final hybrid demo
+- [x] Update the deck and dashboard with verified links only
+- [x] Prepare a copy-ready final submission draft with public evidence and honest limitations
+- [x] Prepare the required 1200 × 630 project thumbnail at `web/public/og.png`
+- [x] Verify the required explorer URLs return successfully without authentication
+- [ ] Verify the repository, dashboard, deck, and video links from a logged-out browser after access is configured
 - [ ] Submit the final form before September 3, 2026 at 11:59 PM Pacific Time
 
 Repository or site access must never be broadened automatically. Visibility changes require explicit owner approval.

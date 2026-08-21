@@ -50,6 +50,7 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 - [Phase 8 judge application](web/README.md)
 - [Phase 8 verification guide](docs/PHASE_8_VERIFICATION.md)
 - [Judge demo script](docs/DEMO_SCRIPT.md)
+- [Copy-ready final submission](docs/FINAL_SUBMISSION.md)
 - [Final submission checklist](docs/SUBMISSION_CHECKLIST.md)
 - [Phase 9 draft verification guide](docs/PHASE_9_DRAFT_VERIFICATION.md)
 - [Hybrid settlement architecture](docs/HYBRID_SETTLEMENT.md)
@@ -162,7 +163,8 @@ tests, exact social-card dimensions, and a production-dependency audit. Run `./s
 one-command local demo, then open `http://localhost:3000`.
 
 The Phase 9 command validates the submission package and the nine-slide PowerPoint archive. The final deck records the
-explorer-backed Circle settlement and claim while keeping the unobserved Reactive callback explicitly optional.
+explorer-backed rebate outcome; the supporting submission package also records the later full-LP-retention outcome.
+Both keep the unobserved Reactive callback explicitly optional.
 
 ## Security status
 
