@@ -162,9 +162,9 @@ The Phase 8 command adds the Cloudflare-compatible judge application: lint, prod
 tests, exact social-card dimensions, and a production-dependency audit. Run `./scripts/run-phase-8-demo.sh` for the
 one-command local demo, then open `http://localhost:3000`.
 
-The Phase 9 command validates the submission package and the nine-slide PowerPoint archive. The final deck records the
-explorer-backed rebate outcome; the supporting submission package also records the later full-LP-retention outcome.
-Both keep the unobserved Reactive callback explicitly optional.
+The Phase 9 command validates the submission package and the nine-slide PowerPoint archive. The final deck records
+explorer-backed Circle settlements for both full-rebate and full-LP-retention outcomes while keeping the unobserved
+Reactive callback explicitly optional.
 
 ## Security status
 
