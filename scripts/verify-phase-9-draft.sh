@@ -19,7 +19,9 @@ test "$source_block_count" -eq 9
 
 slide_xml="$(unzip -p "$pptx" 'ppt/slides/slide*.xml' | tr -d '\n')"
 grep -q 'Two transport paths; one immutable settlement boundary.' <<<"$slide_xml"
-grep -q 'Final gate: public Circle settlement + claim' <<<"$slide_xml"
+grep -q 'Public v4 trade settled through Circle in 38 seconds.' <<<"$slide_xml"
+grep -q 'CIRCLE SETTLED · 38 SEC' <<<"$slide_xml"
+grep -q '100% REBATED' <<<"$slide_xml"
 grep -q '>212<' <<<"$slide_xml"
 
 grep -q '^```mermaid$' README.md
@@ -28,4 +30,4 @@ grep -q '^# UHI10 Final Submission Checklist$' docs/SUBMISSION_CHECKLIST.md
 grep -q '^# MARKOUT UHI10 Presentation$' presentation/README.md
 git diff --check
 
-printf 'Phase 9 token-independent draft verification passed.\n'
+printf 'Phase 9 submission-package verification passed.\n'

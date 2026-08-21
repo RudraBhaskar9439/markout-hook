@@ -161,8 +161,8 @@ The Phase 8 command adds the Cloudflare-compatible judge application: lint, prod
 tests, exact social-card dimensions, and a production-dependency audit. Run `./scripts/run-phase-8-demo.sh` for the
 one-command local demo, then open `http://localhost:3000`.
 
-The Phase 9 draft command validates the token-independent submission package and the nine-slide PowerPoint archive.
-It intentionally does not create the final release tag or claim that public Circle or Reactive evidence exists.
+The Phase 9 command validates the submission package and the nine-slide PowerPoint archive. The final deck records the
+explorer-backed Circle settlement and claim while keeping the unobserved Reactive callback explicitly optional.
 
 ## Security status
 

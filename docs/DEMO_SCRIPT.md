@@ -9,8 +9,8 @@ different final charges once their outcomes are known.
 ./scripts/run-phase-8-demo.sh
 ```
 
-Open `http://localhost:3000`, keep benign flow selected, and reset the five-step timeline. Keep the verified Sepolia,
-Circle, and Unichain explorer transactions open in a second tab once they exist.
+Open `http://localhost:3000`, keep benign flow selected, and reset the five-step timeline. Keep the committed Sepolia,
+Circle, and Unichain explorer transactions from `deployments/hybrid-2026-08-21.json` open in a second tab.
 
 ## Core narrative — approximately four minutes
 
@@ -60,8 +60,8 @@ delivery wins; duplicate delivery is harmless; and if infrastructure fails, anyo
 receives the full surcharge back. MARKOUT turns LP protection from a fear-based prediction into outcome-based
 settlement.”
 
-Finish on the public Circle publication, attestation relay, settlement, and claim. Show Reactive separately only if a
-public destination callback exists.
+Finish on the public Circle publication, 38-second attestation lifecycle, 46-second observation age, settlement, and
+100% surcharge rebate claim. Show Reactive separately only if a public destination callback exists.
 
 ## Failure-safe fallback
 

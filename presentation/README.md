@@ -2,14 +2,15 @@
 
 `MARKOUT-UHI10.pptx` is the nine-slide judge deck for the hybrid release candidate. Its narrative moves from the
 fee-classification gap through mechanism, deterministic evidence, Circle-primary/Reactive-optional architecture,
-engineering proof, and the exact remaining public gate.
+engineering proof, and the completed public Circle lifecycle.
 
 ## Evidence policy
 
 - Every quantitative value comes from the committed Phase 6 trade tape and generated reports.
 - The deck calls the loss metric a post-trade adverse-selection proxy, not exact LVR or individual LP PnL.
 - The volatility-policy regression is visible rather than hidden.
-- The final slide requires a public Circle settlement and rebate claim.
+- The final slide records the public Circle settlement and rebate claim: 38-second source-to-destination latency,
+  46-second observation age, and a 100% rebate for the demonstrated negative-markout trade.
 - Reactive is presented as optional and receives live credit only when a public destination callback exists.
 - Speaker notes contain a `[Sources]` block on every slide.
 
@@ -19,4 +20,4 @@ The final PowerPoint was imported from the approved nine-slide design, edited in
 passed both template-fidelity and overflow checks with zero issues. Connector direction, chart legibility, numeric
 wrapping, speaker-note source blocks, inherited theme preservation, and footer consistency were reviewed.
 
-Do not replace the remaining-gate copy or create the final release tag until real explorer-backed Circle traces exist.
+Reactive remains explicitly optional and must not be presented as live until a public destination callback exists.
