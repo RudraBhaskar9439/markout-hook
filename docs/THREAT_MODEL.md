@@ -1,11 +1,12 @@
 # MARKOUT Threat Model
 
-Status: Phase 7 internal engineering threat model. MARKOUT is not audited and is not approved for real funds.
+Status: Phase 13 hybrid-transport engineering threat model. MARKOUT is not audited and is not approved for real funds.
 
 ## Scope and assets
 
-The scope is the Uniswap v4 hook, surcharge custody, trade lifecycle, reference sampler, Reactive scheduler, settlement
-adapters, and trader rebate claim path. The assets and properties being protected are:
+The active scope is the Uniswap v4 hook, surcharge custody, trade lifecycle, Pyth publisher, Circle and optional
+Reactive receivers, immutable settlement coordinator, and trader rebate claim path. The previous Reactive scheduler
+and same-chain sampler remain research artifacts rather than the active deployment topology. Protected properties are:
 
 - pending provisional surcharges;
 - claimable trader rebates;
@@ -23,11 +24,11 @@ security of external Uniswap or Reactive deployments are not proven by this repo
 | --- | --- | --- |
 | Uniswap v4 PoolManager | Immutable pinned protocol dependency and only hook-callback caller | Delivers swaps and transfers the return-delta surcharge |
 | Trader/router/claim recipient | Fully untrusted | Chooses bounded maximum surcharge, beneficiary, and final claim recipient |
-| Reactive system service | Trusted log-delivery transport | Sole caller of `react`; cannot directly settle destination custody |
-| Callback proxy | Trusted callback transport and gas-payment vendor | Must also provide the immutable Reactive identity |
-| Reactive identity | Immutable application identity | Required together with callback-proxy sender |
-| Three v3 reference pools | Economically untrusted inputs | Supply spot prices; median, liquidity, dispersion, time, and confidence checks bound but do not eliminate manipulation |
-| Settlement adapter | Immutable, one-time-bound boundary | Sole hook settlement authority; cannot change beneficiary or escrow amount |
+| Pyth Core | Trusted signed price source | Supplies price, confidence interval, exponent, and publish time to the permissionless publisher |
+| Circle CCTP V2 | Primary authenticated message transport | Attests the publisher's message; cannot bypass hook validation or select a beneficiary |
+| Circle publisher caller | Fully untrusted | Supplies signed Pyth update bytes, exact fee, and trade id; cannot directly choose a price |
+| Reactive system and callback proxy | Optional log and callback transport | May mirror the publisher event; must also provide the immutable Reactive identity |
+| Settlement coordinator | Immutable multi-transport boundary | Sole hook settlement authority; first valid authorized delivery wins |
 | Any public address | Untrusted | May expire a trade only after grace and may claim only its own credit |
 
 There is no upgrade administrator, pause administrator, escrow owner, or arbitrary reserve withdrawer.
@@ -41,7 +42,7 @@ There is no upgrade administrator, pause administrator, escrow owner, or arbitra
 5. A caller can withdraw only its own claimable balance, although it may choose the receiving address.
 6. Invalid observation or callback attempts leave lifecycle accounting unchanged.
 7. Missing infrastructure eventually fails open to a complete trader rebate.
-8. One cron examines at most eight trades and maintains a circular progress cursor.
+8. Circle and Reactive delivery order cannot change a terminal trade allocation.
 
 ## Threat review
 
@@ -49,16 +50,18 @@ There is no upgrade administrator, pause administrator, escrow owner, or arbitra
 | --- | --- | --- |
 | Return-delta overcharge | User maximum, 10% deployment cap, floor rounding, four-quadrant accounting tests | A user can still approve an economically undesirable maximum |
 | Escrow insolvency | Balance assertion after every transition plus stateful exact-backing invariants | Exotic token behavior is unsupported |
-| Unauthorized settlement | Immutable adapter authority; callback checks proxy and Reactive identity | Compromised trusted transport can submit an otherwise valid observation |
-| Replay or duplicate logs | Terminal hook state and idempotent adapter; duplicate Reactive requests ignored | Reorg behavior still depends on upstream delivery guarantees |
+| Unauthorized settlement | Coordinator authorizes immutable receivers; Circle pins its envelope; Reactive checks proxy plus identity | Compromise of Pyth or an authenticated transport remains an upstream risk |
+| Replay or duplicate logs | Circle nonce protection plus terminal hook state and coordinator no-op semantics | Cross-transport duplicates still consume delivery gas |
+| Circle fast-confirmation reorg | Threshold `1000` fits the ten-minute window; hook repeats maturity, freshness, confidence, and state checks | A confirmed Ethereum source message can be reorganized; hard-finalized deployments must widen the window |
+| Malicious publisher caller | Pyth verifies the signed update and publisher forwards only its normalized result | Liveness can be spammed at the caller's own gas cost; unknown trades fail at the coordinator |
 | Rebate theft or redirect | Claim mapping keyed by `msg.sender`; adversarial redirect tests | Beneficiary key compromise remains user risk |
 | Claim reentrancy | State zeroed before transfer plus `nonReentrant`; malicious native recipient test | Non-standard ERC-20 behavior is outside the allowlist |
 | Recipient rejects native token | Failed call restores credit; beneficiary can retry to another recipient | User must perform the retry |
 | Premature expiry | Exact timestamp boundary enforced; adversarial invariant action | Validator timestamp influence can affect eligibility by ordinary consensus bounds |
 | Missing/stale/invalid reference | Settlement reverts without mutation; permissionless full-rebate expiry | LP protection is reduced during oracle outages by design |
-| Single-pool price manipulation | Three-pool median, pair/liquidity checks, dispersion-derived confidence | Same-chain spot pools can be jointly manipulated; production needs TWAP/oracle hardening |
-| Callback denial of service | Bounded cron scan, cooldown, retries, terminal acknowledgement, public expiry | Sustained transport failure delays settlement until anyone expires on destination |
-| Callback gas griefing | Fixed callback budgets and at most eight scanned trades | Public-network gas adequacy is not proven until Phase 5 live evidence |
+| Oracle manipulation | Pyth signature verification, bounded age, and mechanical confidence normalization | Pyth compromise, stale upstream markets, or incorrect feed selection remain external risks |
+| Transport denial of service | Circle is primary, Reactive is optional, and public expiry returns the full surcharge | A dual outage reduces LP protection and delays settlement until expiry |
+| Callback gas griefing | Stateless one-event/one-callback pulse with a fixed callback budget | Public-network gas adequacy remains unproven until explorer-backed delivery |
 | Forced token donation | Accounting ignores surplus and adversarial test proves it is not claimable | Surplus has no recovery path in the immutable MVP |
 | Malicious target rebinding | Adapter target can be bound exactly once by immutable binder | Binder must bind the correct target before operational use |
 | Configuration compromise | Constructor validation and immutable addresses/parameters | Misconfiguration requires a new deployment; there is no in-place repair |
@@ -70,18 +73,19 @@ MARKOUT deliberately has no privileged global pause. A global pause could trap e
 Recovery is local and fail-open:
 
 1. Invalid settlement attempts revert without consuming the trade.
-2. The scheduler retries transport failures and awaits a terminal acknowledgement.
+2. Circle delivery may be retried permissionlessly; an optional Reactive duplicate is harmless.
 3. After the grace period, any address can expire the affected trade into a full rebate.
 4. Claims are pull-based, so one failing recipient does not block another trade or user.
 5. A compromised or misconfigured immutable deployment is deprecated and replaced; custody rules are never upgraded in
    place.
 
-Operational monitoring should alert on aged pending trades, callback retry frequency, sampler dispersion/liquidity
-failures, and a difference between actual and accounted balances. Live alert thresholds remain a Phase 5/production
-operations task.
+Operational monitoring should alert on aged pending trades, Circle attestation latency, rejected transport messages,
+optional callback failures, and any difference between actual and accounted balances. Live thresholds remain a
+Phase 14/production operations task.
 
 ## Release boundary
 
-Phase 7 establishes internal tests and static-analysis evidence. Before any real-fund deployment, the reference design
-must move beyond three same-chain spot pools, supported tokens must be explicitly allowlisted, LP reserve disposition
-must be designed, live callback gas must be measured, and an independent audit must review the final deployed bytecode.
+The repository establishes internal tests and static-analysis evidence only. Before any real-fund deployment, the
+Pyth/Circle trust and finality policy must receive independent review, supported tokens must be explicitly allowlisted,
+LP reserve disposition must be designed, live transport gas and latency must be measured, and an independent audit
+must review the final deployed bytecode.

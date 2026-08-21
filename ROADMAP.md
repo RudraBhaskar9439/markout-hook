@@ -31,8 +31,8 @@ Lasna, but two bounded public canaries also proved that destination callbacks we
 Sepolia or Ethereum Sepolia during the acceptance windows. Phase 5 therefore remains **NO-GO** for claims of a live
 Reactive settlement.
 
-The forward plan does not discard that work or weaken MARKOUT's accounting. It removes Reactive Network from the
-protocol's critical path:
+The forward plan does not discard that work or weaken MARKOUT's accounting. Phases 10–13 implement the local hybrid
+topology and remove Reactive Network from the protocol's critical path:
 
 - Circle CCTP V2 becomes the primary authenticated cross-chain observation transport.
 - A small legacy-compatible Reactive Contract observes the same source event and may deliver the same observation as

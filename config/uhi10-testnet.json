@@ -53,6 +53,13 @@
     "cronEmitter": "0x0000000000000000000000000000000000fffFfF",
     "cron10Topic": "0x04463f7c1651e6b9774d7f85c85bb94654e3c46ca79b0c16fb16d4183307b687"
   },
+  "reactiveLasnaLegacy": {
+    "chainId": 5318007,
+    "rpcUrl": "https://lasna-rpc.rnk.dev",
+    "systemContract": "0x0000000000000000000000000000000000fffFfF",
+    "ethereumSepoliaFaucet": "0x9b9BB25f1A81078C544C829c5EB7822d747Cf434",
+    "role": "optional-stateless-observation-pulse"
+  },
   "sources": {
     "unichainNetwork": "https://developers.uniswap.org/docs/unichain/technical-information/network-information",
     "unichainContracts": "https://developers.uniswap.org/docs/unichain/technical-information/contract-addresses",
@@ -65,6 +72,8 @@
     "reactiveOmni": "https://blog.reactive.network/reactives-next-chapter-starts-testnet-launch-team-news/",
     "reactiveOmniLibrary": "https://github.com/Reactive-Network/reactive-lib-omni",
     "reactiveCallbacks": "https://dev.reactive.network/legacy/events-%26-callbacks",
-    "reactiveLibrary": "https://dev.reactive.network/legacy/reactive-library"
+    "reactiveLibrary": "https://dev.reactive.network/legacy/reactive-library",
+    "reactiveSubscriptions": "https://dev.reactive.network/legacy/subscriptions",
+    "reactiveTesting": "https://dev.reactive.network/legacy/testing"
   }
 }

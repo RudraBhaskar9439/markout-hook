@@ -55,6 +55,7 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 - [Hybrid settlement architecture](docs/HYBRID_SETTLEMENT.md)
 - [Phase 11 coordinator verification](docs/PHASE_11_VERIFICATION.md)
 - [Phase 12 Circle verification](docs/PHASE_12_VERIFICATION.md)
+- [Phase 13 Reactive pulse verification](docs/PHASE_13_VERIFICATION.md)
 - [UHI10 presentation deck](presentation/MARKOUT-UHI10.pptx)
 - [Testnet deployment runbook](docs/TESTNET_DEPLOYMENT.md)
 - [Dependency policy](docs/DEPENDENCIES.md)
@@ -63,11 +64,11 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 
 ## Current status
 
-**Phase 12 Circle-primary path implemented locally; the hybrid public testnet gate remains open.** The previous Omni
+**Phase 13 hybrid path implemented locally; the public testnet gate remains open.** The previous Omni
 scheduler remains committed as reproducible research and outage evidence. The active topology now uses a one-time-bound
-settlement coordinator, a Pyth-backed Ethereum Sepolia publisher, and an authenticated Circle receiver on Unichain. The
-optional stateless Reactive pulse is Phase 13. Public Circle attestation and destination settlement transactions are
-still required before the hybrid live gate can close.
+settlement coordinator, a Pyth-backed Ethereum Sepolia publisher, an authenticated Circle receiver, and an optional
+stateless Reactive pulse. Public Circle attestation and destination settlement transactions are still required before
+the hybrid live gate can close; Reactive receives live credit only if its callback is independently visible.
 
 ## Architecture
 
@@ -135,6 +136,7 @@ git submodule update --init --recursive
 ./scripts/verify-phase-9-draft.sh
 ./scripts/verify-phase-11.sh
 ./scripts/verify-phase-12.sh
+./scripts/verify-phase-13.sh
 ```
 
 The cumulative local gate checks formatting, compilation and bytecode size, lint, all earlier accounting and lifecycle
