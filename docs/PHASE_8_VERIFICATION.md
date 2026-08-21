@@ -25,8 +25,8 @@ Complete this path without a wallet or terminal interaction after the applicatio
 4. Select inventory-improving flow and confirm MARKOUT does not retain adverse-selection protection.
 5. Replay the five-step hybrid timeline from execution through acknowledgement.
 6. Review the aggregate evidence and the explicitly disclosed stale/manipulated-reference regression.
-7. Confirm that the live-evidence card shows the measured 38-second Circle settlement, the 46-second observation age,
-   the 100% good-flow rebate, and links to the recorded public transactions.
+7. Confirm that the live-evidence card contrasts the measured public outcomes: a 38-second Circle settlement with a
+   100% good-flow rebate and a 67-second Circle settlement with 100% retained for LP protection.
 
 ## Automated gate
 
@@ -63,5 +63,5 @@ claim until a destination callback is public.
 
 ## GO / NO-GO
 
-**GO** for hosted/local judge review and for claiming the linked public Circle settlement. **NO-GO** for claiming a
-public Reactive callback until the corresponding Unichain transaction is observed and recorded.
+**GO** for hosted/local judge review and for claiming the two linked public Circle settlements. **NO-GO** for claiming
+a public Reactive callback until the corresponding Unichain transaction is observed and recorded.

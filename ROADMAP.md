@@ -46,8 +46,9 @@ This pivot is specified in [Hybrid Settlement Architecture](docs/HYBRID_SETTLEME
 
 Phase 14's required Circle gate is complete. The dated
 [public deployment manifest](deployments/hybrid-2026-08-21.json) records the Sepolia publication, Circle attestation,
-Unichain settlement, rebate claim, and 38-second source-to-destination latency. Reactive remains optional and is not
-described as live because no public destination callback exists.
+two opposite Unichain settlement outcomes, the rebate claim, exact LP-reserve reconciliation, and 38/67-second
+source-to-destination latencies. Reactive remains optional and is not described as live because no public destination
+callback exists.
 
 ## Phase 0 — Repository bootstrap
 

@@ -22,8 +22,9 @@ overflow checker must report zero out-of-bounds elements before the deck is comm
 
 ## Exact boundary
 
-Passing this checkpoint supports narrative review, rehearsal, and the public Circle-settlement claim. The required
-Circle settlement, claim, duplicate-delivery proof, and explorer links are complete. The following still require
+Passing this checkpoint supports narrative review, rehearsal, and the public Circle-settlement claims. The required
+opposite-branch settlements, claim, reserve reconciliation, duplicate-delivery proof, and explorer links are complete.
+The following still require
 external or owner state: optional Reactive callback proof, the final uploaded video, owner form details,
 repository/site visibility decisions, logged-out link checks, and form submission.
 
