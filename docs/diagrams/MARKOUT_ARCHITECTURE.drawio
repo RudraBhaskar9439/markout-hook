@@ -1,0 +1,287 @@
+<mxfile host="app.diagrams.net" modified="2026-08-22T12:00:00.000Z" agent="Codex" version="24.7.17" type="device" compressed="false">
+  <diagram id="markout-overview" name="01 Judge Overview">
+    <mxGraphModel dx="1920" dy="1080" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1080" math="0" shadow="0" background="#070B09">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#070B09;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="0" y="0" width="1920" height="1080" as="geometry"/>
+        </mxCell>
+        <mxCell id="title" value="&lt;font color=&quot;#F3F7F4&quot; style=&quot;font-size: 28px;&quot;&gt;&lt;b&gt;MARKOUT — outcome-priced liquidity&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#92A398&quot; style=&quot;font-size: 14px;&quot;&gt;Real Uniswap v4 swap → delayed directional markout → rebate or LP protection&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="50" y="25" width="1000" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;SOLID&lt;/b&gt; primary automation&lt;/font&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;font color=&quot;#6CB8FF&quot;&gt;&lt;b&gt;DASHED&lt;/b&gt; redundant fallback / public proof&lt;/font&gt;" style="text;html=1;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="40" width="650" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="frontend-plane" value="" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=#0C1E15;strokeColor=#3E8E5A;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="40" y="120" width="275" height="710" as="geometry"/>
+        </mxCell>
+        <mxCell id="frontend-title" value="&lt;font color=&quot;#85FF99&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;FRONTEND&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#92A398&quot;&gt;Trader + judge interface&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="65" y="145" width="220" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="wallet" value="&lt;font color=&quot;#F3F7F4&quot;&gt;&lt;b&gt;Wallet console&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#B4C2B8&quot;&gt;Connect wallet&lt;br&gt;Choose direction + amount&lt;br&gt;Preview base + provisional fee&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#132B1E;strokeColor=#3E8E5A;fontSize=13;spacing=12;align=left;" vertex="1" parent="1">
+          <mxGeometry x="65" y="230" width="225" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="dashboard" value="&lt;font color=&quot;#F3F7F4&quot;&gt;&lt;b&gt;Lifecycle dashboard&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#B4C2B8&quot;&gt;Execute real v4 swap&lt;br&gt;Watch 5-minute maturity&lt;br&gt;Track delivery + settlement&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#132B1E;strokeColor=#3E8E5A;fontSize=13;spacing=12;align=left;" vertex="1" parent="1">
+          <mxGeometry x="65" y="415" width="225" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="receipt" value="&lt;font color=&quot;#F3F7F4&quot;&gt;&lt;b&gt;Verifiable receipt&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#B4C2B8&quot;&gt;Final effective fee&lt;br&gt;Rebate / LP allocation&lt;br&gt;Claim + explorer links&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#132B1E;strokeColor=#3E8E5A;fontSize=13;spacing=12;align=left;" vertex="1" parent="1">
+          <mxGeometry x="65" y="600" width="225" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="frontend-note" value="&lt;font color=&quot;#85FF99&quot;&gt;The browser displays contract state;&lt;br&gt;it never computes fee allocation.&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="65" y="765" width="225" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="unichain-plane" value="" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=#211613;strokeColor=#D78A35;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="345" y="120" width="675" height="710" as="geometry"/>
+        </mxCell>
+        <mxCell id="unichain-title" value="&lt;font color=&quot;#FFB55C&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;UNICHAIN SEPOLIA — EXECUTION + ACCOUNTING&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="370" y="145" width="600" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="pool" value="&lt;font color=&quot;#F8E9D8&quot;&gt;&lt;b&gt;Uniswap v4 Fair-Flow pool&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#CFBDA9&quot;&gt;USDC / WETH · 18 bps base fee · MARKOUT hook&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#352317;strokeColor=#D78A35;strokeWidth=2;fontSize=14;align=center;" vertex="1" parent="1">
+          <mxGeometry x="390" y="205" width="585" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="hook-record" value="&lt;font color=&quot;#FFB55C&quot;&gt;&lt;b&gt;1 · MarkoutHook.afterSwap&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#F1D9BE&quot;&gt;Record execution price + direction&lt;br&gt;Lock 50 bps provisional amount&lt;br&gt;Emit MarkoutRequested(tradeId)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#352317;strokeColor=#A96A29;fontSize=13;spacing=12;align=left;" vertex="1" parent="1">
+          <mxGeometry x="390" y="335" width="265" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="coordinator" value="&lt;font color=&quot;#FFB55C&quot;&gt;&lt;b&gt;3 · SettlementCoordinator&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#F1D9BE&quot;&gt;Authenticate delivery source&lt;br&gt;Validate trade + observation&lt;br&gt;First valid delivery wins&lt;br&gt;Duplicate delivery = no-op&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#352317;strokeColor=#A96A29;fontSize=13;spacing=12;align=left;" vertex="1" parent="1">
+          <mxGeometry x="700" y="335" width="275" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="allocation" value="&lt;font color=&quot;#FFB55C&quot;&gt;&lt;b&gt;4 · Deterministic onchain allocation&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#F1D9BE&quot;&gt;Directional markout curve converts the delayed price move into an economic outcome.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#352317;strokeColor=#D78A35;strokeWidth=2;fontSize=14;spacing=12;align=left;" vertex="1" parent="1">
+          <mxGeometry x="390" y="540" width="585" height="105" as="geometry"/>
+        </mxCell>
+        <mxCell id="benign" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;BENIGN / INVENTORY-IMPROVING&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D8F7DF&quot;&gt;Trader receives rebate&lt;br&gt;Effective fee can fall to 18 bps&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12321E;strokeColor=#58D68D;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="390" y="680" width="275" height="105" as="geometry"/>
+        </mxCell>
+        <mxCell id="toxic" value="&lt;font color=&quot;#FFBE74&quot;&gt;&lt;b&gt;ADVERSE / INFORMED&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#FFE0BD&quot;&gt;Provisional amount protects LPs&lt;br&gt;Effective fee rises with harm proxy&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3B2417;strokeColor=#E79A45;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="700" y="680" width="275" height="105" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="origin-plane" value="" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=#102019;strokeColor=#438F63;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="120" width="315" height="330" as="geometry"/>
+        </mxCell>
+        <mxCell id="origin-title" value="&lt;font color=&quot;#70E39A&quot; style=&quot;font-size: 17px;&quot;&gt;&lt;b&gt;ETHEREUM SEPOLIA&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#92A398&quot;&gt;Reference-price origin&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="1075" y="145" width="265" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="pyth" value="&lt;font color=&quot;#F3F7F4&quot;&gt;&lt;b&gt;Signed Pyth ETH/USD update&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#B4C2B8&quot;&gt;Testnet proxy for ETH/USDC&lt;br&gt;Price · publish time · confidence&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#153225;strokeColor=#438F63;fontSize=13;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1075" y="220" width="265" height="95" as="geometry"/>
+        </mxCell>
+        <mxCell id="publisher" value="&lt;font color=&quot;#F3F7F4&quot;&gt;&lt;b&gt;ObservationPublisher&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#B4C2B8&quot;&gt;Normalizes priceX18, observedAt,&lt;br&gt;confidenceBps, marketId + tradeId&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#153225;strokeColor=#438F63;fontSize=13;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1075" y="335" width="265" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="circle-plane" value="" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=#0D1A26;strokeColor=#3B7BAD;strokeWidth=2;dashed=1;dashPattern=8 5;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="480" width="315" height="350" as="geometry"/>
+        </mxCell>
+        <mxCell id="circle-title" value="&lt;font color=&quot;#6CB8FF&quot; style=&quot;font-size: 17px;&quot;&gt;&lt;b&gt;CIRCLE FALLBACK / PROOF RAIL&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="1075" y="505" width="265" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="circle-send" value="&lt;font color=&quot;#EAF5FF&quot;&gt;&lt;b&gt;CCTP V2 generic message&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#A9C5DA&quot;&gt;Publisher → Circle attestation&lt;br&gt;→ Unichain receiver&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#122A3C;strokeColor=#3B7BAD;dashed=1;fontSize=13;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1075" y="575" width="265" height="105" as="geometry"/>
+        </mxCell>
+        <mxCell id="circle-proof" value="&lt;font color=&quot;#6CB8FF&quot;&gt;&lt;b&gt;PUBLIC TESTNET PROOF&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#C8E2F5&quot;&gt;4 complete delivery lifecycles&lt;br&gt;Secondary redundant path&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#122A3C;strokeColor=#3B7BAD;dashed=1;fontSize=13;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1075" y="710" width="265" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="reactive-plane" value="" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=#0E1C2B;strokeColor=#4F9DFF;strokeWidth=3;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="1400" y="120" width="480" height="710" as="geometry"/>
+        </mxCell>
+        <mxCell id="reactive-title" value="&lt;font color=&quot;#80BFFF&quot; style=&quot;font-size: 19px;&quot;&gt;&lt;b&gt;REACTIVE NETWORK&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;ESSENTIAL AUTONOMOUS NO-KEEPER CONTROL PLANE&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="1425" y="145" width="425" height="65" as="geometry"/>
+        </mxCell>
+        <mxCell id="subscriptions" value="&lt;font color=&quot;#EAF5FF&quot;&gt;&lt;b&gt;MarkoutReactive · 5 narrow subscriptions&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#BFD7EA&quot;&gt;MarkoutRequested · MarkoutSettled&lt;br&gt;MarkoutExpired · ReferencePricePublished · cron&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12304A;strokeColor=#4F9DFF;fontSize=13;spacing=12;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1425" y="230" width="430" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="scheduler" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;Autonomous lifecycle scheduler&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D4F8DC&quot;&gt;Track maturity + expiry&lt;br&gt;Bounded scan: 8 trades / cron&lt;br&gt;Select reference · retry · acknowledge&lt;br&gt;Request settle or permissionless expiry&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#143523;strokeColor=#58D68D;strokeWidth=2;fontSize=13;spacing=12;align=left;" vertex="1" parent="1">
+          <mxGeometry x="1425" y="380" width="430" height="155" as="geometry"/>
+        </mxCell>
+        <mxCell id="reactvm" value="&lt;font color=&quot;#EAF5FF&quot;&gt;&lt;b&gt;ReactVM → callback proxy&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#BFD7EA&quot;&gt;Authenticated by callback proxy + injected RVM identity&lt;br&gt;No custody · no fee authority&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12304A;strokeColor=#4F9DFF;fontSize=13;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1425" y="570" width="430" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="reactive-evidence" value="&lt;font color=&quot;#80BFFF&quot;&gt;&lt;b&gt;EVIDENCE BOUNDARY&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D1E6F7&quot;&gt;Full engine implemented + 17 lifecycle tests&lt;br&gt;Legacy pulse deployed, funded, exact subscription&lt;br&gt;Public Unichain callback not yet observed&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#101F30;strokeColor=#4F9DFF;dashed=1;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1425" y="700" width="430" height="100" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="research-plane" value="" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=#111815;strokeColor=#4C7258;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="40" y="870" width="1840" height="165" as="geometry"/>
+        </mxCell>
+        <mxCell id="research-title" value="&lt;font color=&quot;#85FF99&quot; style=&quot;font-size: 16px;&quot;&gt;&lt;b&gt;CONTROLLED RESEARCH STUDY&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#92A398&quot;&gt;markout-phase-6-v1 · deterministic synthetic data · boundary: not a historical backtest or exact LVR estimate&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="70" y="895" width="600" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="research-design" value="&lt;font color=&quot;#F3F7F4&quot;&gt;&lt;b&gt;768 trades · $1.999M / policy · 6 regimes&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#B4C2B8&quot;&gt;Fixed vs volatility vs MARKOUT · 21-point base-fee sweep&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#17221B;strokeColor=#4C7258;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="700" y="900" width="360" height="95" as="geometry"/>
+        </mxCell>
+        <mxCell id="research-benign" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;8.58% lower benign-flow fee&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D8F7DF&quot;&gt;27.4262 bps vs fixed 30 bps&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12321E;strokeColor=#58D68D;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1090" y="900" width="235" height="95" as="geometry"/>
+        </mxCell>
+        <mxCell id="research-improving" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;40% lower improving-flow fee&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D8F7DF&quot;&gt;18 bps vs fixed 30 bps&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12321E;strokeColor=#58D68D;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1350" y="900" width="230" height="95" as="geometry"/>
+        </mxCell>
+        <mxCell id="research-lp" value="&lt;font color=&quot;#FFBE74&quot;&gt;&lt;b&gt;+21.87% LP net-after-proxy&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#FFE0BD&quot;&gt;vs fixed-fee policy in this study&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3B2417;strokeColor=#E79A45;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="1605" y="900" width="235" height="95" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e-wallet-pool" value="real v4 swap" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#85FF99;strokeWidth=3;fontColor=#D8F7DF;endArrow=block;endFill=1;" edge="1" parent="1" source="wallet" target="pool">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-pool-record" value="afterSwap" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#D78A35;strokeWidth=2;fontColor=#FFB55C;endArrow=block;endFill=1;" edge="1" parent="1" source="pool" target="hook-record">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-record-reactive" value="MarkoutRequested" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=3;fontColor=#85FF99;endArrow=block;endFill=1;exitX=1;exitY=0.05;entryX=0;entryY=0.25;" edge="1" parent="1" source="hook-record" target="subscriptions">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="680" y="315"/><mxPoint x="1385" y="315"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-pyth-publisher" value="signed update" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#70E39A;strokeWidth=2;fontColor=#70E39A;endArrow=block;endFill=1;" edge="1" parent="1" source="pyth" target="publisher">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-publisher-reactive" value="normalized reference event" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=3;fontColor=#85FF99;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.75;" edge="1" parent="1" source="publisher" target="subscriptions">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-sub-scheduler" value="mature + match" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=2;fontColor=#85FF99;endArrow=block;endFill=1;" edge="1" parent="1" source="subscriptions" target="scheduler">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-scheduler-reactvm" value="callback request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=2;fontColor=#85FF99;endArrow=block;endFill=1;" edge="1" parent="1" source="scheduler" target="reactvm">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-reactvm-coordinator" value="authenticated settle / expire" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=3;fontColor=#85FF99;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.7;" edge="1" parent="1" source="reactvm" target="coordinator">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="1380" y="620"/><mxPoint x="1000" y="620"/><mxPoint x="1000" y="450"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-publisher-circle" value="redundant delivery" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6CB8FF;strokeWidth=2;dashed=1;dashPattern=8 5;fontColor=#6CB8FF;endArrow=block;endFill=1;" edge="1" parent="1" source="publisher" target="circle-send">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-circle-coordinator" value="fallback observation" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6CB8FF;strokeWidth=2;dashed=1;dashPattern=8 5;fontColor=#6CB8FF;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.9;" edge="1" parent="1" source="circle-send" target="coordinator">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="1035" y="625"/><mxPoint x="1035" y="480"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-coordinator-allocation" value="finalize once" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#D78A35;strokeWidth=2;fontColor=#FFB55C;endArrow=block;endFill=1;" edge="1" parent="1" source="coordinator" target="allocation">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-allocation-benign" value="markout ≤ 0" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#58D68D;strokeWidth=2;fontColor=#85FF99;endArrow=block;endFill=1;" edge="1" parent="1" source="allocation" target="benign">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-allocation-toxic" value="markout &gt; 0" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#E79A45;strokeWidth=2;fontColor=#FFBE74;endArrow=block;endFill=1;" edge="1" parent="1" source="allocation" target="toxic">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e-benign-receipt" value="claim rebate" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=2;fontColor=#85FF99;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="1" source="benign" target="receipt">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="markout-detail" name="02 Technical + Evidence">
+    <mxGraphModel dx="1920" dy="1080" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1080" math="0" shadow="0" background="#070B09">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="d1" parent="1"/>
+        <mxCell id="d-bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#070B09;strokeColor=none;" vertex="1" parent="d1">
+          <mxGeometry x="0" y="0" width="1920" height="1080" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-title" value="&lt;font color=&quot;#F3F7F4&quot; style=&quot;font-size: 28px;&quot;&gt;&lt;b&gt;MARKOUT — technical mechanism, automation, and evidence&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="d1">
+          <mxGeometry x="50" y="30" width="1300" height="55" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="d-mech-plane" value="" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=#211613;strokeColor=#D78A35;strokeWidth=2;" vertex="1" parent="d1">
+          <mxGeometry x="40" y="110" width="590" height="555" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-mech-title" value="&lt;font color=&quot;#FFB55C&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;COMPLETE FEE MECHANISM&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="d1">
+          <mxGeometry x="70" y="135" width="520" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-m1" value="&lt;font color=&quot;#FFB55C&quot;&gt;&lt;b&gt;01 · Execute&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#F1D9BE&quot;&gt;Real v4 swap at 18 bps base&lt;br&gt;+ 50 bps provisional amount&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#352317;strokeColor=#A96A29;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="70" y="200" width="230" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-m2" value="&lt;font color=&quot;#FFB55C&quot;&gt;&lt;b&gt;02 · Wait&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#F1D9BE&quot;&gt;5-minute markout horizon&lt;br&gt;then a bounded grace window&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#352317;strokeColor=#A96A29;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="370" y="200" width="230" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-m3" value="&lt;font color=&quot;#FFB55C&quot;&gt;&lt;b&gt;03 · Observe&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#F1D9BE&quot;&gt;Signed delayed price + confidence&lt;br&gt;bound to marketId + tradeId&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#352317;strokeColor=#A96A29;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="70" y="355" width="230" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-m4" value="&lt;font color=&quot;#FFB55C&quot;&gt;&lt;b&gt;04 · Allocate&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#F1D9BE&quot;&gt;Directional markout → rebate&lt;br&gt;or LP protection reserve&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#352317;strokeColor=#A96A29;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="370" y="355" width="230" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-m5" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;FAIL-SAFE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D8F7DF&quot;&gt;No valid observation by expiry → anyone can expire → provisional amount fully refundable. No admin intervention.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12321E;strokeColor=#58D68D;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="70" y="510" width="530" height="115" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="d-react-plane" value="" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=#0E1C2B;strokeColor=#4F9DFF;strokeWidth=3;shadow=1;" vertex="1" parent="d1">
+          <mxGeometry x="665" y="110" width="650" height="555" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-react-title" value="&lt;font color=&quot;#80BFFF&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;REACTIVE NETWORK — AUTONOMOUS CONTROL PLANE&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="d1">
+          <mxGeometry x="695" y="135" width="580" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-r1" value="&lt;font color=&quot;#EAF5FF&quot;&gt;&lt;b&gt;Origin subscriptions&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#BFD7EA&quot;&gt;Requested · Settled · Expired&lt;br&gt;ReferencePricePublished · cron&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12304A;strokeColor=#4F9DFF;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="700" y="205" width="245" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-r2" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;ReactVM state machine&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D4F8DC&quot;&gt;Maturity · expiry · status&lt;br&gt;reference selection · retries&lt;br&gt;8-trade bounded cron scan&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#143523;strokeColor=#58D68D;strokeWidth=2;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="1030" y="205" width="245" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-r3" value="&lt;font color=&quot;#EAF5FF&quot;&gt;&lt;b&gt;Authenticated callbacks&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#BFD7EA&quot;&gt;settle(tradeId, observation)&lt;br&gt;expire(tradeId)&lt;br&gt;Proxy + RVM identity checks&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12304A;strokeColor=#4F9DFF;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="700" y="380" width="245" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-r4" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;Why Reactive is necessary&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D4F8DC&quot;&gt;The hook cannot wake itself after 5 minutes. Reactive observes both chains and triggers settlement without a privileged keeper.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#143523;strokeColor=#58D68D;strokeWidth=2;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="1030" y="380" width="245" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-r5" value="&lt;font color=&quot;#80BFFF&quot;&gt;&lt;b&gt;Authority boundary:&lt;/b&gt;&lt;/font&gt; &lt;font color=&quot;#D1E6F7&quot;&gt;Reactive schedules and delivers observations. Unichain contracts independently authenticate, validate, and compute the fee. Reactive never holds trader funds and cannot choose the allocation.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#101F30;strokeColor=#4F9DFF;dashed=1;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="700" y="545" width="575" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="d-evidence-plane" value="" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=#111815;strokeColor=#4C7258;strokeWidth=2;" vertex="1" parent="d1">
+          <mxGeometry x="1350" y="110" width="530" height="555" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-evidence-title" value="&lt;font color=&quot;#85FF99&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;WHAT IS PROVEN TODAY&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="d1">
+          <mxGeometry x="1380" y="135" width="470" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-ev1" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;ONCHAIN FAIR-FLOW POOL&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D8F7DF&quot;&gt;Real swaps, escrow, markout settlement,&lt;br&gt;claims, expiry, first-delivery-wins&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12321E;strokeColor=#58D68D;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="1380" y="205" width="470" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-ev2" value="&lt;font color=&quot;#6CB8FF&quot;&gt;&lt;b&gt;CIRCLE DELIVERY&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#C8E2F5&quot;&gt;4 public end-to-end observation lifecycles&lt;br&gt;used as redundant delivery + live proof&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#122A3C;strokeColor=#3B7BAD;dashed=1;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="1380" y="335" width="470" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-ev3" value="&lt;font color=&quot;#80BFFF&quot;&gt;&lt;b&gt;REACTIVE IMPLEMENTATION&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D1E6F7&quot;&gt;Full lifecycle engine + 17 tests&lt;br&gt;Legacy pulse deployed and funded&lt;br&gt;Exact subscription confirmed&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#101F30;strokeColor=#4F9DFF;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="1380" y="465" width="470" height="115" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-ev4" value="&lt;font color=&quot;#FFBE74&quot;&gt;&lt;b&gt;DISCLOSURE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#FFE0BD&quot;&gt;Public Reactive → Unichain callback not observed yet.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3B2417;strokeColor=#E79A45;fontSize=12;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="1380" y="600" width="470" height="45" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="d-research-plane" value="" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=#111815;strokeColor=#4C7258;strokeWidth=2;" vertex="1" parent="d1">
+          <mxGeometry x="40" y="700" width="1840" height="325" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-research-title" value="&lt;font color=&quot;#85FF99&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;RESEARCH DESIGN + REPRODUCIBLE RESULT&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#92A398&quot;&gt;Controlled synthetic evaluation — claims apply only to this fixed dataset and proxy definition&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="d1">
+          <mxGeometry x="70" y="725" width="900" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-study" value="&lt;font color=&quot;#F3F7F4&quot;&gt;&lt;b&gt;markout-phase-6-v1&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#B4C2B8&quot;&gt;768 deterministic trades&lt;br&gt;$1.999M notional per policy&lt;br&gt;6 regimes · fixed seed&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#17221B;strokeColor=#4C7258;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="70" y="815" width="260" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-policies" value="&lt;font color=&quot;#F3F7F4&quot;&gt;&lt;b&gt;Three policy baselines&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#B4C2B8&quot;&gt;30 bps fixed fee&lt;br&gt;volatility-only controller&lt;br&gt;directional MARKOUT&lt;br&gt;21-point 10–30 bps sweep&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#17221B;strokeColor=#4C7258;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="365" y="815" width="280" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-result1" value="&lt;font color=&quot;#85FF99&quot; style=&quot;font-size: 17px;&quot;&gt;&lt;b&gt;8.58% LOWER&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D8F7DF&quot;&gt;benign-flow average fee&lt;br&gt;27.4262 vs 30 bps&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12321E;strokeColor=#58D68D;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="680" y="815" width="265" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-result2" value="&lt;font color=&quot;#85FF99&quot; style=&quot;font-size: 17px;&quot;&gt;&lt;b&gt;40% LOWER&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D8F7DF&quot;&gt;inventory-improving fee&lt;br&gt;18 vs 30 bps&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12321E;strokeColor=#58D68D;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="980" y="815" width="265" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-result3" value="&lt;font color=&quot;#FFBE74&quot; style=&quot;font-size: 17px;&quot;&gt;&lt;b&gt;+21.87% LP NET&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#FFE0BD&quot;&gt;after markout-loss proxy&lt;br&gt;vs fixed-fee policy&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3B2417;strokeColor=#E79A45;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="1280" y="815" width="265" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="d-boundary" value="&lt;font color=&quot;#FFBE74&quot;&gt;&lt;b&gt;BOUNDARY&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#FFE0BD&quot;&gt;Synthetic controlled study.&lt;br&gt;Markout is a proxy input,&lt;br&gt;not exact realized LP loss.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3B2417;strokeColor=#E79A45;dashed=1;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="1580" y="815" width="250" height="150" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="d-e-m1-m2" value="5 min" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#D78A35;strokeWidth=2;fontColor=#FFB55C;endArrow=block;endFill=1;" edge="1" parent="d1" source="d-m1" target="d-m2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="d-e-m2-m3" value="mature" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#D78A35;strokeWidth=2;fontColor=#FFB55C;endArrow=block;endFill=1;" edge="1" parent="d1" source="d-m2" target="d-m3"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="485" y="330"/><mxPoint x="185" y="330"/></Array></mxGeometry></mxCell>
+        <mxCell id="d-e-m3-m4" value="valid observation" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#D78A35;strokeWidth=2;fontColor=#FFB55C;endArrow=block;endFill=1;" edge="1" parent="d1" source="d-m3" target="d-m4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="d-e-r1-r2" value="react(log)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=2;fontColor=#85FF99;endArrow=block;endFill=1;" edge="1" parent="d1" source="d-r1" target="d-r2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="d-e-r2-r3" value="emit Callback" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=2;fontColor=#85FF99;endArrow=block;endFill=1;" edge="1" parent="d1" source="d-r2" target="d-r3"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1150" y="350"/><mxPoint x="820" y="350"/></Array></mxGeometry></mxCell>
+        <mxCell id="d-e-r3-m4" value="settle / expire" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=3;fontColor=#85FF99;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="d1" source="d-r3" target="d-m4"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
