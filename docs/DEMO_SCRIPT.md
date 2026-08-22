@@ -1,7 +1,7 @@
 # MARKOUT Judge Demo Script
 
-This is the reliable rehearsal baseline for the hybrid build. It tells one story: similar-looking swaps can justify
-different final charges once their outcomes are known.
+The detailed coaching notes, likely judge questions, and claims boundary are in
+[`PRESENTATION_PLAYBOOK.md`](PRESENTATION_PLAYBOOK.md). This file is the short rehearsal card.
 
 ## Before presenting
 
@@ -9,81 +9,70 @@ different final charges once their outcomes are known.
 ./scripts/run-phase-8-demo.sh
 ```
 
-Open `http://localhost:3000`, keep benign flow selected, and reset the five-step timeline. Keep the committed Sepolia,
-Circle, and Unichain explorer transactions from `deployments/hybrid-2026-08-21.json` open in a second tab.
+Open `http://localhost:3000`, load a completed Fair-Flow trade, keep benign flow selected, and reset the five-step
+timeline. Keep the committed public explorer receipts open in a second tab. Never wait for the five-minute maturity
+window during the judged recording.
 
-## Core narrative — approximately four minutes
+## Four-minute run
 
-### 0:00–0:35 — The gap
+### 0:00-0:25 - Problem
 
-“AMMs price a trade before they know whether it was actually harmful. Volatility fees can protect LPs, but they also
-charge benign and inventory-improving flow. MARKOUT asks a different question: what happened after the swap?”
+"AMMs set the fee before they know whether a trade was actually harmful. MARKOUT prices the realized five-minute
+outcome instead of charging everyone for predicted toxicity."
 
-Fixed and volatility policies classify the environment. MARKOUT classifies the realized directional outcome.
+### 0:25-0:55 - Trader result
 
-### 0:35–1:20 — Benign outcome
+"The Fair-Flow pool starts at 18 bps and escrows a refundable 50 bps. Benign flow averages 27.43 bps,
+inventory-improving flow receives the complete surcharge back, and adverse flow retains less of the rebate only after
+the outcome is observable."
 
-Keep **Benign flow** selected.
+### 0:55-1:40 - Real testnet proof
 
-“The hook collects a bounded provisional surcharge. After five minutes, the reference price remains near execution,
-so most of that surcharge becomes a trader rebate. Under Fair-Flow, the final average is 27.43 bps—below a normal 30
-bps pool. No operator chooses the result.”
+Show the loaded receipt and its explorer links.
 
-Replay the lifecycle: swap, maturity, Pyth verification, authenticated delivery, allocation.
+"This wallet submitted a real v4 swap. The hook escrowed the provisional charge, accepted a Pyth-verified
+observation, finalized at 18 bps, and returned the rebate through the sponsored-claim entrypoint."
 
-### 1:20–2:05 — Informed outcome
+### 1:40-2:10 - Complete mechanism
 
-Select **Informed flow**.
+Replay the timeline.
 
-“This trade is followed by a 22 bps move in the trader's direction. The same curve now retains more for LP protection
-and returns less. MARKOUT does not blacklist a wallet or guess intent; it settles an observable outcome.”
+"The hook records execution and custody. The outcome window matures. Pyth publishes canonical evidence. Reactive is
+the intended lifecycle engine: observe, wake, callback, retry, acknowledge, or expire. The hook alone validates and
+allocates the escrow."
 
-### 2:05–2:35 — Inventory-improving outcome
+### 2:10-2:40 - Architecture + Reactive
 
-Select **Inventory-improving flow**.
+"Frontend explains. Unichain accounts. Ethereum verifies. Reactive automates. A v4 hook cannot wake itself five
+minutes later, so Reactive is essential to the no-keeper design. Circle is the publicly proven redundant delivery
+rail, not a replacement for Reactive orchestration."
 
-“When the market moves against the trader and the flow helps LP inventory, MARKOUT returns the complete provisional
-surcharge. The final charge falls back to the 18 bps Fair-Flow base fee.”
+"The full engine has five narrow subscriptions and 17 dedicated tests. The legacy pulse is deployed, funded, and
+exactly subscribed. Its public destination callback is not observed, so I disclose the boundary."
 
-### 2:35–3:20 — Research evidence
+Leave the architecture after 30 seconds.
 
-“All three policies receive one seeded 768-trade tape. A declared 10-to-30 bps sweep selects 18 bps as the lowest base
-that keeps good flow at or below 30 bps while preserving at least a 20% LP advantage. Benign flow saves $2.57 and
-inventory-improving flow saves $12 per $10,000 versus fixed at equal execution. MARKOUT still improves modeled LP
-net-after-proxy by 21.87%, although volatility earns more by charging good flow more.”
+### 2:40-3:25 - Research
 
-The metric is a pool-level adverse-selection proxy, not exact LVR or individual LP profit.
+"I froze a deterministic 768-trade, 1.999 million dollar tape across six regimes and ran fixed, volatility, and
+MARKOUT policies on identical trades. A declared 21-point fee sweep selected 18 bps as the first candidate satisfying
+the trader and LP constraints."
 
-### 3:20–3:45 — Reactive Network automation
+"Under those conditions, benign fees fall 8.58%, inventory-improving fees fall 40%, and modeled LP net-after-proxy
+improves 21.87% versus fixed. This is a controlled synthetic study, not historical backtesting or exact LVR."
 
-“Reactive is MARKOUT's event-driven accelerator. The deployed RSC subscribes to the exact Pyth-verified publisher
-event and is designed to turn it into an authenticated Unichain callback without a keeper, custody, fee authority, or
-trade database. It carries only the canonical observation. Reactive and Circle race at one coordinator: first valid
-delivery wins and the duplicate is harmless. This is automation without adding another trusted operator.”
+### 3:25-3:55 - Close
 
-Show the dedicated Reactive section: deployed pulse, funded state, exact subscription, authenticated receiver, and
-race tests. Then state the boundary in one sentence: “The public destination callback has not been observed, so we do
-not label Reactive live.”
+"MARKOUT has 188 passing contract tests, four public Circle-completed lifecycles, both terminal economic branches, a
+separate Fair-Flow pool, and zero medium or high Slither findings. MARKOUT does not guess who is toxic. It prices what
+the trade actually did."
 
-### 3:45–4:00 — Public proof and close
-
-“Circle is the proven primary route today. If either transport delivers, the same hook checks the observation; if
-neither delivers, permissionless expiry returns the full surcharge. MARKOUT turns LP protection from a fear-based
-prediction into outcome-based settlement.”
-
-Clarify that the first three public lifecycles use the original 30 + 50 bps deployment, while the fourth uses the
-separately deployed 18 + 50 bps Fair-Flow pool. The first live proof used a 46-second-old observation, settled in 38 seconds, and
-returned 100% of the provisional surcharge. The second used a 96-second-old observation, settled in 67 seconds, and
-retained 100% of its escrow for LP protection. The wallet-console lifecycle independently reproduced the rebate branch
-with a 92-second-old observation and a 67-second relay, then claimed the refund. Fair-Flow completed a fourth lifecycle
-in 55 seconds, finalized at 18 bps after a complete surcharge rebate, and executed the sponsored-claim entrypoint. Open the transactions and show that
-onchain balances match the named accounting buckets. Show Reactive separately only if a public destination callback
-exists.
+Stop.
 
 ## Failure-safe fallback
 
-- If a network is slow, use the deterministic local replay and show previously verified public transactions.
-- If an observation is stale or rejected, explain that expiry returns the complete provisional surcharge.
-- If Reactive does not deliver, say so plainly; Circle is sufficient and Reactive is not in the critical path.
-- If the hosted application is unavailable, run the same repository-owned flow locally.
-- Never invent a hash or manually bypass the authenticated settlement boundary to rescue a demo.
+- If the network is slow, show the loaded trade and verified public receipts.
+- If evidence is stale or absent, explain that permissionless expiry returns the full provisional charge.
+- If Reactive does not deliver, show the implemented lifecycle tests and the public pulse/subscription, then state the
+  callback boundary plainly.
+- Never invent a transaction hash or bypass the authenticated settlement boundary to rescue the demo.

@@ -44,16 +44,21 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
   assert.match(html, /Connect wallet/);
   assert.match(html, /Testnet only/);
   assert.match(html, /Same market\. Different information\./);
-  assert.match(html, /Outcome → observation → settlement/);
-  assert.match(html, /One canonical observation\. Two independent delivery paths\./);
-  assert.match(html, /Reactive Network · sponsor path/);
-  assert.match(html, /Event-driven callback accelerator/);
-  assert.match(html, /Turn a verified observation into cross-chain action\./);
-  assert.match(html, /Automation without custody/);
+  assert.match(html, /The interface explains the trade\. The contracts decide it\./);
+  assert.match(html, /Every terminal number is read from the deployed hook\./);
+  assert.match(html, /Swap → mature → react → allocate/);
+  assert.match(html, /Four planes\. One outcome-priced hook\./);
+  assert.match(html, /Essential for autonomous no-keeper mode/);
+  assert.match(html, /No Reactive, no autonomous MARKOUT\./);
+  assert.match(html, /Essential automation plane/);
+  assert.match(html, /Full lifecycle engine \+ 17 tests/);
   assert.match(html, /Exact publisher subscription/);
   assert.match(html, /Public Unichain callback/);
   assert.match(html, /Not observed/);
   assert.match(html, /0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e/);
+  assert.match(html, /768 trades · \$1\.999M per policy/);
+  assert.match(html, /SplitMix64 seed · 20260825/);
+  assert.match(html, /40% lower fee/);
   assert.match(html, /The honest regression/);
   assert.match(html, /Four lifecycles\. Both settlement extremes\./);
   assert.match(html, /4<\/b> public end-to-end lifecycles/);
@@ -104,7 +109,9 @@ test("removes starter metadata and keeps deterministic evidence explicit", async
   assert.match(testnet, /MARKOUT_BASE_FEE_BPS = 18/);
   assert.match(testnet, /MARKOUT_POOL_FEE = 1800/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
-  assert.match(css, /\.transport-reactive/);
+  assert.match(css, /\.plane-reactive/);
+  assert.match(css, /\.frontend-stage-grid/);
+  assert.match(css, /\.research-protocol/);
   assert.match(css, /\.reactive-proof-card/);
 
   await assert.rejects(

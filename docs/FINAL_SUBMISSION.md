@@ -38,10 +38,11 @@ providers.
 AMMs normally price a trade before they know whether its order flow was harmful. Volatility fees can protect liquidity
 providers, but they also charge benign and inventory-improving flow. MARKOUT instead escrows a bounded provisional
 surcharge, waits for a configured markout horizon, and settles the charge from signed directional evidence. Pyth
-verifies the delayed reference price. Circle CCTP V2 carries the primary authenticated observation from Ethereum
-Sepolia to Unichain Sepolia. An optional stateless Reactive contract can mirror the same observation, while an
-immutable coordinator ensures the first valid delivery wins and later duplicates are harmless. If no valid observation
-arrives, permissionless expiry returns the full surcharge.
+verifies the delayed reference price. Reactive Network is the intended no-keeper control plane: observe trade
+requests, track maturity, accept reference evidence, request authenticated settlement, retry, acknowledge, or expire.
+Circle CCTP V2 is the publicly proven redundant delivery rail from Ethereum Sepolia to Unichain Sepolia. An immutable
+coordinator ensures the first valid delivery wins and later duplicates are harmless. If no valid observation arrives,
+permissionless expiry returns the full surcharge.
 
 Four public trades now prove both allocation extremes and independently reproduce the rebate branch through the
 browser wallet console. A negative-markout trade settled through Circle in 38 seconds
@@ -60,18 +61,22 @@ keeps good-flow fees at or below 30 bps while retaining at least 20% modeled LP-
 
 Select **Reactive Network**, **Circle**, and **Pyth** if those names are present in the form's partner picker.
 
-MARKOUT's Reactive integration is an event-driven settlement accelerator, not a logo-level dependency. A funded,
-debt-free legacy RSC is deployed with an exact subscription to the canonical Pyth-verified publisher event. When that
-event is observed, the pulse is designed to forward only `(marketId, tradeId, priceX18, observedAt, confidenceBps)`
-through a callback-proxy- and RVM-authenticated Unichain receiver. It owns no custody, oracle, scheduler database,
-fee authority, recipient choice, or upgrade surface.
+MARKOUT's Reactive integration is the intended autonomous lifecycle engine, not a logo-level dependency. The full
+engine uses five narrow subscriptions across hook requests, terminal acknowledgements, reference evidence, and cron;
+bounded processing tracks maturity, requests sampling, retries settlement or expiry callbacks, and stops after an
+acknowledged terminal state. Seventeen dedicated lifecycle tests cover these behaviors. The engine owns no custody,
+price discretion, fee authority, recipient choice, or upgrade surface.
 
-Reactive races Circle at one immutable coordinator: the first valid observation settles and the second becomes a
-successful no-op, so Reactive can improve liveness without becoming a safety dependency. Tests prove Circle-first and
-Reactive-first equivalence, malformed callback rejection, and zero effect on the expiry guarantee. The pulse
-deployment and subscription are public. Because the live relayer has not produced a public Unichain callback,
-MARKOUT labels `reactiveLive` false rather than overstating sponsor evidence. Circle CCTP V2 remains the primary proven
-transport and has completed four public end-to-end lifecycles.
+A funded, debt-free legacy RSC is also publicly deployed with an exact subscription to the canonical Pyth-verified
+publisher event. Its callback carries only `(marketId, tradeId, priceX18, observedAt, confidenceBps)` through a
+callback-proxy- and RVM-authenticated Unichain receiver.
+
+Reactive and Circle meet at one immutable coordinator: the first valid observation settles and the second becomes a
+successful no-op. Circle supplies redundant authenticated delivery; Reactive supplies the broader no-keeper maturity,
+retry, acknowledgement, and expiry orchestration. Tests prove either delivery order, malformed callback rejection,
+and zero effect on the full-refund guarantee. The pulse deployment and subscription are public. Because the live
+relayer has not produced a public Unichain callback, MARKOUT labels `reactiveLive` false rather than overstating
+sponsor evidence. Circle CCTP V2 has completed four public end-to-end fallback lifecycles.
 
 ## Exact long-form answers
 
@@ -99,18 +104,18 @@ not claimed results.
 
 The hardest work was preserving Uniswap v4 delta accounting while escrowing a provisional surcharge, normalizing a
 fresh signed Pyth price inside a short settlement window, and authenticating asynchronous delivery without giving a
-relayer economic authority. Reactive Network's public callback path did not deliver during bounded acceptance tests,
-so the architecture was reduced to a Circle-primary, Reactive-optional topology behind an immutable coordinator. A
-stale first observation and a Pyth endpoint/contract migration mismatch were both rejected safely; the final direct
-relay completed inside the freshness bound. Those failures became explicit threat-model and runbook evidence instead
-of being hidden.
+relayer economic authority. Reactive Network's public callback path did not deliver during bounded acceptance tests.
+Instead of removing Reactive from the contribution, MARKOUT separates the implemented autonomous control plane from
+the publicly proven Circle fallback behind an immutable coordinator. A stale first observation and a Pyth
+endpoint/contract migration mismatch were both rejected safely; the final direct relay completed inside the freshness
+bound. Those failures became explicit threat-model and runbook evidence instead of being hidden.
 
 ## Why it is different
 
 - Prices realized directional outcomes instead of charging the entire market for volatility.
 - Makes benign and inventory-improving flow cheaper than a fixed 30 bps pool in the declared Fair-Flow profile.
 - Keeps custody, maturity validation, settlement mathematics, and fail-open expiry inside the hook boundary.
-- Uses Circle as the reliable primary transport while preserving Reactive as an optional accelerator.
+- Uses Reactive as the intended no-keeper lifecycle engine and Circle as redundant, publicly proven delivery.
 - Makes at-least-once delivery safe through immutable authentication and idempotent terminal settlement.
 - Reports the research metric honestly as an adverse-selection proxy, not exact LVR or individual LP profit.
 
@@ -167,14 +172,14 @@ The final form requires the GitHub repository to be public before its confirmati
 | Unichain Sepolia | Fair-Flow settlement coordinator | `0x7BC38f019D5F3000c15C9E5309dFB1e7f361cb6e` |
 | Unichain Sepolia | Fair-Flow Circle receiver | `0x24858E73A18f1A4537897DD2d04417a7a24b8f68` |
 | Unichain Sepolia | Fair-Flow MARKOUT hook | `0x3A17354331C21B246A9eC9BF979Af77e64f30044` |
-| Legacy Lasna | Optional Reactive pulse | `0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e` |
+| Legacy Lasna | Deployed Reactive observation pulse | `0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e` |
 
 ## Suggested four-minute demo
 
 1. Explain why volatility cannot identify which realized trades were harmful.
 2. Replay benign, informed, and inventory-improving outcomes in the dashboard.
 3. Show the seeded comparison, the 18 bps selection rule, and accounting-conservation evidence.
-4. Explain Circle-primary, Reactive-optional delivery and fail-open expiry.
+4. Explain Reactive lifecycle orchestration, Circle fallback delivery, and fail-open expiry.
 5. Open the four Pyth/Circle lifecycle records, including the Fair-Flow 18 bps settlement and claim.
 6. Close with the measured 38/67/67/55-second public lifecycles and both demonstrated allocation extremes: 100%
    rebated and 100% retained for LP protection.
@@ -184,7 +189,8 @@ The final form requires the GitHub repository to be public before its confirmati
 - Testnet prototype; not independently audited and not suitable for real funds.
 - The demo uses ETH/USD as an ETH/USDC reference proxy.
 - Circle uses fast-confirmed finality to fit the bounded settlement window.
-- The optional Reactive pulse is deployed and subscribed, but no successful public Unichain callback is claimed.
+- The Reactive lifecycle is implemented and tested; the deployed pulse is subscribed, but no successful public
+  Unichain callback is claimed.
 - The LP protection reserve distribution mechanism is intentionally outside this prototype.
 - The Fair-Flow pool has one public complete-rebate lifecycle; the original pool remains the public proof for the
   full-retention branch.

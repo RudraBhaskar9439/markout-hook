@@ -16,9 +16,10 @@ Cloudflare Worker-compatible React application built with vinext and the Sites V
 - The interface links four public Pyth/Circle lifecycles and three claimed rebates from the dated manifests.
 - The public evidence contrasts both allocation extremes: three 100% rebates after negative markout and 100% retained
   for LP protection after positive markout.
-- The architecture diagram and dedicated sponsor section foreground Reactive's exact subscription, autonomous callback
-  intent, minimal payload, authenticated receiver, and order-independent race with Circle.
-- Reactive remains visibly optional and is not labeled live without a public destination callback.
+- The separated architecture gives Frontend, Unichain, Ethereum/Pyth, and Reactive Network distinct responsibility
+  blocks, with Reactive foregrounded as the intended no-keeper lifecycle engine.
+- The sponsor section distinguishes the fully implemented/tested Reactive lifecycle from the deployed legacy pulse;
+  neither is falsely labeled live without a public destination callback.
 - Wallet signing uses the injected EIP-1193 provider. Private keys and Pyth credentials are never collected or bundled.
 - Active trade and public transaction hashes are stored only in browser local storage so an interrupted relay can resume.
 - There is no database, upload surface, server-side signer, or privileged protocol operation in this application.

@@ -49,7 +49,7 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: { canonical: origin },
     openGraph: {
       title: "MARKOUT — Fees should follow outcomes, not fear.",
-      description: "Outcome-priced liquidity for Uniswap v4 with Circle-primary, Reactive-optional settlement.",
+      description: "Outcome-priced liquidity with Reactive lifecycle automation and Circle-proven fallback delivery.",
       type: "website",
       url: origin,
       images: [{ url: imageUrl, width: 1200, height: 630, alt: "MARKOUT outcome-priced liquidity" }],

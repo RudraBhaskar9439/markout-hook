@@ -52,6 +52,7 @@ MARKOUT is an experimental hackathon prototype, not audited production software.
 - [Live testnet console instructions](web/README.md#local-use)
 - [Phase 8 verification guide](docs/PHASE_8_VERIFICATION.md)
 - [Judge demo script](docs/DEMO_SCRIPT.md)
+- [Judge presentation playbook](docs/PRESENTATION_PLAYBOOK.md)
 - [Copy-ready final submission](docs/FINAL_SUBMISSION.md)
 - [Final submission checklist](docs/SUBMISSION_CHECKLIST.md)
 - [Phase 9 draft verification guide](docs/PHASE_9_DRAFT_VERIFICATION.md)

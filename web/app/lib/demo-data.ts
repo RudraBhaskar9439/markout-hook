@@ -110,22 +110,22 @@ export const timelineBase = [
   {
     label: "Swap executes",
     detail: "Uniswap v4 collects a 50 bps provisional surcharge inside bounded hook accounting.",
-    tag: "Origin",
+    tag: "Unichain",
   },
   {
     label: "Outcome window",
-    detail: "The immutable trade matures after five minutes. Publishing early cannot bypass hook validation.",
+    detail: "The immutable trade matures after five minutes. Reactive observes the request; early evidence still fails hook validation.",
     tag: "Hook",
   },
   {
-    label: "Reference attested",
-    detail: "Pyth verifies the price update and Circle attests the normalized observation for Unichain.",
-    tag: "Pyth + Circle",
+    label: "Reference published",
+    detail: "Pyth verifies one normalized price, timestamp, confidence, market, and trade-bound observation.",
+    tag: "Ethereum + Pyth",
   },
   {
-    label: "MARKOUT settles",
-    detail: "The coordinator accepts the first valid Circle or optional Reactive delivery, then the hook applies its bounded curve.",
-    tag: "Coordinator",
+    label: "Reactive acts",
+    detail: "The lifecycle engine requests an authenticated callback, while Circle remains a redundant proven delivery rail.",
+    tag: "Reactive Network",
   },
 ] as const;
 
