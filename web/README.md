@@ -16,6 +16,8 @@ Cloudflare Worker-compatible React application built with vinext and the Sites V
 - The interface links four public Pyth/Circle lifecycles and three claimed rebates from the dated manifests.
 - The public evidence contrasts both allocation extremes: three 100% rebates after negative markout and 100% retained
   for LP protection after positive markout.
+- The architecture diagram and dedicated sponsor section foreground Reactive's exact subscription, autonomous callback
+  intent, minimal payload, authenticated receiver, and order-independent race with Circle.
 - Reactive remains visibly optional and is not labeled live without a public destination callback.
 - Wallet signing uses the injected EIP-1193 provider. Private keys and Pyth credentials are never collected or bundled.
 - Active trade and public transaction hashes are stored only in browser local storage so an interrupted relay can resume.

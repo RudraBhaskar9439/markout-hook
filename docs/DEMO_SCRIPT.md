@@ -54,13 +54,22 @@ net-after-proxy by 21.87%, although volatility earns more by charging good flow 
 
 The metric is a pool-level adverse-selection proxy, not exact LVR or individual LP profit.
 
-### 3:20–4:00 — Resilient settlement and close
+### 3:20–3:45 — Reactive Network automation
 
-“Pyth verifies the delayed price. Circle is the primary authenticated route to Unichain. A tiny stateless Reactive
-Contract can mirror the same event, but it owns no custody, scheduler, oracle, or protocol state. The first valid
-delivery wins; duplicate delivery is harmless; and if infrastructure fails, anyone can expire the trade so the trader
-receives the full surcharge back. MARKOUT turns LP protection from a fear-based prediction into outcome-based
-settlement.”
+“Reactive is MARKOUT's event-driven accelerator. The deployed RSC subscribes to the exact Pyth-verified publisher
+event and is designed to turn it into an authenticated Unichain callback without a keeper, custody, fee authority, or
+trade database. It carries only the canonical observation. Reactive and Circle race at one coordinator: first valid
+delivery wins and the duplicate is harmless. This is automation without adding another trusted operator.”
+
+Show the dedicated Reactive section: deployed pulse, funded state, exact subscription, authenticated receiver, and
+race tests. Then state the boundary in one sentence: “The public destination callback has not been observed, so we do
+not label Reactive live.”
+
+### 3:45–4:00 — Public proof and close
+
+“Circle is the proven primary route today. If either transport delivers, the same hook checks the observation; if
+neither delivers, permissionless expiry returns the full surcharge. MARKOUT turns LP protection from a fear-based
+prediction into outcome-based settlement.”
 
 Clarify that the first three public lifecycles use the original 30 + 50 bps deployment, while the fourth uses the
 separately deployed 18 + 50 bps Fair-Flow pool. The first live proof used a 46-second-old observation, settled in 38 seconds, and

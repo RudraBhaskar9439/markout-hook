@@ -45,6 +45,15 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
   assert.match(html, /Testnet only/);
   assert.match(html, /Same market\. Different information\./);
   assert.match(html, /Outcome → observation → settlement/);
+  assert.match(html, /One canonical observation\. Two independent delivery paths\./);
+  assert.match(html, /Reactive Network · sponsor path/);
+  assert.match(html, /Event-driven callback accelerator/);
+  assert.match(html, /Turn a verified observation into cross-chain action\./);
+  assert.match(html, /Automation without custody/);
+  assert.match(html, /Exact publisher subscription/);
+  assert.match(html, /Public Unichain callback/);
+  assert.match(html, /Not observed/);
+  assert.match(html, /0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e/);
   assert.match(html, /The honest regression/);
   assert.match(html, /Four lifecycles\. Both settlement extremes\./);
   assert.match(html, /4<\/b> public end-to-end lifecycles/);
@@ -61,7 +70,6 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
   assert.match(html, /0xd78f8533519c4468ac345f0caad52a8eb5c57ee904fc5882eb9066ee16b1b9d8/);
   assert.match(html, /0xb1bd16c88d71fbb737cbaa20ed9002dd7bd7098d1c17ac11ab3c7f9ed01c0c4d/);
   assert.match(html, /0x996ae7697b54ea67df0fbd3eb9ded1163d3a3df1d272bdcc7260ee18597b5f70/);
-  assert.match(html, /One outcome\. Two transport paths\./);
   assert.match(html, /aria-label="MARKOUT settlement receipt"/);
   assert.match(html, /aria-label="Choose an order-flow outcome"/);
   assert.match(html, /aria-labelledby="testnet-title"/);
@@ -96,6 +104,8 @@ test("removes starter metadata and keeps deterministic evidence explicit", async
   assert.match(testnet, /MARKOUT_BASE_FEE_BPS = 18/);
   assert.match(testnet, /MARKOUT_POOL_FEE = 1800/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
+  assert.match(css, /\.transport-reactive/);
+  assert.match(css, /\.reactive-proof-card/);
 
   await assert.rejects(
     access(new URL("app/_sites-preview", templateRoot)),

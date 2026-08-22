@@ -60,11 +60,18 @@ keeps good-flow fees at or below 30 bps while retaining at least 20% modeled LP-
 
 Select **Reactive Network**, **Circle**, and **Pyth** if those names are present in the form's partner picker.
 
-MARKOUT uses Pyth to verify and normalize a signed delayed reference observation on Ethereum Sepolia. Circle CCTP V2
-generic messaging is the primary authenticated transport to Unichain Sepolia and has completed four public swap →
-observation → attestation → settlement lifecycles. A funded legacy Reactive Network pulse is deployed and exactly
-subscribed to the same publisher event as an optional second transport; because no public destination callback has
-been observed, MARKOUT does not claim that Reactive delivery is live.
+MARKOUT's Reactive integration is an event-driven settlement accelerator, not a logo-level dependency. A funded,
+debt-free legacy RSC is deployed with an exact subscription to the canonical Pyth-verified publisher event. When that
+event is observed, the pulse is designed to forward only `(marketId, tradeId, priceX18, observedAt, confidenceBps)`
+through a callback-proxy- and RVM-authenticated Unichain receiver. It owns no custody, oracle, scheduler database,
+fee authority, recipient choice, or upgrade surface.
+
+Reactive races Circle at one immutable coordinator: the first valid observation settles and the second becomes a
+successful no-op, so Reactive can improve liveness without becoming a safety dependency. Tests prove Circle-first and
+Reactive-first equivalence, malformed callback rejection, and zero effect on the expiry guarantee. The pulse
+deployment and subscription are public. Because the live relayer has not produced a public Unichain callback,
+MARKOUT labels `reactiveLive` false rather than overstating sponsor evidence. Circle CCTP V2 remains the primary proven
+transport and has completed four public end-to-end lifecycles.
 
 ## Exact long-form answers
 

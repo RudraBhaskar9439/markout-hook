@@ -255,6 +255,174 @@ function SettlementTimeline({ selected }: { selected: FlowId }) {
   );
 }
 
+function ArchitectureDiagram() {
+  return (
+    <section className="architecture-section" id="architecture" aria-labelledby="architecture-title">
+      <div className="architecture-heading">
+        <div>
+          <p className="kicker">Hybrid architecture</p>
+          <h2 id="architecture-title">One canonical observation. Two independent delivery paths.</h2>
+        </div>
+        <p className="section-lede">
+          The hook owns funds and economics. Pyth owns price verification. Circle and Reactive compete only to deliver
+          the same normalized observation; neither transport can alter the allocation rule.
+        </p>
+      </div>
+
+      <div className="architecture-map" aria-label="MARKOUT hybrid settlement architecture">
+        <article className="architecture-node architecture-source">
+          <span className="architecture-index">01 · UNICHAIN SEPOLIA</span>
+          <strong>Uniswap v4 swap + MARKOUT escrow</strong>
+          <p>The hook records direction and execution price, then holds a bounded 50 bps provisional charge.</p>
+        </article>
+
+        <div className="architecture-arrow" aria-hidden="true"><span>Five-minute outcome window</span><b>↓</b></div>
+
+        <article className="architecture-node architecture-publisher">
+          <span className="architecture-index">02 · ETHEREUM SEPOLIA</span>
+          <strong>Pyth-verified canonical observation</strong>
+          <p>The publisher normalizes price, timestamp, confidence, market, and trade ID once for both transports.</p>
+        </article>
+
+        <div className="architecture-arrow architecture-fork" aria-hidden="true"><span>One event · two routes</span><b>↓</b></div>
+
+        <div className="transport-grid">
+          <article className="transport-card transport-reactive">
+            <div className="transport-card-topline">
+              <span className="transport-badge">Reactive Network · sponsor path</span>
+              <span className="transport-state transport-state-verified">Pulse deployed</span>
+            </div>
+            <h3>Event-driven callback accelerator</h3>
+            <p>
+              A funded legacy RSC holds an exact subscription to the publisher event and is designed to forward its
+              immutable payload through an authenticated Unichain callback—without a keeper or trade database.
+            </p>
+            <div className="transport-route" aria-label="Reactive delivery route">
+              <span>Publisher event</span><b>→</b><span>ReactVM</span><b>→</b><span>Callback proxy</span>
+            </div>
+          </article>
+
+          <article className="transport-card transport-circle">
+            <div className="transport-card-topline">
+              <span className="transport-badge">Circle · proven primary</span>
+              <span className="transport-state transport-state-live">4 live relays</span>
+            </div>
+            <h3>Attested generic message</h3>
+            <p>Circle signs the application message; any relayer may submit it to the authenticated receiver.</p>
+            <div className="transport-route" aria-label="Circle delivery route">
+              <span>Message</span><b>→</b><span>Attestation</span><b>→</b><span>Receiver</span>
+            </div>
+          </article>
+        </div>
+
+        <div className="coordinator-merge">
+          <span>RACE-SAFE MERGE</span>
+          <strong>SettlementCoordinator · first valid delivery wins</strong>
+          <small>Later delivery becomes a successful no-op</small>
+        </div>
+
+        <article className="architecture-node architecture-destination">
+          <span className="architecture-index">03 · MARKOUT HOOK</span>
+          <strong>Re-validate → compute directional markout → allocate</strong>
+          <p>Return the surcharge to good flow or retain the justified portion as LP protection.</p>
+        </article>
+
+        <div className="architecture-failsafe">
+          <span>NO VALID DELIVERY?</span>
+          <strong>Permissionless expiry returns the entire provisional charge.</strong>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ReactiveNetworkSection() {
+  const capabilities = [
+    {
+      index: "01",
+      title: "Observe once",
+      copy: "The RSC subscribes to one exact publisher and event signature instead of maintaining its own oracle or sampler.",
+    },
+    {
+      index: "02",
+      title: "React autonomously",
+      copy: "A matching source event is enough to construct the destination callback; no MARKOUT operator chooses which trade to forward.",
+    },
+    {
+      index: "03",
+      title: "Carry minimal state",
+      copy: "Only market, trade, normalized price, observation time, and confidence cross the boundary—never custody or fee authority.",
+    },
+    {
+      index: "04",
+      title: "Accelerate safely",
+      copy: "Reactive may beat Circle to settlement, while coordinator idempotency makes either arrival order economically identical.",
+    },
+  ];
+
+  return (
+    <section className="reactive-section" id="reactive" aria-labelledby="reactive-title">
+      <div className="reactive-heading">
+        <div>
+          <p className="kicker">Reactive Network integration</p>
+          <h2 id="reactive-title">Turn a verified observation into cross-chain action.</h2>
+        </div>
+        <div className="reactive-prize-chip">
+          <span>Sponsor thesis</span>
+          <strong>Automation without custody</strong>
+        </div>
+      </div>
+
+      <div className="reactive-stage-grid">
+        {capabilities.map((capability) => (
+          <article key={capability.index}>
+            <span>{capability.index}</span>
+            <strong>{capability.title}</strong>
+            <p>{capability.copy}</p>
+          </article>
+        ))}
+      </div>
+
+      <div className="reactive-proof-layout">
+        <div className="reactive-value-copy">
+          <p className="kicker">Why Reactive matters here</p>
+          <h3>The RSC is an execution trigger, not another trusted protocol operator.</h3>
+          <p>
+            MARKOUT demonstrates a narrow Reactive pattern judges can reuse: observe an authenticated source event,
+            transport the exact payload, and trigger a destination action behind independent validation. The RSC has
+            no custody, pricing discretion, scheduling database, upgrade key, or ability to select a rebate recipient.
+          </p>
+          <div className="reactive-boundary-strip">
+            <span>Event automation</span><b>✓</b>
+            <span>Cross-chain callback</span><b>✓</b>
+            <span>Custody</span><b>×</b>
+            <span>Fee authority</span><b>×</b>
+          </div>
+        </div>
+
+        <aside className="reactive-proof-card" aria-label="Reactive Network public evidence status">
+          <p className="kicker">Public evidence boundary</p>
+          <ul>
+            <li data-status="verified"><span>Legacy Lasna pulse deployed</span><b>Verified</b></li>
+            <li data-status="verified"><span>Funded and debt-free</span><b>Verified</b></li>
+            <li data-status="verified"><span>Exact publisher subscription</span><b>Verified</b></li>
+            <li data-status="verified"><span>Authenticated receiver + race tests</span><b>Verified</b></li>
+            <li data-status="pending"><span>Public Unichain callback</span><b>Not observed</b></li>
+          </ul>
+          <div className="reactive-proof-actions">
+            <a href="https://lasna.reactscan.net/address/0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e" target="_blank" rel="noreferrer">Inspect Reactive pulse ↗</a>
+            <a href="https://lasna.reactscan.net/tx/0xdd2af7d35c3f73aa4d667631ff6062053636e6c098e16cfb620205e3481164c6" target="_blank" rel="noreferrer">Deployment receipt ↗</a>
+          </div>
+          <p className="reactive-honesty-note">
+            The integration is deployed and subscribed, but MARKOUT does not label Reactive delivery live until a
+            destination callback is publicly visible.
+          </p>
+        </aside>
+      </div>
+    </section>
+  );
+}
+
 function ResearchEvidence() {
   const maxLpNet = Math.max(...policyResults.map((result) => result.lpNet));
   return (
@@ -379,6 +547,8 @@ export function MarkoutDashboard() {
           <a href="#testnet">Live testnet</a>
           <a href="#compare">Compare</a>
           <a href="#mechanism">Mechanism</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#reactive">Reactive</a>
           <a href="#evidence">Evidence</a>
         </nav>
         <span className="testnet-status"><i /> Circle live · Reactive optional</span>
@@ -439,8 +609,8 @@ export function MarkoutDashboard() {
           <FlowSelector selected={selected} onChange={setSelected} />
         </div>
         <p className="section-lede">
-          <b>Fair-Flow release candidate:</b> 18 bps base + refundable 50 bps surcharge. The live console above stays
-          connected to the proven 30 + 50 bps deployment until a separate candidate pool is explicitly deployed.
+          <b>Live Fair-Flow pool:</b> 18 bps base + refundable 50 bps surcharge. The console and public lifecycle above
+          use the separately deployed Fair-Flow hook; original 30 + 50 bps evidence remains independently linked.
         </p>
         <div className="comparison-layout">
           <OutcomeComparison selected={selected} />
@@ -449,23 +619,9 @@ export function MarkoutDashboard() {
       </section>
 
       <SettlementTimeline key={selected} selected={selected} />
+      <ArchitectureDiagram />
+      <ReactiveNetworkSection />
       <ResearchEvidence />
-
-      <section className="architecture-section" aria-labelledby="architecture-title">
-        <div>
-          <p className="kicker">System boundary</p>
-          <h2 id="architecture-title">One outcome. Two transport paths.</h2>
-        </div>
-        <div className="architecture-flow">
-          <div><span>01</span><strong>Uniswap v4</strong><small>Swap + escrow</small></div>
-          <b>→</b>
-          <div><span>02</span><strong>Pyth + Circle</strong><small>Verify + attest</small></div>
-          <b>→</b>
-          <div><span>03</span><strong>MARKOUT curve</strong><small>Bounded allocation</small></div>
-          <b>→</b>
-          <div><span>04</span><strong>Coordinator</strong><small>First valid delivery</small></div>
-        </div>
-      </section>
 
       <footer>
         <div>
