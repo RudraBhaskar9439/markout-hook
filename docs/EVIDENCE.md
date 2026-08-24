@@ -17,6 +17,25 @@ MARKOUT separates facts by strength so the submission never turns a model result
 4. **Not yet proven:** that MARKOUT attracts incremental liquidity, changes routed volume, or improves market share.
    Fair-Flow's fee-only comparison does not require those assumptions, but real all-in execution still does.
 
+## Reactive liveness recheck — August 24, 2026
+
+MARKOUT repeated both public Reactive probes with fresh Ethereum Sepolia events. The complete machine-readable record is
+[`deployments/reactive-recheck-2026-08-24.json`](../deployments/reactive-recheck-2026-08-24.json).
+
+- The Ethereum Sepolia canary emitted request `4` in
+  [transaction `0x291f…cbd4`](https://sepolia.etherscan.io/tx/0x291f015e805ef184141a82d8adb4dc9635f1a7df10afdb115d84ca212a1ecbd4).
+  After 809 seconds and through Lasna Omni block `5,071,680`, the funded scheduler had emitted no fresh
+  `CanaryCallbackRequested` event and the destination still reported `callbackReceived(4) == false`.
+- The canonical Pyth/Circle publisher emitted a matching `ObservationPublished` event for the funded legacy MARKOUT
+  pulse in [transaction `0xb925…d7ba`](https://sepolia.etherscan.io/tx/0xb925f88dd97434f32ac01a518410757603517fefb5111e63b0a12e5d38b6d7ba).
+  After 473 seconds, no fresh `ObservationPulseRequested`, callback-proxy transaction, or
+  `ReactiveObservationReceived` event was observable.
+- Both Reactive RPCs continued producing blocks, deployed bytecode and immutable configuration remained readable, the
+  hybrid public-network preflight passed, and Reactive-side service debt was zero.
+
+This recheck does not support declaring the Reactive path live. The implementation and local lifecycle evidence remain
+valid, but public settlement continues to rely on the proven Circle fallback until a destination callback is visible.
+
 ## Public onchain evidence
 
 The dated [deployment manifest](../deployments/hybrid-2026-08-21.json) is machine-readable and can be rechecked with

@@ -127,8 +127,8 @@
           </mxGeometry>
         </mxCell>
 
-        <mxCell id="outcome-title" value="&lt;font color=&quot;#78F59A&quot;&gt;&lt;b&gt;ONE TRADE, THREE SAFE OUTCOMES&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="60" y="635" width="400" height="30" as="geometry"/>
+        <mxCell id="outcome-title" value="&lt;font color=&quot;#78F59A&quot;&gt;&lt;b&gt;SETTLEMENT PRODUCES ONE OF THREE SAFE OUTCOMES ↓&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="560" y="635" width="800" height="30" as="geometry"/>
         </mxCell>
         <mxCell id="outcome1" value="&lt;font color=&quot;#78F59A&quot; style=&quot;font-size: 17px;&quot;&gt;&lt;b&gt;FAIR FLOW&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#DDF7E3&quot; style=&quot;font-size: 14px;&quot;&gt;Refund → effective fee can fall to 18 bps&lt;/font&gt;" style="rounded=1;arcSize=7;whiteSpace=wrap;html=1;fillColor=#12331F;strokeColor=#43A866;strokeWidth=2;align=center;" vertex="1" parent="1">
           <mxGeometry x="60" y="690" width="470" height="100" as="geometry"/>

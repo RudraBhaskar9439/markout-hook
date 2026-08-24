@@ -82,6 +82,8 @@ the provisional amount refundable.
 - Full Reactive lifecycle engine: implemented and covered by 17 focused tests.
 - Legacy Reactive pulse: deployed, funded, and subscribed to the canonical publisher event.
 - Reactive-to-Unichain public callback: **not yet observed** and therefore not claimed as live evidence.
+- August 24 liveness recheck: two fresh source events produced no observable Reactive destination callback; see the
+  [machine-readable probe](deployments/reactive-recheck-2026-08-24.json).
 - Circle fallback: four public end-to-end Pyth → Circle → Unichain settlements completed.
 
 This distinction is intentional: the repository demonstrates the complete autonomous design without overstating the
@@ -253,7 +255,7 @@ They do not broadcast transactions or require a private key.
 | Research and evidence | [Experiment](experiments/README.md) · [Evidence ledger](docs/EVIDENCE.md) · [Fair-Flow profile](docs/FAIR_FLOW.md) |
 | Security | [Threat model](docs/THREAT_MODEL.md) · [Static analysis](docs/STATIC_ANALYSIS.md) |
 | Demo and submission | [Demo script](docs/DEMO_SCRIPT.md) · [Presentation playbook](docs/PRESENTATION_PLAYBOOK.md) · [Final submission draft](docs/FINAL_SUBMISSION.md) |
-| Architecture assets | [Editable Draw.io](docs/diagrams/MARKOUT_VIDEO_ARCHITECTURE.drawio) · [Video narration](docs/VIDEO_ARCHITECTURE_NARRATION.md) |
+| Architecture assets | [Editable Draw.io](docs/diagrams/MARKOUT_VIDEO_ARCHITECTURE.drawio) · [4K PNG](docs/diagrams/MARKOUT_VIDEO_ARCHITECTURE_4K.png) · [PDF](docs/diagrams/MARKOUT_VIDEO_ARCHITECTURE.pdf) · [Video narration](docs/VIDEO_ARCHITECTURE_NARRATION.md) |
 
 ## Limitations
 
