@@ -14,7 +14,11 @@ provisional amount between a trader rebate and LP protection.
 > **UHI10 theme:** Sustainable Liquidity and MEV Protection<br>
 > **Status:** Experimental testnet prototype. Not audited and not suitable for real funds.
 
-![MARKOUT architecture](docs/diagrams/MARKOUT_VIDEO_ARCHITECTURE.png)
+![MARKOUT complete architecture](docs/diagrams/MARKOUT_ARCHITECTURE_OVERVIEW.png)
+
+[Editable Draw.io architecture](docs/diagrams/MARKOUT_ARCHITECTURE.drawio) ·
+[4K video export](docs/diagrams/MARKOUT_COMPLETE_ARCHITECTURE_4K.png) ·
+[PDF export](docs/diagrams/MARKOUT_COMPLETE_ARCHITECTURE.pdf)
 
 ## The problem
 
@@ -84,7 +88,7 @@ the provisional amount refundable.
 - Reactive-to-Unichain public callback: **not yet observed** and therefore not claimed as live evidence.
 - August 24 liveness recheck: two fresh source events produced no observable Reactive destination callback; see the
   [machine-readable probe](deployments/reactive-recheck-2026-08-24.json).
-- Circle fallback: four public end-to-end Pyth → Circle → Unichain settlements completed.
+- Circle resilience rail: four public end-to-end Pyth → Circle → Unichain settlements completed.
 
 This distinction is intentional: the repository demonstrates the complete autonomous design without overstating the
 current public relayer result.

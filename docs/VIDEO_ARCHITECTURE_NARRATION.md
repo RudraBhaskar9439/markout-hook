@@ -8,7 +8,7 @@ move through it from left to right, then reveal the three outcomes and the resea
 1. Open the live dashboard on the landing section.
 2. Keep the testnet console open in a second tab with the completed Fair-Flow trade loaded:
    `0x0a7e4ba34d430d4a3a8e839ddd652f40d5a7a716d7dd3e959dc33ca49acb262d`.
-3. Open `docs/diagrams/MARKOUT_VIDEO_ARCHITECTURE_4K.png` at fit-to-screen.
+3. Open `docs/diagrams/MARKOUT_COMPLETE_ARCHITECTURE_4K.png` at fit-to-screen.
 4. Keep the Evidence section ready with the four public lifecycle links and the research comparison.
 5. Record at 1080p or higher. Keep browser zoom between 90% and 100%, notifications off, and wallet addresses hidden
    unless they are part of the proof.
@@ -39,8 +39,8 @@ always bounded between 18 and 68 basis points.”
 
 ### 0:51–2:26 — Architecture story
 
-**Show:** Full architecture diagram. Follow boxes 1 through 5 with the cursor. Pause longest on the blue Reactive
-Network block.
+**Show:** Full architecture diagram. Begin at the frontend, then follow numbered stages 1 through 5. Pause longest on
+the separate blue Reactive Network control plane before returning to the Unichain settlement gateway.
 
 **Say:**
 
