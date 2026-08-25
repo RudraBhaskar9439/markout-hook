@@ -88,5 +88,5 @@
     "finalLpProtectionReserve": "0",
     "finalHookTokenBalance": "0"
   },
-  "notes": "This is a separate Fair-Flow deployment. The original 30 + 50 bps pool and its evidence remain unchanged. Reactive delivery is optional and is not claimed live for this topology."
+  "notes": "This is a separate Fair-Flow deployment. The original 30 + 50 bps pool and its evidence remain unchanged. Reactive is the intended autonomous orchestration plane; a public destination callback has not yet been observed for this topology."
 }

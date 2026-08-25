@@ -15,7 +15,7 @@
         <mxCell id="subtitle" value="&lt;font color=&quot;#A6B6AA&quot; style=&quot;font-size: 16px;&quot;&gt;A real Uniswap v4 swap is priced after a 5-minute directional markout — fair flow gets refunded; adverse flow protects LPs.&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
           <mxGeometry x="60" y="90" width="1400" height="35" as="geometry"/>
         </mxCell>
-        <mxCell id="story-label" value="&lt;font color=&quot;#78F59A&quot;&gt;&lt;b&gt;THE 5-STEP STORY&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="story-label" value="&lt;font color=&quot;#78F59A&quot;&gt;&lt;b&gt;AUTONOMOUS 5-STEP LIFECYCLE&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="60" y="150" width="300" height="30" as="geometry"/>
         </mxCell>
 
@@ -70,17 +70,17 @@
         <mxCell id="step4" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#10243A;strokeColor=#58A7FF;strokeWidth=3;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="1140" y="180" width="310" height="310" as="geometry"/>
         </mxCell>
-        <mxCell id="step4-system" value="&lt;font color=&quot;#8AC5FF&quot;&gt;&lt;b&gt;REACTIVE NETWORK&lt;/b&gt;&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#183C5D;strokeColor=none;align=center;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="1165" y="205" width="160" height="30" as="geometry"/>
+        <mxCell id="step4-system" value="&lt;font color=&quot;#8AC5FF&quot;&gt;&lt;b&gt;REACTIVE · CONTROL PLANE&lt;/b&gt;&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#183C5D;strokeColor=none;align=center;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1165" y="205" width="185" height="30" as="geometry"/>
         </mxCell>
         <mxCell id="step4-number" value="&lt;font color=&quot;#8AC5FF&quot; style=&quot;font-size: 28px;&quot;&gt;&lt;b&gt;04&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=right;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
           <mxGeometry x="1355" y="200" width="65" height="40" as="geometry"/>
         </mxCell>
-        <mxCell id="step4-title" value="&lt;font color=&quot;#F0F7FF&quot; style=&quot;font-size: 21px;&quot;&gt;&lt;b&gt;Lifecycle wakes&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="step4-title" value="&lt;font color=&quot;#F0F7FF&quot; style=&quot;font-size: 21px;&quot;&gt;&lt;b&gt;Autonomous orchestration&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
           <mxGeometry x="1170" y="265" width="240" height="40" as="geometry"/>
         </mxCell>
-        <mxCell id="step4-body" value="&lt;font color=&quot;#D3E7FA&quot; style=&quot;font-size: 15px;&quot;&gt;Watches trade + price events&lt;br&gt;Waits until maturity&lt;br&gt;Matches the correct observation&lt;br&gt;Retries or expires safely&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;spacingTop=4;" vertex="1" parent="1">
-          <mxGeometry x="1170" y="320" width="245" height="100" as="geometry"/>
+        <mxCell id="step4-body" value="&lt;font color=&quot;#D3E7FA&quot; style=&quot;font-size: 15px;&quot;&gt;Subscribes to trade + price events&lt;br&gt;Persists pending lifecycle state&lt;br&gt;Wakes at 5-minute maturity&lt;br&gt;Matches the correct observation&lt;br&gt;Retries and triggers settlement&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;spacingTop=4;" vertex="1" parent="1">
+          <mxGeometry x="1170" y="315" width="245" height="115" as="geometry"/>
         </mxCell>
         <mxCell id="step4-note" value="&lt;font color=&quot;#78F59A&quot;&gt;&lt;b&gt;NO PRIVILEGED KEEPER&lt;/b&gt;&lt;/font&gt;" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#143B26;strokeColor=#43A866;align=center;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="1195" y="435" width="200" height="28" as="geometry"/>
@@ -98,7 +98,7 @@
         <mxCell id="step5-title" value="&lt;font color=&quot;#FFF5E9&quot; style=&quot;font-size: 21px;&quot;&gt;&lt;b&gt;Outcome settles&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
           <mxGeometry x="1560" y="282" width="250" height="40" as="geometry"/>
         </mxCell>
-        <mxCell id="step5-body" value="&lt;font color=&quot;#E8D7C4&quot; style=&quot;font-size: 15px;&quot;&gt;Authenticates the callback&lt;br&gt;Computes directional markout&lt;br&gt;Finalizes exactly once&lt;br&gt;&lt;br&gt;Reactive cannot choose the fee.&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;spacingTop=4;" vertex="1" parent="1">
+        <mxCell id="step5-body" value="&lt;font color=&quot;#E8D7C4&quot; style=&quot;font-size: 15px;&quot;&gt;Authenticates the callback&lt;br&gt;Computes directional markout&lt;br&gt;Finalizes exactly once&lt;br&gt;&lt;br&gt;Unichain remains settlement authority.&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;spacingTop=4;" vertex="1" parent="1">
           <mxGeometry x="1560" y="337" width="260" height="115" as="geometry"/>
         </mxCell>
 
@@ -115,10 +115,10 @@
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
 
-        <mxCell id="circle" value="&lt;font color=&quot;#82C4FF&quot;&gt;&lt;b&gt;CIRCLE CCTP FALLBACK&lt;/b&gt;&lt;/font&gt;&lt;font color=&quot;#BEDDF5&quot;&gt; — redundant delivery rail · 4 public end-to-end lifecycles&lt;/font&gt;" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#10283B;strokeColor=#4B9BDB;strokeWidth=2;dashed=1;dashPattern=8 5;align=center;fontSize=13;" vertex="1" parent="1">
+        <mxCell id="circle" value="&lt;font color=&quot;#82C4FF&quot;&gt;&lt;b&gt;CIRCLE CCTP RESILIENCE RAIL&lt;/b&gt;&lt;/font&gt;&lt;font color=&quot;#BEDDF5&quot;&gt; — authenticated secondary delivery · 4 public end-to-end lifecycles&lt;/font&gt;" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#10283B;strokeColor=#4B9BDB;strokeWidth=2;dashed=1;dashPattern=8 5;align=center;fontSize=13;" vertex="1" parent="1">
           <mxGeometry x="780" y="535" width="670" height="60" as="geometry"/>
         </mxCell>
-        <mxCell id="circle-in" value="fallback" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#66B4F2;strokeWidth=2;dashed=1;dashPattern=8 5;fontColor=#82C4FF;fontSize=11;labelBackgroundColor=#07100B;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.25;entryY=0;" edge="1" parent="1" source="step3" target="circle">
+        <mxCell id="circle-in" value="resilience" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#66B4F2;strokeWidth=2;dashed=1;dashPattern=8 5;fontColor=#82C4FF;fontSize=11;labelBackgroundColor=#07100B;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.25;entryY=0;" edge="1" parent="1" source="step3" target="circle">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
         <mxCell id="circle-out" value="same validated settlement" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#66B4F2;strokeWidth=2;dashed=1;dashPattern=8 5;fontColor=#82C4FF;fontSize=11;labelBackgroundColor=#07100B;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0.5;entryY=1;" edge="1" parent="1" source="circle" target="step5">

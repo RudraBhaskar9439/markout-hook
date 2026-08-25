@@ -127,7 +127,8 @@ at 21.8734%. The selection is therefore reproducible and falsifiable rather than
 - Guaranteed trader savings after slippage, gas, rebate delay, or routing effects in every market.
 - Proven incremental liquidity, market share, or volume.
 - Pair-accurate ETH/USDC production markout; the testnet uses ETH/USD as a documented proxy.
-- A live Reactive destination callback. Reactive remains optional until a public callback is observed.
+- A live Reactive destination callback. The autonomous control-plane implementation is complete, but its public
+  destination liveness remains unproven until a callback is observed.
 
 ## Highest-value next experiment
 
