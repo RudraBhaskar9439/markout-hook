@@ -382,11 +382,13 @@ export async function executeTestnetSwap(
   const requested = parseEventLogs({ abi: markoutAbi, eventName: "MarkoutRequested", logs: receipt.logs, strict: false })
     .find((log) => log.address.toLowerCase() === MARKOUT_CONTRACTS.hook.toLowerCase());
   if (!requested) throw new Error("The swap succeeded, but its MARKOUT trade event was not found.");
+  const requestedTradeId = requested.args.tradeId;
+  if (!requestedTradeId) throw new Error("The MARKOUT trade event did not include a trade ID.");
 
   return {
     approvalHash,
     hash,
-    tradeId: requested.args.tradeId,
+    tradeId: requestedTradeId,
     explorerUrl: explorerTransaction(unichainSepolia, hash),
   };
 }
