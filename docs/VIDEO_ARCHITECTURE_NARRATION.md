@@ -14,18 +14,20 @@ detail, and limits the complete architecture diagram to roughly 48 seconds.
 
 Prepare these tabs before recording:
 
-1. Live dashboard hero: `https://markout-uhi10.rbrudra9439.chatgpt.site/`
-2. Testnet console: `https://markout-uhi10.rbrudra9439.chatgpt.site/#testnet`
+1. Live dashboard hero: `https://markout-uhi10.vercel.app/`
+2. Testnet console: `https://markout-uhi10.vercel.app/#testnet`
 3. Completed Fair-Flow trade loaded in the console:
    `0x0a7e4ba34d430d4a3a8e839ddd652f40d5a7a716d7dd3e959dc33ca49acb262d`
 4. Complete architecture at `docs/diagrams/MARKOUT_COMPLETE_ARCHITECTURE_4K.png`
-5. Reactive section: `https://markout-uhi10.rbrudra9439.chatgpt.site/#reactive`
-6. Research evidence: `https://markout-uhi10.rbrudra9439.chatgpt.site/#evidence`
+5. Reactive section: `https://markout-uhi10.vercel.app/#reactive`
+6. Research evidence: `https://markout-uhi10.vercel.app/#evidence`
 7. Terminal or captured test summary showing `188 passed; 0 failed`.
 
-Record the successful swap interaction as a separate clip before assembling the final video. The five-minute maturity
-does not fit inside a four-minute submission, so show the new swap mining, then cut to the already completed and
-publicly verifiable trade.
+Record one continuous raw screen capture for the demo. After the swap mines, hold on the new trade ID and the opening
+countdown for three seconds. Keep the recording running while the trade matures, then continue when roughly five
+seconds remain and complete settlement. In the final edit, remove the middle of the wait and add a one-second title:
+**FIVE MINUTES LATER — SAME TRADE ID**. Keep the trade ID visible immediately before and after the cut. This produces
+one authentic recording while the finished video contains only the beginning and end of the onchain delay.
 
 ## Exact spoken script and shot list
 
@@ -50,19 +52,22 @@ escrows a bounded 50-basis-point provisional amount. After five minutes, signed 
 fair flow receives a rebate, adverse flow funds LP protection, and missing evidence produces a full provisional refund.
 It evaluates outcomes, not identities.”
 
-### 0:47–1:30 — Show that it works
+### 0:47–1:30 — Show that it works, with an honest maturity cut
 
-**Show:** A short clip of a real testnet swap mining. Jump-cut to the completed Fair-Flow trade. Point to the five green
-lifecycle steps, final 18 bps fee, returned amount and explorer links. Briefly show the protection-branch receipt.
+**Show:** The real testnet swap mining, its trade ID and the countdown beginning near five minutes. Hold for three
+seconds. Cut through the middle using **FIVE MINUTES LATER — SAME TRADE ID**, resume around `0:05`, and let the counter
+reach zero. Publish the observation, relay it and show the finalized fee allocation. Point briefly to the explorer
+links and the separate protection-branch receipt. Speed up only network waiting; never remove wallet approvals or
+change the trade ID across the maturity cut.
 
 **Say:**
 
-“This is a real v4 swap on Unichain Sepolia, initiated through the browser wallet. The hook recorded the execution,
-locked the provisional amount and created a unique trade ID. I prepared this completed trade because settlement
-matures after five minutes. A signed delayed Pyth observation was published, authenticated on Unichain and finalized
-exactly once. Its markout was negative, so the trader received the full provisional amount and the final fee fell to
-18 basis points. A separate public lifecycle proves the opposite branch, where the provisional amount was retained
-for LP protection. In total, four public cross-chain lifecycles are linked here.”
+“This is a real v4 swap on Unichain Sepolia. The hook records the execution, locks the 50-basis-point provisional
+amount and creates this trade ID. The observation unlocks after five minutes because an immediate price cannot reveal
+post-trade adverse selection. I’ll cut ahead through the wait—the trade ID remains unchanged. Now the same countdown
+reaches zero. A signed delayed Pyth observation is published and carried to Unichain for authenticated, replay-safe
+settlement. Here the markout is negative, so the provisional amount returns to the trader and the final fee falls to
+18 basis points. Another public lifecycle proves the opposite branch, where adverse flow funds LP protection.”
 
 ### 1:30–2:18 — Explain only the load-bearing architecture
 
@@ -123,7 +128,7 @@ outcome, not by guesswork.”
 | --- | --- | ---: |
 | 0:00–0:25 | Face → hero → comparison | 12 seconds |
 | 0:25–0:47 | Fair-Flow fee mechanism | 22 seconds |
-| 0:47–1:30 | Swap clip → completed lifecycle → protection receipt | 18 seconds |
+| 0:47–1:30 | Swap → countdown start → same-trade maturity cut → settlement | 12 seconds |
 | 1:30–2:18 | Architecture with four deliberate zooms | 14 seconds per zoom |
 | 2:18–2:43 | Tests and security | 13 seconds |
 | 2:43–3:24 | Research evidence, revealed metric by metric | 14 seconds |
@@ -170,6 +175,7 @@ destination transaction, replacing part of the research scene rather than making
 - Hide notifications, bookmarks, wallet balances and every secret or private key.
 - Use a clean microphone; remove long pauses and filler words, but keep natural breathing.
 - Use large burned-in captions with a maximum of two lines.
-- Do not wait five minutes on screen; use an honest jump cut to the completed trade.
+- Record the whole five-minute maturity in the single raw capture, but remove its middle from the final cut.
+- Put **FIVE MINUTES LATER — SAME TRADE ID** on screen for one second and visibly preserve the trade ID across the cut.
 - Never say “exact LP loss,” “guaranteed savings,” “MEV eliminated” or “Reactive callback is live” without evidence.
 - End with the repository and live dashboard visible for at least three seconds.
