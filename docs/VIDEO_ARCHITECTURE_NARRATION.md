@@ -1,145 +1,175 @@
-# MARKOUT — four-minute demo script
+# MARKOUT — full-marks four-minute video plan
 
-This script is designed for one continuous four-minute submission video. The architecture diagram is the visual spine:
-move through it from left to right, then reveal the three outcomes and the research evidence at the bottom.
+## What changes from the Maestro video
 
-## Before recording
+Maestro's strongest score was originality (4.5/5), while presentation was the lowest score (3.5/5). The judge said
+the explanation and flow were good, but the video ran over time and the architecture diagram needed to be reduced to
+key points and flows. The published Maestro video is 5:48 and displays the same dense diagram for nearly its entire
+runtime.
 
-1. Open the live dashboard on the landing section.
-2. Keep the testnet console open in a second tab with the completed Fair-Flow trade loaded:
-   `0x0a7e4ba34d430d4a3a8e839ddd652f40d5a7a716d7dd3e959dc33ca49acb262d`.
-3. Open `docs/diagrams/MARKOUT_COMPLETE_ARCHITECTURE_4K.png` at fit-to-screen.
-4. Keep the Evidence section ready with the four public lifecycle links and the research comparison.
-5. Record at 1080p or higher. Keep browser zoom between 90% and 100%, notifications off, and wallet addresses hidden
-   unless they are part of the proof.
+MARKOUT therefore uses seven short visual scenes, finishes around 3:50, shows working testnet evidence before technical
+detail, and limits the complete architecture diagram to roughly 48 seconds.
 
-## Exact narration and screen direction
+## Recording setup
 
-### 0:00–0:26 — Hook
+Prepare these tabs before recording:
 
-**Show:** Landing page. Keep the project name and one-line mechanism visible.
+1. Live dashboard hero: `https://markout-uhi10.rbrudra9439.chatgpt.site/`
+2. Testnet console: `https://markout-uhi10.rbrudra9439.chatgpt.site/#testnet`
+3. Completed Fair-Flow trade loaded in the console:
+   `0x0a7e4ba34d430d4a3a8e839ddd652f40d5a7a716d7dd3e959dc33ca49acb262d`
+4. Complete architecture at `docs/diagrams/MARKOUT_COMPLETE_ARCHITECTURE_4K.png`
+5. Reactive section: `https://markout-uhi10.rbrudra9439.chatgpt.site/#reactive`
+6. Research evidence: `https://markout-uhi10.rbrudra9439.chatgpt.site/#evidence`
+7. Terminal or captured test summary showing `188 passed; 0 failed`.
 
-**Say:**
+Record the successful swap interaction as a separate clip before assembling the final video. The five-minute maturity
+does not fit inside a four-minute submission, so show the new swap mining, then cut to the already completed and
+publicly verifiable trade.
 
-“A normal AMM charges a trade before it knows whether that trade helped the pool or extracted value from it. That means
-fair traders can subsidize toxic flow, while liquidity providers still absorb adverse selection. MARKOUT changes the
-timing of that decision. It is a Uniswap v4 hook that charges by the observed outcome of a trade, not by guesswork at
-execution.”
+## Exact spoken script and shot list
 
-### 0:26–0:51 — Mechanism in one sentence
+### 0:00–0:25 — The problem
 
-**Show:** Testnet console. Point to the 18 bps base fee and 50 bps provisional amount, then the completed 18 bps result.
-
-**Say:**
-
-“On the Fair-Flow pool, every swap pays an 18-basis-point base fee and temporarily escrows a bounded 50-basis-point
-provisional amount. Five minutes later, MARKOUT compares the execution price with a signed delayed reference price.
-Fair or inventory-improving flow receives a rebate. Adverse flow contributes more to LP protection. The final fee is
-always bounded between 18 and 68 basis points.”
-
-### 0:51–2:26 — Architecture story
-
-**Show:** Full architecture diagram. Begin at the frontend, then follow numbered stages 1 through 5. Pause longest on
-the separate blue Reactive Network control plane before returning to the Unichain settlement gateway.
+**Show:** Your face for three to five seconds, then cut to the landing page and the fixed-versus-MARKOUT comparison.
 
 **Say:**
 
-“Here is the complete lifecycle.
+“Today, a benign trader and an informed arbitrageur can pay the same fee because a pool sets that fee before seeing the
+outcome. Only one extracts value from stale liquidity. Volatility fees adjust to the market, yet still charge everyone.
+MARKOUT asks: what if the final fee were settled after evidence of the trade’s outcome exists?”
 
-Step one: the trader submits a real Uniswap v4 swap on Unichain. The frontend is only an interface; it never supplies
-the settlement price.
+### 0:25–0:47 — The new primitive
 
-Step two: the hook records the execution price, direction, beneficiary, unique trade ID, and a five-minute maturity.
-It escrows the provisional amount and emits a MarkoutRequested event.
-
-Step three: after maturity, Pyth provides the signed reference price on Ethereum, including publish time and
-confidence, so the observation can be checked against the exact trade.
-
-Step four is the automation core: Reactive Network. A Uniswap hook cannot wake itself five minutes later, and relying
-on my server would introduce a privileged keeper. MARKOUT’s Reactive control plane subscribes to both trade and price
-events, persists every pending lifecycle, wakes when the observation horizon is reached, matches the right signed
-price to the right trade, retries incomplete work, and triggers the authenticated destination callback. This is what
-turns delayed markout from an offchain analytics idea into autonomous protocol behavior.
-
-Circle CCTP is a separate resilience rail carrying the same authenticated observation. Both paths converge on one
-immutable coordinator, so the first valid message settles and duplicates become safe no-ops.
-
-Step five: Unichain remains the settlement authority. The contracts authenticate the delivery, validate time,
-confidence, market and solvency, compute directional markout, and finalize exactly once. Neither transport holds user
-funds or decides the fee.”
-
-### 2:26–2:54 — Three safe outcomes
-
-**Show:** Move the cursor across Fair Flow, Adverse Flow, and No Valid Price.
+**Show:** Fair-Flow fee card: 18 bps base, 50 bps provisional and an 18–68 bps final range.
 
 **Say:**
 
-“That lifecycle has three safe endings. For fair or inventory-improving flow, the provisional amount is refunded and
-the effective fee can fall to 18 basis points. For adverse flow, part or all of it moves to the LP protection reserve.
-And if no valid observation arrives, anyone can expire the trade and the provisional amount remains fully refundable.
-So automation failure cannot silently confiscate the trader’s escrow.”
+“MARKOUT is a two-stage, outcome-priced fee primitive for Uniswap v4. The pool charges an 18-basis-point base and
+escrows a bounded 50-basis-point provisional amount. After five minutes, signed price evidence decides the allocation:
+fair flow receives a rebate, adverse flow funds LP protection, and missing evidence produces a full provisional refund.
+It evaluates outcomes, not identities.”
 
-### 2:54–3:19 — Public demo evidence
+### 0:47–1:30 — Show that it works
 
-**Show:** Return to the completed Fair-Flow trade in the console. Point to the five completed lifecycle steps, the
-negative directional markout, 18 bps effective fee, and explorer links.
-
-**Say:**
-
-“This is a completed Fair-Flow testnet lifecycle. A real v4 swap created the escrow, a signed delayed Pyth observation
-was published, the cross-chain message was authenticated on Unichain, and the full provisional amount was returned,
-leaving an 18-basis-point final fee. Across the project, four public end-to-end lifecycles prove the rebate branch, the
-LP-protection branch, browser-wallet execution, and the separate 18-basis-point deployment.”
-
-### 3:19–3:49 — Research evidence
-
-**Show:** Research strip at the bottom of the diagram or the Evidence comparison table.
+**Show:** A short clip of a real testnet swap mining. Jump-cut to the completed Fair-Flow trade. Point to the five green
+lifecycle steps, final 18 bps fee, returned amount and explorer links. Briefly show the protection-branch receipt.
 
 **Say:**
 
-“I also replayed fixed-fee, volatility-only, and MARKOUT policies on the same deterministic 768-trade synthetic tape,
-covering six market regimes and 1.999 million dollars of notional per policy. Against fixed 30 basis points, MARKOUT
-reduced the average benign-flow fee by 8.58 percent, reduced inventory-improving fees by 40 percent, and improved
-modeled LP net-after-markout-loss-proxy by 21.87 percent. Markout is a directional risk proxy here, not a claim of exact
-realized LP loss.”
+“This is a real v4 swap on Unichain Sepolia, initiated through the browser wallet. The hook recorded the execution,
+locked the provisional amount and created a unique trade ID. I prepared this completed trade because settlement
+matures after five minutes. A signed delayed Pyth observation was published, authenticated on Unichain and finalized
+exactly once. Its markout was negative, so the trader received the full provisional amount and the final fee fell to
+18 basis points. A separate public lifecycle proves the opposite branch, where the provisional amount was retained
+for LP protection. In total, four public cross-chain lifecycles are linked here.”
 
-### 3:49–4:00 — Close
+### 1:30–2:18 — Explain only the load-bearing architecture
 
-**Show:** Project name plus the Reactive Network block, then end on the live dashboard URL.
+**Show:** Complete architecture. Zoom into one region at a time: Unichain hook, Pyth, Reactive, then settlement. Do not
+leave the full unreadable diagram static on screen.
 
 **Say:**
 
-“MARKOUT gives Uniswap v4 an autonomous, outcome-priced fee lifecycle: cheaper fair flow, funded LP protection, and
-safe settlement driven by Reactive Network. Charge by outcome, not by guesswork.”
+“The architecture has one story. First, `afterSwap` records price, direction, beneficiary and maturity while the hook
+escrows the provisional amount. Second, Pyth produces signed delayed price evidence.
 
-## Delivery notes
+Third is the automation core: Reactive Network. A hook cannot wake itself five minutes later. The Reactive control
+plane subscribes to trade, price, terminal and cron events; tracks maturity; matches the observation; retries work; and
+requests settlement or expiry without a privileged keeper.
 
-- Speak at roughly 145 words per minute; the 581-word spoken copy is approximately four minutes with natural pauses.
-- Do not wait five minutes during the recording. Load the completed Fair-Flow trade and narrate its verified lifecycle.
-- Spend roughly 35 seconds on the Reactive block. It is the architectural answer to “who wakes the hook later?”
-- Say **directional markout proxy**, not “exact LP loss” or “MEV eliminated.”
-- Say **implemented and test-verified Reactive lifecycle**. If asked about public liveness, state that the current Lasna
-  callback was not observed during the latest probe and the authenticated Circle resilience rail supplied the public
-  end-to-end settlement evidence. This preserves credibility without weakening Reactive’s architectural role.
+The callback reaches the Unichain settlement gateway, where the first valid observation wins and duplicates become
+no-ops. Circle CCTP is the resilience rail. Neither transport controls funds or chooses the fee; the hook validates
+evidence and allocates onchain.”
 
-## One-line judge answers
+### 2:18–2:43 — Demonstrate technical craft
 
-**Why would a trader use this pool?**
+**Show:** Terminal test summary, then the dashboard security metrics. Keep this scene under 25 seconds.
 
-“On the controlled tape, benign flow paid 27.43 bps on average and inventory-improving flow paid 18 bps, versus 30 bps
-in the fixed pool, while the maximum fee remained capped.”
+**Say:**
+
+“This is not a frontend simulation. The hook uses the real v4 `afterSwap` lifecycle, pull-based rebates, bounded
+escrow, permissionless expiry, authenticated delivery and replay-safe settlement. The repository has 188 deterministic
+Solidity tests, including 12 stateful invariants, adversarial accounting tests and 17 dedicated Reactive lifecycle
+tests. The committed static-analysis gate reports no medium- or high-severity findings.”
+
+### 2:43–3:24 — Quantify the impact
+
+**Show:** Evidence comparison. Reveal one result at a time: benign flow, improving flow, LP result and evidence boundary.
+
+**Say:**
+
+“I then replayed fixed-fee, volatility-only and MARKOUT policies on the same deterministic 768-trade synthetic tape,
+covering six regimes and 1.999 million dollars of notional per policy. Against a fixed 30-basis-point pool, benign flow
+paid 27.43 basis points on average, an 8.58 percent reduction. Inventory-improving flow paid 18 basis points, a 40
+percent reduction. The modeled LP net-after-markout-loss-proxy improved by 21.87 percent, while informed flow paid a
+clear premium. Markout is a directional risk proxy here, not a claim of exact realized LP loss. The experiment and
+parameter sweep are committed and reproducible.”
+
+### 3:24–3:50 — Why it matters and close
+
+**Show:** Three outcomes, then finish on the project name and dashboard URL. Bring your face back for the final sentence.
+
+**Say:**
+
+“Traders can route fair flow here and finish below the fixed fee. LPs gain a reserve funded by adverse flow. Protocols
+gain discrimination without identity lists or centralized fee decisions. MARKOUT is not another fee guessed at
+execution. It is an autonomous, outcome-priced settlement primitive for sustainable Uniswap v4 liquidity. Charge by
+outcome, not by guesswork.”
+
+## Editing plan
+
+| Time | Visual | Maximum continuous shot |
+| --- | --- | ---: |
+| 0:00–0:25 | Face → hero → comparison | 12 seconds |
+| 0:25–0:47 | Fair-Flow fee mechanism | 22 seconds |
+| 0:47–1:30 | Swap clip → completed lifecycle → protection receipt | 18 seconds |
+| 1:30–2:18 | Architecture with four deliberate zooms | 14 seconds per zoom |
+| 2:18–2:43 | Tests and security | 13 seconds |
+| 2:43–3:24 | Research evidence, revealed metric by metric | 14 seconds |
+| 3:24–3:50 | Outcomes → project name → face | 12 seconds |
+
+Use simple cuts and gentle zooms. Do not use decorative transitions, an AI avatar or an AI-generated voice. Keep
+captions to two lines, highlight only the number currently being discussed, and keep the cursor still unless it is
+pointing to evidence.
+
+## Rubric strategy
+
+| Category | What the video must prove |
+| --- | --- |
+| Original idea | Explicitly call MARKOUT a two-stage, outcome-priced settlement primitive rather than another dynamic fee. |
+| Unique execution | Show real `afterSwap`, escrow, authenticated coordinator, expiry, tests and invariants. |
+| Impact | Quantify lower good-flow fees and the modeled LP improvement; explain who would route and who would LP. |
+| Functionality | Show a real browser-wallet swap, completed rebate and protection lifecycles, transaction links and test output. |
+| Presentation | Finish near 3:50, use your own voice, explain why before what, and never remain on one dense diagram. |
+
+## Reactive Network judge answer
 
 **Why is Reactive Network integral?**
 
-“The hook cannot wake itself after five minutes; Reactive Network owns the event-driven lifecycle that correlates the
-trade with delayed evidence and autonomously triggers terminal settlement without a privileged keeper.”
+“A Uniswap hook runs only when it is called; it cannot wake itself at the five-minute observation horizon. Reactive
+Network is MARKOUT’s event-driven control plane: it correlates trade and price events, tracks maturity, retries work and
+requests the terminal callback without a privileged keeper. Unichain remains the custody and fee authority.”
 
-**Who controls the money and fee decision?**
+## Mandatory honesty boundary
 
-“Unichain contracts do: Reactive orchestrates, while the hook authenticates evidence, computes the allocation, and
-holds the accounting authority.”
+The complete Reactive lifecycle is implemented and covered by 17 focused tests, but the latest public Lasna probe did
+not produce an observable destination callback. Unless that changes before recording, say **implemented and
+test-verified Reactive lifecycle** rather than **live Reactive settlement**. Public end-to-end settlement evidence comes
+from the authenticated Circle resilience rail.
 
-**What is proven?**
+A sponsor-specific perfect functionality score normally requires a public callback transaction. If Reactive delivery
+starts working before submission, add an eight-second proof clip showing the source event, Reactive callback and
+destination transaction, replacing part of the research scene rather than making the video longer.
 
-“Four public Unichain/Pyth cross-chain settlements, 188 Solidity tests with 12 stateful invariants, and one reproducible
-768-trade synthetic policy comparison.”
+## Final recording checklist
+
+- Target duration: 3:45–3:55. Never submit a cut longer than 4:00.
+- Use your own voice and appear briefly at the beginning and end.
+- Record at 1920×1080 or higher, 30 fps, with browser zoom around 90%.
+- Hide notifications, bookmarks, wallet balances and every secret or private key.
+- Use a clean microphone; remove long pauses and filler words, but keep natural breathing.
+- Use large burned-in captions with a maximum of two lines.
+- Do not wait five minutes on screen; use an honest jump cut to the completed trade.
+- Never say “exact LP loss,” “guaranteed savings,” “MEV eliminated” or “Reactive callback is live” without evidence.
+- End with the repository and live dashboard visible for at least three seconds.
