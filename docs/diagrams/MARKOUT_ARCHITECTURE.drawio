@@ -148,17 +148,19 @@
         <mxCell id="e-scheduler-reactvm" value="callback request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=2;fontColor=#85FF99;endArrow=block;endFill=1;" edge="1" parent="1" source="scheduler" target="reactvm">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="e-reactvm-coordinator" value="authenticated settle / expire" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=3;fontColor=#85FF99;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.7;" edge="1" parent="1" source="reactvm" target="coordinator">
+        <mxCell id="e-reactvm-coordinator" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=3;endArrow=block;endFill=1;exitX=0;exitY=0.2;entryX=1;entryY=0.7;" edge="1" parent="1" source="reactvm" target="coordinator">
           <mxGeometry relative="1" as="geometry">
-            <Array as="points"><mxPoint x="1380" y="620"/><mxPoint x="1000" y="620"/><mxPoint x="1000" y="450"/></Array>
+            <Array as="points"><mxPoint x="1380" y="590"/><mxPoint x="1380" y="465"/><mxPoint x="1005" y="465"/><mxPoint x="1005" y="447"/></Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="e-publisher-circle" value="redundant delivery" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6CB8FF;strokeWidth=2;dashed=1;dashPattern=8 5;fontColor=#6CB8FF;endArrow=block;endFill=1;" edge="1" parent="1" source="publisher" target="circle-send">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="e-circle-coordinator" value="authenticated observation" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6CB8FF;strokeWidth=2;dashed=1;dashPattern=8 5;fontColor=#6CB8FF;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.9;" edge="1" parent="1" source="circle-send" target="coordinator">
+        <mxCell id="e-publisher-circle" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6CB8FF;strokeWidth=2;dashed=1;dashPattern=8 5;endArrow=block;endFill=1;exitX=0.9;exitY=1;entryX=0.9;entryY=0;" edge="1" parent="1" source="publisher" target="circle-send">
           <mxGeometry relative="1" as="geometry">
-            <Array as="points"><mxPoint x="1035" y="625"/><mxPoint x="1035" y="480"/></Array>
+            <Array as="points"><mxPoint x="1350" y="455"/><mxPoint x="1350" y="560"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-circle-coordinator" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6CB8FF;strokeWidth=2;dashed=1;dashPattern=8 5;endArrow=block;endFill=1;exitX=0;exitY=0.85;entryX=1;entryY=0.9;" edge="1" parent="1" source="circle-send" target="coordinator">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="1035" y="664"/><mxPoint x="1035" y="500"/><mxPoint x="1005" y="500"/><mxPoint x="1005" y="479"/></Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="e-coordinator-allocation" value="finalize once" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#D78A35;strokeWidth=2;fontColor=#FFB55C;endArrow=block;endFill=1;" edge="1" parent="1" source="coordinator" target="allocation">
