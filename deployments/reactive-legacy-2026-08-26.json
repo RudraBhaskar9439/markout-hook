@@ -1,0 +1,140 @@
+{
+  "profile": "legacy-reactive-acceptance",
+  "status": "transport-callback-live-reactive-first-economic-settlement-not-complete",
+  "deployerAndRvmId": "0xd1DcAAFf9356d5a42f2eE6F90179C4509386a83f",
+  "marketId": "0x7ea41243798f304c9efd5c2e0c82a273090146c4718014ecc8570eb373df2b78",
+  "freshnessPolicy": {
+    "maximumPythAgeAtSourceSeconds": 120,
+    "maximumVerifiedObservationAgeAtDestinationSeconds": 300,
+    "settlementGraceAfterMaturitySeconds": 600,
+    "reason": "Source oracle freshness and asynchronous cross-chain transport latency are independent bounds."
+  },
+  "successfulReactiveTransportProof": {
+    "publisher": "0xb3d2403a028849292326668ab41ed25f0f049976",
+    "pulse": "0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e",
+    "destinationReceiver": "0xf721b39bac0ad8b0bc3db93aa6164aca88a691ee",
+    "tradeId": "0x93def2b839d8b5faf27269a1fe1719f13d2b108935004a6575d9409e83855503",
+    "sourcePublishTx": "0x99c7110784fc9e39ff0db078be74e3995855172a4f9a8c565169373e1daa7c85",
+    "sourceBlockTimestamp": 1787765868,
+    "reactVmTx": "0x00bef87b5481a8b5ce2efd9c1676304f2dfd3a33f4d5ef1d8578a5882a99b0d6",
+    "reactVmTxNumber": "0x39e",
+    "reactVmStatus": 1,
+    "destinationCallbackTx": "0x5d933d5ff078c500c61fc32fef1ae526049085dad8e15ff4ef2673a971114459",
+    "destinationBlockTimestamp": 1787765879,
+    "sourceToDestinationLatencySeconds": 11,
+    "destinationStatus": 1,
+    "authenticatedReactiveObservationEvent": true,
+    "economicForwarding": false,
+    "economicForwardingReason": "The historical trade was already settled through Circle, so the coordinator handled the Reactive delivery as an idempotent duplicate."
+  },
+  "correctedReactiveAcceptanceDeployment": {
+    "ethereumSepolia": {
+      "chainId": 11155111,
+      "publisher": "0xb3d2403a028849292326668ab41ed25f0f049976"
+    },
+    "reactiveLasnaLegacy": {
+      "chainId": 5318007,
+      "pulse": "0x253A29BfbbCECDeCE7a32ba98Bd12922Af4b9e5b",
+      "pulseDeploymentTx": "0xc6573144a3a27c39c2e6f32dacdb5851988e8bbd5891547ee5824051c9a60bf6",
+      "initialFundingWei": "1000000000000000000",
+      "subscriptionUid": "5444e2305ab34132586786190bf17072",
+      "subscriptionVerifiedByPublicRpc": true,
+      "subscription": {
+        "originChainId": 11155111,
+        "originContract": "0xb3d2403a028849292326668ab41ed25f0f049976",
+        "marketTopic": "0x7ea41243798f304c9efd5c2e0c82a273090146c4718014ecc8570eb373df2b78"
+      }
+    },
+    "unichainSepolia": {
+      "chainId": 1301,
+      "settlementCoordinator": "0x25EB6aE64D764965bD1A17611eBA50101c88BeCD",
+      "circleReceiver": "0x8CB4728869A8Faf73B73ADF67C814A5BB6DFaDaf",
+      "reactiveReceiver": "0xb7f52fC211df7445b11f1f9B43cBc1fcd46eBa22",
+      "markoutHook": "0x82e25A90CC6c0B5b3926E2154DaD742d10ba0044",
+      "hookSalt": "0x000000000000000000000000000000000000000000000000000000000000384b",
+      "poolId": "0x32a6a430158aa33268a32f60f79eb829224a0169994c9b886cf48764b89b257c",
+      "poolBaseFeeBps": 30,
+      "provisionalSurchargeBps": 50,
+      "destinationDeploymentTxs": [
+        "0x6f6ad3054794a81285ebcf602e09392408ad18c6c57dc203fa788c57eb506018",
+        "0x6a1b9c59317d4979eee2b6507d76b73e767d80108c374d8f98ab80a01b0e0df9",
+        "0x4f4141c6d386b74a71e817981329f739dc56649a9ae4b5887721de59eaff3482",
+        "0xffdd39fa733e346a05ed81180ab20f0af678fbf4890daa3d5c203175f5b241af",
+        "0xe5933c5dde3e563588c2e1d8408b8b2378018b07b1fdcbe13c2bc0272462510c"
+      ],
+      "poolInitializationTx": "0xbfde688943f462bc31ee76945e667f2b38208f60dfd698a6eabc3f3b9267dd34",
+      "poolBootstrapTxs": [
+        "0x41bed9bece104c7db533a05595842c59e6559ff8921608ad3d72909da2725895",
+        "0x6e97114ac109a472631fe9fca9ca1d777bd7eec523dc3777801d9bb32cdd80eb",
+        "0xac9dc2b706947f1bcd781be7168ea9a5c3274b3219f907f17f2bde6b84fab2e9"
+      ],
+      "callbackFundingTx": "0x033526b402a281f99e9c6439e46e8bd1804dde36ec41332d9e4885d973afd6b5",
+      "callbackInitialReserveWei": "1000000000000000",
+      "callbackFinalReserveWei": "999285746950000",
+      "callbackFinalDebtWei": "0"
+    }
+  },
+  "reactiveFirstSettlementAttempt": {
+    "circleRelayInvoked": false,
+    "approvalTx": "0x39aab6892cae7935e56fa4296f963c83ae7d075c8c74d5b76593d2bcc2aa311a",
+    "swapTx": "0x6eb5c3d66a8844ccc32701b684f71bfbf9270a9cf9c59beb94ded7a0a245371d",
+    "tradeId": "0x9736c9ea4312a723d5cb92964a9bf477d47e2ab7746ab3cc6efdaf02f4d65419",
+    "executionPriceX18": "1202720000000000000000",
+    "escrowedSurcharge": "601",
+    "executedAt": 1787767309,
+    "maturityTimestamp": 1787767609,
+    "expiryTimestamp": 1787768209,
+    "observations": [
+      {
+        "publishTx": "0x0214421b38d87fedf6e294c5fc281e16f8245095c88327485c4d57d09af797c0",
+        "observedAt": 1787767622,
+        "sourceBlockTimestamp": 1787767644,
+        "reactVmTx": "0x47c8033a78b96ca0c493e86b8821282f339b45625a821a5454f3fa66825ac03d",
+        "reactVmTxNumber": "0x3a3",
+        "reactVmStatus": 1,
+        "callbackRequested": true,
+        "destinationCallbackObserved": false
+      },
+      {
+        "publishTx": "0x34544998545191652c9656714d40ee8b88eeab3b90c56fb6b55c615919b9ed36",
+        "observedAt": 1787768112,
+        "sourceBlockTimestamp": 1787768124,
+        "reactVmTx": "0xfa749050e625499807c9050c1bd2442fcc667e8b747acf558bf7e98e42bda960",
+        "reactVmTxNumber": "0x3a5",
+        "reactVmStatus": 1,
+        "callbackRequested": true,
+        "destinationCallbackObserved": false
+      }
+    ],
+    "terminalStatus": "expired-and-claimed",
+    "expiryTx": "0xccf529985eb67a1e4f945bc4947fc9d81bb95754af215318b64e360e93032ed6",
+    "expiryBlockTimestamp": 1787768251,
+    "fullRefund": "601",
+    "claimTx": "0xaa948105d31c21b93470960d2a88410aada22b3a5c8d5209788607e1e78bdd4b",
+    "finalClaimableRebate": "0",
+    "finalPoolPendingSurcharge": "0",
+    "finalLpProtectionReserve": "0",
+    "finalHookTokenBalance": "0"
+  },
+  "evidence": {
+    "reactiveLive": true,
+    "reactiveTransportCallbackLive": true,
+    "reactiveFirstEconomicSettlementLive": false,
+    "reactVmEventProcessingLive": true,
+    "destinationRelayerReliable": false,
+    "circleLiveOnExistingReleasePool": true,
+    "notes": "Legacy Reactive produced a successful authenticated Unichain callback in 11 seconds for an already-terminal trade, proving the live transport boundary. A separate pending-first acceptance trade produced two successful ReactVM reactions and funded callback requests, but the relayer emitted no destination transaction before expiry. The hook then returned and paid the complete surcharge through its permissionless fail-open path."
+  },
+  "explorerLinks": {
+    "successfulSourceObservation": "https://sepolia.etherscan.io/tx/0x99c7110784fc9e39ff0db078be74e3995855172a4f9a8c565169373e1daa7c85",
+    "successfulDestinationCallback": "https://sepolia.uniscan.xyz/tx/0x5d933d5ff078c500c61fc32fef1ae526049085dad8e15ff4ef2673a971114459",
+    "newPulse": "https://lasna.reactscan.net/address/0x253A29BfbbCECDeCE7a32ba98Bd12922Af4b9e5b",
+    "newPulseDeployment": "https://lasna.reactscan.net/tx/0xc6573144a3a27c39c2e6f32dacdb5851988e8bbd5891547ee5824051c9a60bf6",
+    "acceptanceHook": "https://sepolia.uniscan.xyz/address/0x82e25A90CC6c0B5b3926E2154DaD742d10ba0044",
+    "acceptanceSwap": "https://sepolia.uniscan.xyz/tx/0x6eb5c3d66a8844ccc32701b684f71bfbf9270a9cf9c59beb94ded7a0a245371d",
+    "acceptanceObservation": "https://sepolia.etherscan.io/tx/0x0214421b38d87fedf6e294c5fc281e16f8245095c88327485c4d57d09af797c0",
+    "acceptanceRetryObservation": "https://sepolia.etherscan.io/tx/0x34544998545191652c9656714d40ee8b88eeab3b90c56fb6b55c615919b9ed36",
+    "acceptanceExpiry": "https://sepolia.uniscan.xyz/tx/0xccf529985eb67a1e4f945bc4947fc9d81bb95754af215318b64e360e93032ed6",
+    "acceptanceClaim": "https://sepolia.uniscan.xyz/tx/0xaa948105d31c21b93470960d2a88410aada22b3a5c8d5209788607e1e78bdd4b"
+  }
+}

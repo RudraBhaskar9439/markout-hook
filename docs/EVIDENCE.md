@@ -1,15 +1,16 @@
 # MARKOUT Evidence Ledger
 
-Status: four public Circle-primary lifecycles verified across August 21–22, 2026, including the separate Fair-Flow
-deployment; one deterministic 768-trade policy comparison and 21-point base-fee sweep reproduced locally; liquidity
-and routing response remain unproven.
+Status: four public Circle economic lifecycles and one 11-second Legacy Reactive cross-chain callback verified;
+one deterministic 768-trade policy comparison and 21-point base-fee sweep reproduced locally; Reactive-first economic
+settlement, liquidity response, and routing response remain unproven.
 
 ## Evidence hierarchy
 
 MARKOUT separates facts by strength so the submission never turns a model result into a market claim.
 
 1. **Public onchain evidence** proves that the deployed hook can escrow, mature, receive a Pyth-verified observation
-   through Circle, settle both economic extremes, conserve custody, and pay a rebate.
+   through Circle, settle both economic extremes, conserve custody, and pay a rebate. It separately proves a live
+   Ethereum Sepolia → ReactVM → Unichain callback through Legacy Reactive.
 2. **Controlled synthetic evidence** compares fixed, volatility-only, and MARKOUT policies against one identical
    committed trade tape. It proves properties of the declared model, not future market behavior.
 3. **External research** establishes that adverse selection, fees, markout, and liquidity are economically relevant.
@@ -17,7 +18,27 @@ MARKOUT separates facts by strength so the submission never turns a model result
 4. **Not yet proven:** that MARKOUT attracts incremental liquidity, changes routed volume, or improves market share.
    Fair-Flow's fee-only comparison does not require those assumptions, but real all-in execution still does.
 
-## Reactive liveness recheck — August 24, 2026
+## Reactive acceptance — August 26, 2026
+
+The [machine-readable Legacy record](../deployments/reactive-legacy-2026-08-26.json) separates three claims that are
+often incorrectly collapsed:
+
+- **Transport is live:** source transaction
+  [`0x99c7…7c85`](https://sepolia.etherscan.io/tx/0x99c7110784fc9e39ff0db078be74e3995855172a4f9a8c565169373e1daa7c85)
+  produced ReactVM transaction `0x00be…b0d6` and successful authenticated Unichain callback
+  [`0x5d93…4459`](https://sepolia.uniscan.xyz/tx/0x5d933d5ff078c500c61fc32fef1ae526049085dad8e15ff4ef2673a971114459)
+  in 11 seconds.
+- **ReactVM processing is live:** a new funded pulse has the exact public publisher/market subscription and processed
+  two observations for a fresh pending trade with successful ReactVM transactions `0x47c8…c03d` and `0xfa74…a960`.
+- **Reactive-first economic settlement is not proven:** neither funded callback request produced a destination
+  transaction before the trade expired. No Circle relay was invoked; permissionless expiry returned all 601 test-USDC
+  units and the beneficiary claimed them, leaving pending escrow, claimable rebate, LP reserve, and hook balance at zero.
+
+The successful callback targeted an already-terminal historical trade, so the coordinator correctly treated it as an
+idempotent duplicate. That is strong transport evidence but not evidence that Reactive won the economic-settlement
+race. The fresh acceptance attempt shows that relayer reliability remains the unresolved external dependency.
+
+## Historical Reactive liveness recheck — August 24, 2026
 
 MARKOUT repeated both public Reactive probes with fresh Ethereum Sepolia events. The complete machine-readable record is
 [`deployments/reactive-recheck-2026-08-24.json`](../deployments/reactive-recheck-2026-08-24.json).
@@ -33,8 +54,8 @@ MARKOUT repeated both public Reactive probes with fresh Ethereum Sepolia events.
 - Both Reactive RPCs continued producing blocks, deployed bytecode and immutable configuration remained readable, the
   hybrid public-network preflight passed, and Reactive-side service debt was zero.
 
-This recheck does not support declaring the Reactive path live. The implementation and local lifecycle evidence remain
-valid, but public settlement continues to rely on the proven Circle fallback until a destination callback is visible.
+This historical recheck did not support declaring the Reactive path live. The August 26 Legacy callback supersedes its
+transport conclusion, while the later pending-first timeout confirms that destination relaying is still intermittent.
 
 ## Public onchain evidence
 
@@ -49,7 +70,7 @@ The dated [deployment manifest](../deployments/hybrid-2026-08-21.json) is machin
 | Fair-Flow 18 bps | [swap](https://sepolia.uniscan.xyz/tx/0xf4873749b39300d5d19d28e3b0b0f43511ac907595b85d14e76c725f86f9c70f) | [observation](https://sepolia.etherscan.io/tx/0xccd8cc932276ce3233665c230d8107854b2201bca15a173b7986245c9d517221) | [55-second relay](https://sepolia.uniscan.xyz/tx/0xb1bd16c88d71fbb737cbaa20ed9002dd7bd7098d1c17ac11ab3c7f9ed01c0c4d) | 100% surcharge rebated; 18 bps final fee and [sponsored-claim entrypoint](https://sepolia.uniscan.xyz/tx/0x996ae7697b54ea67df0fbd3eb9ded1163d3a3df1d272bdcc7260ee18597b5f70) executed |
 
 The third lifecycle is important demo evidence: it was initiated and completed through the wallet console rather than
-an owner-side deployment script. Its observation was 92 seconds old when settlement mined, inside the hook's
+an owner-side deployment script. Its observation was 92 seconds old when settlement mined, inside that deployed hook's
 120-second freshness bound.
 
 The first three lifecycles use the original 30 + 50 bps profile and prove both terminal branches. The separate
@@ -113,6 +134,7 @@ at 21.8734%. The selection is therefore reproducible and falsifiable rather than
 ## Claims the evidence supports
 
 - The deployed hook settles real Uniswap v4 swaps from authenticated delayed observations.
+- Legacy Reactive has publicly processed a canonical publisher event and completed an authenticated Unichain callback.
 - Negative directional markout can produce a complete rebate; positive directional markout can produce complete LP
   retention.
 - The onchain accounting conserves the provisional surcharge and fails open on missing or invalid observations.
@@ -127,8 +149,8 @@ at 21.8734%. The selection is therefore reproducible and falsifiable rather than
 - Guaranteed trader savings after slippage, gas, rebate delay, or routing effects in every market.
 - Proven incremental liquidity, market share, or volume.
 - Pair-accurate ETH/USDC production markout; the testnet uses ETH/USD as a documented proxy.
-- A live Reactive destination callback. The autonomous control-plane implementation is complete, but its public
-  destination liveness remains unproven until a callback is observed.
+- A Reactive-first economic settlement or reliable destination relaying. The public callback targeted an already
+  terminal trade, and the separate pending-first acceptance trade expired after two undelivered callback requests.
 
 ## Highest-value next experiment
 

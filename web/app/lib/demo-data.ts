@@ -114,7 +114,7 @@ export const timelineBase = [
   },
   {
     label: "Outcome window",
-    detail: "The immutable trade matures after five minutes. Reactive observes the request; early evidence still fails hook validation.",
+    detail: "The immutable trade matures after five minutes; early evidence still fails hook validation.",
     tag: "Hook",
   },
   {
@@ -124,7 +124,7 @@ export const timelineBase = [
   },
   {
     label: "Reactive acts",
-    detail: "The lifecycle engine requests an authenticated callback, while Circle remains a redundant proven delivery rail.",
+    detail: "ReactVM converts the canonical publisher event into an authenticated callback; Circle is an independent delivery rail.",
     tag: "Reactive Network",
   },
 ] as const;

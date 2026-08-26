@@ -38,9 +38,9 @@ providers.
 AMMs normally price a trade before they know whether its order flow was harmful. Volatility fees can protect liquidity
 providers, but they also charge benign and inventory-improving flow. MARKOUT instead escrows a bounded provisional
 surcharge, waits for a configured markout horizon, and settles the charge from signed directional evidence. Pyth
-verifies the delayed reference price. Reactive Network is the intended no-keeper control plane: observe trade
-requests, track maturity, accept reference evidence, request authenticated settlement, retry, acknowledge, or expire.
-Circle CCTP V2 is the publicly proven redundant delivery rail from Ethereum Sepolia to Unichain Sepolia. An immutable
+verifies and publishes the delayed reference price. A Legacy Reactive Contract precisely subscribes to that canonical
+publisher and market event, executes the reaction in ReactVM, and requests an authenticated Unichain callback without
+a MARKOUT-owned cross-chain relayer. Circle CCTP V2 is an independent delivery rail. An immutable
 coordinator ensures the first valid delivery wins and later duplicates are harmless. If no valid observation arrives,
 permissionless expiry returns the full surcharge.
 
@@ -61,22 +61,19 @@ keeps good-flow fees at or below 30 bps while retaining at least 20% modeled LP-
 
 Select **Reactive Network**, **Circle**, and **Pyth** if those names are present in the form's partner picker.
 
-MARKOUT's Reactive integration is the intended autonomous lifecycle engine, not a logo-level dependency. The full
-engine uses five narrow subscriptions across hook requests, terminal acknowledgements, reference evidence, and cron;
-bounded processing tracks maturity, requests sampling, retries settlement or expiry callbacks, and stops after an
-acknowledged terminal state. Seventeen dedicated lifecycle tests cover these behaviors. The engine owns no custody,
-price discretion, fee authority, recipient choice, or upgrade surface.
-
-A funded, debt-free legacy RSC is also publicly deployed with an exact subscription to the canonical Pyth-verified
-publisher event. Its callback carries only `(marketId, tradeId, priceX18, observedAt, confidenceBps)` through a
+MARKOUT's Reactive integration is a live event-to-action transport, not a logo-level dependency. Its funded, debt-free
+Legacy RSC is publicly deployed with an exact subscription to the canonical Pyth-verified publisher and market event.
+ReactVM turns that event into an authenticated Unichain callback without any MARKOUT-operated listener or relayer.
+The payload carries only `(marketId, tradeId, priceX18, observedAt, confidenceBps)` through a
 callback-proxy- and RVM-authenticated Unichain receiver.
 
 Reactive and Circle meet at one immutable coordinator: the first valid observation settles and the second becomes a
-successful no-op. Circle supplies redundant authenticated delivery; Reactive supplies the broader no-keeper maturity,
-retry, acknowledgement, and expiry orchestration. Tests prove either delivery order, malformed callback rejection,
-and zero effect on the full-refund guarantee. The pulse deployment and subscription are public. Because the live
-relayer has not produced a public Unichain callback, MARKOUT labels `reactiveLive` false rather than overstating
-sponsor evidence. Circle CCTP V2 has completed four public end-to-end fallback lifecycles.
+successful no-op. Circle supplies an independent authenticated route; Reactive supplies autonomous subscription,
+ReactVM execution, and callback generation. Tests prove either delivery order, malformed callback rejection,
+and zero effect on the full-refund guarantee. The pulse deployment and subscription are public. Legacy Reactive also
+completed an authenticated Unichain callback in 11 seconds, so MARKOUT labels the transport live. The callback reached
+an already-terminal trade; a separate pending-first run reached ReactVM twice but timed out at the destination relayer,
+so Reactive-first economic settlement is not claimed. Circle CCTP V2 has completed four public economic lifecycles.
 
 ## Exact long-form answers
 
@@ -104,24 +101,25 @@ not claimed results.
 
 The hardest work was preserving Uniswap v4 delta accounting while escrowing a provisional surcharge, normalizing a
 fresh signed Pyth price inside a short settlement window, and authenticating asynchronous delivery without giving a
-relayer economic authority. Reactive Network's public callback path did not deliver during bounded acceptance tests.
-Instead of removing Reactive from the contribution, MARKOUT separates the implemented autonomous control plane from
-the publicly proven Circle fallback behind an immutable coordinator. A stale first observation and a Pyth
-endpoint/contract migration mismatch were both rejected safely; the final direct relay completed inside the freshness
-bound. Those failures became explicit threat-model and runbook evidence instead of being hidden.
+relayer economic authority. Legacy Reactive first produced a successful callback for an already-terminal trade, then
+two correctly targeted callback requests for a fresh pending trade failed to reach Unichain before expiry. MARKOUT
+therefore separates transport liveness, ReactVM execution, relayer reliability, and economic settlement rather than
+turning one transaction into a broader claim. The pending trade failed open to a full claimed refund. A stale first
+observation and a Pyth endpoint/contract migration mismatch were also rejected safely. Those failures became explicit
+threat-model and runbook evidence instead of being hidden.
 
 ## Why it is different
 
 - Prices realized directional outcomes instead of charging the entire market for volatility.
 - Makes benign and inventory-improving flow cheaper than a fixed 30 bps pool in the declared Fair-Flow profile.
 - Keeps custody, maturity validation, settlement mathematics, and fail-open expiry inside the hook boundary.
-- Uses Reactive as the intended no-keeper lifecycle engine and Circle as redundant, publicly proven delivery.
+- Uses Reactive as a live event-to-action rail and Circle as an independent authenticated delivery rail.
 - Makes at-least-once delivery safe through immutable authentication and idempotent terminal settlement.
 - Reports the research metric honestly as an adverse-selection proxy, not exact LVR or individual LP profit.
 
 ## Reproducible evidence
 
-- 188 deterministic Solidity tests with zero failures or skips.
+- 214 deterministic Solidity tests with zero failures or skips.
 - 12 stateful invariants.
 - Zero medium/high Slither findings.
 - One seeded 768-trade experiment shared by fixed, volatility, and MARKOUT policies.
@@ -154,7 +152,10 @@ bound. Those failures became explicit threat-model and runbook evidence instead 
 | Fair-Flow Pyth publication | https://sepolia.etherscan.io/tx/0xccd8cc932276ce3233665c230d8107854b2201bca15a173b7986245c9d517221 |
 | Fair-Flow Circle settlement | https://sepolia.uniscan.xyz/tx/0xb1bd16c88d71fbb737cbaa20ed9002dd7bd7098d1c17ac11ab3c7f9ed01c0c4d |
 | Fair-Flow sponsored-claim entrypoint | https://sepolia.uniscan.xyz/tx/0x996ae7697b54ea67df0fbd3eb9ded1163d3a3df1d272bdcc7260ee18597b5f70 |
-| Hosted judge dashboard | https://markout-uhi10.rbrudra9439.chatgpt.site |
+| Legacy Reactive source observation | https://sepolia.etherscan.io/tx/0x99c7110784fc9e39ff0db078be74e3995855172a4f9a8c565169373e1daa7c85 |
+| Legacy Reactive destination callback | https://sepolia.uniscan.xyz/tx/0x5d933d5ff078c500c61fc32fef1ae526049085dad8e15ff4ef2673a971114459 |
+| Reactive-first fail-open expiry | https://sepolia.uniscan.xyz/tx/0xccf529985eb67a1e4f945bc4947fc9d81bb95754af215318b64e360e93032ed6 |
+| Hosted judge dashboard | https://markout-uhi10.vercel.app |
 | GitHub repository | https://github.com/RudraBhaskar9439/markout-hook |
 
 The repository and dashboard remain owner-controlled until public or judge-specific access is explicitly approved.
@@ -173,6 +174,9 @@ The final form requires the GitHub repository to be public before its confirmati
 | Unichain Sepolia | Fair-Flow Circle receiver | `0x24858E73A18f1A4537897DD2d04417a7a24b8f68` |
 | Unichain Sepolia | Fair-Flow MARKOUT hook | `0x3A17354331C21B246A9eC9BF979Af77e64f30044` |
 | Legacy Lasna | Deployed Reactive observation pulse | `0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e` |
+| Legacy Lasna | Reactive acceptance pulse | `0x253A29BfbbCECDeCE7a32ba98Bd12922Af4b9e5b` |
+| Unichain Sepolia | Reactive acceptance receiver | `0xb7f52fC211df7445b11f1f9B43cBc1fcd46eBa22` |
+| Unichain Sepolia | Reactive acceptance hook | `0x82e25A90CC6c0B5b3926E2154DaD742d10ba0044` |
 
 ## Suggested four-minute demo
 
@@ -180,9 +184,9 @@ The final form requires the GitHub repository to be public before its confirmati
 2. Replay benign, informed, and inventory-improving outcomes in the dashboard.
 3. Show the seeded comparison, the 18 bps selection rule, and accounting-conservation evidence.
 4. Explain Reactive lifecycle orchestration, Circle fallback delivery, and fail-open expiry.
-5. Open the four Pyth/Circle lifecycle records, including the Fair-Flow 18 bps settlement and claim.
-6. Close with the measured 38/67/67/55-second public lifecycles and both demonstrated allocation extremes: 100%
-   rebated and 100% retained for LP protection.
+5. Open the 11-second Legacy callback, then state precisely why it proves transport but not Reactive-first settlement.
+6. Open the four Pyth/Circle lifecycle records, including the Fair-Flow 18 bps settlement and claim.
+7. Close with both demonstrated allocation extremes—100% rebated and 100% retained—and the fail-open refund.
 
 ## Honest limitations
 

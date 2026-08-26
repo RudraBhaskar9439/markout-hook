@@ -65,7 +65,7 @@ The subtraction makes conservation exact, and any indivisible remainder benefits
 | --- | ---: |
 | Maturity delay | 5 minutes after execution |
 | Settlement grace | 10 minutes after maturity |
-| Maximum observation age | 2 minutes at evaluation |
+| Maximum observation age | 5 minutes at destination evaluation; the live publisher independently requires a Pyth update no older than 120 seconds at source |
 | Minimum normalized confidence | 9,000 / 10,000 |
 
 An eligible observation must be at or after maturity, at or before evaluation, fresh, non-zero, and sufficiently

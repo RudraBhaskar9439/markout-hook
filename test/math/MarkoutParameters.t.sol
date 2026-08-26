@@ -48,7 +48,7 @@ contract MarkoutParametersTest is Test {
 
         assertEq(rules.maturityTimestamp, 1300);
         assertEq(rules.evaluationTimestamp, 1400);
-        assertEq(rules.maximumAge, 120);
+        assertEq(rules.maximumAge, 300);
         assertEq(rules.minimumConfidenceBps, 9000);
         assertEq(rules.settlementGracePeriod, 600);
     }

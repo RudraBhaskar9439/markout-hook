@@ -37,18 +37,19 @@ observation, finalized at 18 bps, and returned the rebate through the sponsored-
 
 Replay the timeline.
 
-"The hook records execution and custody. The outcome window matures. Pyth publishes canonical evidence. Reactive is
-the intended lifecycle engine: observe, wake, callback, retry, acknowledge, or expire. The hook alone validates and
-allocates the escrow."
+"The hook records execution and custody. The outcome window matures. Pyth verifies and publishes canonical evidence.
+Reactive observes that foreign-chain event, executes in ReactVM, and requests the authenticated Unichain callback.
+The hook alone validates the evidence and allocates the escrow."
 
 ### 2:10-2:40 - Architecture + Reactive
 
-"Frontend explains. Unichain accounts. Ethereum verifies. Reactive automates. A v4 hook cannot wake itself five
-minutes later, so Reactive is essential to the no-keeper design. Circle is the publicly proven redundant delivery
-rail, not a replacement for Reactive orchestration."
+"Frontend explains. Unichain accounts. Ethereum verifies. Reactive converts the canonical publisher event into an
+authenticated Unichain action without a MARKOUT-owned cross-chain relayer. Circle is an independent delivery rail,
+and the coordinator makes the first valid delivery win."
 
-"The full engine has five narrow subscriptions and 17 dedicated tests. The legacy pulse is deployed, funded, and
-exactly subscribed. Its public destination callback is not observed, so I disclose the boundary."
+"The Legacy pulse is deployed, funded, and exactly subscribed. A public publisher event completed its authenticated
+Unichain callback in 11 seconds. A pending-first follow-up reached ReactVM twice but the destination relayer timed out,
+so the trade safely expired to a full refund."
 
 Leave the architecture after 30 seconds.
 
@@ -63,7 +64,7 @@ improves 21.87% versus fixed. This is a controlled synthetic study, not historic
 
 ### 3:25-3:55 - Close
 
-"MARKOUT has 188 passing contract tests, four public Circle-completed lifecycles, both terminal economic branches, a
+"MARKOUT has 214 passing contract tests, four public Circle-completed lifecycles, both terminal economic branches, a
 separate Fair-Flow pool, and zero medium or high Slither findings. MARKOUT does not guess who is toxic. It prices what
 the trade actually did."
 

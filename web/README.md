@@ -17,9 +17,9 @@ Cloudflare Worker-compatible React application built with vinext and the Sites V
 - The public evidence contrasts both allocation extremes: three 100% rebates after negative markout and 100% retained
   for LP protection after positive markout.
 - The separated architecture gives Frontend, Unichain, Ethereum/Pyth, and Reactive Network distinct responsibility
-  blocks, with Reactive foregrounded as the intended no-keeper lifecycle engine.
-- The sponsor section distinguishes the fully implemented/tested Reactive lifecycle from the deployed legacy pulse;
-  neither is falsely labeled live without a public destination callback.
+  blocks, with Reactive foregrounded as the live event-to-action rail.
+- The sponsor section distinguishes the exact Legacy subscription, the live 11-second callback,
+  and the separate pending-first relayer timeout; transport proof is not relabeled as Reactive-first economics.
 - Wallet signing uses the injected EIP-1193 provider. Private keys and Pyth credentials are never collected or bundled.
 - Active trade and public transaction hashes are stored only in browser local storage so an interrupted relay can resume.
 - There is no database, upload surface, server-side signer, or privileged protocol operation in this application.
@@ -44,8 +44,8 @@ For the complete live path:
 5. Inspect the finalized effective fee, rebate, LP reserve, and explorer links. Claim a rebate when one is available.
 
 The active console addresses are recorded in `../deployments/fair-flow-2026-08-22.json`; original opposite-branch
-evidence remains in `../deployments/hybrid-2026-08-21.json`. Never use real funds: these contracts are experimental
-and unaudited.
+evidence remains in `../deployments/hybrid-2026-08-21.json`, and Reactive acceptance evidence is recorded in
+`../deployments/reactive-legacy-2026-08-26.json`. Never use real funds: these contracts are experimental and unaudited.
 
 ### MetaMask RPC recovery
 

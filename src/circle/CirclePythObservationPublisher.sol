@@ -58,7 +58,7 @@ contract CirclePythObservationPublisher {
         if (config.priceId == bytes32(0)) revert ZeroPriceId();
         if (config.marketId == bytes32(0)) revert ZeroMarketId();
         if (config.destinationDomain == 0) revert ZeroDestinationDomain();
-        if (config.maximumPriceAge == 0 || config.maximumPriceAge > MarkoutParameters.MAXIMUM_OBSERVATION_AGE) {
+        if (config.maximumPriceAge == 0 || config.maximumPriceAge > MarkoutParameters.MAXIMUM_SOURCE_PRICE_AGE) {
             revert InvalidMaximumPriceAge(config.maximumPriceAge);
         }
 

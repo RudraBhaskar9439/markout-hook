@@ -37,12 +37,12 @@ contract MarkoutSettlementEngineTest is Test {
     }
 
     function test_evaluate_invalidObservation_revertsBeforeSettlement() public {
-        ObservationRules memory rules = MarkoutParameters.defaultObservationRules(1300, 1500);
+        ObservationRules memory rules = MarkoutParameters.defaultObservationRules(1300, 1601);
         ReferenceObservation memory stale =
             ReferenceObservation({ priceX18: 2002e18, observedAt: 1300, confidenceBps: 9500 });
 
         vm.expectRevert(
-            abi.encodeWithSelector(ReferenceObservationValidator.StaleObservation.selector, uint64(200), uint64(120))
+            abi.encodeWithSelector(ReferenceObservationValidator.StaleObservation.selector, uint64(301), uint64(300))
         );
         harness.evaluate(1000, 2000e18, stale, TradeDirection.BuyBase, MarkoutParameters.defaultCurve(), rules);
     }

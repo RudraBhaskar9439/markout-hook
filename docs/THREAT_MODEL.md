@@ -4,7 +4,7 @@ Status: Phase 13 hybrid-transport engineering threat model. MARKOUT is not audit
 
 ## Scope and assets
 
-The active scope is the Uniswap v4 hook, surcharge custody, trade lifecycle, Pyth publisher, Circle and optional
+The active scope is the Uniswap v4 hook, surcharge custody, trade lifecycle, Pyth publisher, Circle and
 Reactive receivers, immutable settlement coordinator, and trader rebate claim path. The previous Reactive scheduler
 and same-chain sampler remain research artifacts rather than the active deployment topology. Protected properties are:
 
@@ -25,9 +25,9 @@ security of external Uniswap or Reactive deployments are not proven by this repo
 | Uniswap v4 PoolManager | Immutable pinned protocol dependency and only hook-callback caller | Delivers swaps and transfers the return-delta surcharge |
 | Trader/router/claim recipient | Fully untrusted | Chooses bounded maximum surcharge, beneficiary, and final claim recipient |
 | Pyth Core | Trusted signed price source | Supplies price, confidence interval, exponent, and publish time to the permissionless publisher |
-| Circle CCTP V2 | Primary authenticated message transport | Attests the publisher's message; cannot bypass hook validation or select a beneficiary |
+| Circle CCTP V2 | Independent authenticated message transport | Attests the publisher's message; cannot bypass hook validation or select a beneficiary |
 | Circle publisher caller | Fully untrusted | Supplies signed Pyth update bytes, exact fee, and trade id; cannot directly choose a price |
-| Reactive system and callback proxy | Optional log and callback transport | May mirror the publisher event; must also provide the immutable Reactive identity |
+| Reactive system and callback proxy | Autonomous log and callback transport | Observes the publisher event and must provide the immutable Reactive identity |
 | Settlement coordinator | Immutable multi-transport boundary | Sole hook settlement authority; first valid authorized delivery wins |
 | Any public address | Untrusted | May expire after grace or sponsor a claim that is forced to the recorded beneficiary |
 
@@ -61,7 +61,7 @@ There is no upgrade administrator, pause administrator, escrow owner, or arbitra
 | Missing/stale/invalid reference | Settlement reverts without mutation; permissionless full-rebate expiry | LP protection is reduced during oracle outages by design |
 | Oracle manipulation | Pyth signature verification, bounded age, and mechanical confidence normalization | Pyth compromise, stale upstream markets, or incorrect feed selection remain external risks |
 | ETH/USD quote basis | Testnet configuration documents ETH/USD as an ETH/USDC proxy | USDC depeg or basis movement can distort markout; production needs a direct pair or quote-asset validation |
-| Transport denial of service | Circle is primary, Reactive is optional, and public expiry returns the full surcharge | A dual outage reduces LP protection and delays settlement until expiry |
+| Transport denial of service | Reactive and Circle are independent delivery rails, and public expiry returns the full surcharge | A dual outage reduces LP protection and delays settlement until expiry |
 | Callback gas griefing | Stateless one-event/one-callback pulse with a fixed callback budget | Public-network gas adequacy remains unproven until explorer-backed delivery |
 | Forced token donation | Accounting ignores surplus and adversarial test proves it is not claimable | Surplus has no recovery path in the immutable MVP |
 | Malicious target rebinding | Adapter target can be bound exactly once by immutable binder | Binder must bind the correct target before operational use |
@@ -74,14 +74,14 @@ MARKOUT deliberately has no privileged global pause. A global pause could trap e
 Recovery is local and fail-open:
 
 1. Invalid settlement attempts revert without consuming the trade.
-2. Circle delivery may be retried permissionlessly; an optional Reactive duplicate is harmless.
+2. Circle delivery may be retried permissionlessly; a Reactive duplicate is harmless.
 3. After the grace period, any address can expire the affected trade into a full rebate.
 4. Claims are pull-based, so one failing recipient does not block another trade or user.
 5. A compromised or misconfigured immutable deployment is deprecated and replaced; custody rules are never upgraded in
    place.
 
 Operational monitoring should alert on aged pending trades, Circle attestation latency, rejected transport messages,
-optional callback failures, and any difference between actual and accounted balances. Live thresholds remain a
+callback-relayer failures, and any difference between actual and accounted balances. Live thresholds remain a
 Phase 14/production operations task.
 
 ## Release boundary

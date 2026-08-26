@@ -79,9 +79,9 @@ leave the full unreadable diagram static on screen.
 “The architecture has one story. First, `afterSwap` records price, direction, beneficiary and maturity while the hook
 escrows the provisional amount. Second, Pyth produces signed delayed price evidence.
 
-Third is the automation core: Reactive Network. A hook cannot wake itself five minutes later. The Reactive control
-plane subscribes to trade, price, terminal and cron events; tracks maturity; matches the observation; retries work; and
-requests settlement or expiry without a privileged keeper.
+Third is the cross-chain reaction core: Reactive Network. The Legacy pulse subscribes precisely to the canonical Pyth
+publisher and market event, executes the reaction in ReactVM, then requests an authenticated callback on Unichain.
+MARKOUT does not need to operate its own event-watching cross-chain relayer.
 
 The callback reaches the Unichain settlement gateway, where the first valid observation wins and duplicates become
 no-ops. Circle CCTP is the resilience rail. Neither transport controls funds or chooses the fee; the hook validates
@@ -94,9 +94,9 @@ evidence and allocates onchain.”
 **Say:**
 
 “This is not a frontend simulation. The hook uses the real v4 `afterSwap` lifecycle, pull-based rebates, bounded
-escrow, permissionless expiry, authenticated delivery and replay-safe settlement. The repository has 188 deterministic
-Solidity tests, including 12 stateful invariants, adversarial accounting tests and 17 dedicated Reactive lifecycle
-tests. The committed static-analysis gate reports no medium- or high-severity findings.”
+escrow, permissionless expiry, authenticated delivery and replay-safe settlement. The repository has 214 deterministic
+Solidity tests, including 12 stateful invariants, adversarial accounting tests and dedicated Reactive integration
+tests. The committed static-analysis gate reports no medium- or high-severity findings."
 
 ### 2:43–3:24 — Quantify the impact
 

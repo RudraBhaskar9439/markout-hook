@@ -7,7 +7,7 @@ import { TradeRecord, TradeStatus } from "../types/MarkoutLifecycleTypes.sol";
 import { ReferenceObservation } from "../types/MarkoutTypes.sol";
 
 /// @title MARKOUT Settlement Coordinator
-/// @notice Immutable, at-least-once boundary shared by Circle and optional Reactive observation transports.
+/// @notice Immutable, at-least-once boundary shared by the Reactive and Circle observation transports.
 /// @dev The deployer binds the complete topology once. No administrative surface remains after binding.
 contract SettlementCoordinator is IMarkoutSettlementTarget {
     uint256 public constant MAX_SOURCES = 3;

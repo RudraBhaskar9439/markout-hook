@@ -9,8 +9,8 @@ import { ReactivePulseConfig } from "../types/ReactivePulseTypes.sol";
 import { ReactiveObservationReceiver } from "./ReactiveObservationReceiver.sol";
 
 /// @title MARKOUT Reactive Observation Pulse
-/// @notice Statelessly mirrors one Pyth-verified publisher event to the authenticated Unichain receiver.
-/// @dev Circle is the primary transport. This contract holds no trade registry, scheduler, oracle, or retry state.
+/// @notice Statelessly delivers one Pyth-verified publisher event to the authenticated Unichain receiver.
+/// @dev The pulse is MARKOUT's live Legacy transport adapter and holds no custody or pricing authority.
 contract MarkoutPulseReactive is AbstractReactive {
     uint64 public constant CALLBACK_GAS_LIMIT = 300_000;
     uint256 public constant OBSERVATION_PUBLISHED_TOPIC =

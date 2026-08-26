@@ -53,24 +53,25 @@ is responsive.
 
 Replay the five-step mechanism.
 
-"The hook records execution and custody. The trade matures. Pyth publishes one canonical observation. Reactive is the
-intended autonomous control plane: it observes the request, wakes at maturity, triggers the authenticated callback,
-and handles retries or expiry. The hook then applies one bounded curve - no wallet blacklist and no operator choosing
-the outcome."
+"The hook records execution and custody. The trade matures. Pyth verifies and publishes one canonical observation.
+Reactive subscribes to that event, executes the reaction in ReactVM, and requests an authenticated Unichain callback.
+The hook then applies one bounded curve - no wallet blacklist and no operator choosing the outcome."
 
 ### 2:10-2:40 - Architecture and Reactive Network
 
 Show the separated architecture and point to each plane only once.
 
-"Frontend explains. Unichain accounts. Ethereum verifies. Reactive automates. A v4 hook cannot wake itself five
-minutes later, so Reactive is essential to MARKOUT's no-keeper design. Circle is the publicly proven redundant
-delivery rail; it does not replace Reactive's maturity, retry, acknowledgement, and expiry orchestration."
+"Frontend explains. Unichain accounts. Ethereum verifies. Reactive connects the event to an authenticated action.
+The hook cannot subscribe to a foreign-chain Pyth publication by itself, so Reactive turns that canonical event into
+a Unichain callback without a MARKOUT-owned cross-chain relayer. Circle is an independent delivery rail, and the
+coordinator makes their order harmless."
 
 Then show the Reactive section:
 
-"The full lifecycle engine is implemented with five narrow subscriptions and 17 dedicated tests. A funded legacy
-pulse is publicly deployed and exactly subscribed. The public destination callback has not appeared, so I am showing
-that boundary instead of claiming a transaction that does not exist."
+"The funded Legacy pulse is publicly deployed and exactly subscribed. One publisher event completed the full
+ReactVM-to-Unichain callback path in 11 seconds. In a separate pending-first trial, ReactVM emitted two valid callback
+requests but the destination relayer timed out; the trade expired and refunded in full. I separate transport proof
+from economic-settlement proof."
 
 Hard rule: leave architecture after 30 seconds. Maestro spent roughly half the presentation on it; MARKOUT must not.
 
@@ -91,7 +92,7 @@ backtesting and not exact LVR."
 
 Show the public evidence card.
 
-"MARKOUT has 188 passing contract tests, four public Circle-completed lifecycles covering full rebate and full
+"MARKOUT has 214 passing contract tests, four public Circle-completed lifecycles covering full rebate and full
 retention, a separately deployed Fair-Flow pool, and zero medium or high Slither findings. MARKOUT does not guess who
 is toxic. It prices what the trade actually did."
 
@@ -101,8 +102,8 @@ Stop. Do not add another feature list.
 
 1. "The frontend submits a real swap and reads the receipt; it never computes the outcome."
 2. "The Unichain hook owns custody, maturity validation, and fee allocation."
-3. "Pyth creates canonical evidence, while Reactive provides the no-keeper lifecycle and authenticated action."
-4. "Circle is redundant public delivery proof, and permissionless expiry guarantees a full refund if neither route succeeds."
+3. "Pyth creates canonical evidence, while Reactive turns that foreign-chain event into an authenticated action."
+4. "Circle is an independent delivery rail, and permissionless expiry guarantees a full refund if neither route succeeds."
 
 ## Questions judges are likely to ask
 

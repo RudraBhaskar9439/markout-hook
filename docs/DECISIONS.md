@@ -292,3 +292,21 @@ Any address may pay gas to claim a rebate for a named beneficiary, but the hook 
 to the beneficiary itself. Only the beneficiary-controlled pull path may select a different recipient. Both paths
 share the same checks-effects-interactions accounting and reentrancy guard, so a relayer can improve trader experience
 without acquiring redirect authority.
+
+## D-046 — Separate source-price freshness from cross-chain transport latency
+
+The signed Pyth update must be no more than 120 seconds old when the Ethereum publisher verifies it. Destination
+settlement allows that already-verified observation up to five minutes to traverse an asynchronous transport, while
+the independent ten-minute post-maturity grace period remains unchanged. This split was added after a live Legacy
+reaction emitted a correctly targeted callback request, while destination evaluation 129 seconds after the observation
+hit the previous shared 120-second bound. Source oracle freshness is not relaxed; only the delivery-latency budget is
+modeled separately.
+
+## D-047 — Restore Legacy Reactive as a live transport without overstating settlement reliability
+
+After the Reactive team recommended Legacy, a canonical publisher event completed an authenticated Unichain callback
+in 11 seconds. Reactive transport liveness may therefore be marked true. The callback reached an already-terminal
+trade, and a separate pending-first run later produced two successful ReactVM reactions but no destination transaction
+before expiry. MARKOUT therefore keeps Circle as an independent resilience rail and reports Reactive-first economic
+settlement as unproven. Transport liveness, ReactVM execution, relayer reliability, and economic settlement remain
+separate release claims.

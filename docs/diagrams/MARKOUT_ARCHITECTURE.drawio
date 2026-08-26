@@ -90,19 +90,19 @@
         <mxCell id="reactive-plane" value="" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=#0E1C2B;strokeColor=#4F9DFF;strokeWidth=3;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="1400" y="120" width="480" height="710" as="geometry"/>
         </mxCell>
-        <mxCell id="reactive-title" value="&lt;font color=&quot;#80BFFF&quot; style=&quot;font-size: 19px;&quot;&gt;&lt;b&gt;3 · REACTIVE NETWORK&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;AUTONOMOUS NO-KEEPER CONTROL PLANE&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="reactive-title" value="&lt;font color=&quot;#80BFFF&quot; style=&quot;font-size: 19px;&quot;&gt;&lt;b&gt;3 · REACTIVE NETWORK&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;AUTONOMOUS EVENT-TO-ACTION RAIL&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
           <mxGeometry x="1425" y="145" width="425" height="65" as="geometry"/>
         </mxCell>
-        <mxCell id="subscriptions" value="&lt;font color=&quot;#EAF5FF&quot;&gt;&lt;b&gt;MarkoutReactive · 5 narrow subscriptions&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#BFD7EA&quot;&gt;MarkoutRequested · MarkoutSettled&lt;br&gt;MarkoutExpired · ReferencePricePublished · cron&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12304A;strokeColor=#4F9DFF;fontSize=13;spacing=12;align=left;" vertex="1" parent="1">
+        <mxCell id="subscriptions" value="&lt;font color=&quot;#EAF5FF&quot;&gt;&lt;b&gt;MarkoutPulseReactive · exact subscription&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#BFD7EA&quot;&gt;Pinned publisher · pinned market&lt;br&gt;ReferencePricePublished event only&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12304A;strokeColor=#4F9DFF;fontSize=13;spacing=12;align=left;" vertex="1" parent="1">
           <mxGeometry x="1425" y="230" width="430" height="120" as="geometry"/>
         </mxCell>
-        <mxCell id="scheduler" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;Autonomous lifecycle scheduler&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D4F8DC&quot;&gt;Track maturity + expiry&lt;br&gt;Bounded scan: 8 trades / cron&lt;br&gt;Select reference · retry · acknowledge&lt;br&gt;Request settle or permissionless expiry&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#143523;strokeColor=#58D68D;strokeWidth=2;fontSize=13;spacing=12;align=left;" vertex="1" parent="1">
+        <mxCell id="scheduler" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;Stateless ReactVM reaction&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D4F8DC&quot;&gt;Validate event topics and payload&lt;br&gt;Decode normalized Pyth observation&lt;br&gt;Encode callback for Unichain&lt;br&gt;No custody · no price choice · no fee authority&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#143523;strokeColor=#58D68D;strokeWidth=2;fontSize=13;spacing=12;align=left;" vertex="1" parent="1">
           <mxGeometry x="1425" y="380" width="430" height="155" as="geometry"/>
         </mxCell>
         <mxCell id="reactvm" value="&lt;font color=&quot;#EAF5FF&quot;&gt;&lt;b&gt;ReactVM → callback proxy → receiver&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#BFD7EA&quot;&gt;Authenticated callback + injected RVM identity&lt;br&gt;ReactiveObservationReceiver → coordinator&lt;br&gt;No custody · no fee authority&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12304A;strokeColor=#4F9DFF;fontSize=12;align=center;" vertex="1" parent="1">
           <mxGeometry x="1425" y="570" width="430" height="100" as="geometry"/>
         </mxCell>
-        <mxCell id="reactive-evidence" value="&lt;font color=&quot;#80BFFF&quot;&gt;&lt;b&gt;CONTROL-PLANE SAFETY&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D1E6F7&quot;&gt;17 dedicated lifecycle tests&lt;br&gt;Bounded work · retries · acknowledgement&lt;br&gt;Idempotent settlement · permissionless expiry&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#101F30;strokeColor=#4F9DFF;dashed=1;fontSize=12;align=center;" vertex="1" parent="1">
+        <mxCell id="reactive-evidence" value="&lt;font color=&quot;#80BFFF&quot;&gt;&lt;b&gt;PUBLIC LEGACY EVIDENCE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D1E6F7&quot;&gt;Exact subscription verified&lt;br&gt;ReactVM execution + 11-second callback&lt;br&gt;Authenticated receiver identity&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#101F30;strokeColor=#4F9DFF;dashed=1;fontSize=12;align=center;" vertex="1" parent="1">
           <mxGeometry x="1425" y="700" width="430" height="100" as="geometry"/>
         </mxCell>
 
@@ -248,10 +248,10 @@
         <mxCell id="d-ev2" value="&lt;font color=&quot;#6CB8FF&quot;&gt;&lt;b&gt;CIRCLE DELIVERY&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#C8E2F5&quot;&gt;4 public end-to-end observation lifecycles&lt;br&gt;used as redundant delivery + live proof&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#122A3C;strokeColor=#3B7BAD;dashed=1;fontSize=13;align=center;" vertex="1" parent="d1">
           <mxGeometry x="1380" y="335" width="470" height="100" as="geometry"/>
         </mxCell>
-        <mxCell id="d-ev3" value="&lt;font color=&quot;#80BFFF&quot;&gt;&lt;b&gt;REACTIVE IMPLEMENTATION&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D1E6F7&quot;&gt;Full lifecycle engine + 17 tests&lt;br&gt;Legacy pulse deployed and funded&lt;br&gt;Exact subscription confirmed&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#101F30;strokeColor=#4F9DFF;fontSize=13;align=center;" vertex="1" parent="d1">
+        <mxCell id="d-ev3" value="&lt;font color=&quot;#80BFFF&quot;&gt;&lt;b&gt;REACTIVE LEGACY LIVE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D1E6F7&quot;&gt;Pulse deployed, funded and subscribed&lt;br&gt;ReactVM reaction publicly verified&lt;br&gt;Authenticated Unichain callback in 11s&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#101F30;strokeColor=#4F9DFF;fontSize=13;align=center;" vertex="1" parent="d1">
           <mxGeometry x="1380" y="465" width="470" height="115" as="geometry"/>
         </mxCell>
-        <mxCell id="d-ev4" value="&lt;font color=&quot;#FFBE74&quot;&gt;&lt;b&gt;DISCLOSURE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#FFE0BD&quot;&gt;Public Reactive → Unichain callback not observed yet.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3B2417;strokeColor=#E79A45;fontSize=12;align=center;" vertex="1" parent="d1">
+        <mxCell id="d-ev4" value="&lt;font color=&quot;#FFBE74&quot;&gt;&lt;b&gt;DISCLOSURE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#FFE0BD&quot;&gt;Pending-first trial: relayer timeout → full refund.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3B2417;strokeColor=#E79A45;fontSize=12;align=center;" vertex="1" parent="d1">
           <mxGeometry x="1380" y="600" width="470" height="45" as="geometry"/>
         </mxCell>
 

@@ -1,6 +1,8 @@
 # MARKOUT Mechanism Specification
 
-Status: Phase 14 Circle-primary lifecycle verified publicly; optional Reactive destination delivery is not live.
+Status: Circle economic lifecycles and a Legacy Reactive cross-chain callback are verified publicly. A
+Reactive-first economic settlement remains unproven because the acceptance retry reached ReactVM but not the
+destination relayer before expiry.
 
 ## 1. Problem
 
@@ -14,7 +16,7 @@ Most dynamic-fee hooks price a swap using information available before execution
 4. The hook emits `MarkoutRequested` with a unique trade ID.
 5. After maturity, any publisher submits a signed Pyth update for the configured ETH/USD feed on Ethereum Sepolia.
 6. The publisher normalizes the observation and sends it to Unichain through Circle CCTP V2.
-7. An optional stateless Reactive Contract may mirror the exact same publisher event.
+7. A stateless Legacy Reactive Contract observes and delivers the exact same publisher event.
 8. The first authenticated delivery reaches MARKOUT through the immutable settlement coordinator.
 9. MARKOUT calculates the final retained surcharge.
 10. The trader receives a pull-based rebate credit. The retained portion is credited to the LP protection reserve.
@@ -58,7 +60,8 @@ The curve is monotonic over its entire domain and treats equivalent buy and sell
 
 - Maturity: five minutes after execution.
 - Settlement grace period: ten minutes after maturity.
-- Maximum reference-observation age at evaluation: two minutes.
+- Maximum Pyth price age when verified by the source publisher: two minutes.
+- Maximum already-verified observation age at destination evaluation: five minutes.
 - Minimum adapter-normalized confidence: 9,000 out of 10,000.
 - Observations before maturity, from the future, after the grace period, stale, missing, zero, or below confidence fail.
 
@@ -67,17 +70,21 @@ Oracle, Circle, or Reactive liveness failure cannot create LP protection value.
 
 ## 6. Hybrid transport boundary
 
-Circle CCTP V2 is the primary authenticated observation transport. Its source publisher:
+Reactive Network is MARKOUT's event-driven observation transport. The live Legacy pulse subscribes to the canonical
+publisher event, executes in ReactVM, and requests an authenticated callback to Unichain. It owns no oracle, custody,
+or fee authority; the destination hook independently validates every economic input.
+
+Circle CCTP V2 is the resilience rail. The shared source publisher:
 
 - verifies a fresh update against the configured Pyth contract and feed;
 - emits one canonical normalized observation;
 - requests a fast-confirmed generic Circle message to the configured Unichain receiver; and
 - leaves destination relay permissionless because the attestation, not the relayer, authenticates the payload.
 
-Reactive Network is an optional Maestro-style pulse: it subscribes only to that canonical publisher event and may
-forward the same observation through an authenticated callback. It owns no clock, oracle, trade registry, retry state,
-or custody. The coordinator authorizes both transport receivers, and the first valid delivery wins. No ordinary EOA
-receives settlement authority.
+The coordinator authorizes both transport receivers, and the first valid delivery wins. No ordinary EOA receives
+settlement authority. A public Legacy callback proves the Reactive transport boundary; the separate Reactive-first
+acceptance run also records an honest relayer timeout and full-refund expiry rather than treating a ReactVM event as a
+completed settlement.
 
 For the ETH/USDC testnet MVP, the configured Pyth ETH/USD price is used as an ETH/USDC proxy and therefore assumes
 USDC remains close to one US dollar. A production design must use a direct ETH/USDC source or explicitly model USDC
@@ -119,6 +126,6 @@ No terminal state can transition again.
 
 ## 10. Remaining release decisions
 
-1. Keep the optional Reactive callback labeled not-live unless a public destination transaction appears.
+1. Improve or diversify destination relaying before placing Reactive in a production-critical path.
 2. Decide how the LP protection reserve becomes pool liquidity or LP-owned value.
 3. Replace the ETH/USD-as-ETH/USDC testnet proxy before any production use.

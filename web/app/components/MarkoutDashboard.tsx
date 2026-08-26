@@ -242,7 +242,7 @@ function SettlementTimeline({ selected }: { selected: FlowId }) {
       </div>
 
       <div className="proof-strip">
-        <span className="proof-status"><i /> Reactive lifecycle implemented + tested</span>
+        <span className="proof-status"><i /> Reactive Legacy callback publicly verified</span>
         <span>MarkoutRequested</span>
         <span className="proof-arrow">→</span>
         <span>Reactive maturity</span>
@@ -319,8 +319,8 @@ function ArchitectureDiagram() {
           <h2 id="architecture-title">Four planes. One outcome-priced hook.</h2>
         </div>
         <p className="section-lede">
-          Each plane has one job. The frontend explains, Unichain accounts, Ethereum verifies, and Reactive automates.
-          Circle is the proven redundant delivery rail; it cannot replace Reactive&apos;s no-keeper control-plane role.
+          Each plane has one job. The frontend explains, Unichain accounts, Ethereum verifies, and Reactive turns the
+          verified event into an authenticated action. Circle provides an independent delivery path.
         </p>
       </div>
 
@@ -346,11 +346,11 @@ function ArchitectureDiagram() {
         </article>
 
         <article className="architecture-plane plane-reactive">
-          <div className="plane-heading"><span>04</span><div><small>Automation plane · Reactive Network</small><strong>Keeperless lifecycle</strong></div></div>
-          <div className="plane-node plane-node-strong"><b>Exact subscriptions</b><p>Hook requests, Pyth evidence, cron and acknowledgements.</p></div>
-          <div className="plane-node"><b>ReactVM orchestration</b><p>Maturity, sampling, bounded batching, retry and expiry.</p></div>
+          <div className="plane-heading"><span>04</span><div><small>Reaction plane · Reactive Network</small><strong>Event-to-action rail</strong></div></div>
+          <div className="plane-node plane-node-strong"><b>Exact subscription</b><p>Pinned publisher, event signature and market.</p></div>
+          <div className="plane-node"><b>ReactVM execution</b><p>Decode the normalized observation and encode the destination action.</p></div>
           <div className="plane-node"><b>Authenticated callback</b><p>Callback proxy + injected RVM identity.</p></div>
-          <span className="plane-essential">Essential for autonomous no-keeper mode</span>
+          <span className="plane-essential">Live autonomous cross-chain reaction</span>
         </article>
 
         <div className="architecture-spine">
@@ -372,23 +372,23 @@ function ReactiveNetworkSection() {
   const capabilities = [
     {
       index: "01",
-      title: "Observe the trade",
-      copy: "The lifecycle engine subscribes to MarkoutRequested and records maturity and expiry without a MARKOUT keeper.",
+      title: "Subscribe precisely",
+      copy: "The Legacy RSC pins Ethereum Sepolia, the publisher contract, event signature, and exact market topic.",
     },
     {
       index: "02",
-      title: "Wake at maturity",
-      copy: "Cron and reference events advance bounded batches, so settlement does not depend on another swap arriving.",
+      title: "Execute in ReactVM",
+      copy: "One canonical Pyth publisher event activates the stateless reaction and no MARKOUT-operated listener is required.",
     },
     {
       index: "03",
-      title: "Trigger settlement",
-      copy: "ReactVM requests sampling or forwards the valid observation through an authenticated destination callback.",
+      title: "Authenticate the action",
+      copy: "The destination receiver requires both the system callback proxy and the injected RVM identity.",
     },
     {
       index: "04",
-      title: "Retry or expire",
-      copy: "Acknowledgements stop retries; unavailable evidence eventually reaches the same full-refund expiry guarantee.",
+      title: "Settle safely",
+      copy: "The coordinator forwards the first valid delivery once; duplicates no-op and expiry preserves the full-refund guarantee.",
     },
   ];
 
@@ -397,11 +397,11 @@ function ReactiveNetworkSection() {
       <div className="reactive-heading">
         <div>
           <p className="kicker">Reactive Network integration</p>
-          <h2 id="reactive-title">No Reactive, no autonomous MARKOUT.</h2>
+          <h2 id="reactive-title">Reactive makes verified evidence actionable.</h2>
         </div>
         <div className="reactive-prize-chip">
           <span>Sponsor thesis</span>
-          <strong>Essential automation plane</strong>
+          <strong>Live event-to-action rail</strong>
         </div>
       </div>
 
@@ -417,17 +417,17 @@ function ReactiveNetworkSection() {
 
       <div className="reactive-proof-layout">
         <div className="reactive-value-copy">
-          <p className="kicker">Why it is architecturally necessary</p>
-          <h3>The hook can price an outcome. Reactive makes the lifecycle run by itself.</h3>
+          <p className="kicker">Why it materially matters</p>
+          <h3>The hook cannot hear Ethereum. Reactive bridges evidence into action.</h3>
           <p>
-            A v4 hook cannot wake itself five minutes later. MARKOUT therefore uses Reactive as its intended control
-            plane: observe the request, track maturity, accept canonical reference evidence, request an authenticated
-            callback, retry safely, and acknowledge the terminal state. Circle is delivery redundancy and the publicly
-            proven fallback; it does not provide this event-driven lifecycle orchestration.
+            MARKOUT&apos;s hook lives on Unichain, while the canonical Pyth-verified observation is published on Ethereum
+            Sepolia. The Legacy RSC subscribes to that exact event, runs in ReactVM, and requests the authenticated
+            destination callback. Reactive therefore provides a real cross-chain execution path, while Circle remains
+            an independent route into the same replay-safe coordinator.
           </p>
           <div className="reactive-boundary-strip">
-            <span>Maturity orchestration</span><b>✓</b>
-            <span>Retry + acknowledgement</span><b>✓</b>
+            <span>Exact event subscription</span><b>✓</b>
+            <span>Authenticated callback</span><b>✓</b>
             <span>Custody</span><b>×</b>
             <span>Fee authority</span><b>×</b>
           </div>
@@ -436,20 +436,22 @@ function ReactiveNetworkSection() {
         <aside className="reactive-proof-card" aria-label="Reactive Network public evidence status">
           <p className="kicker">Public evidence boundary</p>
           <ul>
-            <li data-status="verified"><span>Full lifecycle engine + 17 tests</span><b>Verified locally</b></li>
-            <li data-status="verified"><span>Five narrow event subscriptions</span><b>Verified in tests</b></li>
+            <li data-status="verified"><span>Stateless Legacy adapter</span><b>Verified locally</b></li>
+            <li data-status="verified"><span>Exact publisher + market filter</span><b>Verified onchain</b></li>
             <li data-status="verified"><span>Legacy Lasna pulse deployed</span><b>Verified</b></li>
             <li data-status="verified"><span>Funded and debt-free</span><b>Verified</b></li>
             <li data-status="verified"><span>Exact publisher subscription</span><b>Verified</b></li>
-            <li data-status="pending"><span>Public Unichain callback</span><b>Not observed</b></li>
+            <li data-status="verified"><span>Public Unichain callback</span><b>11s · Verified</b></li>
+            <li data-status="pending"><span>Reactive-first settlement</span><b>Relayer timeout</b></li>
           </ul>
           <div className="reactive-proof-actions">
-            <a href="https://lasna.reactscan.net/address/0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e" target="_blank" rel="noreferrer">Inspect Reactive pulse ↗</a>
-            <a href="https://lasna.reactscan.net/tx/0xdd2af7d35c3f73aa4d667631ff6062053636e6c098e16cfb620205e3481164c6" target="_blank" rel="noreferrer">Deployment receipt ↗</a>
+            <a href="https://lasna.reactscan.net/address/0x253A29BfbbCECDeCE7a32ba98Bd12922Af4b9e5b" target="_blank" rel="noreferrer">Inspect Reactive pulse ↗</a>
+            <a href="https://sepolia.uniscan.xyz/tx/0x5d933d5ff078c500c61fc32fef1ae526049085dad8e15ff4ef2673a971114459" target="_blank" rel="noreferrer">Callback receipt ↗</a>
           </div>
           <p className="reactive-honesty-note">
-            The autonomous Reactive architecture is implemented and tested. The legacy pulse is publicly deployed and
-            subscribed, but its destination callback remains unobserved; MARKOUT does not convert that gap into a fake live claim.
+            Legacy Reactive completed an authenticated cross-chain callback in 11 seconds. Because that callback reached
+            an already-terminal trade, it proves transport liveness—not Reactive-first economics. A separate pending-first
+            run reached ReactVM twice, then safely expired and refunded when destination relaying timed out.
           </p>
         </aside>
       </div>
@@ -608,7 +610,7 @@ export function MarkoutDashboard() {
           <a href="#reactive">Reactive</a>
           <a href="#evidence">Research</a>
         </nav>
-        <span className="testnet-status"><i /> Reactive engine tested · Circle relay proven</span>
+        <span className="testnet-status"><i /> Reactive callback live · Circle relay proven</span>
       </header>
 
       <section className="hero" id="top">
@@ -618,7 +620,7 @@ export function MarkoutDashboard() {
           <p>
             MARKOUT is a Uniswap v4 hook that escrows a provisional charge, waits for post-trade evidence, then lets
             an authenticated observation return it to good flow—or retain it when LPs were adversely selected. The
-            Fair-Flow profile starts at 18 bps, while Reactive Network supplies the intended no-keeper lifecycle.
+            Fair-Flow profile starts at 18 bps, while Reactive Network supplies a live event-to-action rail.
           </p>
           <div className="hero-actions">
             <a className="primary-action" href="#testnet">Run a real testnet swap <span>↓</span></a>
@@ -688,8 +690,8 @@ export function MarkoutDashboard() {
         </div>
         <div className="footer-status">
           <span><i className="status-green" /> Four public Circle lifecycles proven</span>
-          <span><i className="status-green" /> Reactive lifecycle engine tested</span>
-          <span><i className="status-amber" /> Public Reactive callback not yet observed</span>
+          <span><i className="status-green" /> Reactive Legacy transport live</span>
+          <span><i className="status-amber" /> Reactive-first settlement relayer timed out</span>
         </div>
         <p className="footer-note">Experimental UHI10 prototype · Not audited · No real funds</p>
       </footer>

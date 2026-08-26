@@ -11,7 +11,11 @@ library MarkoutParameters {
 
     uint64 internal constant MATURITY_DELAY = 5 minutes;
     uint64 internal constant SETTLEMENT_GRACE_PERIOD = 10 minutes;
-    uint64 internal constant MAXIMUM_OBSERVATION_AGE = 2 minutes;
+    uint64 internal constant MAXIMUM_SOURCE_PRICE_AGE = 2 minutes;
+    // The publisher still validates a fresh Pyth update at source (120 seconds in the
+    // testnet deployment). This destination bound additionally covers asynchronous
+    // cross-chain delivery latency without extending the ten-minute settlement window.
+    uint64 internal constant MAXIMUM_OBSERVATION_AGE = 5 minutes;
     uint16 internal constant MINIMUM_CONFIDENCE_BPS = 9000;
 
     // 5 bps and 25 bps expressed as signed-return WAD magnitudes.

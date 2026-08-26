@@ -1,7 +1,8 @@
 # UHI10 Final Submission Checklist
 
-The Circle-primary, Reactive-optional implementation is complete locally, and the required Circle lifecycle is proven
-on public testnets. The final release remains blocked only on the owner-controlled submission details below.
+The hybrid implementation is complete locally. Circle economic settlement and a Legacy Reactive cross-chain callback
+are proven on public testnets; Reactive-first economic settlement remains explicitly unclaimed. The final release
+remains blocked only on the owner-controlled submission details below.
 
 ## Complete and verified locally
 
@@ -34,15 +35,18 @@ on public testnets. The final release remains blocked only on the owner-controll
 - [x] Execute and settle a second trade proving the opposite branch: 100% retained for LP protection in 67 seconds
 - [x] Reconcile claimable rebate, LP reserve, accounted balance, and actual token balance across all public lifecycles
 
-## Optional Reactive sponsor evidence
+## Reactive sponsor evidence
 
 - [x] Deploy the funded pulse on legacy Lasna and verify its exact subscription publicly
-- [ ] Observe the publisher event being processed on Reactive
-- [ ] Record a successful Unichain callback transaction if the relayer delivers
-- [ ] Set `reactiveLive` to `true` only when that destination transaction is public
+- [x] Observe the publisher event being processed on Reactive
+- [x] Record a successful authenticated Unichain callback transaction
+- [x] Set `reactiveLive` to `true` only after that destination transaction is public
+- [x] Run a separate pending-first acceptance trade with Circle relay disabled
+- [x] Record the relayer timeout, permissionless full-refund expiry, and final zero-liability accounting
 
-Reactive evidence can strengthen the sponsor story, but its failure does not invalidate MARKOUT settlement. Circle is
-the primary path, and permissionless expiry returns the complete provisional surcharge if neither transport settles.
+The successful callback proves transport liveness, not Reactive-first economics: it targeted an already-terminal
+trade. The separate pending-first run reached ReactVM twice but not the destination relayer before expiry. Circle is
+the resilience rail, and permissionless expiry returns the complete provisional surcharge if neither transport settles.
 
 ## Submission details requiring the project owner
 
