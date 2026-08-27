@@ -124,6 +124,19 @@ test("removes starter metadata and keeps deterministic evidence explicit", async
   );
 });
 
+test("keeps the authenticated Pyth request on the server", async () => {
+  const [testnetLibrary, pythRoute] = await Promise.all([
+    readFile(new URL("../app/lib/testnet/markout.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/pyth-update/route.ts", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(testnetLibrary, /const PYTH_UPDATE_URL = "\/api\/pyth-update"/);
+  assert.doesNotMatch(testnetLibrary, /PYTH_API_KEY|Authorization:\s*`Bearer/);
+  assert.match(pythRoute, /process\.env\.PYTH_API_KEY/);
+  assert.match(pythRoute, /Authorization:\s*`Bearer \$\{apiKey\}`/);
+  assert.match(pythRoute, /pyth\.dourolabs\.app\/hermes/);
+});
+
 test("ships an exact-size social preview card", async () => {
   const image = await readFile(new URL("../public/og-evidence-v2.png", import.meta.url));
 

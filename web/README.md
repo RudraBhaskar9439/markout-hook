@@ -26,6 +26,10 @@ Cloudflare Worker-compatible React application built with vinext and the Sites V
 
 ## Local use
 
+Pyth Hermes requires authenticated API access. Copy `.env.example` to `.env.local` and set `PYTH_API_KEY` before
+starting the application. Configure the same server-only variable in the hosted environment. Never prefix it with
+`NEXT_PUBLIC_`; the browser calls `/api/pyth-update`, which keeps the credential outside the client bundle.
+
 ```bash
 npm ci
 npm run dev

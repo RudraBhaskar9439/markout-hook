@@ -6,6 +6,7 @@ trade_id="${TRADE_ID:?Set TRADE_ID}"
 pyth_contract="${PYTH_CONTRACT:?Set PYTH_CONTRACT}"
 price_id="${PYTH_PRICE_ID:?Set PYTH_PRICE_ID}"
 hermes_url="${PYTH_HERMES_URL:?Set PYTH_HERMES_URL}"
+pyth_api_key="${PYTH_API_KEY:?Set PYTH_API_KEY without committing it}"
 rpc_url="${ETHEREUM_SEPOLIA_RPC_URL:?Set ETHEREUM_SEPOLIA_RPC_URL}"
 private_key="${PRIVATE_KEY:?Set PRIVATE_KEY}"
 gas_limit="${CIRCLE_PUBLISH_GAS_LIMIT:-500000}"
@@ -16,14 +17,9 @@ if [[ "$chain_id" != "11155111" ]]; then
   exit 1
 fi
 
-headers=()
-if [[ -n "${PYTH_API_KEY:-}" ]]; then
-  headers+=(--header "Authorization: Bearer ${PYTH_API_KEY}")
-fi
-
 response="$({
   curl --fail --silent --show-error --get \
-    "${headers[@]}" \
+    --header "Authorization: Bearer ${pyth_api_key}" \
     --data-urlencode "ids[]=${price_id}" \
     --data-urlencode "encoding=hex" \
     --data-urlencode "parsed=true" \

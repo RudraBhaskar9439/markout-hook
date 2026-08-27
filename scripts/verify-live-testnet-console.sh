@@ -3,6 +3,7 @@ set -euo pipefail
 
 repo_root="$(git rev-parse --show-toplevel)"
 rpc_url="${MARKOUT_FRONTEND_RPC_URL:-https://unichain-sepolia-rpc.publicnode.com}"
+pyth_api_key="${PYTH_API_KEY:?Set PYTH_API_KEY without committing it}"
 simulation_account="${TESTNET_SIMULATION_ACCOUNT:-0xd1DcAAFf9356d5a42f2eE6F90179C4509386a83f}"
 hook="0x3A17354331C21B246A9eC9BF979Af77e64f30044"
 router="0x9140a78c1a137c7ff1c151ec8231272af78a99a4"
@@ -50,10 +51,11 @@ cast call "$router" \
 
 hermes_response="$(
   curl --fail --silent --show-error --get \
+    --header "Authorization: Bearer ${pyth_api_key}" \
     --data-urlencode 'ids[]=0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace' \
     --data-urlencode 'encoding=hex' \
     --data-urlencode 'parsed=true' \
-    'https://hermes.pyth.network/v2/updates/price/latest'
+    'https://pyth.dourolabs.app/hermes/v2/updates/price/latest'
 )"
 jq -e '.binary.data[0] and .parsed[0].price.publish_time' <<<"$hermes_response" >/dev/null
 

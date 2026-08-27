@@ -52,7 +52,7 @@ const MARKOUT_POOL_FEE = 1800;
 export const PYTH_ETH_USD_PRICE_ID =
   "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace" as const;
 
-const HERMES_PRICE_URL = "https://hermes.pyth.network/v2/updates/price/latest";
+const PYTH_UPDATE_URL = "/api/pyth-update";
 const CIRCLE_MESSAGES_URL = "https://iris-api-sandbox.circle.com/v2/messages/0";
 const MIN_SQRT_PRICE_PLUS_ONE = 4_295_128_740n;
 const MAX_SQRT_PRICE_MINUS_ONE = 1_461_446_703_485_210_103_287_273_052_203_988_822_378_723_970_341n;
@@ -394,12 +394,14 @@ export async function executeTestnetSwap(
 }
 
 async function fetchFreshPythUpdate() {
-  const url = new URL(HERMES_PRICE_URL);
-  url.searchParams.append("ids[]", PYTH_ETH_USD_PRICE_ID);
-  url.searchParams.set("encoding", "hex");
-  url.searchParams.set("parsed", "true");
-  const response = await fetch(url, { cache: "no-store" });
-  if (!response.ok) throw new Error(`Pyth Hermes returned HTTP ${response.status}.`);
+  const response = await fetch(PYTH_UPDATE_URL, { cache: "no-store" });
+  if (!response.ok) {
+    const payload = await response.json().catch(() => null) as { error?: unknown } | null;
+    const message = typeof payload?.error === "string"
+      ? payload.error
+      : `Pyth settlement service returned HTTP ${response.status}.`;
+    throw new Error(message);
+  }
   const payload = await response.json() as {
     binary?: { data?: unknown[] };
     parsed?: Array<{ price?: { publish_time?: unknown; price?: unknown } }>;
