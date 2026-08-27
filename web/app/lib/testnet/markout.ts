@@ -54,6 +54,7 @@ export const PYTH_ETH_USD_PRICE_ID =
 
 const PYTH_UPDATE_URL = "/api/pyth-update";
 const CIRCLE_MESSAGES_URL = "https://iris-api-sandbox.circle.com/v2/messages/0";
+const ETHEREUM_SEPOLIA_RPC_URL = "https://ethereum-sepolia-rpc.publicnode.com";
 const MIN_SQRT_PRICE_PLUS_ONE = 4_295_128_740n;
 const MAX_SQRT_PRICE_MINUS_ONE = 1_461_446_703_485_210_103_287_273_052_203_988_822_378_723_970_341n;
 const APPROVAL_GAS_LIMIT = 100_000n;
@@ -158,7 +159,10 @@ type EthereumProvider = EIP1193Provider & {
 };
 
 const unichainClient = createPublicClient({ chain: unichainSepolia, transport: http() });
-const sepoliaClient = createPublicClient({ chain: sepolia, transport: http() });
+const sepoliaClient = createPublicClient({
+  chain: sepolia,
+  transport: http(ETHEREUM_SEPOLIA_RPC_URL),
+});
 
 function explorerTransaction(chain: Chain, hash: Hash) {
   return `${chain.blockExplorers?.default.url}/tx/${hash}`;

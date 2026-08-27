@@ -113,6 +113,7 @@ test("removes starter metadata and keeps deterministic evidence explicit", async
   assert.match(testnet, /0xee2fba8ece79cbbf20bb44f861fae605b7caf5fa12883daa34811f54e753580d/);
   assert.match(testnet, /MARKOUT_BASE_FEE_BPS = 18/);
   assert.match(testnet, /MARKOUT_POOL_FEE = 1800/);
+  assert.match(testnet, /https:\/\/ethereum-sepolia-rpc\.publicnode\.com/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.match(css, /\.plane-reactive/);
   assert.match(css, /\.frontend-stage-grid/);
