@@ -319,8 +319,8 @@ function ArchitectureDiagram() {
           <h2 id="architecture-title">Four planes. One outcome-priced hook.</h2>
         </div>
         <p className="section-lede">
-          Each plane has one job. The frontend explains, Unichain accounts, Ethereum verifies, and Reactive turns the
-          verified event into an authenticated action. Circle provides an independent delivery path.
+          Each plane has one job. The frontend explains, Unichain accounts, Ethereum verifies, and Reactive Network
+          turns the verified event into an authenticated action. A separately authenticated fallback preserves liveness.
         </p>
       </div>
 
@@ -342,7 +342,7 @@ function ArchitectureDiagram() {
           <div className="plane-heading"><span>03</span><div><small>Evidence plane · Ethereum</small><strong>Pyth + publisher</strong></div></div>
           <div className="plane-node"><b>Signed price update</b><p>Price, time, confidence and market checks.</p></div>
           <div className="plane-node"><b>Canonical event</b><p>One normalized observation for one trade.</p></div>
-          <div className="plane-node plane-node-fallback"><b>Circle fallback</b><p>Attested redundant delivery; four public relays.</p></div>
+          <div className="plane-node plane-node-fallback"><b>Independent fallback</b><p>Attested redundancy with four public relays.</p></div>
         </article>
 
         <article className="architecture-plane plane-reactive">
@@ -422,8 +422,8 @@ function ReactiveNetworkSection() {
           <p>
             MARKOUT&apos;s hook lives on Unichain, while the canonical Pyth-verified observation is published on Ethereum
             Sepolia. The Legacy RSC subscribes to that exact event, runs in ReactVM, and requests the authenticated
-            destination callback. Reactive therefore provides a real cross-chain execution path, while Circle remains
-            an independent route into the same replay-safe coordinator.
+            destination callback. Reactive Network therefore provides the primary autonomous cross-chain execution path.
+            A separately authenticated fallback enters the same replay-safe coordinator without taking pricing authority.
           </p>
           <div className="reactive-boundary-strip">
             <span>Exact event subscription</span><b>✓</b>
@@ -495,14 +495,14 @@ function ResearchEvidence() {
         </div>
       </div>
 
-      <div className="live-proof-card" aria-label="Four public Circle settlement lifecycles">
+      <div className="live-proof-card" aria-label="Four public fallback settlement lifecycles">
         <div>
           <p className="kicker">Public testnet proof</p>
           <strong>Four lifecycles. Both settlement extremes.</strong>
           <p>
-            Circle delivered Pyth observations for four real Unichain v4 swaps. The original 30 + 50 bps pool proves
-            both terminal extremes; the separate Fair-Flow pool completed its own rebate lifecycle at an 18 bps final
-            fee and executed the sponsored-claim entrypoint.
+            The independent fallback delivered Pyth observations for four real Unichain v4 swaps. These receipts prove
+            that MARKOUT remains recoverable around the primary Reactive Network rail: both terminal extremes, the
+            Fair-Flow 18 bps rebate path, and the sponsored-claim entrypoint are publicly verifiable.
           </p>
         </div>
         <div className="live-proof-metrics">
@@ -610,7 +610,7 @@ export function MarkoutDashboard() {
           <a href="#reactive">Reactive</a>
           <a href="#evidence">Research</a>
         </nav>
-        <span className="testnet-status"><i /> Reactive callback live · Circle relay proven</span>
+        <span className="testnet-status"><i /> Reactive Network transport live · fallback proven</span>
       </header>
 
       <section className="hero" id="top">
@@ -689,8 +689,8 @@ export function MarkoutDashboard() {
           <p>Outcome-priced liquidity for Uniswap v4.</p>
         </div>
         <div className="footer-status">
-          <span><i className="status-green" /> Four public Circle lifecycles proven</span>
-          <span><i className="status-green" /> Reactive Legacy transport live</span>
+          <span><i className="status-green" /> Reactive Network callback publicly verified</span>
+          <span><i className="status-green" /> Four fallback lifecycles proven</span>
           <span><i className="status-amber" /> Reactive-first settlement relayer timed out</span>
         </div>
         <p className="footer-note">Experimental UHI10 prototype · Not audited · No real funds</p>

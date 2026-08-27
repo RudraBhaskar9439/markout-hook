@@ -124,7 +124,7 @@ export const timelineBase = [
   },
   {
     label: "Reactive acts",
-    detail: "ReactVM converts the canonical publisher event into an authenticated callback; Circle is an independent delivery rail.",
+    detail: "ReactVM converts the canonical publisher event into an authenticated callback; a separate fallback preserves liveness.",
     tag: "Reactive Network",
   },
 ] as const;

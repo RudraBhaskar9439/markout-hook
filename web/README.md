@@ -10,10 +10,11 @@ Cloudflare Worker-compatible React application built with vinext and the Sites V
   declared constraints across a 10–30 bps sweep.
 - The research timeline demonstrates the tested outcome-to-settlement lifecycle without simulating live network state.
 - The separate testnet console reads balances and trades from the deployed hook, executes real v4 swaps, publishes a
-  signed Pyth observation on Ethereum Sepolia, relays its Circle attestation, and reads the resulting fee allocation.
+  signed Pyth observation for Reactive Network to consume, exercises the independently attested fallback, and reads the
+  resulting fee allocation.
 - The console is connected to the separately deployed 18 + 50 bps Fair-Flow pool and uses versioned browser storage
   so trade identifiers from the original hook cannot be loaded accidentally.
-- The interface links four public Pyth/Circle lifecycles and three claimed rebates from the dated manifests.
+- The interface leads with Reactive Network and links four public fallback lifecycles plus three claimed rebates.
 - The public evidence contrasts both allocation extremes: three 100% rebates after negative markout and 100% retained
   for LP protection after positive markout.
 - The separated architecture gives Frontend, Unichain, Ethereum/Pyth, and Reactive Network distinct responsibility
@@ -43,8 +44,8 @@ For the complete live path:
 1. Connect the funded deployment wallet and keep test ETH available on both Unichain Sepolia and Ethereum Sepolia.
 2. Execute a small USDC → WETH or WETH → USDC swap. An ERC-20 approval appears only when required.
 3. Wait for the immutable five-minute maturity countdown.
-4. Choose **Settle with Pyth + Circle**, approve the Sepolia publication, wait for the attestation, and approve the
-   Unichain relay when the wallet switches back.
+4. Choose **Publish Pyth event for Reactive Network**, approve the Sepolia publication, then approve the independent fallback
+   settlement when the wallet switches back to Unichain.
 5. Inspect the finalized effective fee, rebate, LP reserve, and explorer links. Claim a rebate when one is available.
 
 The active console addresses are recorded in `../deployments/fair-flow-2026-08-22.json`; original opposite-branch

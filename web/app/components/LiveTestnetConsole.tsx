@@ -169,11 +169,11 @@ export function LiveTestnetConsole() {
     return [
       { label: "Swap mined", reached: hasTrade, detail: hasTrade ? formatTimestamp(trade!.executedAt) : "Waiting" },
       { label: "5-minute markout", reached: isMature, detail: trade ? relativeTime(trade.maturityTimestamp, now) : "Waiting" },
-      { label: "Pyth published", reached: hasPublish, detail: hasPublish ? "Ethereum Sepolia" : "Waiting" },
-      { label: "Circle relayed", reached: Boolean(relayResult) || terminal, detail: terminal ? "Unichain finalized" : "Waiting" },
+      { label: "Pyth evidence published", reached: hasPublish, detail: hasPublish ? "Ethereum Sepolia" : "Waiting" },
+      { label: "Reactive Network event", reached: hasPublish, detail: hasPublish ? "Canonical event emitted" : "Waiting" },
       { label: "Fee finalized", reached: terminal, detail: terminal && feeBps !== null ? `${feeBps.toFixed(2)} bps effective` : "Waiting" },
     ];
-  }, [feeBps, maturityReached, now, publishHash, relayResult, trade]);
+  }, [feeBps, maturityReached, now, publishHash, trade]);
 
   async function connect() {
     const provider = getInjectedProvider();
@@ -231,12 +231,12 @@ export function LiveTestnetConsole() {
 
   async function waitForCircle(hash: Hash) {
     for (let attempt = 1; attempt <= 60; attempt += 1) {
-      setBusy(`Waiting for Circle attestation · ${attempt * 2}s`);
+      setBusy(`Waiting for independent fallback · ${attempt * 2}s`);
       const attestation = await fetchCircleAttestation(hash);
       if (attestation) return attestation;
       await new Promise((resolve) => window.setTimeout(resolve, 2_000));
     }
-    throw new Error("Circle is still processing the message. Use Resume Circle relay in a moment.");
+    throw new Error("The independent fallback is still processing. Resume settlement in a moment.");
   }
 
   async function settleWithCircle() {
@@ -266,11 +266,11 @@ export function LiveTestnetConsole() {
         window.localStorage.setItem(PUBLISH_HASH_KEY, hash);
       }
       const attestation = await waitForCircle(hash);
-      setBusy("Confirm the Circle relay on Unichain Sepolia");
+      setBusy("Confirm fallback settlement on Unichain Sepolia");
       const relay = await relayCircleAttestation(provider, account, attestation);
       setRelayResult(relay);
       await refresh(account, tradeId);
-      setNotice("Circle delivered the observation. The hook finalized the fee allocation onchain.");
+      setNotice("The observation was delivered and the hook finalized the fee allocation onchain.");
     } catch (reason) {
       setError(readableError(reason));
     } finally {
@@ -354,7 +354,8 @@ export function LiveTestnetConsole() {
           <h2 id="testnet-title">Make the swap. Watch the fee change.</h2>
           <p className="section-lede">
             This is the deployed USDC/WETH Uniswap v4 pool on Unichain Sepolia - not a simulation. Your wallet signs
-            every transaction; no private key enters this page.
+            every transaction; no private key enters this page. Reactive Network watches the canonical evidence event,
+            while an independent fallback keeps the live demonstration recoverable.
           </p>
         </div>
         <div className="wallet-control">
@@ -432,8 +433,11 @@ export function LiveTestnetConsole() {
           {trade && trade.status === 1 && maturityReached && !expiryReached && (
             <>
               <button type="button" className="primary-action testnet-action" onClick={settleWithCircle} disabled={Boolean(busy)}>
-                {busy ?? (publishHash ? "Resume Circle relay" : "Settle with Pyth + Circle")}
+                {busy ?? (publishHash ? "Complete fallback settlement" : "Publish Pyth event for Reactive Network")}
               </button>
+              <small className="card-footnote">
+                Reactive Network is the autonomous event-to-action rail. The console retains a separate fallback for reliable demos.
+              </small>
               {publishHash && !busy && (
                 <button type="button" className="discard-publication" onClick={discardPublication}>
                   Discard stale publication
@@ -484,7 +488,7 @@ export function LiveTestnetConsole() {
           <div className="transaction-links">
             {transactionLink(swapResult, "Swap")}
             {transactionLink(publishResult, "Pyth publish")}
-            {transactionLink(relayResult, "Circle relay")}
+            {transactionLink(relayResult, "Fallback settlement")}
             {transactionLink(claimResult, "Rebate claim")}
           </div>
         </article>

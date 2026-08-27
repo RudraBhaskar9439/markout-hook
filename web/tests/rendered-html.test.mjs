@@ -66,14 +66,15 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
   assert.match(html, /Four lifecycles\. Both settlement extremes\./);
   assert.match(html, /4<\/b> public end-to-end lifecycles/);
   assert.match(html, /3 \/ 1<\/b> full rebates \/ full retention/);
-  assert.match(html, /Four public Circle lifecycles proven/);
-  assert.match(html, /Reactive Legacy transport live/);
+  assert.match(html, /Reactive Network callback publicly verified/);
+  assert.match(html, /Four fallback lifecycles proven/);
+  assert.match(html, /Reactive Network transport live/);
   assert.match(html, /Reactive-first settlement relayer timed out/);
   assert.match(html, /Good flow wins without assuming deeper liquidity\./);
   assert.match(html, /21\.87%/);
   assert.match(html, /benign flow saves \$2\.57/);
   assert.match(html, /18 bps base \+ refundable 50 bps surcharge/);
-  assert.match(html, /original 30 \+ 50 bps pool/);
+  assert.match(html, /both terminal extremes/);
   assert.match(html, /0xa64789b5a08ea8aae8c2b909b6a81b495334b707eaae12610bf3749902ec532f/);
   assert.match(html, /0xefeece5de9f78ae809652418e1fcd8fb592de950af64e6bbbf66df93bdc25eae/);
   assert.match(html, /0x81f7878312b81b80ba69ad8fdc0f4e06f64f8624ed610ebd5a6ea63cca0ca610/);
@@ -88,12 +89,13 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
 });
 
 test("removes starter metadata and keeps deterministic evidence explicit", async () => {
-  const [page, layout, packageJson, data, testnet, css] = await Promise.all([
+  const [page, layout, packageJson, data, testnet, consoleSource, css] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
     readFile(new URL("../app/lib/demo-data.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/lib/testnet/markout.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/LiveTestnetConsole.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
   ]);
 
@@ -114,6 +116,9 @@ test("removes starter metadata and keeps deterministic evidence explicit", async
   assert.match(testnet, /MARKOUT_BASE_FEE_BPS = 18/);
   assert.match(testnet, /MARKOUT_POOL_FEE = 1800/);
   assert.match(testnet, /https:\/\/ethereum-sepolia-rpc\.publicnode\.com/);
+  assert.match(consoleSource, /Reactive Network event/);
+  assert.match(consoleSource, /Publish Pyth event for Reactive Network/);
+  assert.doesNotMatch(consoleSource, /Settle with Pyth \+ Circle|label: "Circle relayed"/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.match(css, /\.plane-reactive/);
   assert.match(css, /\.frontend-stage-grid/);

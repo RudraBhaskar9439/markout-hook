@@ -454,7 +454,7 @@ export async function fetchCircleAttestation(publishHash: Hash): Promise<CircleA
   url.searchParams.set("transactionHash", publishHash);
   const response = await fetch(url, { cache: "no-store" });
   if (response.status === 404) return null;
-  if (!response.ok) throw new Error(`Circle returned HTTP ${response.status}.`);
+  if (!response.ok) throw new Error(`The fallback attestation service returned HTTP ${response.status}.`);
   const payload = await response.json() as {
     messages?: Array<{
       status?: unknown;
@@ -467,13 +467,13 @@ export async function fetchCircleAttestation(publishHash: Hash): Promise<CircleA
   };
   const entry = payload.messages?.[0];
   if (!entry || entry.status !== "complete") return null;
-  if (Number(entry.cctpVersion ?? entry.version) !== 2) throw new Error("Circle returned an unexpected CCTP version.");
-  if (Number(entry.decodedMessage?.destinationDomain) !== 10) throw new Error("Circle returned the wrong destination domain.");
+  if (Number(entry.cctpVersion ?? entry.version) !== 2) throw new Error("The fallback service returned an unexpected CCTP version.");
+  if (Number(entry.decodedMessage?.destinationDomain) !== 10) throw new Error("The fallback service returned the wrong destination domain.");
   const finality = Number(entry.decodedMessage?.finalityThresholdExecuted);
-  if (!Number.isSafeInteger(finality) || finality < 1000) throw new Error("Circle attestation finality was below 1000.");
+  if (!Number.isSafeInteger(finality) || finality < 1000) throw new Error("Fallback attestation finality was below 1000.");
   return {
-    message: ensureHexBytes(entry.message, "Circle message"),
-    attestation: ensureHexBytes(entry.attestation, "Circle attestation"),
+    message: ensureHexBytes(entry.message, "Fallback message"),
+    attestation: ensureHexBytes(entry.attestation, "Fallback attestation"),
     finality,
   };
 }
@@ -496,7 +496,7 @@ export async function relayCircleAttestation(
     nonce,
   });
   const receipt = await unichainClient.waitForTransactionReceipt({ hash });
-  if (receipt.status !== "success") throw new Error("The Circle relay reverted on Unichain.");
+  if (receipt.status !== "success") throw new Error("The fallback settlement reverted on Unichain.");
   return { hash, explorerUrl: explorerTransaction(unichainSepolia, hash) };
 }
 
