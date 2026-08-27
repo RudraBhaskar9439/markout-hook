@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2026-08-22T12:00:00.000Z" agent="Codex" version="24.7.17" type="device" compressed="false">
+<mxfile host="app.diagrams.net" modified="2026-08-27T00:00:00.000Z" agent="Codex" version="24.7.17" type="device" compressed="false">
   <diagram id="markout-overview" name="01 Complete Architecture">
     <mxGraphModel dx="1920" dy="1080" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1080" math="0" shadow="0" background="#070B09">
       <root>
@@ -7,10 +7,10 @@
         <mxCell id="bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#070B09;strokeColor=none;" vertex="1" parent="1">
           <mxGeometry x="0" y="0" width="1920" height="1080" as="geometry"/>
         </mxCell>
-        <mxCell id="title" value="&lt;font color=&quot;#F3F7F4&quot; style=&quot;font-size: 28px;&quot;&gt;&lt;b&gt;MARKOUT — complete system architecture&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#92A398&quot; style=&quot;font-size: 14px;&quot;&gt;Uniswap v4 execution → delayed Pyth evidence → Reactive orchestration → outcome-priced settlement&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="title" value="&lt;font color=&quot;#F3F7F4&quot; style=&quot;font-size: 28px;&quot;&gt;&lt;b&gt;MARKOUT — current hybrid architecture&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#92A398&quot; style=&quot;font-size: 14px;&quot;&gt;Real v4 swap → 5-minute markout → Pyth verification → Reactive or Circle delivery → fee allocation&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="50" y="25" width="1000" height="70" as="geometry"/>
         </mxCell>
-        <mxCell id="legend" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;SOLID&lt;/b&gt; autonomous lifecycle&lt;/font&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;font color=&quot;#6CB8FF&quot;&gt;&lt;b&gt;DASHED&lt;/b&gt; resilience rail + public proof&lt;/font&gt;" style="text;html=1;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="legend" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;GREEN&lt;/b&gt; Reactive event-to-action rail&lt;/font&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;font color=&quot;#6CB8FF&quot;&gt;&lt;b&gt;BLUE&lt;/b&gt; independent Circle rail&lt;/font&gt;" style="text;html=1;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="1210" y="40" width="650" height="40" as="geometry"/>
         </mxCell>
 
@@ -77,13 +77,13 @@
         <mxCell id="circle-plane" value="" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=#0D1A26;strokeColor=#3B7BAD;strokeWidth=2;dashed=1;dashPattern=8 5;" vertex="1" parent="1">
           <mxGeometry x="1050" y="480" width="315" height="350" as="geometry"/>
         </mxCell>
-        <mxCell id="circle-title" value="&lt;font color=&quot;#6CB8FF&quot; style=&quot;font-size: 17px;&quot;&gt;&lt;b&gt;CIRCLE CCTP RESILIENCE RAIL&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="circle-title" value="&lt;font color=&quot;#6CB8FF&quot; style=&quot;font-size: 17px;&quot;&gt;&lt;b&gt;CIRCLE CCTP DELIVERY RAIL&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
           <mxGeometry x="1075" y="505" width="265" height="40" as="geometry"/>
         </mxCell>
         <mxCell id="circle-send" value="&lt;font color=&quot;#EAF5FF&quot;&gt;&lt;b&gt;CCTP V2 generic message&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#A9C5DA&quot;&gt;Publisher → Circle attestation&lt;br&gt;→ Unichain receiver&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#122A3C;strokeColor=#3B7BAD;dashed=1;fontSize=13;align=center;" vertex="1" parent="1">
           <mxGeometry x="1075" y="575" width="265" height="105" as="geometry"/>
         </mxCell>
-        <mxCell id="circle-proof" value="&lt;font color=&quot;#6CB8FF&quot;&gt;&lt;b&gt;PUBLIC TESTNET PROOF&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#C8E2F5&quot;&gt;4 complete cross-chain lifecycles&lt;br&gt;Rebate + LP-protection branches&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#122A3C;strokeColor=#3B7BAD;dashed=1;fontSize=13;align=center;" vertex="1" parent="1">
+        <mxCell id="circle-proof" value="&lt;font color=&quot;#6CB8FF&quot;&gt;&lt;b&gt;PUBLIC ECONOMIC PROOF&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#C8E2F5&quot;&gt;4 complete settlement lifecycles&lt;br&gt;Rebate + LP-protection branches&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#122A3C;strokeColor=#3B7BAD;dashed=1;fontSize=13;align=center;" vertex="1" parent="1">
           <mxGeometry x="1075" y="710" width="265" height="90" as="geometry"/>
         </mxCell>
 
@@ -102,7 +102,7 @@
         <mxCell id="reactvm" value="&lt;font color=&quot;#EAF5FF&quot;&gt;&lt;b&gt;ReactVM → callback proxy → receiver&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#BFD7EA&quot;&gt;Authenticated callback + injected RVM identity&lt;br&gt;ReactiveObservationReceiver → coordinator&lt;br&gt;No custody · no fee authority&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12304A;strokeColor=#4F9DFF;fontSize=12;align=center;" vertex="1" parent="1">
           <mxGeometry x="1425" y="570" width="430" height="100" as="geometry"/>
         </mxCell>
-        <mxCell id="reactive-evidence" value="&lt;font color=&quot;#80BFFF&quot;&gt;&lt;b&gt;PUBLIC LEGACY EVIDENCE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D1E6F7&quot;&gt;Exact subscription verified&lt;br&gt;ReactVM execution + 11-second callback&lt;br&gt;Authenticated receiver identity&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#101F30;strokeColor=#4F9DFF;dashed=1;fontSize=12;align=center;" vertex="1" parent="1">
+        <mxCell id="reactive-evidence" value="&lt;font color=&quot;#80BFFF&quot;&gt;&lt;b&gt;PUBLIC LEGACY EVIDENCE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D1E6F7&quot;&gt;Exact subscription verified&lt;br&gt;ReactVM + authenticated callback in 11s&lt;br&gt;Transport live · terminal trade no-op&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#101F30;strokeColor=#4F9DFF;dashed=1;fontSize=12;align=center;" vertex="1" parent="1">
           <mxGeometry x="1425" y="700" width="430" height="100" as="geometry"/>
         </mxCell>
 
@@ -131,9 +131,9 @@
         <mxCell id="e-pool-record" value="afterSwap" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#D78A35;strokeWidth=2;fontColor=#FFB55C;endArrow=block;endFill=1;" edge="1" parent="1" source="pool" target="hook-record">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="e-record-reactive" value="request + terminal events" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=3;fontColor=#85FF99;endArrow=block;endFill=1;exitX=1;exitY=0.05;entryX=0;entryY=0.25;" edge="1" parent="1" source="hook-record" target="subscriptions">
+        <mxCell id="e-record-reactive" value="after maturity · publish(tradeId)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#D78A35;strokeWidth=2;dashed=1;fontColor=#FFB55C;endArrow=block;endFill=1;exitX=1;exitY=0.05;entryX=0;entryY=0.5;" edge="1" parent="1" source="hook-record" target="publisher">
           <mxGeometry relative="1" as="geometry">
-            <Array as="points"><mxPoint x="680" y="315"/><mxPoint x="1385" y="315"/></Array>
+            <Array as="points"><mxPoint x="680" y="315"/><mxPoint x="1040" y="315"/><mxPoint x="1040" y="380"/></Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="e-pyth-publisher" value="signed update" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#70E39A;strokeWidth=2;fontColor=#70E39A;endArrow=block;endFill=1;" edge="1" parent="1" source="pyth" target="publisher">
@@ -142,7 +142,7 @@
         <mxCell id="e-publisher-reactive" value="normalized reference event" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=3;fontColor=#85FF99;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0;entryY=0.75;" edge="1" parent="1" source="publisher" target="subscriptions">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
-        <mxCell id="e-sub-scheduler" value="mature + match" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=2;fontColor=#85FF99;endArrow=block;endFill=1;" edge="1" parent="1" source="subscriptions" target="scheduler">
+        <mxCell id="e-sub-scheduler" value="react(event)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=2;fontColor=#85FF99;endArrow=block;endFill=1;" edge="1" parent="1" source="subscriptions" target="scheduler">
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
         <mxCell id="e-scheduler-reactvm" value="callback request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=2;fontColor=#85FF99;endArrow=block;endFill=1;" edge="1" parent="1" source="scheduler" target="reactvm">
@@ -188,7 +188,7 @@
         <mxCell id="d-bg" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#070B09;strokeColor=none;" vertex="1" parent="d1">
           <mxGeometry x="0" y="0" width="1920" height="1080" as="geometry"/>
         </mxCell>
-        <mxCell id="d-title" value="&lt;font color=&quot;#F3F7F4&quot; style=&quot;font-size: 28px;&quot;&gt;&lt;b&gt;MARKOUT — technical mechanism, automation, and evidence&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="d1">
+        <mxCell id="d-title" value="&lt;font color=&quot;#F3F7F4&quot; style=&quot;font-size: 28px;&quot;&gt;&lt;b&gt;MARKOUT — deployed mechanism, delivery rails, and evidence&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="d1">
           <mxGeometry x="50" y="30" width="1300" height="55" as="geometry"/>
         </mxCell>
 
@@ -217,22 +217,22 @@
         <mxCell id="d-react-plane" value="" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=#0E1C2B;strokeColor=#4F9DFF;strokeWidth=3;shadow=1;" vertex="1" parent="d1">
           <mxGeometry x="665" y="110" width="650" height="555" as="geometry"/>
         </mxCell>
-        <mxCell id="d-react-title" value="&lt;font color=&quot;#80BFFF&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;REACTIVE NETWORK — AUTONOMOUS CONTROL PLANE&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="d1">
+        <mxCell id="d-react-title" value="&lt;font color=&quot;#80BFFF&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;REACTIVE NETWORK — LEGACY EVENT-TO-ACTION RAIL&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="d1">
           <mxGeometry x="695" y="135" width="580" height="40" as="geometry"/>
         </mxCell>
-        <mxCell id="d-r1" value="&lt;font color=&quot;#EAF5FF&quot;&gt;&lt;b&gt;Origin subscriptions&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#BFD7EA&quot;&gt;Requested · Settled · Expired&lt;br&gt;ReferencePricePublished · cron&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12304A;strokeColor=#4F9DFF;fontSize=13;align=center;" vertex="1" parent="d1">
+        <mxCell id="d-r1" value="&lt;font color=&quot;#EAF5FF&quot;&gt;&lt;b&gt;Exact origin subscription&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#BFD7EA&quot;&gt;Ethereum Sepolia · publisher&lt;br&gt;event signature · market topic&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12304A;strokeColor=#4F9DFF;fontSize=13;align=center;" vertex="1" parent="d1">
           <mxGeometry x="700" y="205" width="245" height="120" as="geometry"/>
         </mxCell>
-        <mxCell id="d-r2" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;ReactVM state machine&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D4F8DC&quot;&gt;Maturity · expiry · status&lt;br&gt;reference selection · retries&lt;br&gt;8-trade bounded cron scan&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#143523;strokeColor=#58D68D;strokeWidth=2;fontSize=13;align=center;" vertex="1" parent="d1">
+        <mxCell id="d-r2" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;Stateless ReactVM reaction&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D4F8DC&quot;&gt;Validate topics + payload&lt;br&gt;decode normalized observation&lt;br&gt;encode Unichain callback&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#143523;strokeColor=#58D68D;strokeWidth=2;fontSize=13;align=center;" vertex="1" parent="d1">
           <mxGeometry x="1030" y="205" width="245" height="120" as="geometry"/>
         </mxCell>
-        <mxCell id="d-r3" value="&lt;font color=&quot;#EAF5FF&quot;&gt;&lt;b&gt;Authenticated callbacks&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#BFD7EA&quot;&gt;settle(tradeId, observation)&lt;br&gt;expire(tradeId)&lt;br&gt;Proxy + RVM identity checks&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12304A;strokeColor=#4F9DFF;fontSize=13;align=center;" vertex="1" parent="d1">
+        <mxCell id="d-r3" value="&lt;font color=&quot;#EAF5FF&quot;&gt;&lt;b&gt;Authenticated destination&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#BFD7EA&quot;&gt;System callback proxy&lt;br&gt;injected RVM identity&lt;br&gt;receiver → coordinator&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12304A;strokeColor=#4F9DFF;fontSize=13;align=center;" vertex="1" parent="d1">
           <mxGeometry x="700" y="380" width="245" height="120" as="geometry"/>
         </mxCell>
-        <mxCell id="d-r4" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;Why Reactive is necessary&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D4F8DC&quot;&gt;The hook cannot wake itself after 5 minutes. Reactive observes both chains and triggers settlement without a privileged keeper.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#143523;strokeColor=#58D68D;strokeWidth=2;fontSize=13;align=center;" vertex="1" parent="d1">
+        <mxCell id="d-r4" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;Operational role&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D4F8DC&quot;&gt;Turns a foreign-chain Pyth event into an authenticated Unichain action without a MARKOUT-owned event relayer.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#143523;strokeColor=#58D68D;strokeWidth=2;fontSize=13;align=center;" vertex="1" parent="d1">
           <mxGeometry x="1030" y="380" width="245" height="120" as="geometry"/>
         </mxCell>
-        <mxCell id="d-r5" value="&lt;font color=&quot;#80BFFF&quot;&gt;&lt;b&gt;Authority boundary:&lt;/b&gt;&lt;/font&gt; &lt;font color=&quot;#D1E6F7&quot;&gt;Reactive schedules and delivers observations. Unichain contracts independently authenticate, validate, and compute the fee. Reactive never holds trader funds and cannot choose the allocation.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#101F30;strokeColor=#4F9DFF;dashed=1;fontSize=13;align=center;" vertex="1" parent="d1">
+        <mxCell id="d-r5" value="&lt;font color=&quot;#80BFFF&quot;&gt;&lt;b&gt;Authority boundary:&lt;/b&gt;&lt;/font&gt; &lt;font color=&quot;#D1E6F7&quot;&gt;Reactive transports verified evidence. It does not schedule maturity, select prices, hold funds, set fees, or choose the allocation. The hook validates every input.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#101F30;strokeColor=#4F9DFF;dashed=1;fontSize=13;align=center;" vertex="1" parent="d1">
           <mxGeometry x="700" y="545" width="575" height="80" as="geometry"/>
         </mxCell>
 
@@ -242,17 +242,17 @@
         <mxCell id="d-evidence-title" value="&lt;font color=&quot;#85FF99&quot; style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;WHAT IS PROVEN TODAY&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="d1">
           <mxGeometry x="1380" y="135" width="470" height="40" as="geometry"/>
         </mxCell>
-        <mxCell id="d-ev1" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;ONCHAIN FAIR-FLOW POOL&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D8F7DF&quot;&gt;Real swaps, escrow, markout settlement,&lt;br&gt;claims, expiry, first-delivery-wins&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12321E;strokeColor=#58D68D;fontSize=13;align=center;" vertex="1" parent="d1">
-          <mxGeometry x="1380" y="205" width="470" height="100" as="geometry"/>
+        <mxCell id="d-ev1" value="&lt;font color=&quot;#85FF99&quot;&gt;&lt;b&gt;FAIR-FLOW RELEASE · 18 + 50 BPS&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D8F7DF&quot;&gt;Real v4 swap · escrow · 18 bps settlement&lt;br&gt;sponsored rebate claim completed&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#12321E;strokeColor=#58D68D;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="1380" y="195" width="470" height="90" as="geometry"/>
         </mxCell>
-        <mxCell id="d-ev2" value="&lt;font color=&quot;#6CB8FF&quot;&gt;&lt;b&gt;CIRCLE DELIVERY&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#C8E2F5&quot;&gt;4 public end-to-end observation lifecycles&lt;br&gt;used as redundant delivery + live proof&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#122A3C;strokeColor=#3B7BAD;dashed=1;fontSize=13;align=center;" vertex="1" parent="d1">
-          <mxGeometry x="1380" y="335" width="470" height="100" as="geometry"/>
+        <mxCell id="d-ev2" value="&lt;font color=&quot;#6CB8FF&quot;&gt;&lt;b&gt;CIRCLE ECONOMIC DELIVERY LIVE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#C8E2F5&quot;&gt;4 public end-to-end settlements&lt;br&gt;full rebate + full LP-retention branches&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#122A3C;strokeColor=#3B7BAD;dashed=1;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="1380" y="305" width="470" height="90" as="geometry"/>
         </mxCell>
-        <mxCell id="d-ev3" value="&lt;font color=&quot;#80BFFF&quot;&gt;&lt;b&gt;REACTIVE LEGACY LIVE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D1E6F7&quot;&gt;Pulse deployed, funded and subscribed&lt;br&gt;ReactVM reaction publicly verified&lt;br&gt;Authenticated Unichain callback in 11s&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#101F30;strokeColor=#4F9DFF;fontSize=13;align=center;" vertex="1" parent="d1">
-          <mxGeometry x="1380" y="465" width="470" height="115" as="geometry"/>
+        <mxCell id="d-ev3" value="&lt;font color=&quot;#80BFFF&quot;&gt;&lt;b&gt;REACTIVE TRANSPORT LIVE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#D1E6F7&quot;&gt;Pulse deployed, funded and exactly subscribed&lt;br&gt;ReactVM + authenticated Unichain callback in 11s&lt;br&gt;Callback reached terminal trade → safe no-op&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#101F30;strokeColor=#4F9DFF;fontSize=13;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="1380" y="415" width="470" height="120" as="geometry"/>
         </mxCell>
-        <mxCell id="d-ev4" value="&lt;font color=&quot;#FFBE74&quot;&gt;&lt;b&gt;DISCLOSURE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#FFE0BD&quot;&gt;Pending-first trial: relayer timeout → full refund.&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3B2417;strokeColor=#E79A45;fontSize=12;align=center;" vertex="1" parent="d1">
-          <mxGeometry x="1380" y="600" width="470" height="45" as="geometry"/>
+        <mxCell id="d-ev4" value="&lt;font color=&quot;#FFBE74&quot;&gt;&lt;b&gt;PENDING-FIRST ACCEPTANCE&lt;/b&gt;&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#FFE0BD&quot;&gt;2 ReactVM reactions · destination relayer timeout&lt;br&gt;permissionless expiry → full surcharge refund&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#3B2417;strokeColor=#E79A45;fontSize=12;align=center;" vertex="1" parent="d1">
+          <mxGeometry x="1380" y="555" width="470" height="85" as="geometry"/>
         </mxCell>
 
         <mxCell id="d-research-plane" value="" style="rounded=1;arcSize=4;whiteSpace=wrap;html=1;fillColor=#111815;strokeColor=#4C7258;strokeWidth=2;" vertex="1" parent="d1">
@@ -284,8 +284,8 @@
         <mxCell id="d-e-m2-m3" value="mature" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#D78A35;strokeWidth=2;fontColor=#FFB55C;endArrow=block;endFill=1;" edge="1" parent="d1" source="d-m2" target="d-m3"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="485" y="330"/><mxPoint x="185" y="330"/></Array></mxGeometry></mxCell>
         <mxCell id="d-e-m3-m4" value="valid observation" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#D78A35;strokeWidth=2;fontColor=#FFB55C;endArrow=block;endFill=1;" edge="1" parent="d1" source="d-m3" target="d-m4"><mxGeometry relative="1" as="geometry"/></mxCell>
         <mxCell id="d-e-r1-r2" value="react(log)" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=2;fontColor=#85FF99;endArrow=block;endFill=1;" edge="1" parent="d1" source="d-r1" target="d-r2"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="d-e-r2-r3" value="emit Callback" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=2;fontColor=#85FF99;endArrow=block;endFill=1;" edge="1" parent="d1" source="d-r2" target="d-r3"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1150" y="350"/><mxPoint x="820" y="350"/></Array></mxGeometry></mxCell>
-        <mxCell id="d-e-r3-m4" value="settle / expire" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=3;fontColor=#85FF99;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="d1" source="d-r3" target="d-m4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="d-e-r2-r3" value="callback request" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=2;fontColor=#85FF99;endArrow=block;endFill=1;" edge="1" parent="d1" source="d-r2" target="d-r3"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1150" y="350"/><mxPoint x="820" y="350"/></Array></mxGeometry></mxCell>
+        <mxCell id="d-e-r3-m4" value="first valid delivery" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#85FF99;strokeWidth=3;fontColor=#85FF99;endArrow=block;endFill=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="d1" source="d-r3" target="d-m4"><mxGeometry relative="1" as="geometry"/></mxCell>
       </root>
     </mxGraphModel>
   </diagram>
