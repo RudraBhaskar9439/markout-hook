@@ -1,4 +1,4 @@
-# Phase 13 Verification — Optional Stateless Reactive Pulse
+# Phase 13 Verification - Optional Stateless Reactive Pulse
 
 ## Automated gate
 

@@ -1,4 +1,4 @@
-# Phase 12 Verification — Circle CCTP V2 Primary Transport
+# Phase 12 Verification - Circle CCTP V2 Primary Transport
 
 ## Automated gate
 

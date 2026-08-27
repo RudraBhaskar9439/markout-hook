@@ -34,7 +34,7 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
 
   const html = await response.text();
   assert.doesNotMatch(html, developmentPreviewMeta);
-  assert.match(html, /<title>MARKOUT — Outcome-priced liquidity<\/title>/i);
+  assert.match(html, /<title>MARKOUT - Outcome-priced liquidity<\/title>/i);
   assert.match(html, /Fees should follow/);
   assert.match(html, /Not fear\./);
   assert.match(html, /Make the swap\. Watch the fee change\./);
@@ -98,7 +98,7 @@ test("removes starter metadata and keeps deterministic evidence explicit", async
   ]);
 
   assert.match(page, /<MarkoutDashboard \/>/);
-  assert.match(layout, /title:\s*"MARKOUT — Outcome-priced liquidity"/);
+  assert.match(layout, /title:\s*"MARKOUT - Outcome-priced liquidity"/);
   assert.match(layout, /imageUrl = `\$\{origin\}\/og-evidence-v2\.png`/);
   assert.match(layout, /x-forwarded-host/);
   assert.doesNotMatch(layout, /codex-preview|_sites-preview|Starter Project/);

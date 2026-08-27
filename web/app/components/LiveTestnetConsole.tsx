@@ -47,7 +47,7 @@ function compact(value: string, left = 6, right = 4) {
 }
 
 function formatTimestamp(timestamp: number) {
-  if (!timestamp) return "—";
+  if (!timestamp) return "-";
   return new Intl.DateTimeFormat(undefined, {
     hour: "2-digit",
     minute: "2-digit",
@@ -353,7 +353,7 @@ export function LiveTestnetConsole() {
           <p className="kicker">Live testnet console</p>
           <h2 id="testnet-title">Make the swap. Watch the fee change.</h2>
           <p className="section-lede">
-            This is the deployed USDC/WETH Uniswap v4 pool on Unichain Sepolia—not a simulation. Your wallet signs
+            This is the deployed USDC/WETH Uniswap v4 pool on Unichain Sepolia - not a simulation. Your wallet signs
             every transaction; no private key enters this page.
           </p>
         </div>
@@ -461,19 +461,19 @@ export function LiveTestnetConsole() {
           <div className="live-allocation">
             <div>
               <span>Escrowed</span>
-              <strong>{trade ? formatTokenAmount(trade.escrowedSurcharge, trade.currency) : "—"}</strong>
+              <strong>{trade ? formatTokenAmount(trade.escrowedSurcharge, trade.currency) : "-"}</strong>
             </div>
             <div>
               <span>Returned</span>
-              <strong>{trade && trade.status >= 2 ? formatTokenAmount(trade.settlement.rebate, trade.currency) : "—"}</strong>
+              <strong>{trade && trade.status >= 2 ? formatTokenAmount(trade.settlement.rebate, trade.currency) : "-"}</strong>
             </div>
             <div>
               <span>LP protection</span>
-              <strong>{trade && trade.status >= 2 ? formatTokenAmount(trade.settlement.retainedSurcharge, trade.currency) : "—"}</strong>
+              <strong>{trade && trade.status >= 2 ? formatTokenAmount(trade.settlement.retainedSurcharge, trade.currency) : "-"}</strong>
             </div>
             <div>
               <span>Directional markout</span>
-              <strong>{trade && trade.status === 2 ? `${(Number(trade.settlement.markoutWad) / 1e14).toFixed(2)} bps` : "—"}</strong>
+              <strong>{trade && trade.status === 2 ? `${(Number(trade.settlement.markoutWad) / 1e14).toFixed(2)} bps` : "-"}</strong>
             </div>
           </div>
           {trade && trade.claimable > 0n && trade.rebateRecipient.toLowerCase() === account?.toLowerCase() && (

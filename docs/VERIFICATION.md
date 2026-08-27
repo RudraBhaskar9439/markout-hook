@@ -14,23 +14,23 @@ MARKOUT is built as a sequence of independently reviewable checkpoints. The next
 
 ## Verification levels
 
-### Level 1 — Build
+### Level 1 - Build
 
 The code compiles using pinned dependencies from a clean checkout.
 
-### Level 2 — Behavioral tests
+### Level 2 - Behavioral tests
 
 Unit and integration tests prove expected trade behavior, including both successful and failing paths.
 
-### Level 3 — Invariants
+### Level 3 - Invariants
 
 Fuzz and stateful tests verify properties such as solvency, bounded rebates, replay protection, and conservation of balances.
 
-### Level 4 — Manual scenario
+### Level 4 - Manual scenario
 
 A small scenario makes the phase understandable without reading Solidity. For example, two traders pay equal provisional surcharges and receive different rebates after different markouts.
 
-### Level 5 — Live evidence
+### Level 5 - Live evidence
 
 Explorer transactions prove the real publication, Circle attestation relay, settlement, and claim lifecycle. Reactive
 receives separate live credit only when its destination callback transaction exists publicly.

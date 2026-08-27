@@ -24,7 +24,7 @@ provisional amount between a trader rebate and LP protection.
 
 AMMs normally set a fee before they know whether a swap was benign, inventory-improving, or followed by a favorable
 price move for the trader. A volatility-linked fee can compensate LPs, but it raises prices for every trader during a
-volatile period—even when an individual trade was harmless.
+volatile period - even when an individual trade was harmless.
 
 MARKOUT tests a different mechanism:
 
@@ -79,7 +79,7 @@ the provisional amount refundable.
 
 - Legacy Reactive adapter: implemented with exact filter, payload, callback-authentication, and replay tests.
 - Legacy Reactive pulse: deployed, funded, debt-free, and publicly verified against its exact publisher subscription.
-- Reactive-to-Unichain transport: **live**—an authenticated callback completed in 11 seconds and emitted the destination
+- Reactive-to-Unichain transport: **live** - an authenticated callback completed in 11 seconds and emitted the destination
   observation event.
 - Reactive-first economic settlement: not claimed. A separate pending-first acceptance trade produced two successful
   ReactVM reactions but no relayer transaction before expiry; the full provisional amount was then refunded and claimed.
@@ -107,8 +107,8 @@ bps**.
 
 | Result on the frozen synthetic tape | MARKOUT result |
 | --- | ---: |
-| Benign-flow average fee | 27.4262 bps — **8.58% below** fixed 30 bps |
-| Inventory-improving fee | 18.0000 bps — **40% below** fixed 30 bps |
+| Benign-flow average fee | 27.4262 bps - **8.58% below** fixed 30 bps |
+| Inventory-improving fee | 18.0000 bps - **40% below** fixed 30 bps |
 | Informed-flow average fee | 61.0552 bps |
 | LP net-after-proxy versus fixed | **+21.8734%** |
 | Modeled trader rebates | 6,746.608714 USDC |
@@ -117,7 +117,7 @@ bps**.
 
 MARKOUT trails the declared volatility-only policy in aggregate LP net-after-proxy because that policy charges benign
 and inventory-improving flow more. That trade-off is reported rather than hidden. The experiment is a controlled
-synthetic mechanism comparison—not historical backtesting, a forecast, exact LVR, or position-level LP PnL.
+synthetic mechanism comparison - not historical backtesting, a forecast, exact LVR, or position-level LP PnL.
 
 See the [full reproducible report](experiments/results/report.md),
 [parameter sweep](experiments/results/fair_flow_sweep.json), and

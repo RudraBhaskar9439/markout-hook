@@ -1,4 +1,4 @@
-# MARKOUT — full-marks four-minute video plan
+# MARKOUT - full-marks four-minute video plan
 
 ## What changes from the Maestro video
 
@@ -26,12 +26,12 @@ Prepare these tabs before recording:
 Record one continuous raw screen capture for the demo. After the swap mines, hold on the new trade ID and the opening
 countdown for three seconds. Keep the recording running while the trade matures, then continue when roughly five
 seconds remain and complete settlement. In the final edit, remove the middle of the wait and add a one-second title:
-**FIVE MINUTES LATER — SAME TRADE ID**. Keep the trade ID visible immediately before and after the cut. This produces
+**FIVE MINUTES LATER - SAME TRADE ID**. Keep the trade ID visible immediately before and after the cut. This produces
 one authentic recording while the finished video contains only the beginning and end of the onchain delay.
 
 ## Exact spoken script and shot list
 
-### 0:00–0:25 — The problem
+### 0:00–0:25 - The problem
 
 **Show:** Your face for three to five seconds, then cut to the landing page and the fixed-versus-MARKOUT comparison.
 
@@ -41,7 +41,7 @@ one authentic recording while the finished video contains only the beginning and
 outcome. Only one extracts value from stale liquidity. Volatility fees adjust to the market, yet still charge everyone.
 MARKOUT asks: what if the final fee were settled after evidence of the trade’s outcome exists?”
 
-### 0:25–0:47 — The new primitive
+### 0:25–0:47 - The new primitive
 
 **Show:** Fair-Flow fee card: 18 bps base, 50 bps provisional and an 18–68 bps final range.
 
@@ -52,10 +52,10 @@ escrows a bounded 50-basis-point provisional amount. After five minutes, signed 
 fair flow receives a rebate, adverse flow funds LP protection, and missing evidence produces a full provisional refund.
 It evaluates outcomes, not identities.”
 
-### 0:47–1:30 — Show that it works, with an honest maturity cut
+### 0:47–1:30 - Show that it works, with an honest maturity cut
 
 **Show:** The real testnet swap mining, its trade ID and the countdown beginning near five minutes. Hold for three
-seconds. Cut through the middle using **FIVE MINUTES LATER — SAME TRADE ID**, resume around `0:05`, and let the counter
+seconds. Cut through the middle using **FIVE MINUTES LATER - SAME TRADE ID**, resume around `0:05`, and let the counter
 reach zero. Publish the observation, relay it and show the finalized fee allocation. Point briefly to the explorer
 links and the separate protection-branch receipt. Speed up only network waiting; never remove wallet approvals or
 change the trade ID across the maturity cut.
@@ -64,12 +64,12 @@ change the trade ID across the maturity cut.
 
 “This is a real v4 swap on Unichain Sepolia. The hook records the execution, locks the 50-basis-point provisional
 amount and creates this trade ID. The observation unlocks after five minutes because an immediate price cannot reveal
-post-trade adverse selection. I’ll cut ahead through the wait—the trade ID remains unchanged. Now the same countdown
+post-trade adverse selection. I’ll cut ahead through the wait - the trade ID remains unchanged. Now the same countdown
 reaches zero. A signed delayed Pyth observation is published and carried to Unichain for authenticated, replay-safe
 settlement. Here the markout is negative, so the provisional amount returns to the trader and the final fee falls to
 18 basis points. Another public lifecycle proves the opposite branch, where adverse flow funds LP protection.”
 
-### 1:30–2:18 — Explain only the load-bearing architecture
+### 1:30–2:18 - Explain only the load-bearing architecture
 
 **Show:** Complete architecture. Zoom into one region at a time: Unichain hook, Pyth, Reactive, then settlement. Do not
 leave the full unreadable diagram static on screen.
@@ -87,7 +87,7 @@ The callback reaches the Unichain settlement gateway, where the first valid obse
 no-ops. Circle CCTP is the resilience rail. Neither transport controls funds or chooses the fee; the hook validates
 evidence and allocates onchain.”
 
-### 2:18–2:43 — Demonstrate technical craft
+### 2:18–2:43 - Demonstrate technical craft
 
 **Show:** Terminal test summary, then the dashboard security metrics. Keep this scene under 25 seconds.
 
@@ -98,7 +98,7 @@ escrow, permissionless expiry, authenticated delivery and replay-safe settlement
 Solidity tests, including 12 stateful invariants, adversarial accounting tests and dedicated Reactive integration
 tests. The committed static-analysis gate reports no medium- or high-severity findings."
 
-### 2:43–3:24 — Quantify the impact
+### 2:43–3:24 - Quantify the impact
 
 **Show:** Evidence comparison. Reveal one result at a time: benign flow, improving flow, LP result and evidence boundary.
 
@@ -111,7 +111,7 @@ percent reduction. The modeled LP net-after-markout-loss-proxy improved by 21.87
 clear premium. Markout is a directional risk proxy here, not a claim of exact realized LP loss. The experiment and
 parameter sweep are committed and reproducible.”
 
-### 3:24–3:50 — Why it matters and close
+### 3:24–3:50 - Why it matters and close
 
 **Show:** Three outcomes, then finish on the project name and dashboard URL. Bring your face back for the final sentence.
 
@@ -176,6 +176,6 @@ destination transaction, replacing part of the research scene rather than making
 - Use a clean microphone; remove long pauses and filler words, but keep natural breathing.
 - Use large burned-in captions with a maximum of two lines.
 - Record the whole five-minute maturity in the single raw capture, but remove its middle from the final cut.
-- Put **FIVE MINUTES LATER — SAME TRADE ID** on screen for one second and visibly preserve the trade ID across the cut.
+- Put **FIVE MINUTES LATER - SAME TRADE ID** on screen for one second and visibly preserve the trade ID across the cut.
 - Never say “exact LP loss,” “guaranteed savings,” “MEV eliminated” or “Reactive callback is live” without evidence.
 - End with the repository and live dashboard visible for at least three seconds.

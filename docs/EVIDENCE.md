@@ -18,7 +18,7 @@ MARKOUT separates facts by strength so the submission never turns a model result
 4. **Not yet proven:** that MARKOUT attracts incremental liquidity, changes routed volume, or improves market share.
    Fair-Flow's fee-only comparison does not require those assumptions, but real all-in execution still does.
 
-## Reactive acceptance — August 26, 2026
+## Reactive acceptance - August 26, 2026
 
 The [machine-readable Legacy record](../deployments/reactive-legacy-2026-08-26.json) separates three claims that are
 often incorrectly collapsed:
@@ -38,7 +38,7 @@ The successful callback targeted an already-terminal historical trade, so the co
 idempotent duplicate. That is strong transport evidence but not evidence that Reactive won the economic-settlement
 race. The fresh acceptance attempt shows that relayer reliability remains the unresolved external dependency.
 
-## Historical Reactive liveness recheck — August 24, 2026
+## Historical Reactive liveness recheck - August 24, 2026
 
 MARKOUT repeated both public Reactive probes with fresh Ethereum Sepolia events. The complete machine-readable record is
 [`deployments/reactive-recheck-2026-08-24.json`](../deployments/reactive-recheck-2026-08-24.json).

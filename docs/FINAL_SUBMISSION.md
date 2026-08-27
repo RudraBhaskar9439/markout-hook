@@ -186,7 +186,7 @@ The final form requires the GitHub repository to be public before its confirmati
 4. Explain Reactive lifecycle orchestration, Circle fallback delivery, and fail-open expiry.
 5. Open the 11-second Legacy callback, then state precisely why it proves transport but not Reactive-first settlement.
 6. Open the four Pyth/Circle lifecycle records, including the Fair-Flow 18 bps settlement and claim.
-7. Close with both demonstrated allocation extremes—100% rebated and 100% retained—and the fail-open refund.
+7. Close with both demonstrated allocation extremes - 100% rebated and 100% retained - and the fail-open refund.
 
 ## Honest limitations
 

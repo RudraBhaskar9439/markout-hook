@@ -50,7 +50,7 @@ two opposite Unichain settlement outcomes, the rebate claim, exact LP-reserve re
 source-to-destination latencies. Reactive remains optional and is not described as live because no public destination
 callback exists.
 
-## Phase 0 — Repository bootstrap
+## Phase 0 - Repository bootstrap
 
 ### Goal
 
@@ -81,7 +81,7 @@ Expected result:
 
 Confirm the name, scope, schedule, and phase order before installing protocol dependencies.
 
-## Phase 1 — Uniswap v4 accounting proof
+## Phase 1 - Uniswap v4 accounting proof
 
 ### Goal
 
@@ -121,7 +121,7 @@ Run one local exact-input swap and one exact-output swap, then compare trader, P
 
 If v4 return-delta accounting cannot safely implement the escrow, do not continue. Choose the documented fallback design before Phase 2.
 
-## Phase 2 — Markout mathematics and economic specification
+## Phase 2 - Markout mathematics and economic specification
 
 ### Goal
 
@@ -154,7 +154,7 @@ Required properties:
 
 Review a table containing benign, toxic, and inventory-improving trades and confirm that each result matches the written mechanism.
 
-## Phase 3 — Local MARKOUT hook MVP
+## Phase 3 - Local MARKOUT hook MVP
 
 ### Goal
 
@@ -191,7 +191,7 @@ Required results:
 
 Execute two otherwise identical swaps. Settle one with a neutral future price and the other with a toxic markout. The first trader must receive a larger rebate and the accounting totals must reconcile exactly.
 
-## Phase 4 — Reactive Network lifecycle
+## Phase 4 - Reactive Network lifecycle
 
 ### Goal
 
@@ -228,7 +228,7 @@ Run the Reactive simulator and inspect a single trace showing:
 
 `MarkoutRequested → reference update → cron maturity → Callback → rebate credit`.
 
-## Phase 5 — Live Unichain and Reactive testnets
+## Phase 5 - Live Unichain and Reactive testnets
 
 ### Goal
 
@@ -254,7 +254,7 @@ Demonstrate a real cross-network event and callback lifecycle.
 
 Do not begin the frontend until this gate passes.
 
-## Phase 6 — Reproducible research experiment
+## Phase 6 - Reproducible research experiment
 
 ### Goal
 
@@ -296,7 +296,7 @@ Required results:
 - Results report both improvements and regressions.
 - No claim is made beyond what the experiment supports.
 
-## Phase 7 — Security and failure hardening
+## Phase 7 - Security and failure hardening
 
 ### Goal
 
@@ -327,7 +327,7 @@ Required results:
 - No untrusted caller can create value, settle twice, or redirect another trader's rebate.
 - Callback or oracle failure cannot permanently trap all users.
 
-## Phase 8 — Judge-ready application and demo
+## Phase 8 - Judge-ready application and demo
 
 ### Goal
 
@@ -353,7 +353,7 @@ From a clean state, a first-time tester must be able to:
 
 The complete demo must remain comfortably inside the official presentation limit.
 
-## Phase 9 — Submission and presentation
+## Phase 9 - Submission and presentation
 
 ### Goal
 
@@ -376,7 +376,7 @@ Submit a reproducible project and a concise research story.
 - The presentation is rehearsed under the official time limit.
 - Final form is submitted before September 3, 2026 at 11:59 PM Pacific Time.
 
-## Phase 10 — Hybrid settlement architecture pivot
+## Phase 10 - Hybrid settlement architecture pivot
 
 ### Goal
 
@@ -395,7 +395,7 @@ Freeze a smaller production path in which MARKOUT is safe and demonstrable witho
 - Failure of Circle or Reactive cannot trap a provisional surcharge beyond the existing expiry window.
 - The active architecture has exactly one settlement authority contract and no mutable production operator.
 
-## Phase 11 — Shared settlement coordinator
+## Phase 11 - Shared settlement coordinator
 
 ### Goal
 
@@ -422,7 +422,7 @@ Required results:
 - Invalid observations still revert inside the unchanged hook validation engine.
 - Permissionless expiry remains available without the coordinator.
 
-## Phase 12 — Circle CCTP V2 primary transport
+## Phase 12 - Circle CCTP V2 primary transport
 
 ### Goal
 
@@ -452,7 +452,7 @@ Required results:
 - A valid Circle message settles one mature trade through the shared coordinator.
 - Replays, malformed messages, wrong domains, wrong senders, and messages below threshold `1000` fail safely.
 
-## Phase 13 — Optional Reactive pulse
+## Phase 13 - Optional Reactive pulse
 
 ### Goal
 
@@ -478,7 +478,7 @@ Required results:
 - Circle and Reactive delivery order cannot change accounting.
 - Reactive failure has no effect on Circle settlement or permissionless expiry.
 
-## Phase 14 — Hybrid live deployment and final submission
+## Phase 14 - Hybrid live deployment and final submission
 
 ### Goal
 
@@ -508,7 +508,7 @@ owner-controlled gates.
 6. Label Reactive as live only if its destination callback transaction exists publicly.
 7. Regenerate the demo and submission package around the verified hybrid path.
 
-## Phase 15 — Fair-Flow trader economics
+## Phase 15 - Fair-Flow trader economics
 
 ### Goal
 

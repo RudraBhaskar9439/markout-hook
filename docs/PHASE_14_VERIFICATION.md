@@ -1,4 +1,4 @@
-# Phase 14 Verification — Hybrid Deployment and Release Candidate
+# Phase 14 Verification - Hybrid Deployment and Release Candidate
 
 Phase 14 packages and proves the Circle-primary, Reactive-optional topology on public testnets. The required Circle
 path is complete; repository/site visibility and final submission remain owner-controlled decisions.

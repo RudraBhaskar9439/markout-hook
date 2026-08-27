@@ -1,7 +1,7 @@
 ---
 name: Phase verification gate
 about: Verify a MARKOUT phase before beginning the next one
-title: "[Gate] Phase N — "
+title: "[Gate] Phase N - "
 labels: verification
 assignees: ''
 ---
@@ -36,4 +36,3 @@ List anything intentionally deferred.
 
 - [ ] GO
 - [ ] NO-GO
-

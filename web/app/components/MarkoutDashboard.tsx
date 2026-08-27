@@ -450,7 +450,7 @@ function ReactiveNetworkSection() {
           </div>
           <p className="reactive-honesty-note">
             Legacy Reactive completed an authenticated cross-chain callback in 11 seconds. Because that callback reached
-            an already-terminal trade, it proves transport liveness—not Reactive-first economics. A separate pending-first
+            an already-terminal trade, it proves transport liveness - not Reactive-first economics. A separate pending-first
             run reached ReactVM twice, then safely expired and refunded when destination relaying timed out.
           </p>
         </aside>
@@ -467,7 +467,7 @@ function ResearchEvidence() {
         <p className="kicker">Controlled mechanism study</p>
         <h2 id="evidence-title">A frozen dataset, declared constraints, and a result that can fail.</h2>
         <p className="section-lede">
-          This is a reproducible synthetic study—not a historical backtest. Each policy receives the same deterministic
+          This is a reproducible synthetic study - not a historical backtest. Each policy receives the same deterministic
           tape, and the metric is a pool-level adverse-selection proxy rather than exact LVR or individual LP profit.
         </p>
       </div>
@@ -619,7 +619,7 @@ export function MarkoutDashboard() {
           <h1>Fees should follow <em>outcomes.</em><br />Not fear.</h1>
           <p>
             MARKOUT is a Uniswap v4 hook that escrows a provisional charge, waits for post-trade evidence, then lets
-            an authenticated observation return it to good flow—or retain it when LPs were adversely selected. The
+            an authenticated observation return it to good flow - or retain it when LPs were adversely selected. The
             Fair-Flow profile starts at 18 bps, while Reactive Network supplies a live event-to-action rail.
           </p>
           <div className="hero-actions">

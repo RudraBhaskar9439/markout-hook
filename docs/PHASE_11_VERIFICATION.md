@@ -1,4 +1,4 @@
-# Phase 11 Verification — Shared Settlement Coordinator
+# Phase 11 Verification - Shared Settlement Coordinator
 
 ## Automated gate
 

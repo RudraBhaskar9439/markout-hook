@@ -9,7 +9,7 @@
           <mxGeometry x="0" y="0" width="1920" height="1080" as="geometry"/>
         </mxCell>
 
-        <mxCell id="title" value="&lt;font color=&quot;#F4F8F5&quot; style=&quot;font-size: 30px;&quot;&gt;&lt;b&gt;MARKOUT — charge by outcome, not by guesswork&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="title" value="&lt;font color=&quot;#F4F8F5&quot; style=&quot;font-size: 30px;&quot;&gt;&lt;b&gt;MARKOUT - charge by outcome, not by guesswork&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
           <mxGeometry x="60" y="35" width="1150" height="55" as="geometry"/>
         </mxCell>
         <mxCell id="subtitle" value="&lt;font color=&quot;#A6B6AA&quot; style=&quot;font-size: 16px;&quot;&gt;After five minutes, Pyth publishes signed evidence; Reactive or Circle delivers it, and the hook prices the realized outcome.&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
@@ -115,7 +115,7 @@
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
 
-        <mxCell id="circle" value="&lt;font color=&quot;#82C4FF&quot;&gt;&lt;b&gt;CIRCLE CCTP INDEPENDENT DELIVERY RAIL&lt;/b&gt;&lt;/font&gt;&lt;font color=&quot;#BEDDF5&quot;&gt; — authenticated route · 4 public economic lifecycles&lt;/font&gt;" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#10283B;strokeColor=#4B9BDB;strokeWidth=2;dashed=1;dashPattern=8 5;align=center;fontSize=13;" vertex="1" parent="1">
+        <mxCell id="circle" value="&lt;font color=&quot;#82C4FF&quot;&gt;&lt;b&gt;CIRCLE CCTP INDEPENDENT DELIVERY RAIL&lt;/b&gt;&lt;/font&gt;&lt;font color=&quot;#BEDDF5&quot;&gt; - authenticated route · 4 public economic lifecycles&lt;/font&gt;" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#10283B;strokeColor=#4B9BDB;strokeWidth=2;dashed=1;dashPattern=8 5;align=center;fontSize=13;" vertex="1" parent="1">
           <mxGeometry x="780" y="535" width="670" height="60" as="geometry"/>
         </mxCell>
         <mxCell id="circle-in" value="independent path" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#66B4F2;strokeWidth=2;dashed=1;dashPattern=8 5;fontColor=#82C4FF;fontSize=11;labelBackgroundColor=#07100B;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.25;entryY=0;" edge="1" parent="1" source="step3" target="circle">

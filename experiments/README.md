@@ -22,9 +22,9 @@ fee depends on volatility and uninformed volume. See [Uniswap's dynamic-fee docu
 The experiment asks whether outcome-conditioned fee retention can improve modeled LP economics over a fixed fee while
 charging benign and inventory-improving flow less than a policy that raises fees for every trader during volatility.
 
-- **H1 — discrimination:** MARKOUT charges informed flow more than benign or inventory-improving flow.
-- **H2 — fixed-fee comparison:** MARKOUT improves LP net-after-proxy results relative to a 30 bps fixed fee.
-- **H3 — volatility tradeoff:** MARKOUT charges benign and inventory-improving flow less than the volatility policy,
+- **H1 - discrimination:** MARKOUT charges informed flow more than benign or inventory-improving flow.
+- **H2 - fixed-fee comparison:** MARKOUT improves LP net-after-proxy results relative to a 30 bps fixed fee.
+- **H3 - volatility tradeoff:** MARKOUT charges benign and inventory-improving flow less than the volatility policy,
   but can provide less aggregate fee protection because it rebates more value.
 
 These are evaluated observations, not assertions embedded into the test expectations. A policy can lose a comparison
