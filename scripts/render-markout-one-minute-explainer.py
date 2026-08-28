@@ -226,15 +226,15 @@ def scene_five(draw: ImageDraw.ImageDraw, t: float) -> None:
 
 
 def scene_six(draw: ImageDraw.ImageDraw, t: float) -> None:
-    start, end = 40.8, 51.8
+    start, end = 40.5, 48.6
     alpha = scene_alpha(t, start, end)
     if alpha <= 0:
         return
     title(draw, "The outcome sets the fee", "Direction matters.", "Volatility alone is not enough.", alpha, B.GREEN)
     draw.text((108, 438), "MARKOUT compares the execution price with the delayed reference price.", font=F_BODY, fill=B.rgba(B.MUTED, 225 * alpha))
     cards = [
-        (104, "NEGATIVE / IMPROVING MARKOUT", "Return escrow", "Final fee can fall to 18 bps", "Trader rewarded", B.GREEN),
-        (960, "POSITIVE / ADVERSE MARKOUT", "Retain protection", "Final fee can rise to 68 bps", "LP reserve protected", B.AMBER),
+        (104, "NEGATIVE / IMPROVING MARKOUT", "Return escrow", "40% below the fixed 30 bps fee", "Trader rewarded", B.GREEN),
+        (960, "POSITIVE / ADVERSE MARKOUT", "Retain protection", "Up to 100% of escrow retained", "LP reserve protected", B.AMBER),
     ]
     cards_reveal = reveal(t, 42.0, 1.5)
     for index, (x, label, action, detail, footer_text, color) in enumerate(cards):
@@ -248,32 +248,36 @@ def scene_six(draw: ImageDraw.ImageDraw, t: float) -> None:
 
 
 def scene_seven(draw: ImageDraw.ImageDraw, t: float) -> None:
-    start, end = 51.1, 57.3
+    start, end = 47.9, 57.3
     alpha = scene_alpha(t, start, end)
     if alpha <= 0:
         return
     title(draw, "Why the market can use it", "Better prices for good flow.", "Better protection for liquidity.", alpha, B.GREEN)
     metrics = [
-        (104, "GOOD TRADERS", "Lower final fees", B.GREEN),
-        (668, "LIQUIDITY PROVIDERS", "Adverse flow pays more", B.AMBER),
-        (1232, "THE POOL", "More sustainable liquidity", B.BLUE),
+        (104, "GOOD TRADERS", "Up to 40% lower fees", B.GREEN),
+        (668, "LIQUIDITY PROVIDERS", "100% escrow retained", B.AMBER),
+        (1232, "THE POOL", "+21.87% modeled LP net", B.BLUE),
     ]
-    metrics_reveal = reveal(t, 52.0, 1.0)
+    metrics_reveal = reveal(t, 48.8, 1.0)
     for index, (x, label, value, color) in enumerate(metrics):
         metric_alpha = alpha * B.smooth((metrics_reveal - index * 0.14) / 0.6)
         B.rounded_box(draw, (x, 584, x + 480, 760), B.PANEL, color, metric_alpha, radius=22)
         draw.text((x + 30, 618), B.tracked(label), font=F_MONO_SMALL, fill=B.rgba(color, 235 * metric_alpha))
         draw.text((x + 30, 680), value, font=F_H3, fill=B.rgba(B.TEXT, 250 * metric_alpha))
-    draw.rounded_rectangle((104, 818, 1712, 916), radius=18, fill=B.rgba(B.GREEN_DARK, 125 * alpha), outline=B.rgba(B.GREEN, 90 * alpha), width=2)
-    draw.text((144, 850), "RESEARCH TAPE", font=F_MONO_SMALL, fill=B.rgba(B.GREEN, 220 * alpha))
-    draw.text((354, 846), "768 trades", font=F_BODY_BOLD, fill=B.rgba(B.TEXT, 245 * alpha))
-    draw.text((686, 846), "+21.87% modeled LP net vs fixed", font=F_BODY_BOLD, fill=B.rgba(B.TEXT, 245 * alpha))
-    draw.text((1262, 846), "$2.57 benign saving / $10k", font=F_BODY_BOLD, fill=B.rgba(B.TEXT, 245 * alpha))
-    draw.text((960, 950), "Frozen seeded experiment under declared assumptions", font=F_MONO_SMALL, anchor="mm", fill=B.rgba(B.DIM, 220 * alpha))
+    draw.rounded_rectangle((104, 818, 1816, 916), radius=18, fill=B.rgba(B.GREEN_DARK, 125 * alpha), outline=B.rgba(B.GREEN, 90 * alpha), width=2)
+    draw.text((144, 842), "RESEARCH TAPE", font=F_MONO_SMALL, fill=B.rgba(B.GREEN, 220 * alpha))
+    draw.text((144, 874), "768 TRADES", font=F_MONO_SMALL, fill=B.rgba(B.DIM, 220 * alpha))
+    draw.text((410, 850), "-8.58%", font=F_BODY_BOLD, fill=B.rgba(B.GREEN, 250 * alpha))
+    draw.text((534, 853), "avg benign fee", font=F_SMALL, fill=B.rgba(B.TEXT, 235 * alpha))
+    draw.text((888, 850), "-40%", font=F_BODY_BOLD, fill=B.rgba(B.GREEN, 250 * alpha))
+    draw.text((992, 853), "inventory-improving fee", font=F_SMALL, fill=B.rgba(B.TEXT, 235 * alpha))
+    draw.text((1458, 850), "+21.87%", font=F_BODY_BOLD, fill=B.rgba(B.BLUE, 250 * alpha))
+    draw.text((1602, 853), "modeled LP net", font=F_SMALL, fill=B.rgba(B.TEXT, 235 * alpha))
+    draw.text((960, 950), "All percentages versus the fixed 30 bps policy on the frozen seeded experiment", font=F_MONO_SMALL, anchor="mm", fill=B.rgba(B.DIM, 220 * alpha))
 
 
 def scene_eight(draw: ImageDraw.ImageDraw, t: float) -> None:
-    start, end = 56.6, 60.0
+    start, end = 56.8, 60.0
     alpha = scene_alpha(t, start, end, fade=0.55)
     if alpha <= 0:
         return
