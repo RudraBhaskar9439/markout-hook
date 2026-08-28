@@ -38,6 +38,11 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
   assert.match(html, /Fees should follow/);
   assert.match(html, /Not fear\./);
   assert.match(html, /Make the swap\. Watch the fee change\./);
+  assert.match(html, /Watch the price\. Then watch the fee respond\./);
+  assert.match(html, /Pyth ETH\/USD/);
+  assert.match(html, /RESEARCH · NOT ONCHAIN/);
+  assert.match(html, /Five-minute outcome window/);
+  assert.match(html, /LIVE MARKET DATA/);
   assert.match(html, /Real v4 swap/);
   assert.match(html, /Onchain lifecycle/);
   assert.match(html, /Fee allocation/);
@@ -130,10 +135,11 @@ test("removes starter metadata and keeps deterministic evidence explicit", async
   );
 });
 
-test("keeps the authenticated Pyth request on the server", async () => {
-  const [testnetLibrary, pythRoute] = await Promise.all([
+test("keeps authenticated Pyth requests on the server", async () => {
+  const [testnetLibrary, pythRoute, marketPriceRoute] = await Promise.all([
     readFile(new URL("../app/lib/testnet/markout.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/api/pyth-update/route.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/api/market-price/route.ts", import.meta.url), "utf8"),
   ]);
 
   assert.match(testnetLibrary, /const PYTH_UPDATE_URL = "\/api\/pyth-update"/);
@@ -141,6 +147,10 @@ test("keeps the authenticated Pyth request on the server", async () => {
   assert.match(pythRoute, /process\.env\.PYTH_API_KEY/);
   assert.match(pythRoute, /Authorization:\s*`Bearer \$\{apiKey\}`/);
   assert.match(pythRoute, /pyth\.dourolabs\.app\/hermes/);
+  assert.match(marketPriceRoute, /process\.env\.PYTH_API_KEY/);
+  assert.match(marketPriceRoute, /Authorization:\s*`Bearer \$\{apiKey\}`/);
+  assert.match(marketPriceRoute, /pyth\.dourolabs\.app\/hermes/);
+  assert.match(marketPriceRoute, /confidenceBps/);
 });
 
 test("ships an exact-size social preview card", async () => {

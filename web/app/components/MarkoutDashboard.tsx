@@ -12,6 +12,7 @@ import {
   type FlowId,
 } from "../lib/demo-data";
 import { LiveTestnetConsole } from "./LiveTestnetConsole";
+import { MarketReplayLab } from "./MarketReplayLab";
 
 const maximumFeeBps = 80;
 
@@ -604,6 +605,7 @@ export function MarkoutDashboard() {
         </a>
         <nav aria-label="Primary navigation">
           <a href="#testnet">Live testnet</a>
+          <a href="#market-lab">Market lab</a>
           <a href="#frontend">Frontend</a>
           <a href="#mechanism">Mechanism</a>
           <a href="#architecture">Architecture</a>
@@ -657,6 +659,7 @@ export function MarkoutDashboard() {
         ))}
       </section>
 
+      <MarketReplayLab />
       <LiveTestnetConsole />
       <FrontendSection />
 
