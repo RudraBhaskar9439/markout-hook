@@ -150,6 +150,7 @@ test("keeps authenticated Pyth requests on the server", async () => {
   assert.match(marketPriceRoute, /process\.env\.PYTH_API_KEY/);
   assert.match(marketPriceRoute, /Authorization:\s*`Bearer \$\{apiKey\}`/);
   assert.match(marketPriceRoute, /pyth\.dourolabs\.app\/hermes/);
+  assert.match(marketPriceRoute, /markout-uhi10\.vercel\.app\/api\/pyth-update/);
   assert.match(marketPriceRoute, /confidenceBps/);
 });
 

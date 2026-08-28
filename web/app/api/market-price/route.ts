@@ -1,6 +1,7 @@
 const PYTH_ETH_USD_PRICE_ID =
   "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace";
 const HERMES_PRICE_URL = "https://pyth.dourolabs.app/hermes/v2/updates/price/latest";
+const HOSTED_MARKOUT_PYTH_URL = "https://markout-uhi10.vercel.app/api/pyth-update";
 
 export const dynamic = "force-dynamic";
 
@@ -40,18 +41,17 @@ function scaledValue(value: string, exponent: number, allowZero = false) {
 
 export async function GET() {
   const apiKey = process.env.PYTH_API_KEY?.trim();
-  if (!apiKey) {
-    return jsonError("Live Pyth pricing is not configured on this deployment.", 503);
-  }
-
   const url = new URL(HERMES_PRICE_URL);
   url.searchParams.append("ids[]", PYTH_ETH_USD_PRICE_ID);
   url.searchParams.set("parsed", "true");
 
   try {
-    const response = await fetch(url, {
+    // The primary path calls Hermes directly with the server-only credential.
+    // Preview hosts without that secret reuse MARKOUT's already-authenticated,
+    // public settlement endpoint rather than exposing a credential to the client.
+    const response = await fetch(apiKey ? url : HOSTED_MARKOUT_PYTH_URL, {
       cache: "no-store",
-      headers: { Authorization: `Bearer ${apiKey}` },
+      headers: apiKey ? { Authorization: `Bearer ${apiKey}` } : undefined,
     });
 
     if (!response.ok) {
@@ -87,7 +87,7 @@ export async function GET() {
         emaPrice,
         publishTime: feed.price.publish_time,
         receivedAt: Math.floor(Date.now() / 1_000),
-        source: "Pyth Hermes",
+        source: apiKey ? "Pyth Hermes" : "MARKOUT Pyth relay",
       },
       {
         headers: { "Cache-Control": "no-store" },
