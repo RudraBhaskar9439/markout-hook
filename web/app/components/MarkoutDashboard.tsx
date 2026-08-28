@@ -13,6 +13,7 @@ import {
 } from "../lib/demo-data";
 import { LiveTestnetConsole } from "./LiveTestnetConsole";
 import { MarketReplayLab } from "./MarketReplayLab";
+import { OpeningExperience } from "./OpeningExperience";
 
 const maximumFeeBps = 80;
 
@@ -597,7 +598,9 @@ export function MarkoutDashboard() {
   const [selected, setSelected] = useState<FlowId>("benign");
 
   return (
-    <main>
+    <>
+      <OpeningExperience />
+      <main>
       <header className="site-header">
         <a className="brand" href="#top" aria-label="MARKOUT home">
           <span className="brand-mark">M</span>
@@ -698,6 +701,7 @@ export function MarkoutDashboard() {
         </div>
         <p className="footer-note">Experimental UHI10 prototype · Not audited · No real funds</p>
       </footer>
-    </main>
+      </main>
+    </>
   );
 }
