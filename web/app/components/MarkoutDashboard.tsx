@@ -14,6 +14,7 @@ import {
 import { LiveTestnetConsole } from "./LiveTestnetConsole";
 import { MarketReplayLab } from "./MarketReplayLab";
 import { OpeningExperience } from "./OpeningExperience";
+import { PublicProofMode } from "./PublicProofMode";
 
 const maximumFeeBps = 80;
 
@@ -596,10 +597,11 @@ function ResearchEvidence() {
 
 export function MarkoutDashboard() {
   const [selected, setSelected] = useState<FlowId>("benign");
+  const [openingReplay, setOpeningReplay] = useState(0);
 
   return (
     <>
-      <OpeningExperience />
+      <OpeningExperience replayToken={openingReplay} />
       <main>
       <header className="site-header">
         <a className="brand" href="#top" aria-label="MARKOUT home">
@@ -608,6 +610,7 @@ export function MarkoutDashboard() {
         </a>
         <nav aria-label="Primary navigation">
           <a href="#testnet">Live testnet</a>
+          <a href="#proof-mode">Proof</a>
           <a href="#market-lab">Market lab</a>
           <a href="#frontend">Frontend</a>
           <a href="#mechanism">Mechanism</a>
@@ -615,7 +618,12 @@ export function MarkoutDashboard() {
           <a href="#reactive">Reactive</a>
           <a href="#evidence">Research</a>
         </nav>
-        <span className="testnet-status"><i /> Reactive Network transport live · fallback proven</span>
+        <div className="header-actions">
+          <span className="testnet-status"><i /> Reactive Network transport live · fallback proven</span>
+          <button className="intro-replay-button" type="button" onClick={() => setOpeningReplay((value) => value + 1)}>
+            Replay intro
+          </button>
+        </div>
       </header>
 
       <section className="hero" id="top">
@@ -630,6 +638,11 @@ export function MarkoutDashboard() {
           <div className="hero-actions">
             <a className="primary-action" href="#testnet">Run a real testnet swap <span>↓</span></a>
             <a className="secondary-action" href="#evidence">Inspect the research</a>
+          </div>
+          <div className="hero-proof-strip" aria-label="Public deployment proof summary">
+            <a href="#proof-mode"><strong>4</strong><span>economic lifecycles</span></a>
+            <a href="#reactive"><strong>11s</strong><span>Reactive callback</span></a>
+            <a href="#compare"><strong>18-68 bps</strong><span>Fair-Flow bounds</span></a>
           </div>
         </div>
 
@@ -662,6 +675,7 @@ export function MarkoutDashboard() {
         ))}
       </section>
 
+      <PublicProofMode />
       <MarketReplayLab />
       <LiveTestnetConsole />
       <FrontendSection />

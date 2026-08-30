@@ -37,6 +37,17 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
   assert.match(html, /<title>MARKOUT - Outcome-priced liquidity<\/title>/i);
   assert.match(html, /Fees should follow/);
   assert.match(html, /Not fear\./);
+  assert.match(html, /Replay intro/);
+  assert.match(html, /4<\/strong><span>economic lifecycles/);
+  assert.match(html, /11s<\/strong><span>Reactive callback/);
+  assert.match(html, /18-68 bps<\/strong><span>Fair-Flow bounds/);
+  assert.match(html, /Four public proof paths\. No wallet required\./);
+  assert.match(html, /18 bps complete rebate/);
+  assert.match(html, /100% LP protection retention/);
+  assert.match(html, /Rebate claimed by the trader/);
+  assert.match(html, /11-second authenticated callback/);
+  assert.match(html, /Economic lifecycle verified/);
+  assert.match(html, /Evidence boundary/);
   assert.match(html, /Make the swap\. Watch the fee change\./);
   assert.match(html, /Watch the price\. Then watch the fee respond\./);
   assert.match(html, /Pyth ETH\/USD/);
@@ -94,13 +105,15 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
 });
 
 test("removes starter metadata and keeps deterministic evidence explicit", async () => {
-  const [page, layout, packageJson, data, testnet, consoleSource, css] = await Promise.all([
+  const [page, layout, packageJson, data, testnet, consoleSource, proofSource, openingSource, css] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
     readFile(new URL("../app/lib/demo-data.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/lib/testnet/markout.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/components/LiveTestnetConsole.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/PublicProofMode.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/OpeningExperience.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
   ]);
 
@@ -121,10 +134,21 @@ test("removes starter metadata and keeps deterministic evidence explicit", async
   assert.match(testnet, /MARKOUT_BASE_FEE_BPS = 18/);
   assert.match(testnet, /MARKOUT_POOL_FEE = 1800/);
   assert.match(testnet, /https:\/\/ethereum-sepolia-rpc\.publicnode\.com/);
-  assert.match(consoleSource, /Reactive Network event/);
-  assert.match(consoleSource, /Publish Pyth event for Reactive Network/);
+  assert.match(consoleSource, /Reactive subscription eligible/);
+  assert.match(consoleSource, /Publisher event available/);
+  assert.match(consoleSource, /Publish evidence \+ settle safely/);
+  assert.doesNotMatch(consoleSource, /label: "Reactive Network event", reached: hasPublish/);
+  assert.doesNotMatch(consoleSource, /Publish Pyth event for Reactive Network/);
   assert.doesNotMatch(consoleSource, /Settle with Pyth \+ Circle|label: "Circle relayed"/);
+  assert.match(proofSource, /Four public proof paths\. No wallet required\./);
+  assert.match(proofSource, /The trade was already terminal/);
+  assert.match(proofSource, /not Reactive-first economic settlement/);
+  assert.match(openingSource, /markout\.opening\.seen/);
+  assert.match(openingSource, /replayToken/);
+  assert.match(openingSource, /sessionStorage/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
+  assert.match(css, /\.proof-mode-section/);
+  assert.match(css, /\.hero-proof-strip/);
   assert.match(css, /\.plane-reactive/);
   assert.match(css, /\.frontend-stage-grid/);
   assert.match(css, /\.research-protocol/);

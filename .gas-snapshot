@@ -33,7 +33,7 @@ MarkoutHookLifecycleTest:test_claimRebate_usesPullPaymentAndCannotBeReplayed() (
 MarkoutHookLifecycleTest:test_claimToZeroAddressRevertsWithoutLosingCredit() (gas: 617755)
 MarkoutHookLifecycleTest:test_constructorRejectsIdenticalBaseAndQuote() (gas: 64857)
 MarkoutHookLifecycleTest:test_constructorRejectsUnsupportedTokenDecimals() (gas: 66948)
-MarkoutHookLifecycleTest:test_constructorRejectsZeroSettlementAuthority() (gas: 66487)
+MarkoutHookLifecycleTest:test_constructorRejectsZeroSettlementAuthority() (gas: 66500)
 MarkoutHookLifecycleTest:test_exactExpiryBoundaryStillAllowsSettlement() (gas: 609719)
 MarkoutHookLifecycleTest:test_failedNativeClaimDoesNotBlockSettlementOrOtherClaims() (gas: 1278363)
 MarkoutHookLifecycleTest:test_neutralTradeReceivesLargerRebateThanToxicTrade() (gas: 950461)

@@ -25,7 +25,8 @@ grep -q '100% REBATED' <<<"$slide_xml"
 grep -q '100% RETAINED' <<<"$slide_xml"
 grep -q '>186<' <<<"$slide_xml"
 
-grep -Fq '![MARKOUT architecture](docs/diagrams/MARKOUT_VIDEO_ARCHITECTURE.png)' README.md
+grep -Fq '![MARKOUT complete architecture](docs/diagrams/MARKOUT_ARCHITECTURE_OVERVIEW.png)' README.md
+test -f docs/diagrams/MARKOUT_ARCHITECTURE_OVERVIEW.png
 test -f docs/diagrams/MARKOUT_VIDEO_ARCHITECTURE.png
 test -f docs/diagrams/MARKOUT_VIDEO_ARCHITECTURE.drawio
 grep -q '^# MARKOUT Judge Demo Script$' docs/DEMO_SCRIPT.md

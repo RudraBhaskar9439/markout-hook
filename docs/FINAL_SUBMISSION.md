@@ -193,8 +193,8 @@ The final form requires the GitHub repository to be public before its confirmati
 - Testnet prototype; not independently audited and not suitable for real funds.
 - The demo uses ETH/USD as an ETH/USDC reference proxy.
 - Circle uses fast-confirmed finality to fit the bounded settlement window.
-- The Reactive lifecycle is implemented and tested; the deployed pulse is subscribed, but no successful public
-  Unichain callback is claimed.
+- Legacy Reactive completed an authenticated 11-second callback for an already-terminal trade, proving transport
+  liveness. A Reactive-first economic settlement has not been publicly demonstrated.
 - The LP protection reserve distribution mechanism is intentionally outside this prototype.
 - The Fair-Flow pool has one public complete-rebate lifecycle; the original pool remains the public proof for the
   full-retention branch.

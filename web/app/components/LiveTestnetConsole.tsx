@@ -170,7 +170,11 @@ export function LiveTestnetConsole() {
       { label: "Swap mined", reached: hasTrade, detail: hasTrade ? formatTimestamp(trade!.executedAt) : "Waiting" },
       { label: "5-minute markout", reached: isMature, detail: trade ? relativeTime(trade.maturityTimestamp, now) : "Waiting" },
       { label: "Pyth evidence published", reached: hasPublish, detail: hasPublish ? "Ethereum Sepolia" : "Waiting" },
-      { label: "Reactive Network event", reached: hasPublish, detail: hasPublish ? "Canonical event emitted" : "Waiting" },
+      {
+        label: "Reactive subscription eligible",
+        reached: hasPublish,
+        detail: hasPublish ? "Publisher event available" : "Waiting",
+      },
       { label: "Fee finalized", reached: terminal, detail: terminal && feeBps !== null ? `${feeBps.toFixed(2)} bps effective` : "Waiting" },
     ];
   }, [feeBps, maturityReached, now, publishHash, trade]);
@@ -433,10 +437,11 @@ export function LiveTestnetConsole() {
           {trade && trade.status === 1 && maturityReached && !expiryReached && (
             <>
               <button type="button" className="primary-action testnet-action" onClick={settleWithCircle} disabled={Boolean(busy)}>
-                {busy ?? (publishHash ? "Complete fallback settlement" : "Publish Pyth event for Reactive Network")}
+                {busy ?? (publishHash ? "Complete independent fallback" : "Publish evidence + settle safely")}
               </button>
               <small className="card-footnote">
-                Reactive Network is the autonomous event-to-action rail. The console retains a separate fallback for reliable demos.
+                Publishing creates the canonical event consumed by Reactive Network. This wallet demo then uses the
+                independently authenticated fallback for deterministic completion; it does not claim a Reactive callback.
               </small>
               {publishHash && !busy && (
                 <button type="button" className="discard-publication" onClick={discardPublication}>

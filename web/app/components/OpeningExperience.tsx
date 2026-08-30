@@ -5,9 +5,11 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties } from "re
 const standardHoldMs = 4_850;
 const reducedMotionHoldMs = 900;
 const exitDurationMs = 650;
+const openingSessionKey = "markout.opening.seen";
 
-export function OpeningExperience() {
+export function OpeningExperience({ replayToken = 0 }: { replayToken?: number }) {
   const [visible, setVisible] = useState(true);
+  const [ready, setReady] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const exitTimer = useRef<number | null>(null);
 
@@ -18,17 +20,37 @@ export function OpeningExperience() {
   }, []);
 
   useEffect(() => {
+    const forceFromUrl = new URLSearchParams(window.location.search).get("opening") === "1";
+    const hasSeenOpening = window.sessionStorage.getItem(openingSessionKey) === "1";
+    const shouldShow = replayToken > 0 || forceFromUrl || !hasSeenOpening;
+
+    if (!shouldShow) {
+      const hideTimer = window.setTimeout(() => {
+        setReady(false);
+        setVisible(false);
+        setLeaving(false);
+      }, 0);
+      return () => window.clearTimeout(hideTimer);
+    }
+
+    window.sessionStorage.setItem(openingSessionKey, "1");
+    const showTimer = window.setTimeout(() => {
+      setVisible(true);
+      setLeaving(false);
+      setReady(true);
+    }, 0);
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const holdTimer = window.setTimeout(close, reducedMotion ? reducedMotionHoldMs : standardHoldMs);
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     return () => {
+      window.clearTimeout(showTimer);
       window.clearTimeout(holdTimer);
       if (exitTimer.current !== null) window.clearTimeout(exitTimer.current);
       document.body.style.overflow = originalOverflow;
     };
-  }, [close]);
+  }, [close, replayToken]);
 
   useEffect(() => {
     if (!visible) document.body.style.overflow = "";
@@ -39,6 +61,7 @@ export function OpeningExperience() {
   return (
     <div
       className="opening-experience"
+      data-ready={ready}
       data-leaving={leaving}
       role="dialog"
       aria-label="MARKOUT opening sequence"
