@@ -119,8 +119,29 @@ MARKOUT trails the declared volatility-only policy in aggregate LP net-after-pro
 and inventory-improving flow more. That trade-off is reported rather than hidden. The experiment is a controlled
 synthetic mechanism comparison - not historical backtesting, a forecast, exact LVR, or position-level LP PnL.
 
+### Historical mainnet robustness replay
+
+A separate appendix freezes 400 canonical `Swap` logs from Ethereum mainnet's Uniswap v3 USDC/WETH 0.05% pool and
+evaluates 251 eligible trades over a five-minute markout horizon. It is a real-event robustness replay, not the basis
+for selecting the 18 bps profile.
+
+| June 1, 2024 historical window | Observed result |
+| --- | ---: |
+| Eligible swaps | 251 |
+| Observed notional | 3,187,617.76 USDC |
+| Favorable-outcome MARKOUT fee | 18.00 bps |
+| Near-zero-outcome MARKOUT fee | 29.02 bps |
+| Adverse-outcome MARKOUT fee | 39.14 bps |
+| Aggregate LP net-after-proxy versus fixed | **-0.39%** |
+
+The intended directional ordering survived on observed events: favorable outcomes paid least and adverse outcomes
+paid most. The synthetic study's aggregate advantage did not generalize to this short window, and the negative
+result is retained rather than filtered out. The reference is the same pool's later marginal price, so this is not an
+independent-oracle backtest or exact LP PnL.
+
 See the [full reproducible report](experiments/results/report.md),
 [parameter sweep](experiments/results/fair_flow_sweep.json), and
+[historical replay](experiments/historical/results/report.md), and
 [evidence boundaries](docs/EVIDENCE.md).
 
 ## Public testnet evidence
@@ -179,8 +200,9 @@ MARKOUT is production-shaped but not production-certified. The implementation in
 - adversarial tests and stateful invariants;
 - zero medium- or high-severity findings in the committed Slither gate.
 
-The repository currently contains **214 deterministic Solidity tests**, including **12 stateful invariants**. Phase 7
-is an internal engineering review, not an independent audit. See the [threat model](docs/THREAT_MODEL.md),
+The repository currently defines **202 deterministic Solidity test functions** and **12 stateful invariant
+entrypoints**. Phase 7 is an internal engineering review, not an independent audit. See the [threat
+model](docs/THREAT_MODEL.md),
 [static-analysis report](docs/STATIC_ANALYSIS.md), and [verification protocol](docs/VERIFICATION.md).
 
 ## Repository structure
@@ -264,7 +286,7 @@ They do not broadcast transactions or require a private key.
 | Mechanism and accounting | [Mechanism](docs/MECHANISM.md) · [Accounting](docs/ACCOUNTING.md) · [Economics](docs/ECONOMICS.md) |
 | Lifecycle and Reactive orchestration | [Lifecycle](docs/LIFECYCLE.md) · [Reactive lifecycle](docs/REACTIVE_LIFECYCLE.md) |
 | Cross-chain settlement | [Hybrid architecture](docs/HYBRID_SETTLEMENT.md) · [Deployment runbook](docs/HYBRID_TESTNET_DEPLOYMENT.md) |
-| Research and evidence | [Experiment](experiments/README.md) · [Evidence ledger](docs/EVIDENCE.md) · [Fair-Flow profile](docs/FAIR_FLOW.md) |
+| Research and evidence | [Controlled experiment](experiments/README.md) · [Historical replay](experiments/historical/README.md) · [Evidence ledger](docs/EVIDENCE.md) · [Fair-Flow profile](docs/FAIR_FLOW.md) |
 | Security | [Threat model](docs/THREAT_MODEL.md) · [Static analysis](docs/STATIC_ANALYSIS.md) |
 | Demo and submission | [Demo script](docs/DEMO_SCRIPT.md) · [Presentation playbook](docs/PRESENTATION_PLAYBOOK.md) · [Final submission draft](docs/FINAL_SUBMISSION.md) |
 | Architecture assets | [Editable Draw.io](docs/diagrams/MARKOUT_VIDEO_ARCHITECTURE.drawio) · [4K PNG](docs/diagrams/MARKOUT_VIDEO_ARCHITECTURE_4K.png) · [PDF](docs/diagrams/MARKOUT_VIDEO_ARCHITECTURE.pdf) · [Video narration](docs/VIDEO_ARCHITECTURE_NARRATION.md) |
@@ -274,7 +296,8 @@ They do not broadcast transactions or require a private key.
 - Testnet-only prototype; contracts have not received an independent audit.
 - ETH/USD is used as a documented testnet proxy for ETH/USDC.
 - Circle uses fast-confirmed finality to fit the bounded settlement window.
-- The Reactive engine is implemented and tested, but a public Reactive-to-Unichain callback is not yet claimed.
+- Reactive transport is publicly verified by an authenticated 11-second callback; Reactive-first economic settlement
+  remains unproven because the successful callback reached an already-terminal trade.
 - The study excludes concentrated-liquidity depth, LP shares, routing, demand elasticity, gas economics, and
   rebalancing.
 - LP protection reserve distribution is intentionally outside the current prototype.

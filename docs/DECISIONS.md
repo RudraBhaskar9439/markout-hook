@@ -199,7 +199,7 @@ than a live market feed.
 
 ## D-033 - Never manufacture the missing Lasna proof
 
-Historical Phase 8 disclosure; the current dashboard applies the same evidence policy to the Circle-primary path.
+Historical Phase 8 disclosure; the current dashboard applies the same evidence policy to both authenticated transports.
 
 The dashboard presents `Live cron proven · callback delivery pending` until public transactions prove complete
 destination settlement. Only explorer-backed transactions may strengthen that state. A local replay or a Lasna
@@ -238,12 +238,17 @@ as a liveness fix.
 
 ## D-038 - Remove Reactive from the critical settlement path
 
+**Historical decision, superseded for transport status by D-047.** The fail-open custody rule remains active.
+
 Two bounded public canaries produced correctly targeted callback instructions on Lasna but no destination delivery on
 either Unichain Sepolia or Ethereum Sepolia. The active topology therefore cannot make custody or settlement depend on
 Reactive liveness. Reactive remains an optional observation accelerator; the existing Omni scheduler remains research
 and outage evidence.
 
 ## D-039 - Use Circle CCTP V2 as the primary authenticated message transport
+
+**Historical resilience-pivot wording.** D-047 restores Reactive as the sponsor-facing live event-to-action rail;
+Circle remains an independently authenticated economic fallback through the same coordinator.
 
 A permissionless Ethereum Sepolia publisher validates a configured Pyth feed and sends the normalized observation as a
 generic Circle message to Unichain Sepolia. It requests threshold `1000` because Circle documents roughly 20-second
@@ -254,7 +259,7 @@ message, but no relayer may alter it. The documented tradeoff is bounded source-
 
 ## D-040 - Make transport delivery at-least-once across protocols
 
-One immutable coordinator authorizes the Circle receiver and optional Reactive receiver. The first valid delivery for
+One immutable coordinator authorizes the Circle receiver and Reactive receiver. The first valid delivery for
 a pending trade is forwarded to the hook. Later authorized deliveries are successful no-ops. The hook's terminal state
 is the cross-transport replay boundary, so delivery order cannot change economics.
 
@@ -276,7 +281,7 @@ feed before it may claim pair-accurate markout.
 Reactive's legacy system contract delegates subscription registration to a chain-specific precompile. A generic Anvil
 fork reproduces the system bytecode but not that precompile, so constructor subscription calls revert there even when
 the contract is funded. Unit tests prove filter and callback semantics; only a live legacy Lasna deployment receipt
-can prove registration. Circle settlement remains independent of this optional proof.
+can prove registration. Circle settlement remains independent of this registration proof.
 
 ## D-044 - Select the Fair-Flow base fee through declared constraints
 

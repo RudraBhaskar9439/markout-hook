@@ -1,8 +1,9 @@
 # UHI10 Final Submission Checklist
 
-The hybrid implementation is complete locally. Circle economic settlement and a Legacy Reactive cross-chain callback
-are proven on public testnets; Reactive-first economic settlement remains explicitly unclaimed. The final release
-remains blocked only on the owner-controlled submission details below.
+The hybrid implementation is complete locally. Four fallback economic lifecycles and a Legacy Reactive cross-chain
+callback are proven on public testnets; Reactive-first economic settlement remains explicitly unclaimed. The public
+repository, hosted dashboard, and logged-out proof links are verified. The final release remains blocked only on the
+owner-controlled identity, video, and form details below.
 
 ## Complete and verified locally
 
@@ -51,19 +52,21 @@ the resilience rail, and permissionless expiry returns the complete provisional 
 ## Submission details requiring the project owner
 
 - [ ] Confirm the MARKOUT Project ID from the UHI idea-submission email
-- [ ] Confirm UHI email, every team member's X handle, original cohort, and final team list
+- [x] Record preferred name `Rudra Bhaskar` and current cohort `UHI10` (with prior UHI9 participation noted)
+- [ ] Confirm UHI email, every team member's X handle, and final team list
 - [ ] Confirm the official presentation time limit through UHI email or Discord; it is not stated on the public form
-- [ ] Explicitly authorize making the private GitHub repository public; the final form requires a public repository
-- [ ] Decide whether the hosted dashboard may become public or needs a judge allowlist
+- [x] Make the GitHub repository public and verify anonymous read access
+- [x] Make the hosted dashboard public without a judge allowlist
 - [ ] Record and upload the required final hybrid demo
 - [x] Update the deck and dashboard with verified links only
 - [x] Prepare a copy-ready final submission draft with public evidence and honest limitations
 - [x] Prepare the required 1200 × 630 project thumbnail at `web/public/og-evidence-v2.png`
 - [x] Verify the required explorer URLs return successfully without authentication
-- [ ] Verify the repository, dashboard, deck, and video links from a logged-out browser after access is configured
+- [x] Verify the repository, dashboard, and explorer proof links without authentication
 - [ ] Submit the final form before September 3, 2026 at 11:59 PM Pacific Time
 
-Repository or site access must never be broadened automatically. Visibility changes require explicit owner approval.
+Repository and site access are already public by owner instruction. Do not change visibility or submit the final form
+without a new explicit owner instruction.
 
 ## Final release gate
 
@@ -73,5 +76,5 @@ Run the local release candidate gate first:
 ./scripts/verify-hybrid-release-candidate.sh
 ```
 
-Create the `uhi10-final` tag only after the dated manifest contains the required Circle evidence, all submitted links
-work in a logged-out browser, and the project owner confirms the final form and visibility decisions.
+Create the `uhi10-final` tag only after the dated manifests contain the required public evidence, the final video link
+works without authentication, and the project owner confirms the final form fields.

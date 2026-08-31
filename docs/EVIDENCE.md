@@ -1,8 +1,9 @@
 # MARKOUT Evidence Ledger
 
 Status: four public Circle economic lifecycles and one 11-second Legacy Reactive cross-chain callback verified;
-one deterministic 768-trade policy comparison and 21-point base-fee sweep reproduced locally; Reactive-first economic
-settlement, liquidity response, and routing response remain unproven.
+one deterministic 768-trade policy comparison, one 251-trade historical mainnet robustness replay, and a 21-point
+base-fee sweep reproduced locally; Reactive-first economic settlement, liquidity response, and routing response remain
+unproven.
 
 ## Evidence hierarchy
 
@@ -13,9 +14,11 @@ MARKOUT separates facts by strength so the submission never turns a model result
    Ethereum Sepolia → ReactVM → Unichain callback through Legacy Reactive.
 2. **Controlled synthetic evidence** compares fixed, volatility-only, and MARKOUT policies against one identical
    committed trade tape. It proves properties of the declared model, not future market behavior.
-3. **External research** establishes that adverse selection, fees, markout, and liquidity are economically relevant.
+3. **Historical event replay** applies the unchanged policies to 251 canonical Ethereum mainnet swaps. It tests
+   directional fee ordering on observed events but uses the same pool's later marginal price and one short window.
+4. **External research** establishes that adverse selection, fees, markout, and liquidity are economically relevant.
    It motivates the hypothesis; it does not validate MARKOUT's chosen curve.
-4. **Not yet proven:** that MARKOUT attracts incremental liquidity, changes routed volume, or improves market share.
+5. **Not yet proven:** that MARKOUT attracts incremental liquidity, changes routed volume, or improves market share.
    Fair-Flow's fee-only comparison does not require those assumptions, but real all-in execution still does.
 
 ## Reactive acceptance - August 26, 2026
@@ -140,6 +143,9 @@ at 21.8734%. The selection is therefore reproducible and falsifiable rather than
 - The onchain accounting conserves the provisional surcharge and fails open on missing or invalid observations.
 - On the declared synthetic tape, MARKOUT discriminates by realized outcome, improves the modeled LP result versus
   fixed fees, and the Fair-Flow candidate charges good flow less than both fixed and volatility baselines.
+- On the 251-trade historical window, the directional fee ordering survives: favorable outcomes average 18.00 bps,
+  near-zero outcomes 29.02 bps, and adverse outcomes 39.14 bps. Aggregate LP net-after-proxy is 0.39% below fixed in
+  that window, so the synthetic aggregate result is not generalized.
 - The next hook version exposes a permissionless sponsored-claim path that can only transfer to the recorded
   beneficiary; this is locally tested source code, not a claim about the existing deployment.
 
@@ -154,7 +160,8 @@ at 21.8734%. The selection is therefore reproducible and falsifiable rather than
 
 ## Highest-value next experiment
 
-Replay historical pool and external reference-market data through a concentrated-liquidity simulator with endogenous
-routing and fee-sensitive demand. Sweep the surcharge cap, horizon, retention curve, and gas sponsorship policy, then
-report the Pareto frontier between LP net-after-cost, benign all-in execution, routed volume, false-positive retention,
-and settlement cost. The current sweep establishes fee-only economics; it does not predict live routing response.
+Extend the new historical event replay with an independent reference market and a concentrated-liquidity simulator
+with endogenous routing and fee-sensitive demand. Sweep the surcharge cap, horizon, retention curve, and gas
+sponsorship policy, then report the Pareto frontier between LP net-after-cost, benign all-in execution, routed volume,
+false-positive retention, and settlement cost. The current studies establish fee ordering and controlled fee-only
+economics; they do not predict live routing response.

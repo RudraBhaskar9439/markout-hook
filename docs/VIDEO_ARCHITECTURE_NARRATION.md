@@ -21,7 +21,8 @@ Prepare these tabs before recording:
 4. Complete architecture at `docs/diagrams/MARKOUT_COMPLETE_ARCHITECTURE_4K.png`
 5. Reactive section: `https://markout-uhi10.vercel.app/#reactive`
 6. Research evidence: `https://markout-uhi10.vercel.app/#evidence`
-7. Terminal or captured test summary showing `188 passed; 0 failed`.
+7. Terminal or captured test summary showing the successful release gate, plus the repository count of `202 tests +
+   12 invariants`.
 
 Record one continuous raw screen capture for the demo. After the swap mines, hold on the new trade ID and the opening
 countdown for three seconds. Keep the recording running while the trade matures, then continue when roughly five
@@ -158,14 +159,13 @@ requests the terminal callback without a privileged keeper. Unichain remains the
 
 ## Mandatory honesty boundary
 
-The complete Reactive lifecycle is implemented and covered by 17 focused tests, but the latest public Lasna probe did
-not produce an observable destination callback. Unless that changes before recording, say **implemented and
-test-verified Reactive lifecycle** rather than **live Reactive settlement**. Public end-to-end settlement evidence comes
-from the authenticated Circle resilience rail.
+The complete Reactive lifecycle is implemented and covered by focused tests. Legacy Reactive also completed an
+authenticated public 11-second destination callback, so **live Reactive transport** is supported by evidence. That
+callback reached an already-terminal trade, however, so do not claim **Reactive-first economic settlement**. Public
+end-to-end economic settlement evidence currently comes from the authenticated Circle resilience rail.
 
-A sponsor-specific perfect functionality score normally requires a public callback transaction. If Reactive delivery
-starts working before submission, add an eight-second proof clip showing the source event, Reactive callback and
-destination transaction, replacing part of the research scene rather than making the video longer.
+Add an eight-second proof clip showing the source publisher event, Reactive execution, and authenticated destination
+callback. State that this proves transport liveness and replay-safe duplicate handling, not Reactive-first economics.
 
 ## Final recording checklist
 
@@ -177,5 +177,6 @@ destination transaction, replacing part of the research scene rather than making
 - Use large burned-in captions with a maximum of two lines.
 - Record the whole five-minute maturity in the single raw capture, but remove its middle from the final cut.
 - Put **FIVE MINUTES LATER - SAME TRADE ID** on screen for one second and visibly preserve the trade ID across the cut.
-- Never say “exact LP loss,” “guaranteed savings,” “MEV eliminated” or “Reactive callback is live” without evidence.
+- Never say “exact LP loss,” “guaranteed savings,” “MEV eliminated” or “Reactive-first settlement is live” without
+  evidence.
 - End with the repository and live dashboard visible for at least three seconds.

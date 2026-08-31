@@ -62,11 +62,15 @@ the trader and LP constraints."
 "Under those conditions, benign fees fall 8.58%, inventory-improving fees fall 40%, and modeled LP net-after-proxy
 improves 21.87% versus fixed. This is a controlled synthetic study, not historical backtesting or exact LVR."
 
+"I then froze a separate Ethereum mainnet window with 251 eligible Uniswap swaps. The directional hypothesis
+survived: favorable outcomes averaged 18 bps, near-zero outcomes 29.02, and adverse outcomes 39.14. Aggregate LP net
+was 0.39% below fixed in that short window, so I report the negative result instead of generalizing the synthetic one."
+
 ### 3:25-3:55 - Close
 
-"MARKOUT has 214 passing contract tests, four public Circle-completed lifecycles, both terminal economic branches, a
-separate Fair-Flow pool, and zero medium or high Slither findings. MARKOUT does not guess who is toxic. It prices what
-the trade actually did."
+"MARKOUT defines 202 Solidity test functions and 12 stateful invariant entrypoints, has four public fallback-completed
+lifecycles, both terminal economic branches, a separate Fair-Flow pool, and zero medium or high Slither findings.
+MARKOUT does not guess who is toxic. It prices what the trade actually did."
 
 Stop.
 
@@ -74,6 +78,6 @@ Stop.
 
 - If the network is slow, show the loaded trade and verified public receipts.
 - If evidence is stale or absent, explain that permissionless expiry returns the full provisional charge.
-- If Reactive does not deliver, show the implemented lifecycle tests and the public pulse/subscription, then state the
-  callback boundary plainly.
+- If a fresh Reactive delivery is unavailable during recording, show the public 11-second callback, the deployed
+  pulse/subscription, and the implemented lifecycle tests, then state the Reactive-first settlement boundary plainly.
 - Never invent a transaction hash or bypass the authenticated settlement boundary to rescue the demo.

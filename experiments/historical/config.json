@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "markout-historical-mainnet-v1",
+  "chain": {
+    "chainId": 1,
+    "name": "Ethereum mainnet",
+    "poolAddress": "0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640",
+    "poolExplorerUrl": "https://etherscan.io/address/0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640",
+    "poolLabel": "Uniswap v3 USDC/WETH 0.05%",
+    "token0": {"symbol": "USDC", "decimals": 6},
+    "token1": {"symbol": "WETH", "decimals": 18}
+  },
+  "capture": {
+    "fetchStartBlock": 19999950,
+    "analysisStartBlock": 20000000,
+    "analysisEndBlock": 20000399,
+    "fetchEndBlock": 20000450,
+    "blockChunkSize": 100,
+    "maximumTrades": 256,
+    "minimumNotionalQuoteMicro": 100000000
+  },
+  "markout": {
+    "horizonSeconds": 300,
+    "nearZeroBoundaryCentibps": 500
+  },
+  "policies": {
+    "fixed": {"baseFeeCentibps": 3000},
+    "volatility": {
+      "baseFeeCentibps": 3000,
+      "volatilityMultiplierNumerator": 3,
+      "volatilityMultiplierDenominator": 4,
+      "maximumExtraFeeCentibps": 5000
+    },
+    "markout": {
+      "baseFeeCentibps": 1800,
+      "provisionalSurchargeCentibps": 5000,
+      "curve": {
+        "favorableCutoffCentibps": 500,
+        "adverseCutoffCentibps": 2500,
+        "minimumRetentionBps": 0,
+        "neutralRetentionBps": 2000
+      },
+      "callbackGasBudget": {"sample": 300000, "settlement": 500000, "expiry": 500000}
+    }
+  }
+}

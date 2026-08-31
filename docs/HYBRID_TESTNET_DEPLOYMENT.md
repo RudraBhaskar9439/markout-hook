@@ -11,14 +11,16 @@ Status: automation complete; broadcasts and public evidence require the project 
 | `CircleObservationReceiver` | Unichain Sepolia | Authenticates CCTP V2 source, sender, market, and confirmation threshold |
 | `ReactiveObservationReceiver` | Unichain Sepolia | Authenticates callback proxy plus ReactVM identity |
 | `MarkoutHook` | Unichain Sepolia | Owns custody, validation, settlement, expiry, and claims |
-| `MarkoutPulseReactive` | legacy Reactive Lasna | Optionally mirrors the publisher event; owns no protocol state |
+| `MarkoutPulseReactive` | legacy Reactive Lasna | Subscribes to the publisher event and requests the authenticated destination callback; owns no protocol state |
 
-Circle is the primary path. The Reactive pulse is optional sponsor integration. If both fail, permissionless expiry
-returns the complete provisional surcharge to the trader.
+Reactive is the event-to-action transport: it observes the canonical publisher event, executes in ReactVM, and
+requests the authenticated Unichain callback. Circle is an independent authenticated resilience rail. The immutable
+coordinator accepts the first valid delivery, and permissionless expiry returns the complete provisional surcharge if
+neither transport settles in time.
 
 ## Funds and secrets
 
-The deployment EOA needs Ethereum Sepolia ETH and Unichain Sepolia ETH. The optional pulse additionally needs legacy
+The deployment EOA needs Ethereum Sepolia ETH and Unichain Sepolia ETH. The Reactive pulse additionally needs legacy
 lREACT; Omni iREACT is not used by the active pulse. Circle generic messaging does not burn or bridge USDC.
 
 Keep `PRIVATE_KEY` and `PYTH_API_KEY` secret in an ignored local `.env` or ephemeral shell session. Pyth update bytes,
@@ -89,7 +91,7 @@ forge script script/BindCirclePublisher.s.sol:BindCirclePublisher \
 
 This is irreversible. Confirm `CIRCLE_RECEIVER` against the Unichain deployment receipt before broadcasting.
 
-### 4. Deploy the optional legacy Reactive pulse
+### 4. Deploy the legacy Reactive pulse
 
 Choose a small nonzero testnet-only `REACTIVE_DEPLOYMENT_VALUE`; it is denominated in wei of legacy lREACT. The
 subscription is created inside the constructor and an unfunded deployment reverts. Then run:
@@ -141,7 +143,7 @@ the destination correctly rejects an observation before maturity.
 
 Copy the printed `export PUBLISH_TX_HASH=...` line into the current shell. The helper fetches a fresh signed update,
 quotes Pyth's exact fee, and broadcasts directly to minimize oracle age. The same event is now available to the
-optional Reactive pulse; no separate Reactive trigger exists.
+Reactive pulse; no separate Reactive trigger exists.
 
 ### 3. Fetch and relay the Circle attestation
 

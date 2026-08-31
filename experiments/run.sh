@@ -17,4 +17,6 @@ PYTHONPATH=experiments python3 -m markout_experiment.cli \
 diff -ru experiments/results "$generated_root/results"
 diff -ru experiments/charts "$generated_root/charts"
 
-printf 'Phase 6 experiment is reproducible: committed artifacts match a fresh seeded run.\n'
+./experiments/historical/run.sh
+
+printf 'Phase 6 experiments are reproducible: synthetic and historical artifacts match fresh offline runs.\n'

@@ -45,9 +45,10 @@ flowchart TB
 ```
 
 The diagram gives Reactive visual prominence because it is the no-keeper automation layer, while preserving the
-evidence boundary: the full lifecycle engine is implemented and tested; the legacy pulse deployment and exact
-subscription are public; a destination callback has not yet been observed. Circle remains the publicly proven
-delivery path.
+evidence boundary: the full lifecycle engine is implemented and tested; the legacy pulse deployment, exact
+subscription, ReactVM execution, and an 11-second authenticated destination callback are public. That callback reached
+an already-terminal trade, so Circle remains the publicly proven economic-settlement path and Reactive-first economics
+remain unclaimed.
 
 ```text
 Unichain swap

@@ -1,7 +1,8 @@
 # Phase 14 Verification - Hybrid Deployment and Release Candidate
 
-Phase 14 packages and proves the Circle-primary, Reactive-optional topology on public testnets. The required Circle
-path is complete; repository/site visibility and final submission remain owner-controlled decisions.
+Phase 14 packages the shared-coordinator topology on public testnets. The Circle fallback has four complete economic
+lifecycles, and Legacy Reactive has an authenticated 11-second destination callback. Repository and site visibility
+are public; identity fields, the uploaded video, and final submission remain owner-controlled decisions.
 
 ## Local automated gate
 
@@ -18,8 +19,9 @@ Run the complete release candidate from a clean tree with:
 ./scripts/verify-hybrid-release-candidate.sh
 ```
 
-The cumulative command repeats the Phase 1–13 protocol, research, security, dashboard, and presentation gates before
-running the full 188-test Solidity suite.
+The cumulative command repeats the Phase 1–13 protocol, research, security, dashboard, and presentation gates. The
+repository defines 202 Solidity test functions plus 12 stateful invariant entrypoints, all covered by the release
+verification workflow.
 
 ## Read-only public-network preflight
 
@@ -45,9 +47,9 @@ Follow [Hybrid Testnet Deployment](HYBRID_TESTNET_DEPLOYMENT.md) and require all
 6. A mined rebate claim, reconciled LP-protection reserve, and a dated evidence manifest containing every explorer link.
 7. Measured Circle latency that fits the ten-minute settlement window for both observations.
 
-The optional Reactive pulse passes its separate live gate only with a successful legacy Lasna deployment,
-subscription evidence, and a public Unichain callback. A generic Anvil fork cannot emulate Reactive's chain-specific
-subscription precompile and is not accepted as registration evidence.
+The Reactive pulse passes its transport gate only with a successful legacy Lasna deployment, subscription evidence,
+and a public Unichain callback. A generic Anvil fork cannot emulate Reactive's chain-specific subscription precompile
+and is not accepted as registration evidence.
 
 The required gate passed on August 21, 2026. The
 [dated deployment manifest](../deployments/hybrid-2026-08-21.json) records the public addresses and transactions,
@@ -73,5 +75,6 @@ deployed contract, settled trade value, and zero post-claim balance directly fro
 **GO** for the public Circle-settlement claim: the dated manifest records three swaps and complete observation paths,
 38/67/67-second relays, opposite settlement branches, two rebate claims, LP reserve reconciliation, and idempotent
 duplicate delivery.
-**NO-GO** for a public Reactive-delivery claim until a callback is visible on Unichain, and for final form submission
-until the project owner supplies the remaining details.
+**GO** for the public Reactive-transport claim: the August 26 manifest records a destination callback in 11 seconds.
+That callback reached an already-terminal trade, so **NO-GO** remains for a Reactive-first economic-settlement claim.
+Final form submission remains owner-controlled.

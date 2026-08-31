@@ -57,7 +57,8 @@ grep -q 'UNICHAIN_SEPOLIA_CHAIN_ID = 1301' script/DeployHybridDestination.s.sol
 grep -q 'LASNA_CHAIN_ID = 5_318_007' script/DeployMarkoutPulse.s.sol
 grep -q 'ZeroDeploymentValue' script/DeployMarkoutPulse.s.sol
 grep -q 'ZeroAddress("BASE_CURRENCY")' script/DeployHybridDestination.s.sol
-grep -q 'Circle-primary, Reactive-optional' docs/TESTNET_DEPLOYMENT.md
+grep -q 'It is not the active topology' docs/TESTNET_DEPLOYMENT.md
+grep -q 'Reactive is the event-to-action transport' docs/HYBRID_TESTNET_DEPLOYMENT.md
 grep -q "legacy Lasna's subscription" docs/HYBRID_TESTNET_DEPLOYMENT.md
 git diff --check
 

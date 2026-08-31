@@ -77,6 +77,11 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
   assert.match(html, /0x5d933d5ff078c500c61fc32fef1ae526049085dad8e15ff4ef2673a971114459/);
   assert.match(html, /768 trades · \$1\.999M per policy/);
   assert.match(html, /SplitMix64 seed · 20260825/);
+  assert.match(html, /251 real mainnet swaps\. Directional discrimination survived\./);
+  assert.match(html, /\$3\.188M/);
+  assert.match(html, /18\.00 &lt; 29\.02 &lt; 39\.14 bps/);
+  assert.match(html, /aggregate LP net vs fixed/);
+  assert.match(html, /markout-hook\/tree\/main\/experiments\/historical/);
   assert.match(html, /40% lower fee/);
   assert.match(html, /The honest regression/);
   assert.match(html, /Four lifecycles\. Both settlement extremes\./);
@@ -152,6 +157,7 @@ test("removes starter metadata and keeps deterministic evidence explicit", async
   assert.match(css, /\.plane-reactive/);
   assert.match(css, /\.frontend-stage-grid/);
   assert.match(css, /\.research-protocol/);
+  assert.match(css, /\.historical-replay-card/);
   assert.match(css, /\.reactive-proof-card/);
 
   await assert.rejects(

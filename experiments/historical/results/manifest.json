@@ -1,0 +1,13 @@
+{
+  "experimentId": "markout-historical-mainnet-v1",
+  "inputs": {
+    "experiments/historical/config.json": "b7d939bbdd4c431d9c22a004d66f43f394dcf23d2956ac2492607747d61ec459",
+    "experiments/historical/data/swaps.csv": "b326f0bea948e7d3f27899bd208821a7f119f4b449e1afff122b804bc8a6cb06"
+  },
+  "outputs": {
+    "report.md": "dedb19ed3e0bdbd2fbde424d77336f40343423be223e4007e447945ca37db031",
+    "summary.json": "c3cb84ea1f8204687e26a98efc7beb94c35346aaab8d6cbe6cd2c1e5bb80ade5",
+    "trades.csv": "e35422d8ed6ddadf717bcb10e9a7b72d4dd5a70f16aa18c2c94ddb984ff0bcef"
+  },
+  "schemaVersion": 1
+}

@@ -7,10 +7,11 @@ repository fills or submits the form.
 
 ## Owner fields
 
+- **Preferred name:** `Rudra Bhaskar`
+- **Current Hookathon cohort:** `UHI10` (also participated in UHI9)
 - **MARKOUT Project ID:** `[REQUIRED FROM UHI IDEA-SUBMISSION EMAIL]`
 - **UHI registration email:** `[REQUIRED]`
 - **Every team member's X handle:** `[REQUIRED FOR PRIZE AND PRESENTER POSTS]`
-- **Original UHI cohort:** `[REQUIRED; CONFIRM WHETHER UHI9 IS CORRECT]`
 - **Team members:** `[REQUIRED; USE SOLO IF APPLICABLE]`
 - **Official presentation limit:** `[REQUIRED FROM ORGANIZER]`
 - **Final demo URL:** `[REQUIRED AFTER UPLOAD]`
@@ -119,10 +120,11 @@ threat-model and runbook evidence instead of being hidden.
 
 ## Reproducible evidence
 
-- 214 deterministic Solidity tests with zero failures or skips.
+- 202 deterministic Solidity test functions plus 12 stateful invariant entrypoints.
 - 12 stateful invariants.
 - Zero medium/high Slither findings.
 - One seeded 768-trade experiment shared by fixed, volatility, and MARKOUT policies.
+- One 251-trade Ethereum mainnet robustness replay from 400 frozen canonical Uniswap swap logs.
 - Fair-Flow improves modeled LP net-after-proxy by 850.66 USDC versus the fixed policy.
 - Fair-Flow trails the volatility policy by 2,853.89 USDC overall because volatility charges good flow more.
 - The LP net-after-proxy improvement versus fixed is 21.8734% on the declared tape.
@@ -131,6 +133,8 @@ threat-model and runbook evidence instead of being hidden.
 - A 21-point parameter sweep selects 18 bps as the lowest base satisfying the declared good-flow and LP constraints.
 - Four public Circle settlements demonstrate both terminal economic branches and the deployed Fair-Flow profile:
   three 100% rebates and one 100% LP retention.
+- The historical replay preserves the intended directional fee ordering at 18.00, 29.02, and 39.14 bps while
+  recording a -0.39% aggregate LP-net result versus fixed instead of generalizing the synthetic result.
 
 ## Public deployment
 
@@ -142,7 +146,6 @@ threat-model and runbook evidence instead of being hidden.
 | Idempotent later delivery | https://sepolia.uniscan.xyz/tx/0x06ef5334210274dd451b5465f34d108d1714cf5536ee9ae1998193450114fa76 |
 | Protection-branch Uniswap v4 swap | https://sepolia.uniscan.xyz/tx/0xb6179eab5dcf9ff2f3563442dbf826fe5fcb86524e9d71aa913c9ba9e90a2376 |
 | Protection-branch Pyth publication | https://sepolia.etherscan.io/tx/0x9d20a2a8bfc5c7dd654608a9214472ff3ed37cbdff4614064aff28805f9f8861 |
-| Protection-branch Circle settlement | https://sepolia.uniscan.xyz/tx/0xefeece5de9f78ae809652418e1fcd8fb592de950af64e6bbbf66df93bdc25eae |
 | Wallet-console v4 swap | https://sepolia.uniscan.xyz/tx/0x889ea958d19574572890a5ae5a5890c7a8d31f94ebfbe9d065b58d884c1f739a |
 | Wallet-console Pyth publication | https://sepolia.etherscan.io/tx/0x2465cd2f4e2299a1898f45d0634fc2fd87ae2412de615504fc0125d9ed204e42 |
 | Wallet-console Circle settlement | https://sepolia.uniscan.xyz/tx/0x81f7878312b81b80ba69ad8fdc0f4e06f64f8624ed610ebd5a6ea63cca0ca610 |
@@ -158,8 +161,8 @@ threat-model and runbook evidence instead of being hidden.
 | Hosted judge dashboard | https://markout-uhi10.vercel.app |
 | GitHub repository | https://github.com/RudraBhaskar9439/markout-hook |
 
-The repository and dashboard remain owner-controlled until public or judge-specific access is explicitly approved.
-The final form requires the GitHub repository to be public before its confirmation can truthfully be selected.
+The repository and dashboard are publicly readable, and the explorer proof links have been checked without
+authentication. The final form itself remains owner-controlled.
 
 ## Deployed contracts
 
@@ -201,10 +204,8 @@ The final form requires the GitHub repository to be public before its confirmati
 
 ## Final owner-controlled sequence
 
-1. Fill the owner fields and confirm the official form requirements.
-2. Explicitly approve making the repository public; separately approve public dashboard access or provide a judge
-   allowlist.
-3. Record and upload the demo using `docs/DEMO_SCRIPT.md`.
-4. Test every submitted link while logged out.
-5. Create the annotated `uhi10-final` tag from the verified commit.
-6. Submit the form manually and retain its confirmation receipt.
+1. Fill the remaining Project ID, email, team, social-handle, feedback, and official-limit fields.
+2. Record and upload the demo using `docs/DEMO_SCRIPT.md`.
+3. Add the final video URL to this submission draft and check it without authentication.
+4. Create the annotated `uhi10-final` tag from the verified commit.
+5. Submit the form manually and retain its confirmation receipt.

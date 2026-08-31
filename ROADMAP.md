@@ -4,11 +4,17 @@ Final UHI10 submission deadline: **September 3, 2026 at 11:59 PM Pacific Time**.
 
 The project uses gated phases. At the end of every phase, work stops for a verification handoff. A phase passes only when its automated checks, manual demonstration, and documentation checklist all pass. Passing phases receive an annotated Git tag such as `phase-1-pass` so the last known-good state is always recoverable.
 
+> **Current submission architecture (August 31, 2026):** Reactive Network is MARKOUT's autonomous event-to-action
+> rail. An independently authenticated Circle path enters the same replay-safe coordinator as a resilience fallback.
+> Legacy Reactive has a public 11-second authenticated Unichain callback; the callback reached an already-terminal
+> trade, so it proves transport and replay safety rather than Reactive-first economic settlement. Four public fallback
+> lifecycles prove both fee-allocation extremes. Earlier phase names below remain as build history, not current claims.
+
 ## Phase overview
 
 | Phase | Target | Outcome | Verification gate |
 | --- | --- | --- | --- |
-| 0 | Aug 13 | Private repository and agreed scope | Private remote and roadmap visible |
+| 0 | Aug 13 | Repository bootstrap and agreed scope | Recoverable remote and roadmap visible |
 | 1 | Aug 14 | Uniswap v4 accounting proof | Surcharge escrow works for all swap modes |
 | 2 | Aug 15 | Markout mathematics | Unit, fuzz, and invariant tests pass |
 | 3 | Aug 16–18 | Local MARKOUT hook MVP | Two trades settle with different rebates |
@@ -18,25 +24,24 @@ The project uses gated phases. At the end of every phase, work stops for a verif
 | 7 | Aug 28–29 | Security and hardening | Invariants, static analysis, and failure tests pass |
 | 8 | Aug 30–31 | Demo application | Complete judge flow runs without manual intervention |
 | 9 | Sep 1–3 | Submission package | Final links, video, deck, and form are complete |
-| 10 | Aug 21 | Resilience architecture pivot | Circle-primary and Reactive-optional boundaries are frozen |
+| 10 | Aug 21 | Resilience architecture pivot | Multiple authenticated delivery boundaries are frozen |
 | 11 | Aug 21–22 | Shared settlement coordinator | Multiple authenticated transports race safely without changing hook accounting |
-| 12 | Aug 22–24 | Circle CCTP primary path | A Circle-attested observation settles a MARKOUT trade on Unichain |
-| 13 | Aug 24–25 | Minimal Reactive pulse | A stateless Maestro-style RSC can settle through the same coordinator |
-| 14 | Aug 25–Sep 3 | Hybrid testnet and final package | Public Circle evidence, optional Reactive evidence, and final judge materials |
+| 12 | Aug 22–24 | Circle CCTP resilience path | A Circle-attested observation settles a MARKOUT trade on Unichain |
+| 13 | Aug 24–25 | Minimal Reactive event rail | A stateless Maestro-style RSC can settle through the same coordinator |
+| 14 | Aug 25–Sep 3 | Hybrid testnet and final package | Public economic fallback, Reactive transport, and final judge materials |
 
 ## Current status and resilience pivot
 
-Phases 1–4 and 6–9 passed their local gates. Phase 5 proved origin-event ingestion and callback scheduling on Reactive
-Lasna, but two bounded public canaries also proved that destination callbacks were not delivered to either Unichain
-Sepolia or Ethereum Sepolia during the acceptance windows. Phase 5 therefore remains **NO-GO** for claims of a live
-Reactive settlement.
+Phases 1–4 and 6–15 passed their local gates. Early Phase 5 canaries proved origin-event ingestion and scheduling but
+did not receive destination callbacks. A later Legacy Reactive deployment superseded that transport status by
+completing an authenticated Ethereum Sepolia → ReactVM → Unichain callback in 11 seconds. Because the target trade was
+already terminal, MARKOUT claims live transport and replay safety, not Reactive-first economics.
 
-The forward plan does not discard that work or weaken MARKOUT's accounting. Phases 10–13 implement the hybrid
-topology and remove Reactive Network from the protocol's critical path:
+Phases 10–15 added a hybrid topology without weakening MARKOUT's accounting:
 
-- Circle CCTP V2 becomes the primary authenticated cross-chain observation transport.
-- A small legacy-compatible Reactive Contract observes the same source event and may deliver the same observation as
-  an optional accelerator.
+- A small legacy-compatible Reactive Contract observes the canonical publisher event and supplies the primary
+  autonomous event-to-action path presented to judges.
+- Circle CCTP V2 supplies an independently authenticated fallback and produced four public economic lifecycles.
 - Both transports terminate at one immutable settlement coordinator and the first valid delivery wins.
 - Duplicate delivery is a successful no-op, and permissionless expiry continues to return the complete provisional
   surcharge when no valid observation arrives.
@@ -44,21 +49,23 @@ topology and remove Reactive Network from the protocol's critical path:
 
 This pivot is specified in [Hybrid Settlement Architecture](docs/HYBRID_SETTLEMENT.md).
 
-Phase 14's required Circle gate is complete. The dated
+Phase 14's required economic gate is complete. The dated
 [public deployment manifest](deployments/hybrid-2026-08-21.json) records the Sepolia publication, Circle attestation,
 two opposite Unichain settlement outcomes, the rebate claim, exact LP-reserve reconciliation, and 38/67-second
-source-to-destination latencies. Reactive remains optional and is not described as live because no public destination
-callback exists.
+source-to-destination latencies. The
+[Legacy Reactive manifest](deployments/reactive-legacy-2026-08-26.json) separately records the exact subscription,
+ReactVM processing, 11-second authenticated destination callback, and the honest pending-first relayer timeout.
 
 ## Phase 0 - Repository bootstrap
 
 ### Goal
 
-Create a private, recoverable home for the project and freeze the initial MVP boundary.
+Create a recoverable home for the project and freeze the initial MVP boundary. The repository began privately and is
+now public for final judging.
 
 ### Deliverables
 
-- Private GitHub repository under `RudraBhaskar9439`
+- GitHub repository under `RudraBhaskar9439`, initially private and now public
 - README, mechanism specification, decision log, and gated roadmap
 - Secret-safe `.gitignore`
 - Main branch pushed to GitHub
@@ -73,7 +80,7 @@ git remote -v
 
 Expected result:
 
-- Visibility prints `PRIVATE`.
+- Visibility prints `PUBLIC` for the final submission state.
 - The main branch is clean and tracks `origin/main`.
 - The remote points to `RudraBhaskar9439/markout-hook`.
 
@@ -372,7 +379,7 @@ Submit a reproducible project and a concise research story.
 
 - All prior phase scripts pass from a clean clone.
 - All submitted links work in a logged-out browser.
-- Repository visibility is changed only if required for final judging and only with explicit approval.
+- Repository and dashboard are publicly readable for final judging.
 - The presentation is rehearsed under the official time limit.
 - Final form is submitted before September 3, 2026 at 11:59 PM Pacific Time.
 
@@ -380,11 +387,11 @@ Submit a reproducible project and a concise research story.
 
 ### Goal
 
-Freeze a smaller production path in which MARKOUT is safe and demonstrable without Reactive callback delivery.
+Freeze a smaller production path in which MARKOUT remains safe if either callback transport is delayed or unavailable.
 
 ### Deliverables
 
-- Circle-primary, Reactive-optional architecture specification
+- Shared coordinator and authenticated multi-transport architecture specification
 - Explicit trust boundaries for Circle, Pyth, Reactive, relayers, and the hook
 - First-valid-delivery and duplicate-delivery policy
 - Migration plan that preserves all earlier phase evidence
@@ -452,7 +459,7 @@ Required results:
 - A valid Circle message settles one mature trade through the shared coordinator.
 - Replays, malformed messages, wrong domains, wrong senders, and messages below threshold `1000` fail safely.
 
-## Phase 13 - Optional Reactive pulse
+## Phase 13 - Reactive event-to-action pulse
 
 ### Goal
 
@@ -482,12 +489,12 @@ Required results:
 
 ### Goal
 
-Produce explorer-backed Circle evidence first, then add Reactive evidence only if the public callback network delivers.
+Produce explorer-backed economic settlement evidence and independently verify the Reactive event-to-action rail.
 
 ### Local deliverables
 
 - Chain-locked deployment scripts for the Sepolia publisher, Unichain hybrid destination, publisher binding, and
-  optional legacy Reactive pulse
+  legacy Reactive pulse
 - Signed Pyth update, Circle attestation, and Circle relay helpers
 - Read-only three-network dependency and immutable-wiring preflight
 - Secret-safe environment template and evidence-manifest template
@@ -495,8 +502,8 @@ Produce explorer-backed Circle evidence first, then add Reactive evidence only i
 
 Local automation and the required public Circle path are complete. The dated evidence manifest records the deployed
 topology and three real swaps whose Pyth/Circle settlements prove both allocation extremes: two complete trader
-rebates and complete LP-protection retention. Final submission assets and repository/site visibility remain
-owner-controlled gates.
+rebates and complete LP-protection retention. Repository and dashboard access are now public. Owner identity, video,
+and final-form submission remain owner-controlled gates.
 
 ### Verification gate
 
@@ -504,8 +511,9 @@ owner-controlled gates.
 2. Publish its matured Pyth observation on Ethereum Sepolia.
 3. Relay the Circle attestation and settle the trade on Unichain.
 4. Claim the resulting rebate and link every transaction.
-5. Attempt the optional Reactive pulse with a bounded acceptance window.
-6. Label Reactive as live only if its destination callback transaction exists publicly.
+5. Execute the Reactive pulse with a bounded acceptance window.
+6. Label Reactive transport as live only when its destination callback transaction exists publicly; distinguish that
+   from Reactive-first economic settlement.
 7. Regenerate the demo and submission package around the verified hybrid path.
 
 ## Phase 15 - Fair-Flow trader economics

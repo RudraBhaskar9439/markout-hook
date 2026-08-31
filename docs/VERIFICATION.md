@@ -45,7 +45,7 @@ receives separate live credit only when its destination callback transaction exi
 
 ## Clean-checkout rule
 
-Before the final phase, all documented verification commands must be repeated from a clean clone of the private repository. Local, uncommitted configuration must not be required except documented secrets loaded from environment variables.
+Before the final phase, all documented verification commands must be repeated from a clean clone of the public repository. Local, uncommitted configuration must not be required except documented secrets loaded from environment variables.
 
 ## Secrets rule
 

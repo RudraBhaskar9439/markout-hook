@@ -11,7 +11,11 @@ synthetic trade tape:
 The 18 bps base is not hand-picked after reading one output. A committed 10–30 bps sweep selects the lowest candidate
 that keeps benign and inventory-improving effective fees at or below 30 bps while preserving at least 20% modeled LP
 net-after-proxy improvement versus the fixed baseline. The earlier public testnet pool remains 30 + 50 bps and is
-reported separately; the Fair-Flow profile is an undeployed release candidate.
+reported separately; the Fair-Flow profile is deployed in a separate 18 + 50 bps Unichain Sepolia pool.
+
+The separate [`historical/`](historical/README.md) appendix freezes 400 canonical Ethereum mainnet USDC/WETH Swap
+logs and evaluates 251 eligible trades over the same five-minute horizon. That observed-event replay is a robustness
+check, not the source of the selected parameters and not a replacement for this controlled causal comparison.
 
 The volatility policy is a declared baseline, not an assertion that those parameters are universally optimal.
 Uniswap v4 supports both per-swap dynamic LP fees and hook-defined fees; its documentation also notes that an optimal

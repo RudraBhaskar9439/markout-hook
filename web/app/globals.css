@@ -2363,6 +2363,77 @@ nav a:focus-visible,
 .research-findings article > strong { font-size: 19px; font-weight: 560; letter-spacing: -0.035em; }
 .research-findings article > p { margin: 0; color: var(--dim); font-size: 9px; line-height: 1.5; }
 
+.historical-replay-card {
+  margin-top: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(130, 185, 255, 0.26);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(130, 185, 255, 0.07), transparent 24rem),
+    rgba(11, 16, 14, 0.82);
+}
+
+.historical-replay-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(340px, 1.05fr);
+  gap: 50px;
+  align-items: end;
+  padding: 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+.historical-replay-heading h3 {
+  max-width: 650px;
+  margin: 8px 0 0;
+  font-size: clamp(27px, 3vw, 43px);
+  font-weight: 540;
+  letter-spacing: -0.052em;
+  line-height: 1.06;
+}
+
+.historical-replay-heading > p,
+.historical-replay-verdict {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.historical-replay-metrics,
+.historical-fee-ordering {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-bottom: 1px solid var(--line);
+}
+
+.historical-replay-metrics div {
+  display: grid;
+  gap: 7px;
+  padding: 24px 28px;
+  border-right: 1px solid var(--line);
+}
+
+.historical-replay-metrics div:last-child { border-right: 0; }
+.historical-replay-metrics strong { font-family: var(--font-geist-mono), monospace; font-size: 22px; font-weight: 560; }
+.historical-replay-metrics div[data-tone="amber"] strong { color: var(--amber); }
+.historical-replay-metrics span,
+.historical-fee-ordering span { color: var(--dim); font-family: var(--font-geist-mono), monospace; font-size: 8px; letter-spacing: 0.05em; text-transform: uppercase; }
+
+.historical-fee-ordering { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.historical-fee-ordering article { display: grid; gap: 8px; padding: 26px 28px; border-right: 1px solid var(--line); }
+.historical-fee-ordering article:last-child { border-right: 0; }
+.historical-fee-ordering strong { font-size: 24px; font-weight: 560; letter-spacing: -0.04em; }
+.historical-fee-ordering article[data-tone="green"] strong { color: var(--green-bright); }
+.historical-fee-ordering article[data-tone="amber"] strong { color: var(--amber); }
+.historical-fee-ordering p { margin: 0; color: var(--dim); font-size: 9px; }
+
+.historical-replay-verdict { padding: 20px 28px; border-bottom: 1px solid var(--line); }
+.historical-replay-verdict b { color: var(--text); }
+.historical-replay-links { display: flex; flex-wrap: wrap; gap: 8px; padding: 18px 28px; }
+.historical-replay-links a { padding: 8px 10px; border: 1px solid rgba(130, 185, 255, 0.23); border-radius: 6px; color: var(--blue); font-family: var(--font-geist-mono), monospace; font-size: 8px; text-transform: uppercase; }
+.historical-replay-links a:hover,
+.historical-replay-links a:focus-visible { border-color: var(--blue); background: rgba(130, 185, 255, 0.06); }
+
 .architecture-section {
   background:
     radial-gradient(circle at 50% 38%, rgba(130, 185, 255, 0.06), transparent 32rem),
@@ -2658,6 +2729,7 @@ footer p { margin: 12px 0 0; font-size: 12px; }
   .live-proof-card { grid-template-columns: 1fr 1fr; }
   .live-proof-links { grid-column: 1 / -1; grid-template-columns: repeat(3, 1fr); }
   .adoption-proof-heading { grid-template-columns: 1fr; gap: 20px; }
+  .historical-replay-heading { grid-template-columns: 1fr; gap: 20px; }
   .adoption-grid { grid-template-columns: 1fr; }
   .adoption-grid article { border-right: 0; border-bottom: 1px solid var(--line); }
   .adoption-grid article:last-child { border-bottom: 0; }
@@ -2782,6 +2854,15 @@ footer p { margin: 12px 0 0; font-size: 12px; }
   .research-method { grid-template-columns: 1fr; align-items: start; }
   .research-method > b { transform: rotate(90deg); justify-self: start; }
   .research-findings { grid-template-columns: 1fr; }
+  .historical-replay-heading { padding: 24px 22px; }
+  .historical-replay-metrics,
+  .historical-fee-ordering { grid-template-columns: 1fr; }
+  .historical-replay-metrics div,
+  .historical-fee-ordering article { border-right: 0; border-bottom: 1px solid var(--line); }
+  .historical-replay-metrics div:last-child,
+  .historical-fee-ordering article:last-child { border-bottom: 0; }
+  .historical-replay-verdict,
+  .historical-replay-links { padding-right: 22px; padding-left: 22px; }
   .policy-chart { height: 360px; padding: 24px 18px; }
   .policy-column-track { min-height: 210px; }
   .frontend-heading,

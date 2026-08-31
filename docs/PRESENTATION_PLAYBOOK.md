@@ -92,9 +92,9 @@ backtesting and not exact LVR."
 
 Show the public evidence card.
 
-"MARKOUT has 214 passing contract tests, four public Circle-completed lifecycles covering full rebate and full
-retention, a separately deployed Fair-Flow pool, and zero medium or high Slither findings. MARKOUT does not guess who
-is toxic. It prices what the trade actually did."
+"MARKOUT defines 202 Solidity test functions and 12 stateful invariant entrypoints, has four public Circle-completed
+lifecycles covering full rebate and full retention, a separately deployed Fair-Flow pool, and zero medium or high
+Slither findings. MARKOUT does not guess who is toxic. It prices what the trade actually did."
 
 Stop. Do not add another feature list.
 
@@ -122,12 +122,15 @@ depth, LP shares, inventory paths, routing, gas, and demand elasticity are outsi
 
 Circle proves authenticated delivery. Reactive supplies the intended event-driven control plane: observing trade
 requests, tracking maturity, responding to reference events and cron, retrying callbacks, acknowledging terminal
-states, and requesting expiry without a MARKOUT keeper. The current public callback gap is disclosed.
+states, and requesting expiry without a MARKOUT keeper. An authenticated callback completed in 11 seconds; because it
+reached an already-terminal trade, transport is proven while Reactive-first economics remains unclaimed.
 
 ### Did you backtest historical Uniswap data?
 
-Not yet. The current work is a controlled seeded mechanism experiment designed for causal comparison because every
-policy receives identical trades. Historical replay with real depth and routing is the next validation step.
+Yes, as a bounded robustness appendix rather than the parameter-selection study. I froze 400 canonical Ethereum
+mainnet Swap logs and evaluated 251 eligible USDC/WETH trades over five-minute markouts. The intended fee ordering
+survived: 18.00 bps for favorable outcomes, 29.02 bps near zero, and 39.14 bps for adverse outcomes. Aggregate modeled
+LP net was 0.39% below fixed in that short window, so I do not generalize the synthetic +21.87% result.
 
 ### What happens if the oracle or callback network fails?
 
@@ -139,7 +142,7 @@ provisional charge becomes claimable by the trader.
 - Do not say every trader saves money.
 - Do not call the synthetic tape historical backtesting.
 - Do not call the proxy exact LVR or an individual LP loss.
-- Do not claim Reactive's public destination callback is live.
+- Do not call the 11-second Reactive callback a Reactive-first economic settlement; it reached a terminal trade.
 - Do not claim MARKOUT already creates deeper liquidity or volume growth.
 - Do not describe Circle and Reactive as if both supply the same orchestration role.
 

@@ -24,11 +24,10 @@ overflow checker must report zero out-of-bounds elements before the deck is comm
 
 Passing this checkpoint supports narrative review, rehearsal, and the public Circle-settlement claims. The required
 opposite-branch settlements, claim, reserve reconciliation, duplicate-delivery proof, and explorer links are complete.
-The following still require
-external or owner state: optional Reactive callback proof, the final uploaded video, owner form details,
-repository/site visibility decisions, logged-out link checks, and form submission.
+The following still require external or owner state: the final uploaded video, owner identity and Project ID fields,
+and form submission. Reactive transport proof, public repository/site access, and logged-out link checks are complete.
 
 ## GO / NO-GO
 
-**GO** for teammate review, private judge-app review, rehearsal, and public Circle-settlement claims. **NO-GO** for
-the `uhi10-final` tag, final form submission, public Reactive-delivery claims, or access changes.
+**GO** for public judge review, rehearsal, Circle-backed economic-settlement claims, and the bounded Reactive-transport
+claim. **NO-GO** for the `uhi10-final` tag or final form submission until the owner supplies the remaining details.

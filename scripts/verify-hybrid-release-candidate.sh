@@ -14,4 +14,4 @@ forge clean
 forge test -q
 git diff --check
 
-printf 'Hybrid release-candidate verification passed. Public Circle evidence is recorded in the dated manifest.\n'
+printf 'Hybrid release-candidate verification passed. Public Circle lifecycle and Reactive transport evidence are recorded in the dated manifests.\n'

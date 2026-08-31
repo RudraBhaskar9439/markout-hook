@@ -470,8 +470,9 @@ function ResearchEvidence() {
         <p className="kicker">Controlled mechanism study</p>
         <h2 id="evidence-title">A frozen dataset, declared constraints, and a result that can fail.</h2>
         <p className="section-lede">
-          This is a reproducible synthetic study - not a historical backtest. Each policy receives the same deterministic
-          tape, and the metric is a pool-level adverse-selection proxy rather than exact LVR or individual LP profit.
+          The primary result is a reproducible controlled synthetic study where each policy receives the same tape. A
+          separate mainnet replay below tests the fee ordering on canonical swap events. Both use a pool-level
+          adverse-selection proxy rather than exact LVR or individual LP profit.
         </p>
       </div>
 
@@ -495,6 +496,41 @@ function ResearchEvidence() {
           <article><span>BENIGN</span><strong>8.58% lower fee</strong><p>27.4262 vs 30 bps at equal execution.</p></article>
           <article><span>INVENTORY-IMPROVING</span><strong>40% lower fee</strong><p>Full surcharge rebate; 18 bps final.</p></article>
           <article><span>LP OUTCOME</span><strong>+21.87%</strong><p>Modeled net-after-proxy versus fixed.</p></article>
+        </div>
+      </div>
+
+      <div className="historical-replay-card" aria-label="Historical Ethereum mainnet robustness replay">
+        <div className="historical-replay-heading">
+          <div>
+            <p className="kicker">Historical robustness replay · June 1, 2024</p>
+            <h3>251 real mainnet swaps. Directional discrimination survived.</h3>
+          </div>
+          <p>
+            Canonical Uniswap v3 USDC/WETH events were replayed with a five-minute same-pool reference. MARKOUT charged
+            favorable outcomes least and adverse outcomes most. Aggregate LP net did not beat fixed in this short
+            window, and that negative result remains visible.
+          </p>
+        </div>
+        <div className="historical-replay-metrics">
+          <div><strong>251</strong><span>eligible real swaps</span></div>
+          <div><strong>$3.188M</strong><span>observed notional</span></div>
+          <div><strong>5 min</strong><span>markout horizon</span></div>
+          <div data-tone="amber"><strong>-0.39%</strong><span>aggregate LP net vs fixed</span></div>
+        </div>
+        <div className="historical-fee-ordering">
+          <article data-tone="green"><span>Favorable · 18 trades</span><strong>18.00 bps</strong><p>Full provisional rebate.</p></article>
+          <article><span>Near-zero · 207 trades</span><strong>29.02 bps</strong><p>Slightly below fixed on average.</p></article>
+          <article data-tone="amber"><span>Adverse · 26 trades</span><strong>39.14 bps</strong><p>More LP protection retained.</p></article>
+        </div>
+        <p className="historical-replay-verdict">
+          <b>What survived:</b> the intended 18.00 &lt; 29.02 &lt; 39.14 bps directional ordering on observed events.
+          <b> What did not generalize:</b> the synthetic study&apos;s +21.87% aggregate LP-net result; this window measured
+          -0.39% versus fixed.
+        </p>
+        <div className="historical-replay-links">
+          <a href="https://etherscan.io/address/0x88e6A0c2dDD26FEEb64F039a2c41296FcB3f5640" target="_blank" rel="noreferrer">Inspect pool ↗</a>
+          <a href="https://github.com/RudraBhaskar9439/markout-hook/blob/main/experiments/historical/results/report.md" target="_blank" rel="noreferrer">Read report ↗</a>
+          <a href="https://github.com/RudraBhaskar9439/markout-hook/tree/main/experiments/historical" target="_blank" rel="noreferrer">Reproduce offline ↗</a>
         </div>
       </div>
 

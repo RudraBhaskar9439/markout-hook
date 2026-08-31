@@ -40,7 +40,7 @@ v3 `slot0` tuple is likewise locally suppressed and explained. The final run rep
 
 ## Gas review
 
-The deterministic snapshot covers the full release suite, including Circle, coordinator, and optional Reactive pulse
+The deterministic snapshot covers the full release suite, including Circle, the coordinator, and the Reactive pulse
 paths. `forge snapshot --check` is part of the cumulative gate.
 
 ## Conclusion
