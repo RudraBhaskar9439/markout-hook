@@ -645,19 +645,24 @@ export function MarkoutDashboard() {
           <span>MARKOUT</span>
         </a>
         <nav aria-label="Primary navigation">
-          <a href="#testnet">Live testnet</a>
+          <a href="#testnet">Demo</a>
           <a href="#proof-mode">Proof</a>
-          <a href="#market-lab">Market lab</a>
-          <a href="#frontend">Frontend</a>
+          <a href="#market-lab">Market</a>
           <a href="#mechanism">Mechanism</a>
           <a href="#architecture">Architecture</a>
           <a href="#reactive">Reactive</a>
           <a href="#evidence">Research</a>
         </nav>
         <div className="header-actions">
-          <span className="testnet-status"><i /> Reactive Network transport live · fallback proven</span>
+          <span className="testnet-status" aria-label="Reactive Network transport live and fallback verified">
+            <i />
+            <span>
+              <strong>Reactive live</strong>
+              <small>Fallback verified</small>
+            </span>
+          </span>
           <button className="intro-replay-button" type="button" onClick={() => setOpeningReplay((value) => value + 1)}>
-            Replay intro
+            <span aria-hidden="true">↻</span> Replay intro
           </button>
         </div>
       </header>
