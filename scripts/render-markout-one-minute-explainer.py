@@ -35,6 +35,7 @@ F_H1_SERIF = B.font(B.FONT_SERIF_ITALIC, 74)
 F_H2 = B.font(B.FONT_BOLD, 50)
 F_H3 = B.font(B.FONT_BOLD, 36)
 F_NUMBER = B.font(B.FONT_BOLD, 58)
+F_STEP = B.font(B.FONT_BOLD, 36)
 F_MONO = B.font(B.FONT_MONO, 17)
 F_MONO_SMALL = B.font(B.FONT_MONO, 14)
 F_LOGO = B.font(B.FONT_BOLD, 112)
@@ -59,8 +60,6 @@ def header(draw: ImageDraw.ImageDraw, t: float) -> None:
     )
     draw.text((82, 63), "M", font=B.F_MARK, fill=B.rgba(B.GREEN_BRIGHT, 255 * alpha))
     draw.text((130, 61), "MARKOUT", font=B.F_BODY_BOLD, fill=B.rgba(B.TEXT, 245 * alpha))
-    draw.text((130, 94), B.tracked("Outcome-priced liquidity"), font=B.F_BOX_LABEL, fill=B.rgba(B.DIM, 225 * alpha))
-    draw.text((1848, 63), B.tracked("UHI10 / 60-second explainer"), font=B.F_BOX_LABEL, anchor="ra", fill=B.rgba(B.DIM, 225 * alpha))
     draw.line((68, 126, 1852, 126), fill=B.rgba(B.TEXT, 24 * alpha), width=1)
 
 
@@ -90,6 +89,42 @@ def title(draw: ImageDraw.ImageDraw, kicker: str, line_one: str, line_two: str |
 def fee_pill(draw: ImageDraw.ImageDraw, x: float, y: float, text: str, color: tuple[int, int, int], alpha: float) -> None:
     draw.rounded_rectangle((x, y, x + 170, y + 58), radius=29, fill=B.rgba(color, 34 * alpha), outline=B.rgba(color, 170 * alpha), width=2)
     draw.text((x + 85, y + 29), text, font=F_BODY_BOLD, anchor="mm", fill=B.rgba(color, 255 * alpha))
+
+
+def numbered_node(
+    draw: ImageDraw.ImageDraw,
+    x: float,
+    y: float,
+    radius: float,
+    number: str,
+    color: tuple[int, int, int],
+    alpha: float,
+    pulse: float,
+) -> None:
+    """Draw a high-contrast timeline node without a center dot behind its number."""
+    if alpha <= 0:
+        return
+    outer = radius + 10 + 8 * pulse
+    draw.ellipse(
+        (x - outer, y - outer, x + outer, y + outer),
+        outline=B.rgba(color, (78 - 28 * pulse) * alpha),
+        width=2,
+    )
+    draw.ellipse(
+        (x - radius, y - radius, x + radius, y + radius),
+        fill=B.rgba((8, 16, 11), 255 * alpha),
+        outline=B.rgba(color, 245 * alpha),
+        width=4,
+    )
+    draw.text(
+        (x, y - 1),
+        number,
+        font=F_STEP,
+        anchor="mm",
+        fill=B.rgba(B.TEXT, 255 * alpha),
+        stroke_width=2,
+        stroke_fill=B.rgba((3, 8, 5), 255 * alpha),
+    )
 
 
 def price_chart(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], toxic: bool, alpha: float) -> None:
@@ -197,8 +232,8 @@ def scene_four(draw: ImageDraw.ImageDraw, t: float) -> None:
 
 
 def scene_five(draw: ImageDraw.ImageDraw, t: float) -> None:
-    start, end = 30.0, 41.5
-    alpha = scene_alpha(t, start, end)
+    start, end = 30.0, 40.2
+    alpha = scene_alpha(t, start, end, fade=0.5)
     if alpha <= 0:
         return
     title(draw, "How it works", "One swap. Five verifiable steps.", None, alpha, B.BLUE)
@@ -217,9 +252,8 @@ def scene_five(draw: ImageDraw.ImageDraw, t: float) -> None:
     for index, (x, number, action, detail, color) in enumerate(nodes):
         threshold = index / 4
         node_alpha = alpha * B.smooth((path_progress - threshold + 0.1) / 0.18)
-        radius = 48 if action != "REACT" else 60
-        B.node(draw, (x, y), radius, color, node_alpha, 0.5 + 0.5 * math.sin(t * 3 + index))
-        draw.text((x, y), number, font=F_BODY_BOLD, anchor="mm", fill=B.rgba(B.TEXT, 255 * node_alpha))
+        radius = 52 if action != "REACT" else 62
+        numbered_node(draw, x, y, radius, number, color, node_alpha, 0.5 + 0.5 * math.sin(t * 3 + index))
         draw.text((x, y + 100), action, font=F_BODY_BOLD, anchor="mm", fill=B.rgba(B.TEXT, 245 * node_alpha))
         draw.text((x, y + 142), detail, font=F_MONO_SMALL, anchor="mm", fill=B.rgba(color, 230 * node_alpha))
     draw.text((960, 874), "PYTH: SIGNED DELAYED EVIDENCE", font=F_MONO_SMALL, anchor="mm", fill=B.rgba(B.BLUE, 225 * alpha))
@@ -228,15 +262,15 @@ def scene_five(draw: ImageDraw.ImageDraw, t: float) -> None:
 
 
 def scene_six(draw: ImageDraw.ImageDraw, t: float) -> None:
-    start, end = 40.5, 48.6
-    alpha = scene_alpha(t, start, end)
+    start, end = 40.25, 48.6
+    alpha = scene_alpha(t, start, end, fade=0.55)
     if alpha <= 0:
         return
     title(draw, "The outcome sets the fee", "Direction matters.", "Volatility alone is not enough.", alpha, B.GREEN)
     draw.text((108, 438), "MARKOUT compares the execution price with the delayed reference price.", font=F_BODY, fill=B.rgba(B.MUTED, 225 * alpha))
     cards = [
-        (104, "NEGATIVE / IMPROVING MARKOUT", "Return escrow", "40% below the fixed 30 bps fee", "Trader rewarded", B.GREEN),
-        (960, "POSITIVE / ADVERSE MARKOUT", "Retain protection", "Up to 100% of escrow retained", "LP reserve protected", B.AMBER),
+        (104, "NEGATIVE / IMPROVING", "Return escrow", "40% below the fixed 30 bps fee", "Trader rewarded", B.GREEN),
+        (960, "POSITIVE / ADVERSE", "Retain protection", "Up to 100% of escrow retained", "LP reserve protected", B.AMBER),
     ]
     cards_reveal = reveal(t, 42.0, 1.5)
     for index, (x, label, action, detail, footer_text, color) in enumerate(cards):
