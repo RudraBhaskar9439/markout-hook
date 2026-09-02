@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render a clear one-minute MARKOUT market-problem and mechanism explainer."""
+"""Render the evidence-aligned one-minute MARKOUT project explainer."""
 
 from __future__ import annotations
 
@@ -207,7 +207,7 @@ def scene_five(draw: ImageDraw.ImageDraw, t: float) -> None:
         (180, "1", "SWAP", "Unichain v4", B.GREEN),
         (570, "2", "WAIT", "5-minute window", B.AMBER),
         (960, "3", "PROVE", "Pyth evidence", B.BLUE),
-        (1350, "4", "REACT", "Reactive Network", B.GREEN_BRIGHT),
+        (1350, "4", "REACT", "11s callback live", B.GREEN_BRIGHT),
         (1740, "5", "ALLOCATE", "MARKOUT hook", B.AMBER),
     ]
     y = 664
@@ -222,7 +222,9 @@ def scene_five(draw: ImageDraw.ImageDraw, t: float) -> None:
         draw.text((x, y), number, font=F_BODY_BOLD, anchor="mm", fill=B.rgba(B.TEXT, 255 * node_alpha))
         draw.text((x, y + 100), action, font=F_BODY_BOLD, anchor="mm", fill=B.rgba(B.TEXT, 245 * node_alpha))
         draw.text((x, y + 142), detail, font=F_MONO_SMALL, anchor="mm", fill=B.rgba(color, 230 * node_alpha))
-    draw.text((960, 900), "PYTH PROVES THE PRICE. REACTIVE NETWORK TURNS THE EVENT INTO AN AUTHENTICATED ACTION.", font=F_MONO, anchor="mm", fill=B.rgba(B.GREEN, 225 * alpha))
+    draw.text((960, 874), "PYTH: SIGNED DELAYED EVIDENCE", font=F_MONO_SMALL, anchor="mm", fill=B.rgba(B.BLUE, 225 * alpha))
+    draw.text((960, 908), "REACTIVE NETWORK: LIVE EVENT-TO-ACTION TRANSPORT", font=F_MONO_SMALL, anchor="mm", fill=B.rgba(B.GREEN, 235 * alpha))
+    draw.text((960, 942), "INDEPENDENT FALLBACK: 4 PUBLIC ECONOMIC LIFECYCLES", font=F_MONO_SMALL, anchor="mm", fill=B.rgba(B.AMBER, 225 * alpha))
 
 
 def scene_six(draw: ImageDraw.ImageDraw, t: float) -> None:
@@ -248,51 +250,87 @@ def scene_six(draw: ImageDraw.ImageDraw, t: float) -> None:
 
 
 def scene_seven(draw: ImageDraw.ImageDraw, t: float) -> None:
-    start, end = 47.9, 57.3
+    start, end = 47.9, 56.1
     alpha = scene_alpha(t, start, end)
     if alpha <= 0:
         return
-    title(draw, "Why the market can use it", "Better prices for good flow.", "Better protection for liquidity.", alpha, B.GREEN)
-    metrics = [
-        (104, "GOOD TRADERS", "Up to 40% lower fees", B.GREEN),
-        (668, "LIQUIDITY PROVIDERS", "100% escrow retained", B.AMBER),
-        (1232, "THE POOL", "+21.87% modeled LP net", B.BLUE),
+    title(draw, "Research that can fail", "Controlled result.", "Real-data challenge.", alpha, B.GREEN)
+    draw.text(
+        (108, 438),
+        "The same five-minute outcome logic is tested under two explicitly different evidence boundaries.",
+        font=F_BODY,
+        fill=B.rgba(B.MUTED, 225 * alpha),
+    )
+
+    controlled_alpha = alpha * reveal(t, 48.7, 1.0)
+    historical_alpha = alpha * reveal(t, 49.3, 1.0)
+    left = (104, 536, 930, 910)
+    right = (990, 536, 1816, 910)
+    B.rounded_box(draw, left, B.PANEL, B.BLUE, controlled_alpha, radius=24)
+    B.rounded_box(draw, right, B.PANEL, B.GREEN, historical_alpha, radius=24)
+
+    draw.text((142, 570), B.tracked("CONTROLLED MECHANISM STUDY"), font=F_MONO_SMALL, fill=B.rgba(B.BLUE, 235 * controlled_alpha))
+    draw.text((142, 612), "768 trades  /  $1.999M", font=F_H3, fill=B.rgba(B.TEXT, 255 * controlled_alpha))
+    draw.text((142, 662), "Frozen seeded experiment", font=F_SMALL, fill=B.rgba(B.MUTED, 225 * controlled_alpha))
+    controlled_metrics = [
+        (142, "-8.58%", "benign fee"),
+        (410, "-40%", "improving fee"),
+        (676, "+21.87%", "modeled LP net"),
     ]
-    metrics_reveal = reveal(t, 48.8, 1.0)
-    for index, (x, label, value, color) in enumerate(metrics):
-        metric_alpha = alpha * B.smooth((metrics_reveal - index * 0.14) / 0.6)
-        B.rounded_box(draw, (x, 584, x + 480, 760), B.PANEL, color, metric_alpha, radius=22)
-        draw.text((x + 30, 618), B.tracked(label), font=F_MONO_SMALL, fill=B.rgba(color, 235 * metric_alpha))
-        draw.text((x + 30, 680), value, font=F_H3, fill=B.rgba(B.TEXT, 250 * metric_alpha))
-    draw.rounded_rectangle((104, 818, 1816, 916), radius=18, fill=B.rgba(B.GREEN_DARK, 125 * alpha), outline=B.rgba(B.GREEN, 90 * alpha), width=2)
-    draw.text((144, 842), "RESEARCH TAPE", font=F_MONO_SMALL, fill=B.rgba(B.GREEN, 220 * alpha))
-    draw.text((144, 874), "768 TRADES", font=F_MONO_SMALL, fill=B.rgba(B.DIM, 220 * alpha))
-    draw.text((410, 850), "-8.58%", font=F_BODY_BOLD, fill=B.rgba(B.GREEN, 250 * alpha))
-    draw.text((534, 853), "avg benign fee", font=F_SMALL, fill=B.rgba(B.TEXT, 235 * alpha))
-    draw.text((888, 850), "-40%", font=F_BODY_BOLD, fill=B.rgba(B.GREEN, 250 * alpha))
-    draw.text((992, 853), "inventory-improving fee", font=F_SMALL, fill=B.rgba(B.TEXT, 235 * alpha))
-    draw.text((1458, 850), "+21.87%", font=F_BODY_BOLD, fill=B.rgba(B.BLUE, 250 * alpha))
-    draw.text((1602, 853), "modeled LP net", font=F_SMALL, fill=B.rgba(B.TEXT, 235 * alpha))
-    draw.text((960, 950), "All percentages versus the fixed 30 bps policy on the frozen seeded experiment", font=F_MONO_SMALL, anchor="mm", fill=B.rgba(B.DIM, 220 * alpha))
+    for x, value, label in controlled_metrics:
+        metric_color = B.BLUE if value.startswith("+") else B.GREEN
+        draw.text((x, 732), value, font=F_H3, fill=B.rgba(metric_color, 250 * controlled_alpha))
+        draw.text((x, 782), label, font=F_MONO_SMALL, fill=B.rgba(B.TEXT, 225 * controlled_alpha))
+    draw.line((142, 826, 892, 826), fill=B.rgba(B.TEXT, 30 * controlled_alpha), width=2)
+    draw.text((142, 852), "MODELED VS FIXED 30 BPS", font=F_MONO_SMALL, fill=B.rgba(B.DIM, 225 * controlled_alpha))
+    draw.text((142, 880), "Result depends on declared synthetic assumptions", font=F_MONO_SMALL, fill=B.rgba(B.MUTED, 215 * controlled_alpha))
+
+    draw.text((1028, 570), B.tracked("HISTORICAL ROBUSTNESS REPLAY"), font=F_MONO_SMALL, fill=B.rgba(B.GREEN, 235 * historical_alpha))
+    draw.text((1028, 612), "251 real swaps  /  $3.188M", font=F_H3, fill=B.rgba(B.TEXT, 255 * historical_alpha))
+    draw.text((1028, 670), "18.00  <  29.02  <  39.14 bps", font=F_H3, fill=B.rgba(B.GREEN, 250 * historical_alpha))
+    draw.text((1028, 720), "FAVORABLE     NEAR-ZERO     ADVERSE", font=F_MONO_SMALL, fill=B.rgba(B.MUTED, 225 * historical_alpha))
+    draw.line((1028, 758, 1778, 758), fill=B.rgba(B.TEXT, 30 * historical_alpha), width=2)
+    draw.text((1028, 784), "DIRECTIONAL ORDERING SURVIVED", font=F_BODY_BOLD, fill=B.rgba(B.GREEN, 245 * historical_alpha))
+    draw.text((1028, 830), "-0.39%", font=F_H3, fill=B.rgba(B.AMBER, 250 * historical_alpha))
+    draw.text((1170, 837), "aggregate LP net vs fixed", font=F_SMALL, fill=B.rgba(B.TEXT, 230 * historical_alpha))
+    draw.text((1028, 880), "Aggregate synthetic gain did not generalize", font=F_MONO_SMALL, fill=B.rgba(B.AMBER, 220 * historical_alpha))
+    draw.text(
+        (960, 950),
+        "SYNTHETIC RESULT AND HISTORICAL NEGATIVE RESULT ARE REPORTED SIDE BY SIDE",
+        font=F_MONO_SMALL,
+        anchor="mm",
+        fill=B.rgba(B.DIM, 225 * alpha),
+    )
 
 
 def scene_eight(draw: ImageDraw.ImageDraw, t: float) -> None:
-    start, end = 56.8, 60.0
+    start, end = 55.4, 60.0
     alpha = scene_alpha(t, start, end, fade=0.55)
     if alpha <= 0:
         return
     p = B.ease_out((t - start) / 0.8)
     offset = 18 * (1 - p)
-    draw.rounded_rectangle((918, 184 - offset, 1002, 268 - offset), radius=20, fill=B.rgba(B.GREEN_DARK, 210 * alpha), outline=B.rgba(B.GREEN, 190 * alpha), width=3)
-    draw.text((960, 226 - offset), "M", font=F_NUMBER, anchor="mm", fill=B.rgba(B.GREEN_BRIGHT, 255 * alpha))
-    draw.text((960, 382 - offset), "MARKOUT", font=F_LOGO, anchor="mm", fill=B.rgba(B.TEXT, 255 * alpha))
-    draw.text((960, 518 - offset), "Observe first.", font=F_H1, anchor="mm", fill=B.rgba(B.TEXT, 255 * alpha))
+    draw.rounded_rectangle((918, 158 - offset, 1002, 242 - offset), radius=20, fill=B.rgba(B.GREEN_DARK, 210 * alpha), outline=B.rgba(B.GREEN, 190 * alpha), width=3)
+    draw.text((960, 200 - offset), "M", font=F_NUMBER, anchor="mm", fill=B.rgba(B.GREEN_BRIGHT, 255 * alpha))
+    draw.text((960, 334 - offset), "MARKOUT", font=F_LOGO, anchor="mm", fill=B.rgba(B.TEXT, 255 * alpha))
+    draw.text((960, 454 - offset), "Observe first.", font=F_H1, anchor="mm", fill=B.rgba(B.TEXT, 255 * alpha))
     B.rich_line(draw, 960, 576 - offset, [
         ("Allocate after ", F_H1, B.TEXT),
         ("evidence.", F_H1_SERIF, B.GREEN),
     ], alpha, center=True)
-    draw.text((960, 744), B.tracked("Uniswap v4  x  Pyth  x  Reactive Network"), font=F_KICKER, anchor="mm", fill=B.rgba(B.MUTED, 225 * alpha))
-    draw.text((960, 830), "FEES SHOULD FOLLOW OUTCOMES. NOT FEAR.", font=F_MONO, anchor="mm", fill=B.rgba(B.GREEN, 230 * alpha))
+    proof_alpha = alpha * reveal(t, 56.2, 0.8)
+    proof_cards = [
+        (230, "4", "ECONOMIC LIFECYCLES", B.AMBER),
+        (730, "11s", "REACTIVE CALLBACK", B.GREEN),
+        (1230, "202 + 12", "TESTS + INVARIANTS", B.BLUE),
+    ]
+    for x, value, label, color in proof_cards:
+        B.rounded_box(draw, (x, 666, x + 460, 770), B.PANEL, color, proof_alpha, radius=18)
+        draw.text((x + 28, 688), value, font=F_H3, fill=B.rgba(color, 250 * proof_alpha))
+        draw.text((x + 28, 738), label, font=F_MONO_SMALL, fill=B.rgba(B.TEXT, 225 * proof_alpha))
+    draw.text((960, 824), B.tracked("Uniswap v4  x  Pyth  x  Reactive Network  x  Circle"), font=F_KICKER, anchor="mm", fill=B.rgba(B.MUTED, 225 * alpha))
+    draw.text((960, 884), "ZERO MEDIUM / HIGH SLITHER FINDINGS", font=F_MONO_SMALL, anchor="mm", fill=B.rgba(B.BLUE, 225 * alpha))
+    draw.text((960, 938), "FEES SHOULD FOLLOW OUTCOMES. NOT FEAR.", font=F_MONO, anchor="mm", fill=B.rgba(B.GREEN, 235 * alpha))
 
 
 def frame_at(t: float) -> Image.Image:
