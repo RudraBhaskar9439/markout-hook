@@ -38,6 +38,9 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
   assert.match(html, /Fees should follow/);
   assert.match(html, /Not fear\./);
   assert.match(html, /Replay intro/);
+  assert.match(html, /aria-label="Page section navigation"/);
+  assert.match(html, /title="Live demo"/);
+  assert.match(html, /title="Research"/);
   assert.match(html, /4<\/strong><span>economic lifecycles/);
   assert.match(html, /11s<\/strong><span>Reactive callback/);
   assert.match(html, /18-68 bps<\/strong><span>Fair-Flow bounds/);

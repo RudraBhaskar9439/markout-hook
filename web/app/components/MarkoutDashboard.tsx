@@ -18,12 +18,102 @@ import { PublicProofMode } from "./PublicProofMode";
 
 const maximumFeeBps = 80;
 
+const primaryNavigation = [
+  { id: "testnet", label: "Demo" },
+  { id: "proof-mode", label: "Proof" },
+  { id: "market-lab", label: "Market" },
+  { id: "mechanism", label: "Mechanism" },
+  { id: "architecture", label: "Architecture" },
+  { id: "reactive", label: "Reactive" },
+  { id: "evidence", label: "Research" },
+] as const;
+
+const floatingNavigation = [
+  { id: "top", label: "Overview", index: "00" },
+  { id: "proof-mode", label: "Proof", index: "01" },
+  { id: "market-lab", label: "Market", index: "02" },
+  { id: "testnet", label: "Live demo", index: "03" },
+  { id: "compare", label: "Compare", index: "04" },
+  { id: "mechanism", label: "Mechanism", index: "05" },
+  { id: "architecture", label: "Architecture", index: "06" },
+  { id: "reactive", label: "Reactive", index: "07" },
+  { id: "evidence", label: "Research", index: "08" },
+] as const;
+
 function formatBps(value: number) {
   return `${value.toFixed(value % 1 === 0 ? 0 : 2)} bps`;
 }
 
 function dollarsPerTenThousand(value: number) {
   return `$${value.toFixed(2)}`;
+}
+
+function FloatingSectionNavigation() {
+  const [activeSection, setActiveSection] = useState("top");
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    let animationFrame = 0;
+
+    function updateNavigation() {
+      animationFrame = 0;
+      const checkpoint = window.scrollY + window.innerHeight * 0.34;
+      const sections = floatingNavigation
+        .map((item) => document.getElementById(item.id))
+        .filter((section): section is HTMLElement => section !== null)
+        .sort((first, second) => first.offsetTop - second.offsetTop);
+
+      let currentSection = "top";
+      for (const section of sections) {
+        if (section.offsetTop <= checkpoint) currentSection = section.id;
+      }
+
+      setActiveSection(currentSection);
+      setIsVisible(window.scrollY > Math.min(460, window.innerHeight * 0.55));
+    }
+
+    function scheduleUpdate() {
+      if (animationFrame) return;
+      animationFrame = window.requestAnimationFrame(updateNavigation);
+    }
+
+    updateNavigation();
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    window.addEventListener("resize", scheduleUpdate);
+
+    return () => {
+      window.removeEventListener("scroll", scheduleUpdate);
+      window.removeEventListener("resize", scheduleUpdate);
+      if (animationFrame) window.cancelAnimationFrame(animationFrame);
+    };
+  }, []);
+
+  return (
+    <aside className="floating-section-nav" data-visible={isVisible} aria-label="Page section navigation">
+      <div className="floating-section-nav-shell">
+        <span className="floating-section-nav-title">Navigate</span>
+        <nav>
+          {floatingNavigation.map((item) => {
+            const isActive = activeSection === item.id;
+            return (
+              <a
+                href={`#${item.id}`}
+                key={item.id}
+                data-active={isActive}
+                aria-current={isActive ? "location" : undefined}
+                tabIndex={isVisible ? undefined : -1}
+                title={item.label}
+              >
+                <span className="floating-section-nav-index">{item.index}</span>
+                <span className="floating-section-nav-label">{item.label}</span>
+              </a>
+            );
+          })}
+        </nav>
+        <span className="floating-section-nav-progress" aria-hidden="true" />
+      </div>
+    </aside>
+  );
 }
 
 function Bar({ value, tone }: { value: number; tone: "fixed" | "volatility" | "markout" }) {
@@ -639,19 +729,16 @@ export function MarkoutDashboard() {
     <>
       <OpeningExperience replayToken={openingReplay} />
       <main>
+      <FloatingSectionNavigation />
       <header className="site-header">
         <a className="brand" href="#top" aria-label="MARKOUT home">
           <span className="brand-mark">M</span>
           <span>MARKOUT</span>
         </a>
         <nav aria-label="Primary navigation">
-          <a href="#testnet">Demo</a>
-          <a href="#proof-mode">Proof</a>
-          <a href="#market-lab">Market</a>
-          <a href="#mechanism">Mechanism</a>
-          <a href="#architecture">Architecture</a>
-          <a href="#reactive">Reactive</a>
-          <a href="#evidence">Research</a>
+          {primaryNavigation.map((item) => (
+            <a href={`#${item.id}`} key={item.id}>{item.label}</a>
+          ))}
         </nav>
         <div className="header-actions">
           <span className="testnet-status" aria-label="Reactive Network transport live and fallback verified">
