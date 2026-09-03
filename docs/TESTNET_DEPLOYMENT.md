@@ -1,7 +1,9 @@
 # MARKOUT Archived Omni Testnet Deployment Runbook
 
-> This runbook preserves the Phase 5 Omni deployment and outage evidence. It is not the active topology. Use
-> [Hybrid Testnet Deployment](HYBRID_TESTNET_DEPLOYMENT.md) for the current shared-coordinator deployment.
+> This runbook preserves the Phase 5 Omni deployment and outage evidence. It is not the active topology. The final
+> submission architecture is Reactive-first; see [Reactive Lifecycle Specification](REACTIVE_LIFECYCLE.md) and
+> [Reactive-First Settlement Architecture](HYBRID_SETTLEMENT.md). The later two-transport rollout is retained in the
+> [historical hybrid runbook](HYBRID_TESTNET_DEPLOYMENT.md).
 
 This runbook deploys the complete Phase 5 topology to Unichain Sepolia and Reactive Lasna Omni. It intentionally stops
 before any broadcast unless the operator provides a dedicated funded testnet key.

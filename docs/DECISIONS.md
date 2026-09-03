@@ -241,11 +241,11 @@ as a liveness fix.
 **Historical decision, superseded for transport status by D-047.** The fail-open custody rule remains active.
 
 Two bounded public canaries produced correctly targeted callback instructions on Lasna but no destination delivery on
-either Unichain Sepolia or Ethereum Sepolia. The active topology therefore cannot make custody or settlement depend on
-Reactive liveness. Reactive remains an optional observation accelerator; the existing Omni scheduler remains research
-and outage evidence.
+either Unichain Sepolia or Ethereum Sepolia. At that historical checkpoint, custody and settlement were not allowed to
+depend on Reactive liveness, and the Omni scheduler was limited to research and outage evidence. D-047 later restored
+Reactive as the primary event-to-action architecture after the public Legacy callback succeeded.
 
-## D-039 - Use Circle CCTP V2 as the primary authenticated message transport
+## D-039 - Historical use of Circle CCTP V2 as the primary authenticated message transport
 
 **Historical resilience-pivot wording.** D-047 restores Reactive as the sponsor-facing live event-to-action rail;
 Circle remains an independently authenticated economic fallback through the same coordinator.

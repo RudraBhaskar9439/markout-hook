@@ -413,7 +413,8 @@ function ArchitectureDiagram() {
         </div>
         <p className="section-lede">
           Each plane has one job. The frontend explains, Unichain accounts, Ethereum verifies, and Reactive Network
-          turns the verified event into an authenticated action. A separately authenticated fallback preserves liveness.
+          turns the verified event into an authenticated action. Permissionless expiry preserves the trader&apos;s full
+          provisional refund if delivery misses the grace period.
         </p>
       </div>
 
@@ -435,7 +436,6 @@ function ArchitectureDiagram() {
           <div className="plane-heading"><span>03</span><div><small>Evidence plane · Ethereum</small><strong>Pyth + publisher</strong></div></div>
           <div className="plane-node"><b>Signed price update</b><p>Price, time, confidence and market checks.</p></div>
           <div className="plane-node"><b>Canonical event</b><p>One normalized observation for one trade.</p></div>
-          <div className="plane-node plane-node-fallback"><b>Independent fallback</b><p>Attested redundancy with four public relays.</p></div>
         </article>
 
         <article className="architecture-plane plane-reactive">
@@ -516,7 +516,7 @@ function ReactiveNetworkSection() {
             MARKOUT&apos;s hook lives on Unichain, while the canonical Pyth-verified observation is published on Ethereum
             Sepolia. The Legacy RSC subscribes to that exact event, runs in ReactVM, and requests the authenticated
             destination callback. Reactive Network therefore provides the primary autonomous cross-chain execution path.
-            A separately authenticated fallback enters the same replay-safe coordinator without taking pricing authority.
+            If delivery is unavailable, permissionless expiry returns the complete provisional amount to the trader.
           </p>
           <div className="reactive-boundary-strip">
             <span>Exact event subscription</span><b>✓</b>
@@ -624,14 +624,14 @@ function ResearchEvidence() {
         </div>
       </div>
 
-      <div className="live-proof-card" aria-label="Four public fallback settlement lifecycles">
+      <div className="live-proof-card" aria-label="Four historical economic settlement lifecycles">
         <div>
-          <p className="kicker">Public testnet proof</p>
+          <p className="kicker">Historical economic proof</p>
           <strong>Four lifecycles. Both settlement extremes.</strong>
           <p>
-            The independent fallback delivered Pyth observations for four real Unichain v4 swaps. These receipts prove
-            that MARKOUT remains recoverable around the primary Reactive Network rail: both terminal extremes, the
-            Fair-Flow 18 bps rebate path, and the sponsored-claim entrypoint are publicly verifiable.
+            Before the Reactive-first pivot, an independently authenticated recovery adapter delivered Pyth observations
+            for four real Unichain v4 swaps. These receipts prove both terminal extremes, the Fair-Flow 18 bps
+            rebate path, and the sponsored-claim entrypoint. They are historical mechanism evidence, not the active rail.
           </p>
         </div>
         <div className="live-proof-metrics">
@@ -741,11 +741,11 @@ export function MarkoutDashboard() {
           ))}
         </nav>
         <div className="header-actions">
-          <span className="testnet-status" aria-label="Reactive Network transport live and fallback verified">
+          <span className="testnet-status" aria-label="Reactive Network transport and callback publicly verified">
             <i />
             <span>
               <strong>Reactive live</strong>
-              <small>Fallback verified</small>
+              <small>Callback verified</small>
             </span>
           </span>
           <button className="intro-replay-button" type="button" onClick={() => setOpeningReplay((value) => value + 1)}>
@@ -838,7 +838,7 @@ export function MarkoutDashboard() {
         </div>
         <div className="footer-status">
           <span><i className="status-green" /> Reactive Network callback publicly verified</span>
-          <span><i className="status-green" /> Four fallback lifecycles proven</span>
+          <span><i className="status-green" /> Four historical economic lifecycles proven</span>
           <span><i className="status-amber" /> Reactive-first settlement relayer timed out</span>
         </div>
         <p className="footer-note">Experimental UHI10 prototype · Not audited · No real funds</p>

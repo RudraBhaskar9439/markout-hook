@@ -1,5 +1,8 @@
 # Phase 8 Verification Guide
 
+> Historical checkpoint. Its Circle-first wording predates the final Reactive-first submission architecture. Use
+> `README.md`, `docs/HYBRID_SETTLEMENT.md`, and `docs/PHASE_14_VERIFICATION.md` for current claims.
+
 Phase 8 packages MARKOUT's implemented mechanism and reproducible evidence into one judge-facing application. The
 token-independent checkpoint requires no wallet, faucet balance, RPC endpoint, public transaction, or secret. It does
 not claim that Phase 5's live Reactive testnet gate has passed.
@@ -58,8 +61,8 @@ runtime, so CI gates the production graph and this development-only residual ris
 ## Exact checkpoint boundary
 
 Passing this script means the judge application is reproducible and presentation-ready. The public Circle evidence is
-recorded in `deployments/hybrid-2026-08-21.json`; Reactive remains explicitly optional and receives no live-delivery
-claim until a destination callback is public.
+recorded in `deployments/hybrid-2026-08-21.json`. At this historical checkpoint, Reactive received no live-delivery
+claim because a destination callback had not yet been observed. The August 26 Legacy callback superseded that status.
 
 ## GO / NO-GO
 

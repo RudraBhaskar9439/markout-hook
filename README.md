@@ -2,9 +2,10 @@
 
 ### Outcome-priced liquidity for Uniswap v4
 
-MARKOUT is a Uniswap v4 hook that charges a trade according to its observed post-trade outcome. It combines a low
-base fee with a bounded provisional surcharge, waits for a five-minute directional markout, and then allocates the
-provisional amount between a trader rebate and LP protection.
+MARKOUT is a Reactive-first Uniswap v4 hook that charges a trade according to its observed post-trade outcome. It
+combines a low base fee with a bounded provisional surcharge, waits for a five-minute directional markout, and then
+uses Reactive Network to turn signed cross-chain evidence into an authenticated Unichain settlement action. The hook
+allocates the provisional amount between a trader rebate and LP protection.
 
 [Live judge dashboard](https://markout-uhi10.vercel.app) ·
 [Public evidence](docs/EVIDENCE.md) ·
@@ -42,9 +43,9 @@ The mechanism evaluates outcomes rather than wallets. It uses no allowlist, iden
 | --- | --- | --- |
 | 1. Execute | Uniswap v4 on Unichain Sepolia | The trader swaps at an 18 bps base fee plus a refundable 50 bps provisional amount. |
 | 2. Record | `MarkoutHook` | The hook records execution price, direction, beneficiary, maturity, and expiry under a unique trade ID. |
-| 3. Observe | Pyth on Ethereum Sepolia | A signed delayed ETH price is normalized with its publish time and confidence. |
-| 4. React | Reactive Network | A Legacy pulse subscribes to the exact publisher and market event, executes in ReactVM, and requests an authenticated Unichain callback. |
-| 5. Settle | Unichain contracts | The coordinator authenticates the delivery and the hook computes the directional allocation exactly once. |
+| 3. Publish evidence | Pyth on Ethereum Sepolia | A signed delayed ETH price is normalized with its publish time, confidence, market ID, and trade ID. |
+| 4. React | Reactive Network | The deployed Legacy pulse subscribes to that exact publisher and market event. ReactVM validates the event and requests an authenticated Unichain callback. |
+| 5. Settle | Unichain contracts | The Reactive receiver and coordinator authenticate the callback. The hook revalidates the evidence and computes the directional allocation exactly once. |
 
 Every trade reaches one of three safe terminal outcomes:
 
@@ -58,36 +59,40 @@ The final effective fee is bounded between **18 bps and 68 bps** in the Fair-Flo
 
 ## Why Reactive Network matters
 
-A Unichain hook cannot subscribe directly to a canonical observation published on Ethereum Sepolia. MARKOUT uses a
-Legacy Reactive Contract to turn that foreign-chain event into an authenticated Unichain action without operating its
-own event-watching cross-chain relayer.
+A Unichain hook cannot wake itself five minutes later or subscribe directly to a canonical observation published on
+Ethereum Sepolia. Reactive Network is therefore MARKOUT's primary event-to-action layer. It observes the delayed
+publisher event, executes the reaction in ReactVM, and requests the authenticated callback that advances the pending
+trade without a MARKOUT-operated cross-chain listener.
 
 `MarkoutPulseReactive` is deliberately stateless. Its subscription pins the origin chain, publisher contract, event
 signature, and market topic. ReactVM decodes only that normalized observation and emits the destination callback.
-This narrow role makes the sponsor integration easy to audit: Reactive transports evidence but cannot create a price,
-choose a fee, redirect a rebate, or touch escrow.
+This narrow role makes the sponsor integration easy to audit: Reactive initiates the cross-chain action but cannot
+create a price, choose a fee, redirect a rebate, or touch escrow.
 
 Reactive Network has **no custody and no pricing authority**. The Unichain receiver authenticates the callback, while
 the hook independently validates time, confidence, market, direction, solvency, and terminal state before computing
-the allocation.
+the allocation. At-least-once callback delivery is safe because the coordinator and hook make duplicate observations
+successful no-ops after the first terminal transition.
 
-Circle CCTP V2 is an independent delivery rail. Both transports meet at an immutable `SettlementCoordinator`; the first
-valid delivery settles the trade and later duplicates become successful no-ops. If neither path succeeds, expiry keeps
-the provisional amount refundable.
+If the callback does not arrive before the grace period ends, permissionless expiry returns the full provisional
+amount. This fail-open recovery path protects users without replacing Reactive's role in the normal lifecycle.
 
 ### Integration status
 
-- Legacy Reactive adapter: implemented with exact filter, payload, callback-authentication, and replay tests.
+- Legacy Reactive adapter: implemented with exact event filtering, payload encoding, callback authentication, and
+  replay tests.
 - Legacy Reactive pulse: deployed, funded, debt-free, and publicly verified against its exact publisher subscription.
-- Reactive-to-Unichain transport: **live** - an authenticated callback completed in 11 seconds and emitted the destination
-  observation event.
-- Reactive-first economic settlement: not claimed. A separate pending-first acceptance trade produced two successful
-  ReactVM reactions but no relayer transaction before expiry; the full provisional amount was then refunded and claimed.
-- Circle resilience rail: four public end-to-end Pyth → Circle → Unichain settlements completed.
+- Reactive-to-Unichain transport: **live**. An authenticated callback completed in 11 seconds and emitted the
+  destination observation event.
+- Pending-first safety: a separate acceptance trade produced two successful ReactVM reactions, encountered a
+  destination-relayer timeout, expired safely, and returned the full provisional amount.
+- Economic branch evidence: four earlier authenticated testnet lifecycles prove full rebate and full LP-retention
+  outcomes. They are retained as historical mechanism evidence, not presented as the current Reactive transport path.
 
-The [August 26 machine-readable record](deployments/reactive-legacy-2026-08-26.json) separates live transport proof,
-ReactVM proof, relayer reliability, economic settlement, and the fail-open outcome instead of collapsing them into one
-ambiguous “integration works” claim.
+The [August 26 machine-readable record](deployments/reactive-legacy-2026-08-26.json) separates live Reactive transport,
+ReactVM execution, relayer reliability, economic settlement, and fail-open recovery instead of collapsing them into
+one ambiguous "integration works" claim. The current architecture is Reactive-first while the public evidence remains
+precise about which boundary each transaction proves.
 
 ## Research results
 
@@ -146,7 +151,21 @@ See the [full reproducible report](experiments/results/report.md),
 
 ## Public testnet evidence
 
-Four real Uniswap v4 swaps have completed the delayed Pyth + Circle lifecycle across the original and Fair-Flow pools.
+### Reactive Network transport and fail-open proof
+
+Legacy Reactive completed a public 11-second Ethereum Sepolia to ReactVM to Unichain callback:
+[source observation](https://sepolia.etherscan.io/tx/0x99c7110784fc9e39ff0db078be74e3995855172a4f9a8c565169373e1daa7c85) ·
+[destination callback](https://sepolia.uniscan.xyz/tx/0x5d933d5ff078c500c61fc32fef1ae526049085dad8e15ff4ef2673a971114459).
+The destination handled the callback as a safe no-op because that trade was already terminal. A separate pending-first
+acceptance run recorded two ReactVM reactions, no destination relay before expiry, and a full refund. Together these
+transactions prove the Reactive subscription, reaction, authenticated callback boundary, replay safety, and fail-open
+recovery. They do not falsely claim a completed Reactive-first economic allocation.
+
+### Historical pre-pivot economic branch proof
+
+Four real Uniswap v4 swaps completed delayed Pyth-backed settlement across the original and Fair-Flow pools before the
+final Reactive-first architecture was frozen. These records remain valuable proof of hook accounting and both economic
+branches; the delivery transactions used the earlier Circle recovery adapter.
 
 | Lifecycle | Swap | Settlement | Terminal result |
 | --- | --- | --- | --- |
@@ -160,22 +179,16 @@ Machine-readable transaction hashes and accounting checks are stored in
 [`deployments/hybrid-2026-08-21.json`](deployments/hybrid-2026-08-21.json) and
 [`deployments/fair-flow-2026-08-22.json`](deployments/fair-flow-2026-08-22.json).
 
-Legacy Reactive also completed a public 11-second Ethereum Sepolia → ReactVM → Unichain callback:
-[source observation](https://sepolia.etherscan.io/tx/0x99c7110784fc9e39ff0db078be74e3995855172a4f9a8c565169373e1daa7c85) ·
-[destination callback](https://sepolia.uniscan.xyz/tx/0x5d933d5ff078c500c61fc32fef1ae526049085dad8e15ff4ef2673a971114459).
-That trade was already terminal through Circle, so the coordinator correctly handled the Reactive delivery as an
-idempotent duplicate; this proves the live transport, not a Reactive-first economic settlement.
-
 ## Deployed Fair-Flow contracts
 
 | Network | Contract | Address |
 | --- | --- | --- |
 | Unichain Sepolia | MARKOUT hook | [`0x3A17354331C21B246A9eC9BF979Af77e64f30044`](https://sepolia.uniscan.xyz/address/0x3A17354331C21B246A9eC9BF979Af77e64f30044) |
 | Unichain Sepolia | Settlement coordinator | [`0x7BC38f019D5F3000c15C9E5309dFB1e7f361cb6e`](https://sepolia.uniscan.xyz/address/0x7BC38f019D5F3000c15C9E5309dFB1e7f361cb6e) |
-| Unichain Sepolia | Circle receiver | [`0x24858E73A18f1A4537897DD2d04417a7a24b8f68`](https://sepolia.uniscan.xyz/address/0x24858E73A18f1A4537897DD2d04417a7a24b8f68) |
 | Unichain Sepolia | Reactive receiver | [`0x35e006fc141E1798e15E4BCec4e58DE439eC9cED`](https://sepolia.uniscan.xyz/address/0x35e006fc141E1798e15E4BCec4e58DE439eC9cED) |
-| Ethereum Sepolia | Pyth/Circle publisher | [`0xeeb18d96AABcec142D95Ba2b9E7E3221832Cf139`](https://sepolia.etherscan.io/address/0xeeb18d96AABcec142D95Ba2b9E7E3221832Cf139) |
+| Ethereum Sepolia | Canonical Pyth observation publisher | [`0xeeb18d96AABcec142D95Ba2b9E7E3221832Cf139`](https://sepolia.etherscan.io/address/0xeeb18d96AABcec142D95Ba2b9E7E3221832Cf139) |
 | Reactive Lasna | Legacy observation pulse | `0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e` |
+| Unichain Sepolia | Historical Circle recovery receiver | [`0x24858E73A18f1A4537897DD2d04417a7a24b8f68`](https://sepolia.uniscan.xyz/address/0x24858E73A18f1A4537897DD2d04417a7a24b8f68) |
 
 Fair-Flow pool ID:
 `0xee2fba8ece79cbbf20bb44f861fae605b7caf5fa12883daa34811f54e753580d`
@@ -214,8 +227,8 @@ MARKOUT/
 │   ├── hooks/         Uniswap v4 hook and settlement lifecycle
 │   ├── libraries/     Markout, pricing, validation, and accounting primitives
 │   ├── reactive/      Legacy event-to-action pulse and authenticated receiver
-│   ├── circle/        Pyth publisher and authenticated CCTP receiver
-│   ├── settlement/    Immutable multi-transport coordinator
+│   ├── circle/        Historical CCTP recovery adapter and shared Pyth publisher
+│   ├── settlement/    Immutable, replay-safe settlement coordinator
 │   ├── reference/     Reference-price sampling
 │   ├── interfaces/    Stable external interfaces, errors, and events
 │   └── types/         Shared domain types
@@ -285,7 +298,7 @@ They do not broadcast transactions or require a private key.
 | --- | --- |
 | Mechanism and accounting | [Mechanism](docs/MECHANISM.md) · [Accounting](docs/ACCOUNTING.md) · [Economics](docs/ECONOMICS.md) |
 | Lifecycle and Reactive orchestration | [Lifecycle](docs/LIFECYCLE.md) · [Reactive lifecycle](docs/REACTIVE_LIFECYCLE.md) |
-| Cross-chain settlement | [Hybrid architecture](docs/HYBRID_SETTLEMENT.md) · [Deployment runbook](docs/HYBRID_TESTNET_DEPLOYMENT.md) |
+| Cross-chain settlement | [Reactive-first architecture](docs/HYBRID_SETTLEMENT.md) · [Reactive lifecycle](docs/REACTIVE_LIFECYCLE.md) · [Public Reactive verification](docs/PHASE_13_VERIFICATION.md) |
 | Research and evidence | [Controlled experiment](experiments/README.md) · [Historical replay](experiments/historical/README.md) · [Evidence ledger](docs/EVIDENCE.md) · [Fair-Flow profile](docs/FAIR_FLOW.md) |
 | Security | [Threat model](docs/THREAT_MODEL.md) · [Static analysis](docs/STATIC_ANALYSIS.md) |
 | Demo and submission | [Demo script](docs/DEMO_SCRIPT.md) · [Presentation playbook](docs/PRESENTATION_PLAYBOOK.md) · [Final submission draft](docs/FINAL_SUBMISSION.md) |
@@ -295,9 +308,11 @@ They do not broadcast transactions or require a private key.
 
 - Testnet-only prototype; contracts have not received an independent audit.
 - ETH/USD is used as a documented testnet proxy for ETH/USDC.
-- Circle uses fast-confirmed finality to fit the bounded settlement window.
-- Reactive transport is publicly verified by an authenticated 11-second callback; Reactive-first economic settlement
-  remains unproven because the successful callback reached an already-terminal trade.
+- Reactive transport is publicly verified by an authenticated 11-second callback. A complete pending-first economic
+  allocation through that transport remains unproven because the successful callback reached an already-terminal
+  trade and the separate acceptance run timed out at the destination relayer.
+- The repository retains the earlier Circle recovery adapter and its public transaction history, but it is not the
+  primary architecture presented for the final project.
 - The study excludes concentrated-liquidity depth, LP shares, routing, demand elasticity, gas economics, and
   rebalancing.
 - LP protection reserve distribution is intentionally outside the current prototype.

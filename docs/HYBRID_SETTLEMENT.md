@@ -1,180 +1,154 @@
-# Hybrid Settlement Architecture
+# Reactive-First Settlement Architecture
 
-Status: Phase 10 architecture freeze
+Status: final UHI10 architecture. The filename is retained so existing links do not break.
 
 ## 1. Objective
 
-MARKOUT must settle delayed post-trade outcomes without a protocol-owned keeper and without making user funds depend
-on one callback network. Reactive Network is the intended autonomous control plane for observation, maturity, retry,
-acknowledgement, and expiry orchestration. Circle CCTP V2 is the publicly proven redundant observation-delivery rail.
-The current public testnet evidence uses Circle because a Reactive destination callback has not been observed; that
-evidence gap is disclosed rather than used to erase Reactive's architectural role. The Uniswap v4 hook remains the
-sole owner of custody, economic validation, and terminal accounting.
+MARKOUT must evaluate a swap only after its five-minute markout horizon without giving a keeper, relayer, or oracle
+custody over the provisional surcharge. Reactive Network is the primary event-to-action layer. It observes the
+canonical Pyth-backed event on Ethereum Sepolia, executes the reaction in ReactVM, and requests an authenticated
+callback on Unichain. The Uniswap v4 hook remains the sole owner of custody, validation, fee policy, and terminal
+accounting.
 
-## 2. End-to-end flow
+If the observation or callback is unavailable, the trade fails open. After the immutable grace period, anyone can
+expire the trade and the full provisional amount becomes claimable by the trader.
+
+## 2. Current end-to-end flow
 
 ```mermaid
-flowchart TB
-    SWAP["Uniswap v4 swap<br/>18 bps base + 50 bps provisional"] --> HOOK["MarkoutHook<br/>custody + immutable trade record"]
-    HOOK --> WAIT["Five-minute markout maturity"]
+flowchart LR
+    TRADER["Trader"] --> SWAP["Uniswap v4 swap<br/>18 bps base + 50 bps provisional"]
+    SWAP --> HOOK["MarkoutHook<br/>escrow + execution record"]
+    HOOK --> WAIT["Five-minute<br/>markout horizon"]
 
-    PYTH["Signed Pyth update"] --> PUB["Ethereum Sepolia publisher<br/>one normalized observation"]
-    WAIT -. "trade becomes eligible" .-> PUB
-
-    PUB --> CIRCLE["Circle CCTP V2 fallback<br/>attested generic message"]
-    HOOK -. "MarkoutRequested" .-> REACTIVE["Reactive lifecycle engine<br/>events + cron + retries"]
-    PUB --> REACTIVE
-
-    CIRCLE --> CRECV["Circle receiver<br/>domain + sender + market checks"]
-    REACTIVE --> RRECV["Reactive callback receiver<br/>proxy + RVM identity checks"]
-
-    CRECV --> COORD["SettlementCoordinator<br/>first valid delivery wins"]
-    RRECV --> COORD
+    PYTH["Signed Pyth update"] --> PUB["Canonical publisher<br/>price + time + confidence<br/>market ID + trade ID"]
+    WAIT -. "eligible" .-> PUB
+    PUB --> RSC["Reactive subscription<br/>exact publisher + event + market"]
+    RSC --> RVM["ReactVM<br/>validate + encode callback"]
+    RVM --> RECV["Unichain Reactive receiver<br/>proxy + RVM identity checks"]
+    RECV --> COORD["SettlementCoordinator<br/>replay-safe forwarding"]
     COORD --> HOOK
 
-    HOOK --> REBATE["Good flow<br/>surcharge returned"]
-    HOOK --> PROTECT["Adverse flow<br/>LP protection retained"]
-    WAIT -. "neither path delivers" .-> EXPIRE["Permissionless expiry<br/>full surcharge rebate"]
+    HOOK --> REBATE["Fair or improving flow<br/>trader rebate"]
+    HOOK --> PROTECT["Adverse flow<br/>LP protection reserve"]
+    WAIT -. "no valid callback by expiry" .-> EXPIRE["Permissionless expiry<br/>full provisional refund"]
 
-    classDef reactive fill:#173c24,stroke:#8affad,color:#eef6f0,stroke-width:3px;
-    classDef core fill:#121815,stroke:#66736b,color:#eef6f0;
-    classDef proven fill:#101925,stroke:#82b9ff,color:#eef6f0;
-    class REACTIVE,RRECV reactive;
-    class CIRCLE,CRECV proven;
-    class SWAP,HOOK,WAIT,PYTH,PUB,COORD,REBATE,PROTECT,EXPIRE core;
+    classDef reactive fill:#10243A,stroke:#58A7FF,color:#F0F7FF,stroke-width:3px;
+    classDef core fill:#211613,stroke:#D78A35,color:#FFF5E9;
+    classDef evidence fill:#10261A,stroke:#43A866,color:#F4F8F5;
+    class RSC,RVM,RECV reactive;
+    class SWAP,HOOK,WAIT,COORD,REBATE,PROTECT,EXPIRE core;
+    class TRADER,PYTH,PUB evidence;
 ```
-
-The diagram gives Reactive visual prominence because it is the no-keeper automation layer, while preserving the
-evidence boundary: the full lifecycle engine is implemented and tested; the legacy pulse deployment, exact
-subscription, ReactVM execution, and an 11-second authenticated destination callback are public. That callback reached
-an already-terminal trade, so Circle remains the publicly proven economic-settlement path and Reactive-first economics
-remain unclaimed.
 
 ```text
-Unichain swap
-    -> MarkoutHook escrows a bounded provisional surcharge
-    -> trade remains Pending until its immutable maturity
-
-Permissionless publisher on Ethereum Sepolia
-    -> submits a signed Pyth update and a Unichain trade id
-    -> publisher normalizes price, time, and confidence
-    -> emits one canonical observation event
-    -> sends the same payload through Circle MessageTransmitterV2
-
-Publicly proven redundant rail: Circle
-    -> Circle attests the generic message
-    -> any relayer submits message + attestation on Unichain
-    -> CircleObservationReceiver authenticates transmitter, source domain, source publisher, threshold, version, market
-    -> SettlementCoordinator forwards the observation to MarkoutHook
-
-Autonomous control plane: Reactive
-    -> MarkoutReactive observes hook requests, terminal acknowledgements, reference evidence, and cron
-    -> it tracks immutable maturity/expiry, requests sampling, and processes bounded batches
-    -> it retries an authenticated settlement or expiry callback until acknowledgement
-    -> the legacy-compatible pulse is a narrower deployed proof of the exact publisher-event subscription
-    -> SettlementCoordinator forwards an observation only if the trade is still Pending
-
-Failure path
-    -> after the existing grace period, anyone calls MarkoutHook.expireTrade
-    -> the entire provisional surcharge becomes claimable by the trader
+1. A real Uniswap v4 swap creates a unique pending trade and locks a bounded provisional amount.
+2. The trade becomes eligible only after its immutable five-minute maturity.
+3. The publisher verifies a fresh signed Pyth update and emits one normalized observation event.
+4. MarkoutPulseReactive subscribes to that exact publisher, event signature, and market topic.
+5. ReactVM validates the event and encodes the Unichain callback payload.
+6. The destination receiver authenticates both the callback proxy and injected ReactVM identity.
+7. SettlementCoordinator forwards only a valid pending trade to MarkoutHook.
+8. The hook revalidates time, confidence, market, direction, and solvency, then allocates exactly once.
+9. If no valid callback arrives, permissionless expiry returns the complete provisional amount.
 ```
 
-## 3. Responsibility boundaries
+## 3. Why Reactive Network is integral
 
-### MarkoutHook
+A Uniswap hook executes only when it is called. It cannot wake itself at the observation horizon, subscribe to a
+foreign-chain event, or initiate a destination action. Reactive Network supplies that missing control plane:
+
+- **Exact subscription:** pins the Ethereum Sepolia chain, canonical publisher, event signature, and market topic.
+- **Event-native execution:** ReactVM reacts to the observation instead of relying on a MARKOUT-operated polling bot.
+- **Authenticated callback:** the destination accepts the system callback proxy only when it carries the configured
+  ReactVM identity.
+- **Minimal authority:** Reactive can request settlement but cannot create the price, choose the fee, redirect a
+  rebate, withdraw escrow, or override expiry.
+- **Replay-safe delivery:** at-least-once callbacks are safe because terminal trade state makes duplicates no-ops.
+
+Reactive is therefore essential to automation but deliberately excluded from economic discretion.
+
+## 4. Responsibility boundaries
+
+### MarkoutHook on Unichain
 
 - Custodies every provisional surcharge.
-- Stores execution price, direction, maturity, expiry, and beneficiary.
-- Re-validates observation maturity, freshness, confidence, and settlement window.
-- Computes markout and divides escrow into rebate plus LP protection.
-- Enforces solvency and permissionless full-rebate expiry.
+- Stores execution price, direction, beneficiary, maturity, and expiry.
+- Revalidates observation maturity, freshness, confidence, market, and settlement window.
+- Computes directional markout and divides escrow into rebate plus LP protection.
+- Enforces solvency, one terminal transition, and permissionless full-refund expiry.
 
-Neither Circle nor Reactive can select a recipient, change a trade's execution data, bypass validation, withdraw hook
-funds, or settle a terminal trade twice.
+### Canonical Pyth publisher on Ethereum Sepolia
 
-### SettlementCoordinator
+- Verifies the configured Pyth contract and feed.
+- Normalizes price, observation time, and confidence.
+- Binds the observation to one market ID and trade ID.
+- Emits the event consumed by the exact Reactive subscription.
 
-- Is the hook's only settlement authority.
-- Is bound once to the hook and a finite source set.
-- Has no owner action after topology binding.
-- Treats delivery as at-least-once: the first valid observation settles, later authorized deliveries are no-ops.
+The ETH/USDC testnet configuration uses Pyth ETH/USD as a proxy and assumes USDC remains close to one dollar. A
+production deployment must use a direct pair source or independently validate the quote asset.
 
-### Circle path
+### Reactive Network
 
-- The source publisher accepts no trusted reporter price; it obtains a fresh price from a configured Pyth contract and
-  feed id.
-- The testnet ETH/USDC configuration uses Pyth ETH/USD as a proxy and assumes USDC remains close to one dollar. This
-  basis risk is explicit; production must use a direct pair source or separately validate the quote asset.
-- Circle authenticates the application message between its Sepolia and Unichain transmitters.
-- Destination delivery is permissionless. A relayer has no application authority because it cannot forge Circle's
-  attestation or alter the attested body.
-- The publisher requests Circle threshold `1000`, whose confirmed Ethereum path fits the ten-minute MARKOUT window.
-- The receiver accepts threshold `1000–1999` only through Circle's unfinalized handler and threshold `2000+` only
-  through its finalized handler. It permanently pins the source domain, publisher, market, and coordinator.
-- Fast confirmation introduces bounded source-reorganization risk. The hook still enforces maturity, freshness,
-  confidence, and its immutable settlement outcome; deployments requiring hard finality must widen the settlement
-  window rather than pretending a 15–19 minute Ethereum message fits the current ten-minute grace period.
+- Observes the canonical publisher event.
+- Validates event topics and decodes the normalized payload in ReactVM.
+- Requests the callback to the immutable Unichain receiver.
+- Holds no user funds and has no fee-setting or recipient-selection authority.
 
-### Reactive path
+### ReactiveObservationReceiver and SettlementCoordinator
 
-- **Event-native lifecycle:** the full engine subscribes to trade requests, settlement and expiry acknowledgements,
-  normalized reference evidence, and cron rather than relying on a MARKOUT operator or polling service.
-- **Maturity orchestration:** records only maturity, expiry, status, cursor, and retry timestamps needed to wake the
-  delayed lifecycle and process at most eight trades per cron event.
-- **Autonomous action:** eligible evidence is sufficient to request settlement; missing evidence requests sampling;
-  an elapsed grace period requests permissionless-equivalent expiry.
-- **Minimal payload:** the destination receives only `(marketId, tradeId, priceX18, observedAt, confidenceBps)`.
-- **Least authority:** holds no custody, fee policy, rebate-recipient choice, price discretion, or upgrade role.
-- **Authenticated destination:** uses both callback-proxy and injected RVM-identity checks before the coordinator can
-  see the observation.
-- **Order-independent redundancy:** the coordinator makes Circle-first and Reactive-first delivery economically
-  identical, while only Reactive supplies the broader no-keeper orchestration.
-- **Graceful degradation:** an unavailable callback cannot trap funds or change fees; Circle or permissionless expiry
-  continues independently.
+- Require the configured callback proxy and injected ReactVM identity.
+- Forward only the minimal `(marketId, tradeId, priceX18, observedAt, confidenceBps)` payload.
+- Reject unknown trades and unauthenticated callbacks.
+- Treat duplicate delivery after settlement or expiry as a successful no-op.
 
-### Reactive public evidence
+## 5. Public Reactive evidence
 
 | Evidence | Status |
 | --- | --- |
-| Full Reactive lifecycle engine and 17 dedicated lifecycle tests | Verified locally |
-| Five narrow subscriptions and bounded cron processing | Verified in source and tests |
-| Legacy Lasna pulse deployed and funded | Verified |
-| Exact publisher subscription created by the constructor | Verified |
-| Stateless payload and authenticated destination receiver | Verified in source and tests |
-| Circle-first / Reactive-first race equivalence | Verified in tests |
-| Public Unichain callback transaction | Not observed; not claimed live |
+| Stateless Legacy RSC deployed and funded | Verified |
+| Exact publisher and market subscription | Verified |
+| ReactVM execution | Verified publicly |
+| Authenticated Unichain callback | Verified publicly in 11 seconds |
+| Duplicate callback against a terminal trade | Verified as a safe no-op |
+| Pending-first ReactVM reactions | Verified twice |
+| Pending-first destination delivery | Timed out before expiry |
+| Fail-open full provisional refund | Verified |
 
-The sponsor-facing contribution is the architecture pattern: Reactive turns a delayed hook obligation into an
-event-driven lifecycle without becoming a custodian or trusted fee controller. The unobserved relayer outcome is
-reported as infrastructure evidence, not hidden or promoted as a successful callback.
+The 11-second callback proves the live Reactive transport boundary. It reached an already-terminal trade, so it is
+not relabeled as a completed Reactive-first economic allocation. The separate pending-first run reached ReactVM twice
+but not the destination relayer; expiry returned the full provisional amount. This distinction keeps the sponsor
+integration prominent without overstating what the transactions prove.
 
-## 4. Race and replay policy
+Machine-readable evidence is in [`deployments/reactive-legacy-2026-08-26.json`](../deployments/reactive-legacy-2026-08-26.json).
 
-Circle and Reactive may deliver the same observation in either order. The coordinator reads the hook's current trade
-status before forwarding:
+## 6. Liveness and failure policy
 
-- `Pending`: forward and let the hook perform full economic validation.
-- `Settled` or `Expired`: emit a duplicate-delivery event and return successfully without changing accounting.
-- `None`: reject the unknown trade.
+```text
+PENDING -> SETTLED
+PENDING -> EXPIRED
+```
 
-Circle's transmitter provides nonce replay protection for the message itself. MARKOUT's terminal state provides the
-application-level replay boundary across different transports.
+- A valid Reactive callback can settle a pending trade exactly once.
+- A stale, early, late, low-confidence, wrong-market, or malformed observation leaves accounting unchanged.
+- A duplicate callback after settlement or expiry cannot change the allocation.
+- If the callback is unavailable, anyone can expire the trade after the grace period.
+- Expiry credits the entire provisional amount to the trader and creates no LP protection value.
 
-## 5. Liveness policy
+Reactive availability is therefore an automation assumption, never a custody assumption.
 
-Reactive is the target no-keeper orchestration path; Circle is the currently proven redundant delivery path. Neither
-availability assumption becomes a custody assumption. If no valid observation settles before the grace period ends,
-`expireTrade` is permissionless and credits the complete provisional surcharge as a rebate. An unavailable transport
-can reduce recorded LP protection; it cannot manufacture LP value or trap the trader's escrow indefinitely.
+## 7. Historical compatibility module
 
-## 6. Active and research implementations
+The repository preserves the earlier Circle CCTP adapter, deployment scripts, and four public economic lifecycles.
+Those artifacts prove both hook-allocation extremes, demonstrate an independently authenticated recovery design, and
+document the project's resilience pivot. They are not the primary architecture of the final Reactive-first
+submission. Current diagrams, README copy, and presentation material lead with the Reactive event-to-action path and
+label the earlier CCTP records as historical evidence.
 
-The Circle/coordinator contracts are the active public testnet topology. `MarkoutReactive`, callback canaries, and
-deployment manifests remain the implemented autonomous architecture and reproducible outage evidence. They must not
-be described as the live settlement authority unless a public destination callback proves that claim.
+## 8. Production boundary
 
-## 7. Public-proof boundary
-
-The complete contract and deployment logic can be verified locally. A generic EVM fork cannot reproduce Reactive's
-chain-specific subscription precompile, so the deployed pulse's constructor subscription must be proven by a live
-legacy Lasna receipt. That limitation does not affect the Circle fallback, coordinator, hook, or full-rebate expiry.
+- The contracts are experimental and unaudited.
+- A production release needs sustained Reactive relayer reliability across pending trades.
+- The ETH/USD to ETH/USDC testnet proxy must be replaced or basis risk must be modeled explicitly.
+- LP protection reserve distribution remains outside this prototype.
+- The hook's expiry path must remain available even if every automation component is offline.

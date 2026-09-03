@@ -1,8 +1,9 @@
-# Phase 14 Verification - Hybrid Deployment and Release Candidate
+# Phase 14 Verification - Reactive-First Deployment and Release Candidate
 
-Phase 14 packages the shared-coordinator topology on public testnets. The Circle fallback has four complete economic
-lifecycles, and Legacy Reactive has an authenticated 11-second destination callback. Repository and site visibility
-are public; identity fields, the uploaded video, and final submission remain owner-controlled decisions.
+Phase 14 packages the Reactive-first topology on public testnets. Legacy Reactive has an authenticated 11-second
+destination callback, exact subscription evidence, and an honest pending-first relayer-timeout record that ended in a
+full refund. Four earlier CCTP lifecycles remain historical proof of both economic branches. Repository and site
+visibility are public; identity fields, the uploaded video, and final submission remain owner-controlled decisions.
 
 ## Local automated gate
 

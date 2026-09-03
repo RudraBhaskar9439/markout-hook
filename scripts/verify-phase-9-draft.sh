@@ -18,7 +18,11 @@ source_block_count="$(unzip -p "$pptx" 'ppt/notesSlides/notesSlide*.xml' | grep 
 test "$source_block_count" -eq 9
 
 slide_xml="$(unzip -p "$pptx" 'ppt/slides/slide*.xml' | tr -d '\n')"
-grep -q 'Two transport paths; one immutable settlement boundary.' <<<"$slide_xml"
+grep -q 'Reactive turns delayed evidence into an authenticated action.' <<<"$slide_xml"
+grep -q 'Reactive is primary. Unichain owns custody, validation, and final accounting.' <<<"$slide_xml"
+grep -q 'Reactive callback reached Unichain in 11s.' <<<"$slide_xml"
+! grep -q 'Circle is primary' <<<"$slide_xml"
+! grep -q 'Reactive is optional' <<<"$slide_xml"
 grep -q 'Negative markout settled in 38s' <<<"$slide_xml"
 grep -q 'Positive markout settled in 67s' <<<"$slide_xml"
 grep -q '100% REBATED' <<<"$slide_xml"

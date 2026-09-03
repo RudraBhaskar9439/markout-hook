@@ -32,8 +32,9 @@ A small scenario makes the phase understandable without reading Solidity. For ex
 
 ### Level 5 - Live evidence
 
-Explorer transactions prove the real publication, Circle attestation relay, settlement, and claim lifecycle. Reactive
-receives separate live credit only when its destination callback transaction exists publicly.
+Explorer transactions prove the Reactive source publication, ReactVM execution, authenticated destination callback,
+and fail-open expiry. Earlier explorer records separately prove settlement, claim, and both economic allocation
+branches through the historical recovery adapter.
 
 ## Gate discipline
 

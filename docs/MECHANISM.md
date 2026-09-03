@@ -1,8 +1,10 @@
 # MARKOUT Mechanism Specification
 
-Status: Circle economic lifecycles and a Legacy Reactive cross-chain callback are verified publicly. A
-Reactive-first economic settlement remains unproven because the acceptance retry reached ReactVM but not the
-destination relayer before expiry.
+Status: Reactive Network is the primary event-to-action architecture. A Legacy Reactive cross-chain callback is
+verified publicly, and the pending-first acceptance run proves ReactVM execution plus safe full-refund expiry. A
+complete pending-first economic allocation through Reactive remains unproven because that acceptance run did not
+reach the destination relayer before expiry. Earlier Circle lifecycles are retained only as historical accounting and
+recovery-path evidence.
 
 ## 1. Problem
 
@@ -14,11 +16,12 @@ Most dynamic-fee hooks price a swap using information available before execution
 2. MARKOUT collects a separately disclosed provisional hook surcharge.
 3. The hook records the execution price, trade direction, surcharge, and maturity configuration.
 4. The hook emits `MarkoutRequested` with a unique trade ID.
-5. After maturity, any publisher submits a signed Pyth update for the configured ETH/USD feed on Ethereum Sepolia.
-6. The publisher normalizes the observation and sends it to Unichain through Circle CCTP V2.
-7. A stateless Legacy Reactive Contract observes and delivers the exact same publisher event.
-8. The first authenticated delivery reaches MARKOUT through the immutable settlement coordinator.
-9. MARKOUT calculates the final retained surcharge.
+5. After maturity, a publisher submits a signed Pyth update for the configured ETH/USD feed on Ethereum Sepolia.
+6. The publisher normalizes the observation and emits one canonical event bound to the market and trade ID.
+7. A stateless Legacy Reactive Contract observes that exact event, executes in ReactVM, and requests an authenticated
+   callback on Unichain.
+8. The Reactive receiver and immutable settlement coordinator authenticate and forward the observation.
+9. MARKOUT revalidates the evidence and calculates the final retained surcharge exactly once.
 10. The trader receives a pull-based rebate credit. The retained portion is credited to the LP protection reserve.
 
 ## 3. Price and sign convention
@@ -66,25 +69,32 @@ The curve is monotonic over its entire domain and treats equivalent buy and sell
 - Observations before maturity, from the future, after the grace period, stale, missing, zero, or below confidence fail.
 
 If no valid settlement completes before expiry, the complete escrow becomes claimable as a trader rebate.
-Oracle, Circle, or Reactive liveness failure cannot create LP protection value.
+Oracle or Reactive delivery failure cannot create LP protection value.
 
-## 6. Hybrid transport boundary
+## 6. Reactive-first automation boundary
 
-Reactive Network is MARKOUT's event-driven observation transport. The live Legacy pulse subscribes to the canonical
-publisher event, executes in ReactVM, and requests an authenticated callback to Unichain. It owns no oracle, custody,
-or fee authority; the destination hook independently validates every economic input.
+Reactive Network is MARKOUT's event-driven observation and action transport. The live Legacy pulse subscribes to the
+canonical publisher event, executes in ReactVM, and requests an authenticated callback to Unichain. A v4 hook cannot
+wake itself at the five-minute horizon or listen to Ethereum Sepolia, so this Reactive layer advances the normal
+lifecycle without a MARKOUT-owned watcher. It owns no oracle, custody, or fee authority; the destination hook
+independently validates every economic input.
 
-Circle CCTP V2 is the resilience rail. The shared source publisher:
+The canonical source publisher:
 
 - verifies a fresh update against the configured Pyth contract and feed;
 - emits one canonical normalized observation;
-- requests a fast-confirmed generic Circle message to the configured Unichain receiver; and
-- leaves destination relay permissionless because the attestation, not the relayer, authenticates the payload.
+- binds the observation to the configured market and trade ID; and
+- exposes one narrow event that the Reactive subscription can filter exactly.
 
-The coordinator authorizes both transport receivers, and the first valid delivery wins. No ordinary EOA receives
-settlement authority. A public Legacy callback proves the Reactive transport boundary; the separate Reactive-first
-acceptance run also records an honest relayer timeout and full-refund expiry rather than treating a ReactVM event as a
-completed settlement.
+The Reactive receiver requires both the system callback proxy and the injected ReactVM identity. The coordinator and
+hook then provide the replay boundary: the first valid callback can settle a pending trade, while a later duplicate is
+a successful no-op. No ordinary EOA receives settlement authority. A public Legacy callback proves the live transport
+boundary; the separate pending-first acceptance run records the relayer timeout and full-refund expiry rather than
+treating a ReactVM event as a completed economic settlement.
+
+The repository also preserves an earlier Circle CCTP recovery adapter and four public economic lifecycles. Those
+contracts prove accounting branches and transport redundancy, but they are not the primary architecture of the final
+Reactive-first project.
 
 For the ETH/USDC testnet MVP, the configured Pyth ETH/USD price is used as an ETH/USDC proxy and therefore assumes
 USDC remains close to one US dollar. A production design must use a direct ETH/USDC source or explicitly model USDC
@@ -126,6 +136,6 @@ No terminal state can transition again.
 
 ## 10. Remaining release decisions
 
-1. Improve or diversify destination relaying before placing Reactive in a production-critical path.
+1. Improve and monitor Reactive destination relaying before placing the testnet design in a production-critical path.
 2. Decide how the LP protection reserve becomes pool liquidity or LP-owned value.
 3. Replace the ETH/USD-as-ETH/USDC testnet proxy before any production use.

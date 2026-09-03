@@ -1,4 +1,4 @@
-# Phase 13 Verification - Optional Stateless Reactive Pulse
+# Phase 13 Verification - Primary Stateless Reactive Pulse
 
 ## Automated gate
 
@@ -14,7 +14,7 @@ The gate verifies:
    confidence.
 3. The destination requires both the configured callback proxy and the injected ReactVM identity.
 4. Wrong markets, zero trade ids, malformed configuration, and unauthenticated calls fail safely.
-5. Circle-first and Reactive-first delivery preserve the first terminal MARKOUT allocation.
+5. Reactive delivery and later authenticated duplicates preserve the first terminal MARKOUT allocation.
 6. The active pulse source contains no mapping, cron, retry, maturity, or expiry logic.
 
 ## Responsibility boundary
@@ -27,7 +27,7 @@ The gate verifies:
 
 It does not discover trades, sample prices, schedule maturity, retry delivery, hold funds, or decide economics.
 `ReactiveObservationReceiver` authenticates the callback and forwards to `SettlementCoordinator`; the hook repeats all
-economic validation. Circle remains sufficient to settle the trade if Reactive never delivers.
+economic validation. If Reactive does not deliver, permissionless expiry preserves the full-refund guarantee.
 
 ## Live evidence boundary
 
@@ -40,8 +40,7 @@ of these are public:
 - the Unichain callback transaction from the configured proxy;
 - `ReactiveObservationReceived` at the destination.
 
-Legacy lREACT funds only this optional pulse. Circle settlement and permissionless full-rebate expiry do not require
-lREACT.
+Legacy lREACT funds the primary pulse. Permissionless full-rebate expiry does not require lREACT.
 
 Official references:
 

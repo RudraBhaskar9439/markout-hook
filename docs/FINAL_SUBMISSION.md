@@ -30,27 +30,27 @@ repository fills or submits the form.
 
 **Thumbnail:** Upload `web/public/og-evidence-v2.png` (1200 × 630).
 
-**One sentence:** MARKOUT is a Uniswap v4 hook that collects a bounded provisional surcharge and allocates it only
-after a delayed, authenticated price observation reveals whether the trade was adverse or beneficial to liquidity
-providers.
+**One sentence:** MARKOUT is a Reactive-first Uniswap v4 hook that escrows a bounded provisional surcharge, uses
+Reactive Network to turn delayed Pyth evidence into an authenticated Unichain action, and allocates the charge only
+after the trade's directional outcome is observable.
 
 **Submission description:**
 
 AMMs normally price a trade before they know whether its order flow was harmful. Volatility fees can protect liquidity
 providers, but they also charge benign and inventory-improving flow. MARKOUT instead escrows a bounded provisional
 surcharge, waits for a configured markout horizon, and settles the charge from signed directional evidence. Pyth
-verifies and publishes the delayed reference price. A Legacy Reactive Contract precisely subscribes to that canonical
-publisher and market event, executes the reaction in ReactVM, and requests an authenticated Unichain callback without
-a MARKOUT-owned cross-chain relayer. Circle CCTP V2 is an independent delivery rail. An immutable
-coordinator ensures the first valid delivery wins and later duplicates are harmless. If no valid observation arrives,
-permissionless expiry returns the full surcharge.
+verifies and publishes the delayed reference price. Reactive Network is the event-to-action core: a Legacy Reactive
+Contract precisely subscribes to that canonical publisher and market event, executes the reaction in ReactVM, and
+requests an authenticated Unichain callback without a MARKOUT-owned watcher or cross-chain relayer. The Unichain
+receiver and immutable coordinator authenticate the callback, while the hook keeps custody and computes the outcome
+exactly once. If no valid callback arrives, permissionless expiry returns the full surcharge.
 
-Four public trades now prove both allocation extremes and independently reproduce the rebate branch through the
-browser wallet console. A negative-markout trade settled through Circle in 38 seconds
+Four earlier public trades prove both allocation extremes and independently reproduce the rebate branch through the
+browser wallet console. A negative-markout trade settled through the historical CCTP recovery adapter in 38 seconds
 with a 46-second-old Pyth observation, returned all 622 test-USDC base units to the trader, and was claimed publicly.
-A positive-markout trade settled through Circle in 67 seconds with a 96-second-old observation and retained all
+A positive-markout trade settled through that recovery adapter in 67 seconds with a 96-second-old observation and retained all
 3,214,110,616,342 test-WETH base units in the LP-protection reserve. The wallet-console trade then settled −266.96
-bps markout through a second 67-second Circle relay and claimed its full 2,041,420,186,161-unit test-WETH rebate. A
+bps markout through a second 67-second recovery relay and claimed its full 2,041,420,186,161-unit test-WETH rebate. A
 separate Fair-Flow pool then settled in 55 seconds, returned its full provisional surcharge, finalized at 18 bps, and
 executed the deployed sponsored-claim entrypoint. Onchain balances match the accounting state.
 
@@ -60,21 +60,22 @@ keeps good-flow fees at or below 30 bps while retaining at least 20% modeled LP-
 
 ## Partner integration answer
 
-Select **Reactive Network**, **Circle**, and **Pyth** if those names are present in the form's partner picker.
+Select **Reactive Network** and **Pyth**. The final submission architecture is Reactive-first. The repository retains
+an earlier CCTP recovery experiment for historical reproducibility, but it is not presented as the active sponsor path.
 
-MARKOUT's Reactive integration is a live event-to-action transport, not a logo-level dependency. Its funded, debt-free
+MARKOUT's Reactive integration is the primary event-to-action transport, not a logo-level dependency. Its funded, debt-free
 Legacy RSC is publicly deployed with an exact subscription to the canonical Pyth-verified publisher and market event.
 ReactVM turns that event into an authenticated Unichain callback without any MARKOUT-operated listener or relayer.
 The payload carries only `(marketId, tradeId, priceX18, observedAt, confidenceBps)` through a
 callback-proxy- and RVM-authenticated Unichain receiver.
 
-Reactive and Circle meet at one immutable coordinator: the first valid observation settles and the second becomes a
-successful no-op. Circle supplies an independent authenticated route; Reactive supplies autonomous subscription,
-ReactVM execution, and callback generation. Tests prove either delivery order, malformed callback rejection,
-and zero effect on the full-refund guarantee. The pulse deployment and subscription are public. Legacy Reactive also
-completed an authenticated Unichain callback in 11 seconds, so MARKOUT labels the transport live. The callback reached
-an already-terminal trade; a separate pending-first run reached ReactVM twice but timed out at the destination relayer,
-so Reactive-first economic settlement is not claimed. Circle CCTP V2 has completed four public economic lifecycles.
+The pulse deployment and exact subscription are public. Legacy Reactive completed an authenticated Unichain callback
+in 11 seconds, so MARKOUT labels the transport live. The callback reached an already-terminal trade and was handled as
+a replay-safe no-op. A separate pending-first run reached ReactVM twice but timed out at the destination relayer, after
+which permissionless expiry returned the full provisional amount. MARKOUT therefore proves the Reactive subscription,
+ReactVM reaction, authenticated callback boundary, replay safety, and fail-open recovery without claiming a completed
+pending-first economic allocation. The earlier Circle adapter and its four public lifecycles remain historical
+mechanism evidence, not the final architecture's primary path.
 
 ## Exact long-form answers
 
@@ -90,8 +91,8 @@ directional markout as an adverse-selection proxy to determine how much becomes 
 
 MARKOUT turns protection from an ex-ante prediction into an ex-post, conserved settlement. It neither blacklists
 wallets nor claims to measure exact LVR or individual LP profit. Every provisional unit ends in a named bucket;
-invalid or missing observations fail open to a full rebate after expiry; and two authenticated transports can race
-without changing the first terminal outcome. On one reproducible 768-trade tape, the 18 bps Fair-Flow profile improves
+invalid or missing observations fail open to a full rebate after expiry; and Reactive callbacks cannot change a trade
+after its first terminal outcome. On one reproducible 768-trade tape, the 18 bps Fair-Flow profile improves
 modeled LP net-after-proxy by 850.66 USDC, or 21.87%, versus a fixed 30 bps fee. At identical execution quality, benign
 flow saves 2.5738 USDC and inventory-improving flow saves 12 USDC per 10,000 USDC versus fixed; those savings rise to
 22.0528 and 29.4403 USDC versus the declared volatility policy. The documented regression is that volatility earns
@@ -114,7 +115,8 @@ threat-model and runbook evidence instead of being hidden.
 - Prices realized directional outcomes instead of charging the entire market for volatility.
 - Makes benign and inventory-improving flow cheaper than a fixed 30 bps pool in the declared Fair-Flow profile.
 - Keeps custody, maturity validation, settlement mathematics, and fail-open expiry inside the hook boundary.
-- Uses Reactive as a live event-to-action rail and Circle as an independent authenticated delivery rail.
+- Uses Reactive Network as the primary cross-chain event-to-action rail.
+- Keeps the earlier Circle adapter as historical recovery research rather than presenting it as the normal path.
 - Makes at-least-once delivery safe through immutable authentication and idempotent terminal settlement.
 - Reports the research metric honestly as an adverse-selection proxy, not exact LVR or individual LP profit.
 
@@ -131,7 +133,7 @@ threat-model and runbook evidence instead of being hidden.
 - Benign flow saves 2.5738 USDC per 10,000 USDC versus fixed and 22.0528 USDC versus volatility at equal execution.
 - Inventory-improving flow saves 12 USDC per 10,000 USDC versus fixed and 29.4403 USDC versus volatility.
 - A 21-point parameter sweep selects 18 bps as the lowest base satisfying the declared good-flow and LP constraints.
-- Four public Circle settlements demonstrate both terminal economic branches and the deployed Fair-Flow profile:
+- Four historical CCTP settlements demonstrate both terminal economic branches and the deployed Fair-Flow profile:
   three 100% rebates and one 100% LP retention.
 - The historical replay preserves the intended directional fee ordering at 18.00, 29.02, and 39.14 bps while
   recording a -0.39% aggregate LP-net result versus fixed instead of generalizing the synthetic result.
@@ -141,19 +143,19 @@ threat-model and runbook evidence instead of being hidden.
 | Evidence | Public link |
 | --- | --- |
 | Rebate-branch Pyth publication | https://sepolia.etherscan.io/tx/0xed6af5c42e554c221078110d6db03fba8fd74bf24a88cf52494d4e605a31f6ca |
-| Rebate-branch Circle settlement | https://sepolia.uniscan.xyz/tx/0xa64789b5a08ea8aae8c2b909b6a81b495334b707eaae12610bf3749902ec532f |
+| Historical rebate-branch settlement | https://sepolia.uniscan.xyz/tx/0xa64789b5a08ea8aae8c2b909b6a81b495334b707eaae12610bf3749902ec532f |
 | Rebate claim | https://sepolia.uniscan.xyz/tx/0xa6ded637a8c9651f252e302f7cedec2969d637f733777f7f2ad71ac700d64630 |
 | Idempotent later delivery | https://sepolia.uniscan.xyz/tx/0x06ef5334210274dd451b5465f34d108d1714cf5536ee9ae1998193450114fa76 |
 | Protection-branch Uniswap v4 swap | https://sepolia.uniscan.xyz/tx/0xb6179eab5dcf9ff2f3563442dbf826fe5fcb86524e9d71aa913c9ba9e90a2376 |
 | Protection-branch Pyth publication | https://sepolia.etherscan.io/tx/0x9d20a2a8bfc5c7dd654608a9214472ff3ed37cbdff4614064aff28805f9f8861 |
 | Wallet-console v4 swap | https://sepolia.uniscan.xyz/tx/0x889ea958d19574572890a5ae5a5890c7a8d31f94ebfbe9d065b58d884c1f739a |
 | Wallet-console Pyth publication | https://sepolia.etherscan.io/tx/0x2465cd2f4e2299a1898f45d0634fc2fd87ae2412de615504fc0125d9ed204e42 |
-| Wallet-console Circle settlement | https://sepolia.uniscan.xyz/tx/0x81f7878312b81b80ba69ad8fdc0f4e06f64f8624ed610ebd5a6ea63cca0ca610 |
+| Historical wallet-console settlement | https://sepolia.uniscan.xyz/tx/0x81f7878312b81b80ba69ad8fdc0f4e06f64f8624ed610ebd5a6ea63cca0ca610 |
 | Wallet-console rebate claim | https://sepolia.uniscan.xyz/tx/0xd78f8533519c4468ac345f0caad52a8eb5c57ee904fc5882eb9066ee16b1b9d8 |
 | Fair-Flow 18 bps pool initialization | https://sepolia.uniscan.xyz/tx/0xf96119129f7bb91fe9331725a5ba2c4aabaa8ebeec17042d1c3ef15f95a4cba9 |
 | Fair-Flow v4 swap | https://sepolia.uniscan.xyz/tx/0xf4873749b39300d5d19d28e3b0b0f43511ac907595b85d14e76c725f86f9c70f |
 | Fair-Flow Pyth publication | https://sepolia.etherscan.io/tx/0xccd8cc932276ce3233665c230d8107854b2201bca15a173b7986245c9d517221 |
-| Fair-Flow Circle settlement | https://sepolia.uniscan.xyz/tx/0xb1bd16c88d71fbb737cbaa20ed9002dd7bd7098d1c17ac11ab3c7f9ed01c0c4d |
+| Historical Fair-Flow settlement | https://sepolia.uniscan.xyz/tx/0xb1bd16c88d71fbb737cbaa20ed9002dd7bd7098d1c17ac11ab3c7f9ed01c0c4d |
 | Fair-Flow sponsored-claim entrypoint | https://sepolia.uniscan.xyz/tx/0x996ae7697b54ea67df0fbd3eb9ded1163d3a3df1d272bdcc7260ee18597b5f70 |
 | Legacy Reactive source observation | https://sepolia.etherscan.io/tx/0x99c7110784fc9e39ff0db078be74e3995855172a4f9a8c565169373e1daa7c85 |
 | Legacy Reactive destination callback | https://sepolia.uniscan.xyz/tx/0x5d933d5ff078c500c61fc32fef1ae526049085dad8e15ff4ef2673a971114459 |
@@ -168,36 +170,36 @@ authentication. The final form itself remains owner-controlled.
 
 | Network | Contract | Address |
 | --- | --- | --- |
-| Ethereum Sepolia | Pyth/Circle observation publisher | `0xb3d2403a028849292326668ab41ed25f0f049976` |
-| Unichain Sepolia | Settlement coordinator | `0x282a2ed0eaf48e52e7844de40a1faf6f13445dc0` |
-| Unichain Sepolia | Circle receiver | `0x88d2384a2bddffb26936d4b05b55d530709e534b` |
-| Unichain Sepolia | MARKOUT hook | `0x2981693161ebbeaf10e91d6ddfc2ed810e80c044` |
-| Ethereum Sepolia | Fair-Flow Pyth/Circle publisher | `0xeeb18d96AABcec142D95Ba2b9E7E3221832Cf139` |
-| Unichain Sepolia | Fair-Flow settlement coordinator | `0x7BC38f019D5F3000c15C9E5309dFB1e7f361cb6e` |
-| Unichain Sepolia | Fair-Flow Circle receiver | `0x24858E73A18f1A4537897DD2d04417a7a24b8f68` |
-| Unichain Sepolia | Fair-Flow MARKOUT hook | `0x3A17354331C21B246A9eC9BF979Af77e64f30044` |
 | Legacy Lasna | Deployed Reactive observation pulse | `0xdd81EF6558E4D4F8403B3416c25ecD1CcB303e4e` |
 | Legacy Lasna | Reactive acceptance pulse | `0x253A29BfbbCECDeCE7a32ba98Bd12922Af4b9e5b` |
+| Ethereum Sepolia | Canonical Pyth observation publisher | `0xb3d2403a028849292326668ab41ed25f0f049976` |
 | Unichain Sepolia | Reactive acceptance receiver | `0xb7f52fC211df7445b11f1f9B43cBc1fcd46eBa22` |
 | Unichain Sepolia | Reactive acceptance hook | `0x82e25A90CC6c0B5b3926E2154DaD742d10ba0044` |
+| Unichain Sepolia | Settlement coordinator | `0x282a2ed0eaf48e52e7844de40a1faf6f13445dc0` |
+| Unichain Sepolia | MARKOUT hook | `0x2981693161ebbeaf10e91d6ddfc2ed810e80c044` |
+| Ethereum Sepolia | Historical Fair-Flow Pyth publisher | `0xeeb18d96AABcec142D95Ba2b9E7E3221832Cf139` |
+| Unichain Sepolia | Historical Fair-Flow settlement coordinator | `0x7BC38f019D5F3000c15C9E5309dFB1e7f361cb6e` |
+| Unichain Sepolia | Historical Fair-Flow recovery receiver | `0x24858E73A18f1A4537897DD2d04417a7a24b8f68` |
+| Unichain Sepolia | Fair-Flow MARKOUT hook | `0x3A17354331C21B246A9eC9BF979Af77e64f30044` |
 
 ## Suggested four-minute demo
 
 1. Explain why volatility cannot identify which realized trades were harmful.
 2. Replay benign, informed, and inventory-improving outcomes in the dashboard.
 3. Show the seeded comparison, the 18 bps selection rule, and accounting-conservation evidence.
-4. Explain Reactive lifecycle orchestration, Circle fallback delivery, and fail-open expiry.
+4. Explain the Reactive subscription, ReactVM reaction, authenticated callback, and fail-open expiry.
 5. Open the 11-second Legacy callback, then state precisely why it proves transport but not Reactive-first settlement.
-6. Open the four Pyth/Circle lifecycle records, including the Fair-Flow 18 bps settlement and claim.
+6. Open the historical economic lifecycle records only after the Reactive proof, including the Fair-Flow 18 bps settlement and claim.
 7. Close with both demonstrated allocation extremes - 100% rebated and 100% retained - and the fail-open refund.
 
 ## Honest limitations
 
 - Testnet prototype; not independently audited and not suitable for real funds.
 - The demo uses ETH/USD as an ETH/USDC reference proxy.
-- Circle uses fast-confirmed finality to fit the bounded settlement window.
 - Legacy Reactive completed an authenticated 11-second callback for an already-terminal trade, proving transport
   liveness. A Reactive-first economic settlement has not been publicly demonstrated.
+- The earlier Circle recovery module uses fast-confirmed finality and is preserved as historical evidence, not the
+  primary final architecture.
 - The LP protection reserve distribution mechanism is intentionally outside this prototype.
 - The Fair-Flow pool has one public complete-rebate lifecycle; the original pool remains the public proof for the
   full-retention branch.

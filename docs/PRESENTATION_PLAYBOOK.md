@@ -63,8 +63,8 @@ Show the separated architecture and point to each plane only once.
 
 "Frontend explains. Unichain accounts. Ethereum verifies. Reactive connects the event to an authenticated action.
 The hook cannot subscribe to a foreign-chain Pyth publication by itself, so Reactive turns that canonical event into
-a Unichain callback without a MARKOUT-owned cross-chain relayer. Circle is an independent delivery rail, and the
-coordinator makes their order harmless."
+a Unichain callback without a MARKOUT-owned cross-chain relayer. The Reactive receiver authenticates the callback,
+and the hook alone validates the evidence and allocates escrow."
 
 Then show the Reactive section:
 
@@ -92,9 +92,10 @@ backtesting and not exact LVR."
 
 Show the public evidence card.
 
-"MARKOUT defines 202 Solidity test functions and 12 stateful invariant entrypoints, has four public Circle-completed
-lifecycles covering full rebate and full retention, a separately deployed Fair-Flow pool, and zero medium or high
-Slither findings. MARKOUT does not guess who is toxic. It prices what the trade actually did."
+"MARKOUT defines 202 Solidity test functions and 12 stateful invariant entrypoints, has a public 11-second Reactive
+callback, safe fail-open recovery, historical lifecycle proof for full rebate and full retention, a separately
+deployed Fair-Flow pool, and zero medium or high Slither findings. MARKOUT does not guess who is toxic. It prices what
+the trade actually did."
 
 Stop. Do not add another feature list.
 
@@ -103,7 +104,7 @@ Stop. Do not add another feature list.
 1. "The frontend submits a real swap and reads the receipt; it never computes the outcome."
 2. "The Unichain hook owns custody, maturity validation, and fee allocation."
 3. "Pyth creates canonical evidence, while Reactive turns that foreign-chain event into an authenticated action."
-4. "Circle is an independent delivery rail, and permissionless expiry guarantees a full refund if neither route succeeds."
+4. "If Reactive delivery is unavailable, permissionless expiry guarantees the full provisional amount remains refundable."
 
 ## Questions judges are likely to ask
 
@@ -118,12 +119,13 @@ mechanism intentionally attracts good flow and makes small adverse-selection opp
 No. It is modeled LP net after a pool-level adverse-selection proxy on a frozen synthetic tape. Concentrated-liquidity
 depth, LP shares, inventory paths, routing, gas, and demand elasticity are outside the study.
 
-### Why is Reactive necessary if Circle settled the public trades?
+### Why is Reactive necessary?
 
-Circle proves authenticated delivery. Reactive supplies the intended event-driven control plane: observing trade
-requests, tracking maturity, responding to reference events and cron, retrying callbacks, acknowledging terminal
-states, and requesting expiry without a MARKOUT keeper. An authenticated callback completed in 11 seconds; because it
-reached an already-terminal trade, transport is proven while Reactive-first economics remains unclaimed.
+A v4 hook cannot wake itself at the markout horizon or subscribe to Ethereum Sepolia. Reactive supplies the
+event-driven control plane: it subscribes to the canonical Pyth-backed event, executes the reaction in ReactVM, and
+requests an authenticated Unichain callback without a MARKOUT keeper. An authenticated callback completed in 11
+seconds. Because it reached an already-terminal trade, transport is proven while a pending-first economic allocation
+remains unclaimed.
 
 ### Did you backtest historical Uniswap data?
 
@@ -144,7 +146,7 @@ provisional charge becomes claimable by the trader.
 - Do not call the proxy exact LVR or an individual LP loss.
 - Do not call the 11-second Reactive callback a Reactive-first economic settlement; it reached a terminal trade.
 - Do not claim MARKOUT already creates deeper liquidity or volume growth.
-- Do not describe Circle and Reactive as if both supply the same orchestration role.
+- Do not present the historical Circle recovery module as the current primary architecture.
 
 ## Rehearsal checklist
 

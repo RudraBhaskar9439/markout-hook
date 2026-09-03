@@ -1,5 +1,8 @@
 # Phase 9 Draft Verification Guide
 
+> Historical checkpoint. Its settlement wording predates the final Reactive-first submission architecture. Use
+> `README.md`, `docs/HYBRID_SETTLEMENT.md`, and `docs/FINAL_SUBMISSION.md` for current claims.
+
 The draft gate verifies the final-submission package, including the explorer-backed Circle settlement now recorded in
 the dated deployment manifest. Owner identity fields, visibility changes, the uploaded video, and final-form
 submission remain outside this local gate.

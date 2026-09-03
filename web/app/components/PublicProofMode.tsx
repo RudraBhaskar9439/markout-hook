@@ -27,7 +27,7 @@ const proofPaths: ProofPath[] = [
     metrics: [
       { value: "18 bps", label: "final fee" },
       { value: "100%", label: "surcharge rebated" },
-      { value: "55s", label: "fallback relay" },
+      { value: "55s", label: "historical relay" },
     ],
     receipts: [
       { label: "Swap", href: "https://sepolia.uniscan.xyz/tx/0xf4873749b39300d5d19d28e3b0b0f43511ac907595b85d14e76c725f86f9c70f" },
@@ -47,7 +47,7 @@ const proofPaths: ProofPath[] = [
     metrics: [
       { value: "80 bps", label: "original profile final" },
       { value: "100%", label: "surcharge retained" },
-      { value: "67s", label: "fallback relay" },
+      { value: "67s", label: "historical relay" },
     ],
     receipts: [
       { label: "Swap", href: "https://sepolia.uniscan.xyz/tx/0xb6179eab5dcf9ff2f3563442dbf826fe5fcb86524e9d71aa913c9ba9e90a2376" },

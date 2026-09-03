@@ -14,7 +14,7 @@ Cloudflare Worker-compatible React application built with vinext and the Sites V
   resulting fee allocation.
 - The console is connected to the separately deployed 18 + 50 bps Fair-Flow pool and uses versioned browser storage
   so trade identifiers from the original hook cannot be loaded accidentally.
-- The interface leads with Reactive Network and links four public fallback lifecycles plus three claimed rebates.
+- The interface leads with Reactive Network and labels four pre-pivot economic lifecycles as historical proof.
 - The public evidence contrasts both allocation extremes: three 100% rebates after negative markout and 100% retained
   for LP protection after positive markout.
 - The separated architecture gives Frontend, Unichain, Ethereum/Pyth, and Reactive Network distinct responsibility

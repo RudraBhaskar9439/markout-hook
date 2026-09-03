@@ -9,8 +9,9 @@ final effective fee     = 18 bps base + retained portion of the provisional char
 ```
 
 The existing public pool remains 30 + 50 bps. Fair-Flow is a separate deployment, not a relabeling of that evidence.
-Its dated [public manifest](../deployments/fair-flow-2026-08-22.json) records the 18 bps pool, new hook, new Circle
-topology, a real swap, 55-second settlement, complete surcharge rebate, and executed sponsored-claim entrypoint.
+Its dated [public manifest](../deployments/fair-flow-2026-08-22.json) records the 18 bps pool, new hook, historical
+recovery topology, a real swap, 55-second settlement, complete surcharge rebate, and executed sponsored-claim
+entrypoint. This record proves the Fair-Flow economics; it is not the final Reactive transport claim.
 
 ## Why a trader routes here
 

@@ -1,4 +1,7 @@
-# Phase 12 Verification - Circle CCTP V2 Primary Transport
+# Phase 12 Verification - Historical Circle CCTP V2 Recovery Transport
+
+> Historical checkpoint. This phase proved the recovery module and economic branches before Reactive Network became
+> the primary final architecture.
 
 ## Automated gate
 

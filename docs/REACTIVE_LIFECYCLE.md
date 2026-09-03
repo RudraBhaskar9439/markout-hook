@@ -1,144 +1,131 @@
-# Reactive Lifecycle Specification
+# Reactive-First Lifecycle Specification
 
-Status: Phase 4 scheduler implemented; Phase 5 autonomous sampling extension covered by local end-to-end simulation.
+Status: Legacy Reactive transport is deployed and publicly verified. A complete pending-first economic allocation
+through that transport remains unclaimed because the acceptance callback did not reach Unichain before expiry.
 
-## Scope and network model
+## Why Reactive Network is part of the mechanism
 
-`MarkoutReactive` is the autonomous scheduler between the origin hook, a normalized reference-price event, and the
-destination callback adapter. It targets Reactive Network's current Omni architecture: one standard-EVM Reactive
-deployment, with no application state split across an origin contract and ReactVM copy. It deliberately emits the
-legacy-compatible `Callback(uint256,address,uint64,bytes)` event because Reactive Network states that this callback
-delivery format remains supported during the Omni transition.
+MARKOUT cannot determine a five-minute post-trade outcome inside the original swap transaction. A Unichain hook also
+cannot subscribe to a future event on Ethereum Sepolia or wake itself when that event appears. Reactive Network fills
+that missing event-to-action role:
 
-The implementation uses the official pinned `reactive-lib`. Local integration tests use the official pinned
-`reactive-test-lib`, a real Uniswap v4 `PoolManager`, real swaps, the real MARKOUT hook, and callback-proxy simulation.
+1. a trade becomes eligible after its fixed maturity;
+2. a canonical publisher verifies and normalizes the delayed Pyth observation on Ethereum Sepolia;
+3. the deployed Reactive pulse consumes only the configured publisher event and market topic;
+4. ReactVM validates the event and encodes an authenticated callback request; and
+5. the Unichain receiver and hook validate the callback before allocating the provisional amount.
 
-## Subscriptions
+Reactive is the primary automation layer. It does not custody tokens, select a price, choose a fee, or control the
+beneficiary. Those economic decisions remain inside immutable Unichain contracts.
 
-One scheduler registers exactly five narrow subscriptions during construction:
-
-1. `MarkoutRequested` from the configured hook on the origin chain;
-2. `MarkoutSettled` from that hook for delivery acknowledgement;
-3. `MarkoutExpired` from that hook for delivery acknowledgement;
-4. `NormalizedReferencePricePublished` from one configured feed and indexed market ID; and
-5. one configured Reactive cron topic from the configured cron emitter.
-
-Chain IDs, contract addresses, market ID, and cron topic are immutable. A log that does not match those boundaries has
-no state effect.
-
-Lasna Omni uses distinct addresses for two system roles. The subscription/payment service is
-`0x8888888888888888888888888888888888888888`, while current cron logs are emitted from
-`0x0000000000000000000000000000000000fffFfF`. The scheduler stores both immutably: only the service may call
-`react`, but the fifth filter and cron-log check use the emitter. Conflating the two addresses produces an active-looking
-subscription that never receives a live cron event.
-
-## End-to-end sequence
+## Deployed topology
 
 ```text
-Uniswap swap
-    -> MarkoutHook emits MarkoutRequested
-    -> MarkoutReactive records only maturity, expiry, and delivery state
+Unichain Sepolia
+  MarkoutHook.afterSwap
+    -> stores trade ID, execution price, direction, beneficiary, maturity, and expiry
+    -> escrows the bounded provisional amount
 
-Reference source
-    -> normalization adapter emits a price, observation time, and confidence
-    -> MarkoutReactive accepts it only if it is newer, nonzero, and sufficiently confident
+Ethereum Sepolia
+  canonical Pyth observation publisher
+    -> verifies signed Pyth update
+    -> binds price, publish time, confidence, market ID, and trade ID
+    -> emits the normalized reference event
 
-Reactive cron
-    -> scans at most eight records using a persistent circular cursor
-    -> waits before maturity
-    -> requests an authenticated reference sample if no eligible observation exists
-    -> requests full-rebate expiry only after the grace period
+Legacy Reactive Lasna
+  MarkoutPulseReactive
+    -> exact publisher subscription
+    -> exact event-signature subscription
+    -> exact market-topic subscription
+  ReactVM reaction
+    -> decodes the normalized payload
+    -> requests the authenticated Unichain callback
 
-Reference sampler callback
-    -> reads three configured Uniswap v3 fee-tier pools
-    -> rejects low liquidity or excessive cross-pool dispersion
-    -> emits the median as a normalized reference event
-    -> immediately re-enters mature-trade processing
-
-Reactive callback proxy
-    -> injects the authorized Reactive identity into the callback payload
-    -> ReactiveMarkoutSettlementAdapter checks both proxy sender and injected identity
-    -> MarkoutHook settles or expires the trade
-
-Hook terminal event
-    -> MarkoutReactive acknowledges delivery and finalizes its local record
+Unichain Sepolia
+  ReactiveObservationReceiver
+    -> verifies callback proxy and injected ReactVM identity
+  SettlementCoordinator
+    -> accepts the first valid delivery and makes later deliveries no-ops
+  MarkoutHook
+    -> revalidates time, confidence, market, direction, solvency, and state
+    -> settles once or permits full-refund expiry
 ```
 
-## Delivery states and retries
+## Exact subscription boundary
 
-```text
-None -> Pending -> SettlementPendingAcknowledgement -> Finalized
-                \-> ExpiryPendingAcknowledgement ----/
-```
+The final deployed pulse is deliberately stateless. Constructor configuration pins:
 
-The callback is at-least-once, not assumed to be exactly-once. Until a trusted hook terminal event is observed, the
-scheduler may emit the same callback again, but a per-trade 60-second cooldown bounds settlement and expiry retries.
-This matters on Omni, where `Cron10` is approximately ten seconds rather than the legacy network's approximately one
-minute. The destination adapter reads the hook's state before forwarding:
+- Ethereum Sepolia as the origin chain;
+- the canonical observation publisher address;
+- the normalized reference-price event signature;
+- the ETH/USDC market topic;
+- the Unichain destination chain and receiver; and
+- the callback gas limit.
 
-- a pending trade is forwarded once;
-- an already settled or expired trade returns successfully without changing accounting; and
-- an unknown trade reverts.
+Unrelated logs cannot produce a MARKOUT callback. The narrow filter also keeps the sponsor integration reviewable:
+the reaction performs deterministic decoding and callback encoding rather than offchain policy selection.
 
-This separates transport retry from economic finality. A delivered callback cannot settle twice, and a callback lost
-after emission is retried without paying for one terminal callback on every cron tick.
+## Authentication and economic authority
 
-## Price and expiry rules
+The destination receiver requires both the configured Reactive callback proxy and the injected ReactVM identity. It
+forwards a valid observation to the immutable coordinator, which is bound to the MARKOUT hook.
 
-The scheduler accepts only a monotonically newer normalized observation whose:
+The hook independently checks:
 
-- price and observation timestamp are nonzero;
-- confidence is between 9,000 and 10,000 basis points; and
-- indexed market ID matches the configured market.
+- the trade exists and is still pending;
+- maturity has been reached without crossing expiry;
+- market ID and trade ID match;
+- price and observation time are nonzero;
+- the observation is neither early, future-dated, nor stale;
+- confidence satisfies the configured minimum;
+- the provisional amount remains solvent; and
+- the trade has not already settled or expired.
 
-At cron evaluation the observation must be at or after trade maturity, not in the future, and no more than two minutes
-old. The exact expiry timestamp remains settleable. Beginning one second after expiry, the scheduler requests expiry;
-the hook then credits the entire provisional surcharge as a trader rebate. A stale or missing source therefore cannot
-create LP-owned value.
+Only after those checks does the hook compute directional markout and split the provisional amount. Reactive can
+initiate this transition, but it cannot alter the allocation formula or move funds directly.
 
-## Bounded processing
+## At-least-once transport, exactly-once economics
 
-Each cron processes at most eight array positions and advances a persistent cursor. Work is bounded even if many
-trades exist; every position is revisited over subsequent crons. Phase 4 tests create nine live trades and prove that
-the first cron emits eight callbacks while the next cursor pass handles the ninth.
+Reactive delivery is treated as at least once. The receiver, coordinator, and hook make duplicate callbacks safe:
 
-This is the safe MVP policy, not a final throughput claim. Phase 6 measures event and callback cost, while Phase 7 can
-introduce a more advanced queue only if evidence shows it is required.
+- the first valid pending delivery may settle the trade;
+- a duplicate for a settled or expired trade succeeds as a no-op; and
+- malformed, unauthenticated, or mismatched payloads revert.
 
-## Authentication boundary
+This separates transport retries from economic finality. No callback can allocate the provisional amount twice.
 
-The hook authorizes only its immutable settlement adapter. The adapter and sampler each require both:
+## Fail-open user recovery
 
-- `msg.sender` equals the configured Reactive callback proxy; and
-- the proxy-injected first argument equals the configured Reactive identity.
+If no valid Reactive callback reaches Unichain before the grace period ends, anyone may call `expireTrade`. Expiry
+credits the complete provisional amount to the original beneficiary's pull-based rebate balance. It cannot redirect
+the refund and does not require an administrator.
 
-Direct calls, a real proxy carrying the wrong identity, an unbound target, and rebinding all fail. Neither callback
-target has a withdrawal, upgrade, arbitrary-call, or owner-settlement path. Both inherit the minimum Reactive payer
-surface so they can hold destination gas funds and let only the configured proxy collect callback debt.
+The result is a bounded failure mode: transport interruption removes LP protection for that trade, but it does not
+trap the trader's provisional funds.
 
-## Autonomous sample retry
+## Public proof and its boundary
 
-When at least one scanned trade is mature but has no eligible observation, the scheduler emits one sampler callback,
-not one callback per trade. Requests have a 60-second global retry cooldown. A normalized event from the configured
-sampler immediately processes mature work, producing the settlement callback without waiting for another cron.
+The committed [deployment record](../deployments/reactive-legacy-2026-08-26.json) proves:
 
-Sampling is optional at construction, preserving compatibility with push-based normalized feeds. With a sampler
-configured, the full causal chain is cron -> sampler callback -> normalized event -> settlement callback -> terminal
-hook event -> acknowledgement.
+- a funded Legacy Reactive pulse with a publicly verified exact subscription;
+- live event processing in ReactVM;
+- an authenticated callback from Ethereum Sepolia to Unichain in 11 seconds;
+- safe no-op handling when the callback targets an already-terminal trade; and
+- a separate pending-first run in which two ReactVM reactions occurred, the destination relayer missed expiry, and
+  permissionless recovery returned and paid the full provisional amount.
 
-## Phase boundaries
+The 11-second callback proves Reactive transport and authentication, not a pending-first economic settlement. The
+acceptance run proves fail-open safety under a relayer outage, not successful destination delivery. These boundaries
+are retained in the README, deck, dashboard, and submission draft.
 
-- Phase 4 represents the reference event behind a stable normalized interface.
-- Phase 5 implements one source-specific adapter: a three-pool Uniswap v3 median sampler. Its spot-pool inputs prove
-  live transport but are explicitly not represented as a production manipulation-resistant oracle.
-- Callback gas, service address, cron emitter, callback proxy, cron topic, chain IDs, and Reactive identity must be
-  confirmed against the current testnet configuration immediately before deployment.
-- Phase 4 proves behavior locally. It does not claim that a live cross-network callback has succeeded.
-- Callback funding, explorer evidence, monitoring, and deployment manifests are Phase 5 deliverables.
+## Historical implementations
 
-## Upstream compatibility references
+The repository also contains an earlier stateful Omni scheduler and a pre-pivot CCTP recovery adapter. They remain for
+test coverage and reproducibility. Neither is presented as the current primary architecture.
 
-- [Reactive Network roadmap and Omni technical details](https://blog.reactive.network/reactive-network-roadmap-a-closer-look-at-the-technical-details/)
-- [Reactive testnet transition announcement](https://blog.reactive.network/reactives-next-chapter-starts-testnet-launch-team-news/)
-- [Official reactive-lib](https://github.com/Reactive-Network/reactive-lib)
-- [Official reactive-test-lib](https://github.com/Reactive-Network/reactive-test-lib)
+## References
+
+- [Reactive-first settlement architecture](HYBRID_SETTLEMENT.md)
+- [Public Reactive verification](PHASE_13_VERIFICATION.md)
+- [Threat model](THREAT_MODEL.md)
+- [Evidence ledger](EVIDENCE.md)

@@ -4,11 +4,11 @@ Final UHI10 submission deadline: **September 3, 2026 at 11:59 PM Pacific Time**.
 
 The project uses gated phases. At the end of every phase, work stops for a verification handoff. A phase passes only when its automated checks, manual demonstration, and documentation checklist all pass. Passing phases receive an annotated Git tag such as `phase-1-pass` so the last known-good state is always recoverable.
 
-> **Current submission architecture (August 31, 2026):** Reactive Network is MARKOUT's autonomous event-to-action
-> rail. An independently authenticated Circle path enters the same replay-safe coordinator as a resilience fallback.
-> Legacy Reactive has a public 11-second authenticated Unichain callback; the callback reached an already-terminal
-> trade, so it proves transport and replay safety rather than Reactive-first economic settlement. Four public fallback
-> lifecycles prove both fee-allocation extremes. Earlier phase names below remain as build history, not current claims.
+> **Current submission architecture (September 3, 2026):** Reactive Network is MARKOUT's primary event-to-action
+> rail. It observes the canonical Pyth-backed event, executes in ReactVM, and requests the authenticated Unichain
+> callback. Legacy Reactive has a public 11-second callback; a separate pending-first run proves safe full-refund
+> expiry after a relayer timeout. Earlier Circle phases and transactions remain below as historical build evidence,
+> not as the final architecture narrative.
 
 ## Phase overview
 
@@ -26,9 +26,9 @@ The project uses gated phases. At the end of every phase, work stops for a verif
 | 9 | Sep 1–3 | Submission package | Final links, video, deck, and form are complete |
 | 10 | Aug 21 | Resilience architecture pivot | Multiple authenticated delivery boundaries are frozen |
 | 11 | Aug 21–22 | Shared settlement coordinator | Multiple authenticated transports race safely without changing hook accounting |
-| 12 | Aug 22–24 | Circle CCTP resilience path | A Circle-attested observation settles a MARKOUT trade on Unichain |
-| 13 | Aug 24–25 | Minimal Reactive event rail | A stateless Maestro-style RSC can settle through the same coordinator |
-| 14 | Aug 25–Sep 3 | Hybrid testnet and final package | Public economic fallback, Reactive transport, and final judge materials |
+| 12 | Aug 22–24 | Historical CCTP recovery path | An independently attested observation proves MARKOUT's economic branches |
+| 13 | Aug 24–25 | Primary Reactive event rail | A stateless Maestro-style RSC requests authenticated Unichain settlement |
+| 14 | Aug 25–Sep 3 | Reactive-first testnet and final package | Public Reactive transport, fail-open recovery, and final judge materials |
 
 ## Current status and resilience pivot
 
@@ -37,17 +37,18 @@ did not receive destination callbacks. A later Legacy Reactive deployment supers
 completing an authenticated Ethereum Sepolia → ReactVM → Unichain callback in 11 seconds. Because the target trade was
 already terminal, MARKOUT claims live transport and replay safety, not Reactive-first economics.
 
-Phases 10–15 added a hybrid topology without weakening MARKOUT's accounting:
+Phases 10–15 converged on a Reactive-first topology without weakening MARKOUT's accounting:
 
 - A small legacy-compatible Reactive Contract observes the canonical publisher event and supplies the primary
   autonomous event-to-action path presented to judges.
-- Circle CCTP V2 supplies an independently authenticated fallback and produced four public economic lifecycles.
-- Both transports terminate at one immutable settlement coordinator and the first valid delivery wins.
+- The Reactive receiver and immutable settlement coordinator form the normal callback path.
+- The earlier Circle CCTP V2 adapter produced four public economic lifecycles and remains historical resilience
+  evidence rather than the submission's primary architecture.
 - Duplicate delivery is a successful no-op, and permissionless expiry continues to return the complete provisional
   surcharge when no valid observation arrives.
 - The existing Omni scheduler remains reproducible research and outage evidence, not the active deployment path.
 
-This pivot is specified in [Hybrid Settlement Architecture](docs/HYBRID_SETTLEMENT.md).
+This pivot is specified in [Reactive-First Settlement Architecture](docs/HYBRID_SETTLEMENT.md).
 
 Phase 14's required economic gate is complete. The dated
 [public deployment manifest](deployments/hybrid-2026-08-21.json) records the Sepolia publication, Circle attestation,
@@ -383,7 +384,7 @@ Submit a reproducible project and a concise research story.
 - The presentation is rehearsed under the official time limit.
 - Final form is submitted before September 3, 2026 at 11:59 PM Pacific Time.
 
-## Phase 10 - Hybrid settlement architecture pivot
+## Phase 10 - Settlement resilience pivot
 
 ### Goal
 
@@ -429,13 +430,13 @@ Required results:
 - Invalid observations still revert inside the unchanged hook validation engine.
 - Permissionless expiry remains available without the coordinator.
 
-## Phase 12 - Circle CCTP V2 primary transport
+## Phase 12 - Historical Circle CCTP V2 recovery transport
 
 ### Goal
 
-Carry a Pyth-verified delayed observation from Ethereum Sepolia to Unichain Sepolia through Circle's generic message
-path. Request threshold `1000` so delivery fits MARKOUT's ten-minute settlement window; retain a disjoint handler for
-later hard-finalized messages at threshold `2000` or greater.
+Historical phase goal: carry a Pyth-verified delayed observation from Ethereum Sepolia to Unichain Sepolia through
+Circle's generic message path. This phase proved transport redundancy and both economic branches before the final
+Reactive-first architecture was frozen.
 
 ### Deliverables
 
@@ -463,14 +464,14 @@ Required results:
 
 ### Goal
 
-Add a minimal Maestro-style Reactive path without reintroducing Reactive-owned scheduling or protocol state.
+Establish a minimal Maestro-style Reactive event-to-action path without giving Reactive custody or fee authority.
 
 ### Deliverables
 
-- Legacy-compatible RSC subscribed to the Circle publisher's observation event
+- Legacy-compatible RSC subscribed to the canonical Pyth-backed publisher event
 - Authenticated Unichain destination receiver
 - Stateless observation forwarding only
-- Race tests proving Circle-first and Reactive-first delivery produce the same terminal result
+- Replay tests proving duplicate authenticated delivery cannot change a terminal result
 
 ### Verification gate
 
@@ -482,10 +483,10 @@ Required results:
 
 - The RSC contains no trade registry, cron scheduler, sampler callback, or retry database.
 - Its callback can only submit the same normalized observation emitted by the source publisher.
-- Circle and Reactive delivery order cannot change accounting.
-- Reactive failure has no effect on Circle settlement or permissionless expiry.
+- Reactive delivery and later duplicates cannot change accounting after terminal settlement.
+- Reactive failure cannot disable permissionless expiry or trap the provisional amount.
 
-## Phase 14 - Hybrid live deployment and final submission
+## Phase 14 - Reactive-first live deployment and final submission
 
 ### Goal
 
@@ -493,28 +494,28 @@ Produce explorer-backed economic settlement evidence and independently verify th
 
 ### Local deliverables
 
-- Chain-locked deployment scripts for the Sepolia publisher, Unichain hybrid destination, publisher binding, and
+- Chain-locked deployment scripts for the Sepolia publisher, Unichain destination, publisher binding, and
   legacy Reactive pulse
 - Signed Pyth update, Circle attestation, and Circle relay helpers
 - Read-only three-network dependency and immutable-wiring preflight
 - Secret-safe environment template and evidence-manifest template
-- Judge dashboard, demo script, submission checklist, and rendered deck revised around the hybrid boundary
+- Judge dashboard, demo script, submission checklist, and rendered deck revised around the Reactive-first boundary
 
-Local automation and the required public Circle path are complete. The dated evidence manifest records the deployed
-topology and three real swaps whose Pyth/Circle settlements prove both allocation extremes: two complete trader
-rebates and complete LP-protection retention. Repository and dashboard access are now public. Owner identity, video,
-and final-form submission remain owner-controlled gates.
+Local automation and the Reactive adapter are complete. The Reactive manifest records an exact subscription, ReactVM
+processing, an 11-second authenticated destination callback, and an honest pending-first relayer timeout followed by
+full-refund expiry. The earlier dated CCTP manifest remains the mechanism proof for both economic extremes. Repository
+and dashboard access are public. Owner identity, video, and final-form submission remain owner-controlled gates.
 
 ### Verification gate
 
 1. Execute a MARKOUT trade on Unichain Sepolia.
 2. Publish its matured Pyth observation on Ethereum Sepolia.
-3. Relay the Circle attestation and settle the trade on Unichain.
+3. Observe the publisher event in ReactVM and request the authenticated Unichain callback.
 4. Claim the resulting rebate and link every transaction.
 5. Execute the Reactive pulse with a bounded acceptance window.
 6. Label Reactive transport as live only when its destination callback transaction exists publicly; distinguish that
    from Reactive-first economic settlement.
-7. Regenerate the demo and submission package around the verified hybrid path.
+7. Regenerate the demo and submission package around the verified Reactive-first path.
 
 ## Phase 15 - Fair-Flow trader economics
 

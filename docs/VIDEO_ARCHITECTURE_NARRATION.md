@@ -84,9 +84,9 @@ Third is the cross-chain reaction core: Reactive Network. The Legacy pulse subsc
 publisher and market event, executes the reaction in ReactVM, then requests an authenticated callback on Unichain.
 MARKOUT does not need to operate its own event-watching cross-chain relayer.
 
-The callback reaches the Unichain settlement gateway, where the first valid observation wins and duplicates become
-no-ops. Circle CCTP is the resilience rail. Neither transport controls funds or chooses the fee; the hook validates
-evidence and allocates onchain.”
+The callback reaches the Unichain Reactive receiver and replay-safe settlement gateway. Reactive initiates the action,
+but it never controls funds or chooses the fee; the hook independently validates the evidence and allocates onchain.
+If delivery is unavailable, permissionless expiry returns the full provisional amount.”
 
 ### 2:18–2:43 - Demonstrate technical craft
 
@@ -161,8 +161,9 @@ requests the terminal callback without a privileged keeper. Unichain remains the
 
 The complete Reactive lifecycle is implemented and covered by focused tests. Legacy Reactive also completed an
 authenticated public 11-second destination callback, so **live Reactive transport** is supported by evidence. That
-callback reached an already-terminal trade, however, so do not claim **Reactive-first economic settlement**. Public
-end-to-end economic settlement evidence currently comes from the authenticated Circle resilience rail.
+callback reached an already-terminal trade, however, so do not claim **Reactive-first economic settlement**. The
+earlier CCTP lifecycles may be shown only as historical proof of the hook's economic branches, not as the current
+architecture.
 
 Add an eight-second proof clip showing the source publisher event, Reactive execution, and authenticated destination
 callback. State that this proves transport liveness and replay-safe duplicate handling, not Reactive-first economics.

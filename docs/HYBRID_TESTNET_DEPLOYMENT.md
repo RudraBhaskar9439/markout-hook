@@ -1,8 +1,14 @@
-# MARKOUT Hybrid Testnet Deployment Runbook
+# MARKOUT Historical Hybrid Deployment Runbook
 
-Status: automation complete; broadcasts and public evidence require the project owner.
+> **Historical implementation record.** This runbook documents the pre-pivot two-transport deployment used to prove
+> MARKOUT's economic branches. It is preserved for reproducibility, but it is not the final submission architecture.
+> The current project is Reactive-first; see [Reactive Lifecycle Specification](REACTIVE_LIFECYCLE.md),
+> [Reactive-First Settlement Architecture](HYBRID_SETTLEMENT.md), and the
+> [Legacy Reactive deployment record](PHASE_13_VERIFICATION.md).
 
-## Active topology
+Status: historical deployment and public evidence complete.
+
+## Historical topology
 
 | Component | Network | Role |
 | --- | --- | --- |
@@ -13,10 +19,9 @@ Status: automation complete; broadcasts and public evidence require the project 
 | `MarkoutHook` | Unichain Sepolia | Owns custody, validation, settlement, expiry, and claims |
 | `MarkoutPulseReactive` | legacy Reactive Lasna | Subscribes to the publisher event and requests the authenticated destination callback; owns no protocol state |
 
-Reactive is the event-to-action transport: it observes the canonical publisher event, executes in ReactVM, and
-requests the authenticated Unichain callback. Circle is an independent authenticated resilience rail. The immutable
-coordinator accepts the first valid delivery, and permissionless expiry returns the complete provisional surcharge if
-neither transport settles in time.
+This topology was built before the final Reactive-first pivot. It accepted two authenticated delivery sources so the
+economic mechanism could be exercised while Reactive relayer behavior was being diagnosed. The final presentation
+promotes Reactive Network as the primary event-to-action path and uses permissionless expiry as the user-safety path.
 
 ## Funds and secrets
 

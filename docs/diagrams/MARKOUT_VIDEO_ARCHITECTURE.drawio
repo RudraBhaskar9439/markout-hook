@@ -12,10 +12,10 @@
         <mxCell id="title" value="&lt;font color=&quot;#F4F8F5&quot; style=&quot;font-size: 30px;&quot;&gt;&lt;b&gt;MARKOUT - charge by outcome, not by guesswork&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
           <mxGeometry x="60" y="35" width="1150" height="55" as="geometry"/>
         </mxCell>
-        <mxCell id="subtitle" value="&lt;font color=&quot;#A6B6AA&quot; style=&quot;font-size: 16px;&quot;&gt;After five minutes, Pyth publishes signed evidence; Reactive or Circle delivers it, and the hook prices the realized outcome.&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
+        <mxCell id="subtitle" value="&lt;font color=&quot;#A6B6AA&quot; style=&quot;font-size: 16px;&quot;&gt;After five minutes, Pyth publishes signed evidence; Reactive Network turns it into an authenticated Unichain action.&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
           <mxGeometry x="60" y="90" width="1400" height="35" as="geometry"/>
         </mxCell>
-        <mxCell id="story-label" value="&lt;font color=&quot;#78F59A&quot;&gt;&lt;b&gt;CURRENT 5-STEP HYBRID LIFECYCLE&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="story-label" value="&lt;font color=&quot;#78F59A&quot;&gt;&lt;b&gt;CURRENT 5-STEP REACTIVE-FIRST LIFECYCLE&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="60" y="150" width="300" height="30" as="geometry"/>
         </mxCell>
 
@@ -70,7 +70,7 @@
         <mxCell id="step4" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#10243A;strokeColor=#58A7FF;strokeWidth=3;shadow=1;" vertex="1" parent="1">
           <mxGeometry x="1140" y="180" width="310" height="310" as="geometry"/>
         </mxCell>
-        <mxCell id="step4-system" value="&lt;font color=&quot;#8AC5FF&quot;&gt;&lt;b&gt;REACTIVE · LEGACY RAIL&lt;/b&gt;&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#183C5D;strokeColor=none;align=center;fontSize=12;" vertex="1" parent="1">
+        <mxCell id="step4-system" value="&lt;font color=&quot;#8AC5FF&quot;&gt;&lt;b&gt;REACTIVE NETWORK&lt;/b&gt;&lt;/font&gt;" style="rounded=1;arcSize=12;whiteSpace=wrap;html=1;fillColor=#183C5D;strokeColor=none;align=center;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="1165" y="205" width="185" height="30" as="geometry"/>
         </mxCell>
         <mxCell id="step4-number" value="&lt;font color=&quot;#8AC5FF&quot; style=&quot;font-size: 28px;&quot;&gt;&lt;b&gt;04&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=right;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
@@ -82,7 +82,7 @@
         <mxCell id="step4-body" value="&lt;font color=&quot;#D3E7FA&quot; style=&quot;font-size: 15px;&quot;&gt;Exact publisher + market filter&lt;br&gt;Stateless ReactVM reaction&lt;br&gt;Authenticated Unichain callback&lt;br&gt;No custody or fee authority&lt;br&gt;11-second transport proof&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;spacingTop=4;" vertex="1" parent="1">
           <mxGeometry x="1170" y="315" width="245" height="115" as="geometry"/>
         </mxCell>
-        <mxCell id="step4-note" value="&lt;font color=&quot;#FFBE74&quot;&gt;&lt;b&gt;PENDING-FIRST RELAYER TIMEOUT&lt;/b&gt;&lt;/font&gt;" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#3B2417;strokeColor=#E79A45;align=center;fontSize=11;" vertex="1" parent="1">
+        <mxCell id="step4-note" value="&lt;font color=&quot;#8AC5FF&quot;&gt;&lt;b&gt;PRIMARY EVENT-TO-ACTION CORE&lt;/b&gt;&lt;/font&gt;" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#183C5D;strokeColor=#58A7FF;align=center;fontSize=11;" vertex="1" parent="1">
           <mxGeometry x="1170" y="435" width="245" height="28" as="geometry"/>
         </mxCell>
 
@@ -98,7 +98,7 @@
         <mxCell id="step5-title" value="&lt;font color=&quot;#FFF5E9&quot; style=&quot;font-size: 21px;&quot;&gt;&lt;b&gt;Outcome settles&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;" vertex="1" parent="1">
           <mxGeometry x="1560" y="282" width="250" height="40" as="geometry"/>
         </mxCell>
-        <mxCell id="step5-body" value="&lt;font color=&quot;#E8D7C4&quot; style=&quot;font-size: 15px;&quot;&gt;First valid delivery wins&lt;br&gt;Validates time + confidence&lt;br&gt;Computes directional markout&lt;br&gt;Finalizes exactly once&lt;br&gt;Unichain controls every fund.&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;spacingTop=4;" vertex="1" parent="1">
+        <mxCell id="step5-body" value="&lt;font color=&quot;#E8D7C4&quot; style=&quot;font-size: 15px;&quot;&gt;Authenticates Reactive callback&lt;br&gt;Validates time + confidence&lt;br&gt;Computes directional markout&lt;br&gt;Finalizes exactly once&lt;br&gt;Unichain controls every fund.&lt;/font&gt;" style="text;html=1;align=left;verticalAlign=top;whiteSpace=wrap;spacingTop=4;" vertex="1" parent="1">
           <mxGeometry x="1560" y="337" width="260" height="115" as="geometry"/>
         </mxCell>
 
@@ -115,18 +115,9 @@
           <mxGeometry relative="1" as="geometry"/>
         </mxCell>
 
-        <mxCell id="circle" value="&lt;font color=&quot;#82C4FF&quot;&gt;&lt;b&gt;CIRCLE CCTP INDEPENDENT DELIVERY RAIL&lt;/b&gt;&lt;/font&gt;&lt;font color=&quot;#BEDDF5&quot;&gt; - authenticated route · 4 public economic lifecycles&lt;/font&gt;" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#10283B;strokeColor=#4B9BDB;strokeWidth=2;dashed=1;dashPattern=8 5;align=center;fontSize=13;" vertex="1" parent="1">
+        <mxCell id="circle" value="&lt;font color=&quot;#82C4FF&quot;&gt;&lt;b&gt;FAIL-OPEN SAFETY&lt;/b&gt;&lt;/font&gt;&lt;font color=&quot;#BEDDF5&quot;&gt; - if Reactive delivery misses expiry, the full provisional amount remains refundable&lt;/font&gt;" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;fillColor=#10283B;strokeColor=#4B9BDB;strokeWidth=2;dashed=1;dashPattern=8 5;align=center;fontSize=13;" vertex="1" parent="1">
           <mxGeometry x="780" y="535" width="670" height="60" as="geometry"/>
         </mxCell>
-        <mxCell id="circle-in" value="independent path" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#66B4F2;strokeWidth=2;dashed=1;dashPattern=8 5;fontColor=#82C4FF;fontSize=11;labelBackgroundColor=#07100B;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.25;entryY=0;" edge="1" parent="1" source="step3" target="circle">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="circle-out" value="same validated settlement" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#66B4F2;strokeWidth=2;dashed=1;dashPattern=8 5;fontColor=#82C4FF;fontSize=11;labelBackgroundColor=#07100B;endArrow=block;endFill=1;exitX=1;exitY=0.5;entryX=0.5;entryY=1;" edge="1" parent="1" source="circle" target="step5">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points"><mxPoint x="1695" y="565"/></Array>
-          </mxGeometry>
-        </mxCell>
-
         <mxCell id="outcome-title" value="&lt;font color=&quot;#78F59A&quot;&gt;&lt;b&gt;SETTLEMENT PRODUCES ONE OF THREE SAFE OUTCOMES ↓&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=14;" vertex="1" parent="1">
           <mxGeometry x="560" y="635" width="800" height="30" as="geometry"/>
         </mxCell>

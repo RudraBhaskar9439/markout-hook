@@ -1,17 +1,18 @@
 # MARKOUT Evidence Ledger
 
-Status: four public Circle economic lifecycles and one 11-second Legacy Reactive cross-chain callback verified;
-one deterministic 768-trade policy comparison, one 251-trade historical mainnet robustness replay, and a 21-point
-base-fee sweep reproduced locally; Reactive-first economic settlement, liquidity response, and routing response remain
+Status: one 11-second Legacy Reactive cross-chain callback, exact subscription, ReactVM execution, and fail-open expiry
+are verified publicly. Four earlier CCTP economic lifecycles prove both allocation branches. One deterministic
+768-trade policy comparison, one 251-trade historical mainnet robustness replay, and a 21-point base-fee sweep are
+reproduced locally. A pending-first Reactive economic allocation, liquidity response, and routing response remain
 unproven.
 
 ## Evidence hierarchy
 
 MARKOUT separates facts by strength so the submission never turns a model result into a market claim.
 
-1. **Public onchain evidence** proves that the deployed hook can escrow, mature, receive a Pyth-verified observation
-   through Circle, settle both economic extremes, conserve custody, and pay a rebate. It separately proves a live
-   Ethereum Sepolia → ReactVM → Unichain callback through Legacy Reactive.
+1. **Public Reactive evidence** proves exact event subscription, ReactVM execution, an authenticated Ethereum Sepolia
+   to Unichain callback, replay-safe terminal handling, and fail-open recovery. Earlier onchain lifecycles separately
+   prove that the deployed hook can escrow, settle both economic extremes, conserve custody, and pay a rebate.
 2. **Controlled synthetic evidence** compares fixed, volatility-only, and MARKOUT policies against one identical
    committed trade tape. It proves properties of the declared model, not future market behavior.
 3. **Historical event replay** applies the unchanged policies to 251 canonical Ethereum mainnet swaps. It tests
@@ -60,10 +61,10 @@ MARKOUT repeated both public Reactive probes with fresh Ethereum Sepolia events.
 This historical recheck did not support declaring the Reactive path live. The August 26 Legacy callback supersedes its
 transport conclusion, while the later pending-first timeout confirms that destination relaying is still intermittent.
 
-## Public onchain evidence
+## Historical economic lifecycle evidence
 
-The dated [deployment manifest](../deployments/hybrid-2026-08-21.json) is machine-readable and can be rechecked with
-`scripts/verify-public-circle-evidence.sh`.
+The dated [deployment manifest](../deployments/hybrid-2026-08-21.json) predates the final Reactive-first architecture.
+It is machine-readable and can be rechecked with `scripts/verify-public-circle-evidence.sh`.
 
 | Lifecycle | Real v4 swap | Pyth publication | Circle settlement | Terminal result |
 | --- | --- | --- | --- | --- |
@@ -78,7 +79,7 @@ an owner-side deployment script. Its observation was 92 seconds old when settlem
 
 The first three lifecycles use the original 30 + 50 bps profile and prove both terminal branches. The separate
 [Fair-Flow manifest](../deployments/fair-flow-2026-08-22.json) proves that the selected 18 + 50 bps profile is deployed,
-liquid, and can complete the same Circle lifecycle at an 18 bps final fee. The original protection-branch evidence
+liquid, and can complete the same historical recovery lifecycle at an 18 bps final fee. The original protection-branch evidence
 remains the public proof for full retention.
 
 ## Controlled policy evidence

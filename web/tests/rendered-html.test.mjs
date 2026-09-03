@@ -91,8 +91,8 @@ test("server-renders the complete MARKOUT judge dashboard", async () => {
   assert.match(html, /4<\/b> public end-to-end lifecycles/);
   assert.match(html, /3 \/ 1<\/b> full rebates \/ full retention/);
   assert.match(html, /Reactive Network callback publicly verified/);
-  assert.match(html, /Four fallback lifecycles proven/);
-  assert.match(html, /Reactive Network transport live/);
+  assert.match(html, /Four historical economic lifecycles proven/);
+  assert.match(html, /Reactive Network transport and callback publicly verified/);
   assert.match(html, /Reactive-first settlement relayer timed out/);
   assert.match(html, /Good flow wins without assuming deeper liquidity\./);
   assert.match(html, /21\.87%/);

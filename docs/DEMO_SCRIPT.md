@@ -44,8 +44,8 @@ The hook alone validates the evidence and allocates the escrow."
 ### 2:10-2:40 - Architecture + Reactive
 
 "Frontend explains. Unichain accounts. Ethereum verifies. Reactive converts the canonical publisher event into an
-authenticated Unichain action without a MARKOUT-owned cross-chain relayer. Circle is an independent delivery rail,
-and the coordinator makes the first valid delivery win."
+authenticated Unichain action without a MARKOUT-owned cross-chain relayer. The Reactive receiver authenticates the
+callback, and the hook remains the only contract that can validate evidence and allocate escrow."
 
 "The Legacy pulse is deployed, funded, and exactly subscribed. A public publisher event completed its authenticated
 Unichain callback in 11 seconds. A pending-first follow-up reached ReactVM twice but the destination relayer timed out,
@@ -68,8 +68,9 @@ was 0.39% below fixed in that short window, so I report the negative result inst
 
 ### 3:25-3:55 - Close
 
-"MARKOUT defines 202 Solidity test functions and 12 stateful invariant entrypoints, has four public fallback-completed
-lifecycles, both terminal economic branches, a separate Fair-Flow pool, and zero medium or high Slither findings.
+"MARKOUT defines 202 Solidity test functions and 12 stateful invariant entrypoints, has a public 11-second Reactive
+callback, safe pending-first expiry evidence, both terminal economic branches, a separate Fair-Flow pool, and zero
+medium or high Slither findings.
 MARKOUT does not guess who is toxic. It prices what the trade actually did."
 
 Stop.
